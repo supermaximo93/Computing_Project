@@ -11,8 +11,26 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        Record.cpp\
+        Customer.cpp\
+        Expense.cpp\
+        Job.cpp\
+        Part.cpp\
+        Task.cpp \
+    CustomerDialog.cpp \
+    MainWindow.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  +=\
+        Database.h\
+        Record.h\
+        Globals.h\
+        Customer.h\
+        Expense.h\
+        Job.h\
+        Part.h\
+        Task.h \
+    CustomerDialog.h \
+    MainWindow.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    CustomerDialog.ui
