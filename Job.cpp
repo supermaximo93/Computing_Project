@@ -14,98 +14,98 @@ using namespace std;
 const string Job::databaseFilename = "jobs.dat";
 
 Job::Job(const int newCustomerId, const time_t newDate, const float newLabourCharge, const int newCompletionState,
-		const int newPaymentMethod) {
-	customerId = newCustomerId;
-	date = newDate;
-	labourCharge = newLabourCharge;
-	vat = labourCharge*Globals::vatRate;
-	completionState = newCompletionState;
-	paymentMethod = newPaymentMethod;
+         const int newPaymentMethod) {
+    customerId = newCustomerId;
+    date = newDate;
+    labourCharge = newLabourCharge;
+    vat = labourCharge*Globals::vatRate;
+    completionState = newCompletionState;
+    paymentMethod = newPaymentMethod;
 }
 
 void Job::writeToFile(fstream & file) const {
-	Record::writeToFile(file);
-	file.write(reinterpret_cast<const char *>(&customerId), sizeof(customerId));
-	file.write(reinterpret_cast<const char *>(&date), sizeof(date));
-	file.write(reinterpret_cast<const char *>(&labourCharge), sizeof(labourCharge));
-	file.write(reinterpret_cast<const char *>(&vat), sizeof(vat));
-	file.write(reinterpret_cast<const char *>(&completionState), sizeof(completionState));
-	file.write(reinterpret_cast<const char *>(&paymentMethod), sizeof(paymentMethod));
+    Record::writeToFile(file);
+    file.write(reinterpret_cast<const char *>(&customerId), sizeof(customerId));
+    file.write(reinterpret_cast<const char *>(&date), sizeof(date));
+    file.write(reinterpret_cast<const char *>(&labourCharge), sizeof(labourCharge));
+    file.write(reinterpret_cast<const char *>(&vat), sizeof(vat));
+    file.write(reinterpret_cast<const char *>(&completionState), sizeof(completionState));
+    file.write(reinterpret_cast<const char *>(&paymentMethod), sizeof(paymentMethod));
 }
 
 void Job::readFromFile(fstream & file) {
-	Record::readFromFile(file);
-	file.read(reinterpret_cast<char *>(&customerId), sizeof(customerId));
-	file.read(reinterpret_cast<char *>(&date), sizeof(date));
-	file.read(reinterpret_cast<char *>(&labourCharge), sizeof(labourCharge));
-	file.read(reinterpret_cast<char *>(&vat), sizeof(vat));
-	file.read(reinterpret_cast<char *>(&completionState), sizeof(completionState));
-	file.read(reinterpret_cast<char *>(&paymentMethod), sizeof(paymentMethod));
+    Record::readFromFile(file);
+    file.read(reinterpret_cast<char *>(&customerId), sizeof(customerId));
+    file.read(reinterpret_cast<char *>(&date), sizeof(date));
+    file.read(reinterpret_cast<char *>(&labourCharge), sizeof(labourCharge));
+    file.read(reinterpret_cast<char *>(&vat), sizeof(vat));
+    file.read(reinterpret_cast<char *>(&completionState), sizeof(completionState));
+    file.read(reinterpret_cast<char *>(&paymentMethod), sizeof(paymentMethod));
 }
 
 int Job::size() {
-	return Record::size()+(sizeof(int)*3)+sizeof(time_t)+(sizeof(float)*2);
+    return Record::size()+(sizeof(int)*3)+sizeof(time_t)+(sizeof(float)*2);
 }
 
 bool Job::hasMatchingField(const string & fieldName, const int searchTerm) const {
-	if (fieldName == "customerid") return (customerId == searchTerm);
-	else if (fieldName == "completionstate") return (completionState == searchTerm);
-	else if (fieldName == "paymentmethod") return (paymentMethod == searchTerm);
-	return Record::hasMatchingField(fieldName, searchTerm);
+    if (fieldName == "customerid") return (customerId == searchTerm);
+    else if (fieldName == "completionstate") return (completionState == searchTerm);
+    else if (fieldName == "paymentmethod") return (paymentMethod == searchTerm);
+    return Record::hasMatchingField(fieldName, searchTerm);
 }
 
 bool Job::hasMatchingField(const string & fieldName, const time_t searchTerm) const {
-	if (fieldName == "date") return (date == searchTerm);
-	return false;
+    if (fieldName == "date") return (date == searchTerm);
+    return false;
 }
 
 bool Job::hasMatchingField(const string & fieldName, const float searchTerm) const {
-	if (fieldName == "labourcharge") return (labourCharge == searchTerm);
-	else if (fieldName == "vat") return (vat == searchTerm);
-	return false;
+    if (fieldName == "labourcharge") return (labourCharge == searchTerm);
+    else if (fieldName == "vat") return (vat == searchTerm);
+    return false;
 }
 
 int Job::getCustomerId() const {
-	return customerId;
+    return customerId;
 }
 
 void Job::setCustomerId(const int newCustomerId) {
-	customerId = newCustomerId;
+    customerId = newCustomerId;
 }
 
 time_t Job::getDate() const {
-	return date;
+    return date;
 }
 
 void Job::setDate(const time_t newDate) {
-	date = newDate;
+    date = newDate;
 }
 
 float Job::getLabourCharge() const {
-	return labourCharge;
+    return labourCharge;
 }
 
 void Job::setLabourCharge(const float newLabourCharge) {
-	labourCharge = newLabourCharge;
-	vat = labourCharge*Globals::vatRate;
+    labourCharge = newLabourCharge;
+    vat = labourCharge*Globals::vatRate;
 }
 
 float Job::getVat() const {
-	return vat;
+    return vat;
 }
 
 int Job::getCompletionState() const {
-	return completionState;
+    return completionState;
 }
 
 void Job::setCompletionState(const int newCompletionState) {
-	completionState = newCompletionState;
+    completionState = newCompletionState;
 }
 
 int Job::getPaymentMethod() const {
-	return paymentMethod;
+    return paymentMethod;
 }
 
 void Job::setPaymentMethod(const int newPaymentMethod) {
-	paymentMethod = newPaymentMethod;
+    paymentMethod = newPaymentMethod;
 }

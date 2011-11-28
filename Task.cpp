@@ -14,82 +14,82 @@ using namespace std;
 const std::string Task::databaseFilename = "tasks.dat";
 
 Task::Task(const int newJobId, const time_t newDate, const char * newDescription) {
-	description = new char[descriptionLength+1];
+    description = new char[descriptionLength+1];
 
-	jobId = newJobId;
-	date = newDate;
-	strcpy(description, newDescription);
+    jobId = newJobId;
+    date = newDate;
+    strcpy(description, newDescription);
 }
 
 Task::Task(const Task & task) {
-	description = new char[descriptionLength+1];
-	(*this) = task;
+    description = new char[descriptionLength+1];
+    (*this) = task;
 }
 
 Task::~Task() {
-	delete[] description;
+    delete[] description;
 }
 
 void Task::operator =(const Task & task) {
-	*((Record*)this) = (Record)task;
-	jobId = task.jobId;
-	date = task.date;
-	strcpy(description, task.description);
+    *((Record*)this) = (Record)task;
+    jobId = task.jobId;
+    date = task.date;
+    strcpy(description, task.description);
 }
 
 void Task::writeToFile(fstream & file) const {
-	Record::writeToFile(file);
-	file.write(reinterpret_cast<const char *>(&jobId), sizeof(jobId));
-	file.write(reinterpret_cast<const char *>(&date), sizeof(date));
-	file.write(description, descriptionLength);
+    Record::writeToFile(file);
+    file.write(reinterpret_cast<const char *>(&jobId), sizeof(jobId));
+    file.write(reinterpret_cast<const char *>(&date), sizeof(date));
+    file.write(description, descriptionLength);
 }
 
 void Task::readFromFile(fstream & file) {
-	Record::readFromFile(file);
-	file.read(reinterpret_cast<char *>(&jobId), sizeof(jobId));
-	file.read(reinterpret_cast<char *>(&date), sizeof(date));
-	file.read(description, descriptionLength);
+    Record::readFromFile(file);
+    file.read(reinterpret_cast<char *>(&jobId), sizeof(jobId));
+    file.read(reinterpret_cast<char *>(&date), sizeof(date));
+    file.read(description, descriptionLength);
 }
 
 int Task::size() {
-	return Record::size()+sizeof(int)+sizeof(time_t)+descriptionLength;
+    return Record::size()+sizeof(int)+sizeof(time_t)+descriptionLength;
 }
 
 bool Task::hasMatchingField(const string & fieldName, const int searchTerm) const {
-	if (fieldName == "jobid") return (jobId == searchTerm);
-	return Record::hasMatchingField(fieldName, searchTerm);
+    if (fieldName == "jobid") return (jobId == searchTerm);
+    return Record::hasMatchingField(fieldName, searchTerm);
 }
 
 bool Task::hasMatchingField(const string & fieldName, const time_t searchTerm) const {
-	if (fieldName == "date") return (date == searchTerm);
-	return false;
+    if (fieldName == "date") return (date == searchTerm);
+    return false;
 }
 
 bool Task::hasMatchingField(const string & fieldName, const char * searchTerm) const {
-	if (fieldName == "description") return (strcmp(description, searchTerm) == 0);
-	return false;
+    if (fieldName == "description") return (strcmp(description, searchTerm) == 0);
+    return false;
 }
 
 int Task::getJobId() const {
-	return jobId;
+    return jobId;
 }
 
 void Task::setJobId(const int newJobId) {
-	jobId = newJobId;
+    jobId = newJobId;
 }
 
 time_t Task::getDate() const {
-	return date;
+    return date;
 }
 
 void Task::setDate(const time_t newDate) {
-	date = newDate;
+    date = newDate;
 }
 
 const char * Task::getDescription() const {
-	return description;
+    return description;
 }
 
 void Task::setDescription(const char * newDescription) {
-	strcpy(description, newDescription);
+    strcpy(description, newDescription);
 }

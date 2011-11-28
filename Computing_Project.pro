@@ -32,5 +32,6 @@ HEADERS  +=\
     CustomerDialog.h \
     MainWindow.h
 
-FORMS    += mainwindow.ui \
-    CustomerDialog.ui
+FORMS    += \
+    CustomerDialog.ui \
+    MainWindow.ui

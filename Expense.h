@@ -14,47 +14,47 @@
 #include "Record.h"
 
 class Expense : public Record {
-	static const int descriptionLength = 256;
+    static const int descriptionLength = 256;
 
-	time_t date;
-	char * description;
-	float price, vat;
-	int type;
+    time_t date;
+    char * description;
+    float price, vat;
+    int type;
 
 public:
-	static const std::string databaseFilename;
+    static const std::string databaseFilename;
 
-	Expense(const time_t newDate = 0, const char * newDescription = "", const float newPrice = 0.0f,
-			const float newVat = 0.0f, const int newType = 0);
-	Expense(const Expense & expense);
-	~Expense();
+    Expense(const time_t newDate = 0, const char * newDescription = "", const float newPrice = 0.0f,
+            const float newVat = 0.0f, const int newType = 0);
+    Expense(const Expense & expense);
+    ~Expense();
 
-	void operator =(const Expense & expense);
+    void operator =(const Expense & expense);
 
-	void writeToFile(std::fstream & file) const;
-	void readFromFile(std::fstream & file);
+    void writeToFile(std::fstream & file) const;
+    void readFromFile(std::fstream & file);
 
-	static int size();
+    static int size();
 
-	bool hasMatchingField(const std::string & fieldName, const time_t searchTerm) const;
-	bool hasMatchingField(const std::string & fieldName, const char * searchTerm) const;
-	bool hasMatchingField(const std::string & fieldName, const float searchTerm) const;
-	bool hasMatchingField(const std::string & fieldName, const int searchTerm) const;
+    bool hasMatchingField(const std::string & fieldName, const time_t searchTerm) const;
+    bool hasMatchingField(const std::string & fieldName, const char * searchTerm) const;
+    bool hasMatchingField(const std::string & fieldName, const float searchTerm) const;
+    bool hasMatchingField(const std::string & fieldName, const int searchTerm) const;
 
-	time_t getDate() const;
-	void setDate(const time_t newDate);
+    time_t getDate() const;
+    void setDate(const time_t newDate);
 
-	const char * getDescription() const;
-	void setDescription(const char * newDescription);
+    const char * getDescription() const;
+    void setDescription(const char * newDescription);
 
-	float getPrice() const;
-	void setPrice(const float newPrice);
+    float getPrice() const;
+    void setPrice(const float newPrice);
 
-	float getVat() const;
-	void setVat(const float newVat);
+    float getVat() const;
+    void setVat(const float newVat);
 
-	int getType() const;
-	void setType(const int newType);
+    int getType() const;
+    void setType(const int newType);
 };
 
 #endif /* EXPENSE_H_ */

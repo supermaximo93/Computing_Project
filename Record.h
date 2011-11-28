@@ -19,32 +19,32 @@ class Task;
 class Expense;
 
 class Record {
-	int id;
+    int id;
 
 protected:
-	Record();
+    Record();
 
-	void writeToFile(std::fstream & file) const;
-	void readFromFile(std::fstream & file);
+    void writeToFile(std::fstream & file) const;
+    void readFromFile(std::fstream & file);
 
-	static int size();
+    static int size();
 
 public:
-	bool operator ==(const Record & record) const;
-	bool operator ==(const int recordId) const;
-	void operator =(const Record & record);
+    bool operator ==(const Record & record) const;
+    bool operator ==(const int recordId) const;
+    void operator =(const Record & record);
 
-	int getId() const;
-	bool null() const;
+    int getId() const;
+    bool null() const;
 
-	bool hasMatchingField(const std::string & fieldName, const int searchTerm) const;
+    bool hasMatchingField(const std::string & fieldName, const int searchTerm) const;
 
-	friend class Database<Record>;
-	friend class Database<Customer>;
-	friend class Database<Job>;
-	friend class Database<Part>;
-	friend class Database<Task>;
-	friend class Database<Expense>;
+    friend class Database<Record>;
+    friend class Database<Customer>;
+    friend class Database<Job>;
+    friend class Database<Part>;
+    friend class Database<Task>;
+    friend class Database<Expense>;
 };
 
 #endif /* RECORD_H_ */

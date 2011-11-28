@@ -14,41 +14,41 @@
 #include "Record.h"
 
 class Job : public Record {
-	int customerId, completionState, paymentMethod;
-	time_t date;
-	float labourCharge, vat;
+    int customerId, completionState, paymentMethod;
+    time_t date;
+    float labourCharge, vat;
 
 public:
-	static const std::string databaseFilename;
+    static const std::string databaseFilename;
 
-	Job(const int newCustomerId = 0, const time_t newDate = 0, const float newLabourCharge = 0.0f,
-			const int newCompletionState = 0, const int newPaymentMethod = 0);
+    Job(const int newCustomerId = 0, const time_t newDate = 0, const float newLabourCharge = 0.0f,
+        const int newCompletionState = 0, const int newPaymentMethod = 0);
 
-	void writeToFile(std::fstream & file) const;
-	void readFromFile(std::fstream & file);
+    void writeToFile(std::fstream & file) const;
+    void readFromFile(std::fstream & file);
 
-	static int size();
+    static int size();
 
-	bool hasMatchingField(const std::string & fieldName, const int searchTerm) const;
-	bool hasMatchingField(const std::string & fieldName, const time_t searchTerm) const;
-	bool hasMatchingField(const std::string & fieldName, const float searchTerm) const;
+    bool hasMatchingField(const std::string & fieldName, const int searchTerm) const;
+    bool hasMatchingField(const std::string & fieldName, const time_t searchTerm) const;
+    bool hasMatchingField(const std::string & fieldName, const float searchTerm) const;
 
-	int getCustomerId() const;
-	void setCustomerId(const int newCustomerId);
+    int getCustomerId() const;
+    void setCustomerId(const int newCustomerId);
 
-	time_t getDate() const;
-	void setDate(const time_t newDate);
+    time_t getDate() const;
+    void setDate(const time_t newDate);
 
-	float getLabourCharge() const;
-	void setLabourCharge(const float newLabourCharge); // Recalculates VAT
+    float getLabourCharge() const;
+    void setLabourCharge(const float newLabourCharge); // Recalculates VAT
 
-	float getVat() const; // No setter because VAT is automatically calculated
+    float getVat() const; // No setter because VAT is automatically calculated
 
-	int getCompletionState() const;
-	void setCompletionState(const int newCompletionState);
+    int getCompletionState() const;
+    void setCompletionState(const int newCompletionState);
 
-	int getPaymentMethod() const;
-	void setPaymentMethod(const int newPaymentMethod);
+    int getPaymentMethod() const;
+    void setPaymentMethod(const int newPaymentMethod);
 };
 
 #endif /* JOB_H_ */

@@ -11,42 +11,42 @@ using namespace std;
 #include "Record.h"
 
 Record::Record() {
-	id = -1;
+    id = -1;
 }
 
 void Record::writeToFile(fstream & file) const {
-	file.write(reinterpret_cast<const char *>(&id), sizeof(id));
+    file.write(reinterpret_cast<const char *>(&id), sizeof(id));
 }
 
 void Record::readFromFile(fstream & file) {
-	file.read(reinterpret_cast<char *>(&id), sizeof(id));
+    file.read(reinterpret_cast<char *>(&id), sizeof(id));
 }
 
 int Record::size() {
-	return sizeof(int);
+    return sizeof(int);
 }
 
 bool Record::operator ==(const Record & record) const {
-	return (id == record.id);
+    return (id == record.id);
 }
 
 bool Record::operator ==(const int recordId) const {
-	return (id == recordId);
+    return (id == recordId);
 }
 
 void Record::operator = (const Record & record) {
-	id = record.id;
+    id = record.id;
 }
 
 int Record::getId() const {
-	return id;
+    return id;
 }
 
 bool Record::null() const {
-	return (id < 0);
+    return (id < 0);
 }
 
 bool Record::hasMatchingField(const std::string & fieldName, const int searchTerm) const {
-	if (fieldName == "id") return (id == searchTerm);
-	return false;
+    if (fieldName == "id") return (id == searchTerm);
+    return false;
 }
