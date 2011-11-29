@@ -204,6 +204,26 @@ public:
         } else std::cout << "Could not open file "+filename << std::endl;
         std::cout << "Record could not be found. No records were deleted" << std::endl;
     }
+
+    std::vector<recordType> * allRecords() {
+        std::vector<recordType> * returnVector = new std::vector<recordType>;
+        recordType tempRecord;
+
+        std::fstream file;
+        file.open(filename.c_str(), std::ios::in | std::ios::binary);
+        if (file.is_open()) {
+            file.seekg(sizeof(idCounter), std::ios_base::beg);
+
+            while (true) {
+                tempRecord.readFromFile(file);
+                if (file.eof()) break;
+                returnVector->push_back(tempRecord);
+            }
+            file.close();
+        } else std::cout << "Could not open file "+filename << std::endl;
+
+        return returnVector;
+    }
 };
 
 #endif /* DATABASE_H_ */

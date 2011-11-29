@@ -11,7 +11,7 @@ class JobDialog : public QDialog {
     Q_OBJECT
 
 public:
-    explicit JobDialog(QWidget *parent = 0);
+    explicit JobDialog(const int customerId = -1, QWidget *parent = 0);
     ~JobDialog();
 
 private:

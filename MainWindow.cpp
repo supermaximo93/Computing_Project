@@ -7,6 +7,8 @@
 #include "JobDialog.h"
 #include "Job.h"
 
+Database<Customer> * MainWindow::customers;
+
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
 
@@ -18,6 +20,10 @@ MainWindow::~MainWindow() {
     delete ui;
 }
 
+Database<Customer> * MainWindow::customerDatabase() {
+    return customers;
+}
+
 void MainWindow::on_pushButton_openCustomerScreen_clicked() {
     Customer customer = customers->findRecord(1);
     Message message;
@@ -26,8 +32,7 @@ void MainWindow::on_pushButton_openCustomerScreen_clicked() {
     customers->updateRecord(customer);
 
     if (message.message == "addNewJob") {
-        message.data = customer.getId();
-        JobDialog jobDialog(this);
+        JobDialog jobDialog(customer.getId(), this);
         jobDialog.exec();
     }
 }

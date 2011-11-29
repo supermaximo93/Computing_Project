@@ -19,7 +19,7 @@
      <x>80</x>
      <y>40</y>
      <width>187</width>
-     <height>191</height>
+     <height>71</height>
     </rect>
    </property>
    <layout class="QFormLayout" name="formLayout">
@@ -42,6 +42,58 @@
     </item>
     <item row="1" column="1">
      <widget class="QComboBox" name="comboBox_customer"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="formLayoutWidget_2">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>160</y>
+     <width>261</width>
+     <height>128</height>
+    </rect>
+   </property>
+   <layout class="QFormLayout" name="formLayout_2">
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_labourCharge">
+      <property name="text">
+       <string>Labour Charge</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_totalChargeExclVat">
+      <property name="text">
+       <string>Total Chage (excl.VAT)</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_vat">
+      <property name="text">
+       <string>VAT</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="label_totalChargeInclVat">
+      <property name="text">
+       <string>Total Charge (incl. VAT)</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLineEdit" name="lineEdit_labourCharge"/>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="lineEdit_totalChargeExclVat"/>
+    </item>
+    <item row="2" column="1">
+     <widget class="QLineEdit" name="lineEdit_vat"/>
+    </item>
+    <item row="3" column="1">
+     <widget class="QLineEdit" name="lineEdit_totalChargeInclVat"/>
     </item>
    </layout>
   </widget>

@@ -14,11 +14,14 @@ class MainWindow : public QMainWindow {
     Q_OBJECT
 
     Ui::MainWindow *ui;
-    Database<Customer> * customers;
+    static Database<Customer> * customers;
 
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+    static Database<Customer> * customerDatabase();
+
 private slots:
     void on_pushButton_openCustomerScreen_clicked();
 };
