@@ -69,12 +69,6 @@ public:
         } else std::cout << "Could not create temporary file temp_"+filename << std::endl;
     }
 
-    recordType createRecord() {
-        recordType record;
-        record.id = idCounter++;
-        return record;
-    }
-
     void addRecord(recordType & record) {
         std::fstream file;
         file.open(filename.c_str(), std::ios::in | std::ios::out | std::ios::binary);
