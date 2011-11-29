@@ -8,6 +8,20 @@
 #ifndef GLOBALS_H_
 #define GLOBALS_H_
 
+#include <iostream>
+#include <queue>
+
+struct Message {
+    std::string message;
+    int data;
+
+    Message() {};
+    Message(const std::string & newMessage, const int newData) {
+        message = newMessage;
+        data = newData;
+    }
+};
+
 namespace Globals {
 
 const float vatRate = 20.0f;

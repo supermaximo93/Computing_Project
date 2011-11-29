@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>310</width>
+    <width>361</width>
     <height>417</height>
    </rect>
   </property>
@@ -16,8 +16,8 @@
   <widget class="QWidget" name="formLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>20</y>
+     <x>40</x>
+     <y>30</y>
      <width>271</width>
      <height>331</height>
     </rect>
@@ -173,7 +173,7 @@
   <widget class="QPushButton" name="pushButton_cancel">
    <property name="geometry">
     <rect>
-     <x>200</x>
+     <x>240</x>
      <y>380</y>
      <width>97</width>
      <height>27</height>
@@ -186,7 +186,7 @@
   <widget class="QPushButton" name="pushButton_submit">
    <property name="geometry">
     <rect>
-     <x>40</x>
+     <x>20</x>
      <y>380</y>
      <width>97</width>
      <height>27</height>
@@ -194,6 +194,19 @@
    </property>
    <property name="text">
     <string>Submit</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_newJob">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>380</y>
+     <width>97</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Add new job</string>
    </property>
   </widget>
  </widget>
