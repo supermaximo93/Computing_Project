@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 
+#include "Globals.h"
 #include "Database.h"
 
 namespace Ui {
@@ -16,8 +17,8 @@ class MainWindow : public QMainWindow {
     Q_OBJECT
     Ui::MainWindow *ui;
 
-    static Database<Customer> * customers;
-    static Database<Job> * jobs;
+    static AssignOncePointer< Database<Customer> > customers;
+    static AssignOncePointer< Database<Job> > jobs;
 
 public:
     explicit MainWindow(QWidget *parent = 0);

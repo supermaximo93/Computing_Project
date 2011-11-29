@@ -40,3 +40,8 @@ JobDialog::~JobDialog() {
 void JobDialog::on_pushButton_submit_clicked() {
 
 }
+
+void JobDialog::on_pushButton_cancel_clicked() {
+    messageToEdit->message = "cancelled";
+    hide();
+}

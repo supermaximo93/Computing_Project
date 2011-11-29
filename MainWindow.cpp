@@ -7,7 +7,8 @@
 #include "JobDialog.h"
 #include "Job.h"
 
-Database<Customer> * MainWindow::customers;
+AssignOncePointer< Database<Customer> > MainWindow::customers;
+AssignOncePointer< Database<Job> > MainWindow::jobs;
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
@@ -17,9 +18,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 }
 
 MainWindow::~MainWindow() {
-    delete jobs;
-    delete customers;
-
     delete ui;
 }
 
@@ -30,16 +28,20 @@ Database<Customer> * MainWindow::customerDatabase() {
 void MainWindow::on_pushButton_openCustomerScreen_clicked() {
     Customer customer = customers->findRecord(3);
     Message message;
-    CustomerDialog customerDialog(&customer, &message, this);
-    customerDialog.exec();
 
-    if (message.message == "cancelled") return;
-    customers->updateRecord(customer);
+    while (true) {
+        CustomerDialog customerDialog(&customer, &message, this);
+        customerDialog.exec();
 
-    if (message.message == "addNewJob") {
-        Job job;
-        Message message;
-        JobDialog jobDialog(&job, &message, customer.getId(), this);
-        jobDialog.exec();
+        if (message.message == "cancelled") break;
+        customers->updateRecord(customer);
+
+        if (message.message == "addNewJob") {
+            Job job;
+            JobDialog jobDialog(&job, &message, customer.getId(), this);
+            jobDialog.exec();
+
+            if (message.message != "cancelled") jobs->addRecord(job);
+        }
     }
 }

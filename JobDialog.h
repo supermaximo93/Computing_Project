@@ -25,6 +25,7 @@ public:
 
 private slots:
     void on_pushButton_submit_clicked();
+    void on_pushButton_cancel_clicked();
 };
 
 #endif // JOBDIALOG_H
