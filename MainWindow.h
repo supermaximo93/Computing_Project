@@ -4,17 +4,20 @@
 #include <QMainWindow>
 
 #include "Database.h"
-#include "Customer.h"
 
 namespace Ui {
     class MainWindow;
 }
 
+class Customer;
+class Job;
+
 class MainWindow : public QMainWindow {
     Q_OBJECT
-
     Ui::MainWindow *ui;
+
     static Database<Customer> * customers;
+    static Database<Job> * jobs;
 
 public:
     explicit MainWindow(QWidget *parent = 0);

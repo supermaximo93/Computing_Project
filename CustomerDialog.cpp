@@ -38,8 +38,8 @@ CustomerDialog::CustomerDialog(Customer * customer, Message * message, QWidget *
     QDialog(parent), ui(new Ui::CustomerDialog) {
     ui->setupUi(this);
 
+    if (customer == NULL) return;
     customerToEdit = customer;
-    if (customerToEdit == NULL) return;
     messageToEdit = message;
     if (messageToEdit == NULL) ui->pushButton_newJob->setDisabled(true);
 
@@ -70,6 +70,7 @@ CustomerDialog::~CustomerDialog() {
 }
 
 void CustomerDialog::on_pushButton_cancel_clicked() {
+    messageToEdit->message = "cancelled";
     hide();
 }
 

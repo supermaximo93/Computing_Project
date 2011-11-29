@@ -224,6 +224,28 @@ public:
 
         return returnVector;
     }
+
+    recordType recordAt(const int index) {
+        recordType tempRecord;
+
+        std::fstream file;
+        file.open(filename.c_str(), std::ios::in | std::ios::binary);
+        if (file.is_open()) {
+            file.seekg(0, std::ios_base::end);
+            unsigned size = file.tellg();
+            if (sizeof(idCounter)+(recordType::size()*(index+1)) > size) { // index+1 because index starts from 0
+                file.close();
+                return tempRecord;
+            }
+
+            file.seekg(sizeof(idCounter)+(recordType::size()*index), std::ios_base::beg);
+            tempRecord.readFromFile(file);
+
+            file.close();
+        } else std::cout << "Could not open file "+filename << std::endl;
+
+        return tempRecord;
+    }
 };
 
 #endif /* DATABASE_H_ */

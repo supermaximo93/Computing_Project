@@ -13,10 +13,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->setupUi(this);
 
     customers = new Database<Customer>;
+    jobs = new Database<Job>;
 }
 
 MainWindow::~MainWindow() {
+    delete jobs;
     delete customers;
+
     delete ui;
 }
 
@@ -25,14 +28,18 @@ Database<Customer> * MainWindow::customerDatabase() {
 }
 
 void MainWindow::on_pushButton_openCustomerScreen_clicked() {
-    Customer customer = customers->findRecord(1);
+    Customer customer = customers->findRecord(3);
     Message message;
     CustomerDialog customerDialog(&customer, &message, this);
     customerDialog.exec();
+
+    if (message.message == "cancelled") return;
     customers->updateRecord(customer);
 
     if (message.message == "addNewJob") {
-        JobDialog jobDialog(customer.getId(), this);
+        Job job;
+        Message message;
+        JobDialog jobDialog(&job, &message, customer.getId(), this);
         jobDialog.exec();
     }
 }

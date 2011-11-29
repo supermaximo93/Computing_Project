@@ -12,8 +12,8 @@ struct Message;
 
 class CustomerDialog : public QDialog {
     Q_OBJECT
-
     Ui::CustomerDialog *ui;
+
     Customer * customerToEdit;
     Message * messageToEdit;
 
@@ -22,6 +22,7 @@ class CustomerDialog : public QDialog {
 public:
     explicit CustomerDialog(Customer * customer, Message * message, QWidget *parent = 0);
     ~CustomerDialog();
+
 private slots:
     void on_pushButton_cancel_clicked();
     void on_pushButton_submit_clicked();

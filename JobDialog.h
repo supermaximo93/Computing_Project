@@ -7,15 +7,24 @@ namespace Ui {
     class JobDialog;
 }
 
+class Job;
+struct Message;
+
 class JobDialog : public QDialog {
     Q_OBJECT
+    Ui::JobDialog *ui;
+
+    Job * jobToEdit;
+    Message * messageToEdit;
+
+    void setCustomerDataFromForm();
 
 public:
-    explicit JobDialog(const int customerId = -1, QWidget *parent = 0);
+    explicit JobDialog(Job * job, Message * message, const int customerId = -1, QWidget *parent = 0);
     ~JobDialog();
 
-private:
-    Ui::JobDialog *ui;
+private slots:
+    void on_pushButton_submit_clicked();
 };
 
 #endif // JOBDIALOG_H
