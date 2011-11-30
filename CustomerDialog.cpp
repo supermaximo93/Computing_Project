@@ -45,8 +45,8 @@ CustomerDialog::CustomerDialog(Customer * customer, Message * message, QWidget *
 
     bool disable = (customerToEdit->getId() > -1);
     foreach (QObject * object, ui->formLayoutWidget->children()) {
-        QLineEdit * lineEdit = qobject_cast<QLineEdit *>(object);
-        if (lineEdit != NULL) lineEdit->setDisabled(disable);
+        QWidget * widget = qobject_cast<QWidget *>(object);
+        if (widget != NULL) widget->setDisabled(disable);
     }
 
     if (disable) {
@@ -77,8 +77,8 @@ void CustomerDialog::on_pushButton_cancel_clicked() {
 void CustomerDialog::on_pushButton_submit_clicked() {
     if (ui->pushButton_submit->text() == "Edit") {
         foreach (QObject * object, ui->formLayoutWidget->children()) {
-            QLineEdit * lineEdit = qobject_cast<QLineEdit *>(object);
-            if (lineEdit != NULL) lineEdit->setDisabled(false);
+            QWidget * widget = qobject_cast<QWidget *>(object);
+            if (widget != NULL) widget->setDisabled(false);
         }
         ui->pushButton_submit->setText("Save");
         return;
@@ -95,8 +95,8 @@ void CustomerDialog::on_pushButton_submit_clicked() {
         ui->pushButton_submit->setText("Edit");
 
         foreach (QObject * object, ui->formLayoutWidget->children()) {
-            QLineEdit * lineEdit = qobject_cast<QLineEdit *>(object);
-            if (lineEdit != NULL) lineEdit->setDisabled(true);
+            QWidget * widget = qobject_cast<QWidget *>(object);
+            if (widget != NULL) widget->setDisabled(true);
         }
     } else hide();
 }

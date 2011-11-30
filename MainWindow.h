@@ -12,6 +12,7 @@ namespace Ui {
 
 class Customer;
 class Job;
+class Expense;
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -19,6 +20,7 @@ class MainWindow : public QMainWindow {
 
     static AssignOncePointer< Database<Customer> > customers;
     static AssignOncePointer< Database<Job> > jobs;
+    static AssignOncePointer< Database<Expense> > expenses;
 
 public:
     explicit MainWindow(QWidget *parent = 0);
@@ -28,6 +30,7 @@ public:
 
 private slots:
     void on_pushButton_openCustomerScreen_clicked();
+    void on_pushButton_newBusinessExpense_clicked();
 };
 
 #endif // MAINWINDOW_H

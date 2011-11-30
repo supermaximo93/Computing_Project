@@ -17,7 +17,7 @@ class JobDialog : public QDialog {
     Job * jobToEdit;
     Message * messageToEdit;
 
-    void setCustomerDataFromForm();
+    void setJobDataFromForm();
 
 public:
     explicit JobDialog(Job * job, Message * message, const int customerId = -1, QWidget *parent = 0);

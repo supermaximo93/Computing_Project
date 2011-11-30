@@ -6,15 +6,19 @@
 #include "Customer.h"
 #include "JobDialog.h"
 #include "Job.h"
+#include "ExpenseDialog.h"
+#include "Expense.h"
 
 AssignOncePointer< Database<Customer> > MainWindow::customers;
 AssignOncePointer< Database<Job> > MainWindow::jobs;
+AssignOncePointer< Database<Expense> > MainWindow::expenses;
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
 
     customers = new Database<Customer>;
     jobs = new Database<Job>;
+    expenses = new Database<Expense>;
 }
 
 MainWindow::~MainWindow() {
@@ -44,4 +48,14 @@ void MainWindow::on_pushButton_openCustomerScreen_clicked() {
             if (message.message != "cancelled") jobs->addRecord(job);
         }
     }
+}
+
+void MainWindow::on_pushButton_newBusinessExpense_clicked() {
+    Expense expense;
+    Message message;
+    ExpenseDialog expenseDialog(&expense, &message, this);
+    expenseDialog.exec();
+
+    if (message.message == "cancelled") return;
+    expenses->addRecord(expense);
 }

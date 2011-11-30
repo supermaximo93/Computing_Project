@@ -9,7 +9,7 @@
 #define GLOBALS_H_
 
 #include <iostream>
-#include <queue>
+#include <sstream>
 
 struct Message {
     std::string message;
@@ -53,6 +53,13 @@ public:
         return pointer;
     }
 };
+
+template <typename type>
+std::string toString(const type & variable) {
+        std::stringstream stream;
+        stream << variable;
+        return stream.str();
+}
 
 namespace Globals {
 

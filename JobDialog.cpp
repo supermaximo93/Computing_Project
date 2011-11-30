@@ -6,7 +6,7 @@
 #include "Job.h"
 #include "MainWindow.h"
 
-void JobDialog::setCustomerDataFromForm() {
+void JobDialog::setJobDataFromForm() {
     //QByteArray byteArray = ui->comboBox_customer->currentIndex();
     //customerToEdit->setForename(byteArray.data());
 }

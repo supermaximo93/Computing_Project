@@ -19,7 +19,8 @@ SOURCES += main.cpp\
         Task.cpp \
     CustomerDialog.cpp \
     MainWindow.cpp \
-    JobDialog.cpp
+    JobDialog.cpp \
+    ExpenseDialog.cpp
 
 HEADERS  +=\
         Database.h\
@@ -32,9 +33,11 @@ HEADERS  +=\
         Task.h \
     CustomerDialog.h \
     MainWindow.h \
-    JobDialog.h
+    JobDialog.h \
+    ExpenseDialog.h
 
 FORMS    += \
     CustomerDialog.ui \
     MainWindow.ui \
-    JobDialog.ui
+    JobDialog.ui \
+    ExpenseDialog.ui
