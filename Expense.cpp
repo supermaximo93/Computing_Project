@@ -13,15 +13,10 @@ using namespace std;
 
 const string Expense::databaseFilename = "expenses.dat";
 
-Expense::Expense(const time_t newDate, const char * newDescription, const float newPrice, const float newVat,
-                 const int newType) {
+Expense::Expense(const time_t date, const char * newDescription, const float price, const float vat,
+                 const int type) : date(date), price(price), vat(vat), type(type) {
     description = new char[descriptionLength+1];
-
-    date = newDate;
     strcpy(description, newDescription);
-    price = newPrice;
-    vat = newVat;
-    type = newType;
 }
 
 Expense::Expense(const Expense & expense) {

@@ -22,8 +22,8 @@ class Part : public Record {
 public:
     static const std::string databaseFilename;
 
-    Part(const int newJobId = 0, const char * newName = "", const char * newNumber = "", const float newPrice = 0.0f,
-         const float newVatRate = -1.0f);
+    Part(const int jobId = 0, const char * name = "", const char * number = "", const float price = 0.0f,
+         const float vatRate = -1.0f);
     Part(const Part & part);
     ~Part();
 

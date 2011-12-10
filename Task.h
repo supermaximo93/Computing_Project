@@ -23,7 +23,7 @@ class Task : public Record {
 public:
     static const std::string databaseFilename;
 
-    Task(const int newJobId = 0, const time_t newDate = 0, const char * newDescription = "");
+    Task(const int jobId = 0, const time_t date = 0, const char * description = "");
     Task(const Task & task);
     ~Task();
 

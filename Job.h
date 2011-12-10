@@ -21,8 +21,8 @@ class Job : public Record {
 public:
     static const std::string databaseFilename;
 
-    Job(const int newCustomerId = 0, const time_t newDate = 0, const float newLabourCharge = 0.0f,
-        const int newCompletionState = 0, const int newPaymentMethod = 0);
+    Job(const int customerId = 0, const time_t date = 0, const float labourCharge = 0.0f,
+        const int completionState = 0, const int paymentMethod = 0);
 
     void writeToFile(std::fstream & file) const;
     void readFromFile(std::fstream & file);

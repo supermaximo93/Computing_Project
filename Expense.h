@@ -24,8 +24,8 @@ class Expense : public Record {
 public:
     static const std::string databaseFilename;
 
-    Expense(const time_t newDate = 0, const char * newDescription = "", const float newPrice = 0.0f,
-            const float newVat = 0.0f, const int newType = 0);
+    Expense(const time_t date = 0, const char * description = "", const float price = 0.0f,
+            const float vat = 0.0f, const int type = 0);
     Expense(const Expense & expense);
     ~Expense();
 

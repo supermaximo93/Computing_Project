@@ -22,10 +22,9 @@ class Customer : public Record {
 public:
     static const std::string databaseFilename;
 
-    Customer(const char * newForename = "", const char * newSurname = "", const char * newAddressLine1 = "",
-             const char * newAddressLine2 = "", const char * newTown = "", const char * newPostcode = "",
-             const char * newHomePhoneNumber = "", const char * newMobilePhoneNumber = "",
-             const char * newEmailAddress = "");
+    Customer(const char * forename = "", const char * surname = "", const char * addressLine1 = "",
+             const char * addressLine2 = "", const char * town = "", const char * postcode = "",
+             const char * homePhoneNumber = "", const char * mobilePhoneNumber = "", const char * emailAddress = "");
     Customer(const Customer & customer);
     ~Customer();
 

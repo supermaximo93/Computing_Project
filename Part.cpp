@@ -14,17 +14,12 @@ using namespace std;
 
 const string Part::databaseFilename = "parts.dat";
 
-Part::Part(const int newJobId, const char * newName, const char * newNumber, const float newPrice,
-           const float newVatRate) {
-
+Part::Part(const int jobId, const char * newName, const char * newNumber, const float price,
+           const float vatRate) : jobId(jobId), price(price), vatRate(vatRate < 0.0f ? Globals::vatRate : vatRate) {
     name = new char[nameLength+1];
     number = new char[numberLength+1];
-
-    jobId = newJobId;
     strcpy(name, newName);
     strcpy(number, newNumber);
-    price = newPrice;
-    vatRate = (newVatRate < 0.0f ? Globals::vatRate : newVatRate);
 }
 
 Part::Part(const Part & part) {

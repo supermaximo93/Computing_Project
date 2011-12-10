@@ -13,15 +13,10 @@ using namespace std;
 
 const string Job::databaseFilename = "jobs.dat";
 
-Job::Job(const int newCustomerId, const time_t newDate, const float newLabourCharge, const int newCompletionState,
-         const int newPaymentMethod) {
-    customerId = newCustomerId;
-    date = newDate;
-    labourCharge = newLabourCharge;
-    vat = labourCharge*Globals::vatRate;
-    completionState = newCompletionState;
-    paymentMethod = newPaymentMethod;
-}
+Job::Job(const int customerId, const time_t date, const float labourCharge, const int completionState,
+         const int paymentMethod) :
+    customerId(customerId), date(date), labourCharge(labourCharge), vat(labourCharge*Globals::vatRate),
+    completionState(completionState), paymentMethod(paymentMethod) {}
 
 void Job::writeToFile(fstream & file) const {
     Record::writeToFile(file);
