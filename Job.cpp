@@ -15,8 +15,8 @@ const string Job::databaseFilename = "jobs.dat";
 
 Job::Job(const int customerId, const time_t date, const float labourCharge, const int completionState,
          const int paymentMethod) :
-    customerId(customerId), date(date), labourCharge(labourCharge), vat(labourCharge*Globals::vatRate),
-    completionState(completionState), paymentMethod(paymentMethod) {}
+    customerId(customerId), completionState(completionState), paymentMethod(paymentMethod), date(date),
+    labourCharge(labourCharge), vat(labourCharge*Globals::vatRate) {}
 
 void Job::writeToFile(fstream & file) const {
     Record::writeToFile(file);

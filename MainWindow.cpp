@@ -30,7 +30,7 @@ Database<Customer> * MainWindow::customerDatabase() {
 }
 
 void MainWindow::on_pushButton_openCustomerScreen_clicked() {
-    Customer customer = customers->findRecord(3);
+    Customer customer;
     Message message;
 
     while (true) {
