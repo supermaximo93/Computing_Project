@@ -20,8 +20,10 @@ class Database {
     int idCounter;
 
 public:
-    Database() {
+    Database(bool testing = false) {
         filename = recordType::databaseFilename;
+        if (testing) filename += ".test";
+
         std::ifstream file;
         file.open(filename.c_str(), std::ios::binary);
         if (file.is_open()) {

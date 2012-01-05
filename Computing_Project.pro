@@ -9,6 +9,7 @@ QT       += core gui
 TARGET = Computing_Project
 TEMPLATE = app
 
+LIBS += -lgtest
 
 SOURCES += main.cpp\
         Record.cpp\
@@ -20,7 +21,8 @@ SOURCES += main.cpp\
     CustomerDialog.cpp \
     MainWindow.cpp \
     JobDialog.cpp \
-    ExpenseDialog.cpp
+    ExpenseDialog.cpp \
+    testing/Customer_testing.cc
 
 HEADERS  +=\
         Database.h\
