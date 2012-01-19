@@ -11,14 +11,19 @@ using namespace std;
 #include "Globals.h"
 #include "Job.h"
 
+int Job::size() {
+    return Record::size() + (sizeof(int) * 3) + sizeof(time_t) + (sizeof(float) * 2);
+}
+
 const string Job::databaseFilename = "jobs.dat";
 
 Job::Job(const int customerId, const time_t date, const float labourCharge, const int completionState,
          const int paymentMethod) :
     customerId(customerId), completionState(completionState), paymentMethod(paymentMethod), date(date),
-    labourCharge(labourCharge), vat(labourCharge*Globals::vatRate) {}
+    labourCharge(labourCharge), vat(labourCharge * Globals::vatRate) {}
 
-void Job::writeToFile(fstream & file) const {
+void Job::writeToFile(fstream & file) const
+{
     Record::writeToFile(file);
     file.write(reinterpret_cast<const char *>(&customerId), sizeof(customerId));
     file.write(reinterpret_cast<const char *>(&date), sizeof(date));
@@ -28,7 +33,8 @@ void Job::writeToFile(fstream & file) const {
     file.write(reinterpret_cast<const char *>(&paymentMethod), sizeof(paymentMethod));
 }
 
-void Job::readFromFile(fstream & file) {
+void Job::readFromFile(fstream & file)
+{
     Record::readFromFile(file);
     file.read(reinterpret_cast<char *>(&customerId), sizeof(customerId));
     file.read(reinterpret_cast<char *>(&date), sizeof(date));
@@ -38,69 +44,79 @@ void Job::readFromFile(fstream & file) {
     file.read(reinterpret_cast<char *>(&paymentMethod), sizeof(paymentMethod));
 }
 
-int Job::size() {
-    return Record::size()+(sizeof(int)*3)+sizeof(time_t)+(sizeof(float)*2);
-}
-
-bool Job::hasMatchingField(const string & fieldName, const int searchTerm) const {
+bool Job::hasMatchingField(const string & fieldName, const int searchTerm) const
+{
     if (fieldName == "customerid") return (customerId == searchTerm);
     else if (fieldName == "completionstate") return (completionState == searchTerm);
     else if (fieldName == "paymentmethod") return (paymentMethod == searchTerm);
     return Record::hasMatchingField(fieldName, searchTerm);
 }
 
-bool Job::hasMatchingField(const string & fieldName, const time_t searchTerm) const {
+bool Job::hasMatchingField(const string & fieldName, const time_t searchTerm) const
+{
     if (fieldName == "date") return (date == searchTerm);
     return false;
 }
 
-bool Job::hasMatchingField(const string & fieldName, const float searchTerm) const {
+bool Job::hasMatchingField(const string & fieldName, const float searchTerm) const
+{
     if (fieldName == "labourcharge") return (labourCharge == searchTerm);
     else if (fieldName == "vat") return (vat == searchTerm);
     return false;
 }
 
-int Job::getCustomerId() const {
+int Job::getCustomerId() const
+{
     return customerId;
 }
 
-void Job::setCustomerId(const int newCustomerId) {
+void Job::setCustomerId(const int newCustomerId)
+{
     customerId = newCustomerId;
 }
 
-time_t Job::getDate() const {
+time_t Job::getDate() const
+{
     return date;
 }
 
-void Job::setDate(const time_t newDate) {
+void Job::setDate(const time_t newDate)
+{
     date = newDate;
 }
 
-float Job::getLabourCharge() const {
+float Job::getLabourCharge() const
+{
     return labourCharge;
 }
 
-void Job::setLabourCharge(const float newLabourCharge) {
+void Job::setLabourCharge(const float newLabourCharge)
+{
     labourCharge = newLabourCharge;
-    vat = labourCharge*Globals::vatRate;
+    vat = labourCharge * Globals::vatRate;
 }
 
-float Job::getVat() const {
+float Job::getVat() const
+{
     return vat;
 }
 
-int Job::getCompletionState() const {
+int Job::getCompletionState() const
+{
     return completionState;
 }
 
-void Job::setCompletionState(const int newCompletionState) {
+void Job::setCompletionState(const int newCompletionState)
+{
     completionState = newCompletionState;
 }
 
-int Job::getPaymentMethod() const {
+int Job::getPaymentMethod() const
+{
     return paymentMethod;
 }
 
-void Job::setPaymentMethod(const int newPaymentMethod) {
+void Job::setPaymentMethod(const int newPaymentMethod)
+{
     paymentMethod = newPaymentMethod;
 }

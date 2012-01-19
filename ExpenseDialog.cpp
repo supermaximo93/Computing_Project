@@ -4,16 +4,9 @@
 #include "Globals.h"
 #include "Expense.h"
 
-void ExpenseDialog::recalculateTotalPrice() {
-    QByteArray byteArray = ui->lineEdit_priceExclVat->text().toLocal8Bit();
-    float priceExclVat = strtod(byteArray.data(), NULL);
-    byteArray = ui->lineEdit_vat->text().toLocal8Bit();
-    float vat = strtod(byteArray.data(), NULL)/100.0f;
-    ui->lineEdit_totalPrice->setText(toString(priceExclVat*(1.0f+vat)).c_str());
-}
-
-ExpenseDialog::ExpenseDialog(Expense * expense, Message * message, QWidget *parent) :
-    QDialog(parent), ui(new Ui::ExpenseDialog) {
+ExpenseDialog::ExpenseDialog(Expense * expense, Message * message, QWidget * parent)
+    : QDialog(parent), ui(new Ui::ExpenseDialog)
+{
     ui->setupUi(this);
 
     if (expense == NULL) return;
@@ -21,7 +14,8 @@ ExpenseDialog::ExpenseDialog(Expense * expense, Message * message, QWidget *pare
     messageToEdit = message;
 
     bool disable = (expenseToEdit->getId() > -1);
-    foreach (QObject * object, ui->formLayoutWidget->children()) {
+    foreach (QObject * object, ui->formLayoutWidget->children())
+    {
         QWidget * widget = qobject_cast<QWidget *>(object);
         if (widget != NULL) widget->setDisabled(disable);
     }
@@ -29,24 +23,39 @@ ExpenseDialog::ExpenseDialog(Expense * expense, Message * message, QWidget *pare
     ui->lineEdit_vat->setText(toString(Globals::vatRate).c_str());
     ui->lineEdit_totalPrice->setDisabled(true);
 
-    if (disable) {
+    if (disable)
+    {
         ui->pushButton_submit->setText("Edit");
         ui->pushButton_cancel->setText("Close");
     }
 }
 
-ExpenseDialog::~ExpenseDialog() {
+ExpenseDialog::~ExpenseDialog()
+{
     delete ui;
 }
 
-void ExpenseDialog::on_pushButton_cancel_clicked() {
+void ExpenseDialog::recalculateTotalPrice()
+{
+    QByteArray byteArray = ui->lineEdit_priceExclVat->text().toLocal8Bit();
+    float priceExclVat = strtod(byteArray.data(), NULL);
+    byteArray = ui->lineEdit_vat->text().toLocal8Bit();
+    float vat = strtod(byteArray.data(), NULL) / 100.0f;
+    ui->lineEdit_totalPrice->setText(toString(priceExclVat * (1.0f + vat)).c_str());
+}
+
+void ExpenseDialog::on_pushButton_cancel_clicked()
+{
     messageToEdit->message = "cancelled";
     hide();
 }
 
-void ExpenseDialog::on_pushButton_submit_clicked() {
-    if (ui->pushButton_submit->text() == "Edit") {
-        foreach (QObject * object, ui->formLayoutWidget->children()) {
+void ExpenseDialog::on_pushButton_submit_clicked()
+{
+    if (ui->pushButton_submit->text() == "Edit")
+    {
+        foreach (QObject * object, ui->formLayoutWidget->children())
+        {
             QWidget * widget = qobject_cast<QWidget *>(object);
             if (widget != NULL) widget->setDisabled(false);
         }
@@ -54,7 +63,8 @@ void ExpenseDialog::on_pushButton_submit_clicked() {
         return;
     }
 
-    if (expenseToEdit == NULL) {
+    if (expenseToEdit == NULL)
+    {
         hide();
         return;
     }
@@ -62,20 +72,25 @@ void ExpenseDialog::on_pushButton_submit_clicked() {
     QByteArray byteArray = ui->textEdit_description->toPlainText().toLocal8Bit();
     expenseToEdit->setDescription(byteArray.data());
 
-    if (ui->pushButton_submit->text() == "Save") {
+    if (ui->pushButton_submit->text() == "Save")
+    {
         ui->pushButton_submit->setText("Edit");
 
-        foreach (QObject * object, ui->formLayoutWidget->children()) {
+        foreach (QObject * object, ui->formLayoutWidget->children())
+        {
             QWidget * widget = qobject_cast<QWidget *>(object);
             if (widget != NULL) widget->setDisabled(true);
         }
-    } else hide();
+    }
+    else hide();
 }
 
-void ExpenseDialog::on_lineEdit_priceExclVat_textChanged(QString) {
+void ExpenseDialog::on_lineEdit_priceExclVat_textChanged(QString)
+{
     recalculateTotalPrice();
 }
 
-void ExpenseDialog::on_lineEdit_vat_textChanged(QString) {
+void ExpenseDialog::on_lineEdit_vat_textChanged(QString)
+{
     recalculateTotalPrice();
 }

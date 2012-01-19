@@ -13,13 +13,8 @@
 
 #include "Record.h"
 
-class Task : public Record {
-    static const int descriptionLength = 256;
-
-    int jobId;
-    time_t date;
-    char * description;
-
+class Task : public Record
+{
 public:
     static const std::string databaseFilename;
 
@@ -46,6 +41,13 @@ public:
 
     const char * getDescription() const;
     void setDescription(const char * newDescription);
+
+private:
+    static const int descriptionLength = 256;
+
+    int jobId;
+    time_t date;
+    char * description;
 };
 
 #endif /* TASK_H_ */

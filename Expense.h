@@ -13,15 +13,11 @@
 
 #include "Record.h"
 
-class Expense : public Record {
-    static const int descriptionLength = 256;
-
-    time_t date;
-    char * description;
-    float price, vat;
-    int type;
-
+class Expense : public Record
+{
 public:
+    static int size();
+
     static const std::string databaseFilename;
 
     Expense(const time_t date = 0, const char * description = "", const float price = 0.0f,
@@ -33,8 +29,6 @@ public:
 
     void writeToFile(std::fstream & file) const;
     void readFromFile(std::fstream & file);
-
-    static int size();
 
     bool hasMatchingField(const std::string & fieldName, const time_t searchTerm) const;
     bool hasMatchingField(const std::string & fieldName, const char * searchTerm) const;
@@ -55,6 +49,14 @@ public:
 
     int getType() const;
     void setType(const int newType);
+
+private:
+    static const int descriptionLength = 256;
+
+    time_t date;
+    char * description;
+    float price, vat;
+    int type;
 };
 
 #endif /* EXPENSE_H_ */

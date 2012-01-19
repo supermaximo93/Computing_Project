@@ -13,12 +13,11 @@
 
 #include "Record.h"
 
-class Job : public Record {
-    int customerId, completionState, paymentMethod;
-    time_t date;
-    float labourCharge, vat;
-
+class Job : public Record
+{
 public:
+    static int size();
+
     static const std::string databaseFilename;
 
     Job(const int customerId = 0, const time_t date = 0, const float labourCharge = 0.0f,
@@ -26,8 +25,6 @@ public:
 
     void writeToFile(std::fstream & file) const;
     void readFromFile(std::fstream & file);
-
-    static int size();
 
     bool hasMatchingField(const std::string & fieldName, const int searchTerm) const;
     bool hasMatchingField(const std::string & fieldName, const time_t searchTerm) const;
@@ -49,6 +46,11 @@ public:
 
     int getPaymentMethod() const;
     void setPaymentMethod(const int newPaymentMethod);
+
+private:
+    int customerId, completionState, paymentMethod;
+    time_t date;
+    float labourCharge, vat;
 };
 
 #endif /* JOB_H_ */

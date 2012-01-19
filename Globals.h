@@ -11,57 +11,68 @@
 #include <iostream>
 #include <sstream>
 
-struct Message {
+struct Message
+{
     std::string message;
     int data;
 
-    Message() {};
+    Message() {}
     Message(const std::string & newMessage, const int newData) : message(newMessage), data(newData) {}
 };
 
 // A class that makes sure only one instance of each database is created. Also handles database destruction
 template<typename type>
-class AssignOncePointer {
-    type * pointer;
-
+class AssignOncePointer
+{
 public:
     AssignOncePointer<type>() : pointer(NULL) {}
     AssignOncePointer<type>(const AssignOncePointer & assignOncePointer) : pointer(assignOncePointer.pointer) {}
     AssignOncePointer<type>(type * const newPointer) : pointer(newPointer) {}
 
-    ~AssignOncePointer() {
+    ~AssignOncePointer()
+    {
         delete pointer;
     }
 
-    void operator =(type * const newPointer) {
+    void operator =(type * const newPointer)
+    {
         if (pointer == NULL) pointer = newPointer;
-        else {
+        else
+        {
             std::cout << "Reassignment forbidden" << std::endl;
             delete newPointer;
         }
     }
 
-    type & operator *() {
+    type & operator *()
+    {
         return *pointer;
     }
 
-    type * operator ->() {
+    type * operator ->()
+    {
         return pointer;
     }
 
-    operator type*() {
+    operator type*()
+    {
         return pointer;
     }
+
+private:
+    type * pointer;
 };
 
 template <typename type>
-std::string toString(const type & variable) {
-        std::stringstream stream;
-        stream << variable;
-        return stream.str();
+std::string toString(const type & variable)
+{
+    std::stringstream stream;
+    stream << variable;
+    return stream.str();
 }
 
-namespace Globals {
+namespace Globals
+{
 
 const float vatRate = 20.0f;
 

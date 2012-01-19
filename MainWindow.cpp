@@ -13,7 +13,14 @@ AssignOncePointer< Database<Customer> > MainWindow::customers;
 AssignOncePointer< Database<Job> > MainWindow::jobs;
 AssignOncePointer< Database<Expense> > MainWindow::expenses;
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
+Database<Customer> * MainWindow::customerDatabase()
+{
+    return customers;
+}
+
+MainWindow::MainWindow(QWidget * parent)
+    : QMainWindow(parent), ui(new Ui::MainWindow)
+{
     ui->setupUi(this);
 
     customers = new Database<Customer>;
@@ -21,26 +28,26 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     expenses = new Database<Expense>;
 }
 
-MainWindow::~MainWindow() {
+MainWindow::~MainWindow()
+{
     delete ui;
 }
 
-Database<Customer> * MainWindow::customerDatabase() {
-    return customers;
-}
-
-void MainWindow::on_pushButton_openCustomerScreen_clicked() {
+void MainWindow::on_pushButton_openCustomerScreen_clicked()
+{
     Customer customer;
     Message message;
 
-    while (true) {
+    while (true)
+    {
         CustomerDialog customerDialog(&customer, &message, this);
         customerDialog.exec();
 
         if (message.message == "cancelled") break;
         customers->updateRecord(customer);
 
-        if (message.message == "addNewJob") {
+        if (message.message == "addNewJob")
+        {
             Job job;
             JobDialog jobDialog(&job, &message, customer.getId(), this);
             jobDialog.exec();
@@ -50,7 +57,8 @@ void MainWindow::on_pushButton_openCustomerScreen_clicked() {
     }
 }
 
-void MainWindow::on_pushButton_newBusinessExpense_clicked() {
+void MainWindow::on_pushButton_newBusinessExpense_clicked()
+{
     Expense expense;
     Message message;
     ExpenseDialog expenseDialog(&expense, &message, this);

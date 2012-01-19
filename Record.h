@@ -18,17 +18,8 @@ class Part;
 class Task;
 class Expense;
 
-class Record {
-    int id;
-
-protected:
-    Record();
-
-    void writeToFile(std::fstream & file) const;
-    void readFromFile(std::fstream & file);
-
-    static int size();
-
+class Record
+{
 public:
     bool operator ==(const Record & record) const;
     bool operator ==(const int recordId) const;
@@ -45,6 +36,17 @@ public:
     friend class Database<Part>;
     friend class Database<Task>;
     friend class Database<Expense>;
+
+protected:
+    static int size();
+
+    Record();
+
+    void writeToFile(std::fstream & file) const;
+    void readFromFile(std::fstream & file);
+
+private:
+    int id;
 };
 
 #endif /* RECORD_H_ */

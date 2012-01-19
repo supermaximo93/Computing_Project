@@ -6,7 +6,8 @@
 #include "Globals.h"
 #include "Database.h"
 
-namespace Ui {
+namespace Ui
+{
     class MainWindow;
 }
 
@@ -14,19 +15,21 @@ class Customer;
 class Job;
 class Expense;
 
-class MainWindow : public QMainWindow {
-    Q_OBJECT
-    Ui::MainWindow *ui;
+class MainWindow : public QMainWindow
+{
+public:
+    static Database<Customer> * customerDatabase();
 
+    explicit MainWindow(QWidget * parent = NULL);
+    ~MainWindow();
+
+private:
     static AssignOncePointer< Database<Customer> > customers;
     static AssignOncePointer< Database<Job> > jobs;
     static AssignOncePointer< Database<Expense> > expenses;
 
-public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
-
-    static Database<Customer> * customerDatabase();
+    Q_OBJECT
+    Ui::MainWindow * ui;
 
 private slots:
     void on_pushButton_openCustomerScreen_clicked();

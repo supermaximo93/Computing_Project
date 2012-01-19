@@ -3,25 +3,28 @@
 
 #include <QDialog>
 
-namespace Ui {
+namespace Ui
+{
     class CustomerDialog;
 }
 
 class Customer;
 struct Message;
 
-class CustomerDialog : public QDialog {
+class CustomerDialog : public QDialog
+{
+public:
+    explicit CustomerDialog(Customer * customer, Message * message, QWidget * parent = NULL);
+    ~CustomerDialog();
+
+private:
+    void setCustomerDataFromForm();
+
     Q_OBJECT
-    Ui::CustomerDialog *ui;
+    Ui::CustomerDialog * ui;
 
     Customer * customerToEdit;
     Message * messageToEdit;
-
-    void setCustomerDataFromForm();
-
-public:
-    explicit CustomerDialog(Customer * customer, Message * message, QWidget *parent = 0);
-    ~CustomerDialog();
 
 private slots:
     void on_pushButton_cancel_clicked();

@@ -13,13 +13,9 @@
 #include "Record.h"
 
 class Part : public Record {
-    static const int nameLength = 24, numberLength = 32;
-
-    int jobId;
-    char * name, * number;
-    float price, vatRate;
-
 public:
+    static int size();
+
     static const std::string databaseFilename;
 
     Part(const int jobId = 0, const char * name = "", const char * number = "", const float price = 0.0f,
@@ -31,8 +27,6 @@ public:
 
     void writeToFile(std::fstream & file) const;
     void readFromFile(std::fstream & file);
-
-    static int size();
 
     bool hasMatchingField(const std::string & fieldName, const int searchTerm) const;
     bool hasMatchingField(const std::string & fieldName, const char * searchTerm) const;
@@ -52,6 +46,13 @@ public:
 
     float getVatRate() const;
     void setVatRate(const float newVatRate);
+
+private:
+    static const int nameLength = 24, numberLength = 32;
+
+    int jobId;
+    char * name, * number;
+    float price, vatRate;
 };
 
 #endif /* PART_H_ */
