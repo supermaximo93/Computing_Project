@@ -9,7 +9,10 @@ QT       += core gui
 TARGET = Computing_Project
 TEMPLATE = app
 
+debug {
 LIBS += -lgtest
+DEFINES += COMPILE_TESTS
+}
 
 SOURCES += main.cpp\
         Record.cpp\

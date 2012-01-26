@@ -5,6 +5,8 @@
  *      Author: Max Foster
  */
 
+#ifdef COMPILE_TESTS
+
 #include <gtest/gtest.h>
 
 #include "Database.h"
@@ -49,18 +51,10 @@ TEST_F(CustomerTest, IsCustomerWithEmptyNameRejected)
     unsigned recordCountBefore = database->recordCount();
 
     // An exception should be thrown by the database
-    bool exceptionThrown = false;
-    try
-    {
-        database->addRecord(customer);
-    }
-    catch(const char  * exception)
-    {
-        exceptionThrown = true;
-        ASSERT_STRCASEEQ(exception, "Customer has an invalid forename (forename is empty)")
-                << "The error message 'Customer has an invalid forename (forename is empty)' was not received";
-    }
+    EXPECT_THROW(database->addRecord(customer), const char *) << "An exception should have been thrown";
 
-    ASSERT_TRUE(exceptionThrown) << "An exception should have been thrown";
+    // The database should have the same number of records as before
     EXPECT_EQ(recordCountBefore, database->recordCount()) << "Customer with empty name was accepted into the database";
 }
+
+#endif

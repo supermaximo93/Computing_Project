@@ -18,7 +18,11 @@ template<class recordType>
 class Database
 {
 public:
+#ifdef COMPILE_TESTS
     Database(bool testing = false);
+#else
+    Database();
+#endif
     ~Database();
 
     void addRecord(recordType & record);
@@ -56,10 +60,17 @@ private:
 };
 
 template<class recordType>
+#ifdef COMPILE_TESTS
 Database<recordType>::Database(bool testing)
+#else
+Database<recordType>::Database()
+#endif
 {
     filename = recordType::databaseFilename;
+
+#ifdef COMPILE_TESTS
     if (testing) filename += ".test";
+#endif
 
     std::ifstream file;
     file.open(filename.c_str(), std::ios::binary);
