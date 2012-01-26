@@ -48,6 +48,8 @@ public:
 
     recordType recordAt(const int index);
 
+    unsigned recordCount();
+
 private:
     std::string filename;
     int idCounter;
@@ -324,7 +326,7 @@ recordType Database<recordType>::recordAt(const int index)
     {
         file.seekg(0, std::ios_base::end);
         unsigned size = file.tellg();
-        if (sizeof(idCounter) + (recordType::size() * (index + 1)) > size) // index+1 because index starts from 0
+        if (sizeof(idCounter) + (recordType::size() * (index + 1)) > size) // index + 1 because index starts from 0
         {
             file.close();
             return tempRecord;
@@ -338,6 +340,24 @@ recordType Database<recordType>::recordAt(const int index)
     else std::cout << "Could not open file " + filename << std::endl;
 
     return tempRecord;
+}
+
+template<class recordType>
+unsigned Database<recordType>::recordCount()
+{
+    std::fstream file;
+    file.open(filename.c_str(), std::ios::in | std::ios::binary);
+    if (file.is_open())
+    {
+        file.seekg(0, std::ios_base::end);
+        unsigned size = (unsigned)file.tellg() - sizeof(idCounter);
+        file.close();
+
+        return size / recordType::size();
+    }
+    else std::cout << "Could not open file " + filename << std::endl;
+
+    return 0;
 }
 
 #endif /* DATABASE_H_ */

@@ -25,7 +25,7 @@ public:
     Customer(const Customer & customer);
     ~Customer();
 
-    void operator=(const Customer & customer);
+    void operator =(const Customer & customer);
 
     void writeToFile(std::fstream & file) const;
     void readFromFile(std::fstream & file);
