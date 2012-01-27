@@ -4,6 +4,7 @@
 #include <QMainWindow>
 
 #include "Globals.h"
+#include "AssignOncePointer.h"
 #include "Database.h"
 
 namespace Ui

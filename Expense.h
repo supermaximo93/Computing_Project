@@ -19,6 +19,7 @@ public:
     static int size();
 
     static const std::string databaseFilename;
+    static const int descriptionLength = 256;
 
     Expense(const time_t date = 0, const char * description = "", const float price = 0.0f,
             const float vat = 0.0f, const int type = 0);
@@ -51,8 +52,6 @@ public:
     void setType(const int newType);
 
 private:
-    static const int descriptionLength = 256;
-
     time_t date;
     char * description;
     float price, vat;

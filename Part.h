@@ -17,6 +17,7 @@ public:
     static int size();
 
     static const std::string databaseFilename;
+    static const int nameLength = 24, numberLength = 32;
 
     Part(const int jobId = 0, const char * name = "", const char * number = "", const float price = 0.0f,
          const float vatRate = -1.0f);
@@ -48,8 +49,6 @@ public:
     void setVatRate(const float newVatRate);
 
 private:
-    static const int nameLength = 24, numberLength = 32;
-
     int jobId;
     char * name, * number;
     float price, vatRate;

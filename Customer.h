@@ -18,6 +18,8 @@ public:
     static int size();
 
     static const std::string databaseFilename;
+    static const int nameLength = 16, addressLineLength = 32, townLength = 16, postcodeLength = 8,
+    phoneNumberLength = 11, emailAddressLength = 128;
 
     Customer(const char * forename = "", const char * surname = "", const char * addressLine1 = "",
              const char * addressLine2 = "", const char * town = "", const char * postcode = "",
@@ -61,9 +63,6 @@ public:
     void setEmailAddress(const char * newEmailAddress);
 
 private:
-    static const int nameLength = 16, addressLineLength = 32, townLength = 16, postcodeLength = 8,
-    phoneNumberLength = 11, emailAddressLength = 128;
-
     char * forename, * surname, * addressLine1, * addressLine2, * town, * postcode, * homePhoneNumber,
     * mobilePhoneNumber, * emailAddress;
 };

@@ -39,7 +39,8 @@ HEADERS  +=\
     CustomerDialog.h \
     MainWindow.h \
     JobDialog.h \
-    ExpenseDialog.h
+    ExpenseDialog.h \
+    AssignOncePointer.h
 
 FORMS    += \
     CustomerDialog.ui \

@@ -17,6 +17,7 @@ class Task : public Record
 {
 public:
     static const std::string databaseFilename;
+    static const int descriptionLength = 256;
 
     Task(const int jobId = 0, const time_t date = 0, const char * description = "");
     Task(const Task & task);
@@ -43,8 +44,6 @@ public:
     void setDescription(const char * newDescription);
 
 private:
-    static const int descriptionLength = 256;
-
     int jobId;
     time_t date;
     char * description;
