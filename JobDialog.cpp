@@ -15,7 +15,7 @@ JobDialog::JobDialog(Job * job, Message * message, const int customerId, QWidget
     jobToEdit = job;
     messageToEdit = message;
 
-    std::vector<Customer> * customers = MainWindow::customerDatabase()->allRecords();
+    Database<Customer>::recordListPtr customers = MainWindow::customerDatabase()->allRecords();
     QStringList customerNames;
     customerNames.reserve(customers->size());
     int index;
@@ -25,7 +25,6 @@ JobDialog::JobDialog(Job * job, Message * message, const int customerId, QWidget
         if (customerId == customer.getId()) index = i;
         customerNames.push_back(QString(customer.getForename()) + " " + QString(customer.getSurname()));
     }
-    delete customers;
     ui->comboBox_customer->addItems(customerNames);
     ui->comboBox_customer->setCurrentIndex(index);
 }

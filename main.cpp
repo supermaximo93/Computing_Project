@@ -26,5 +26,7 @@ int main(int argc, char * argv[])
     MainWindow w;
     w.show();
 
-    return a.exec();
+    int exitCode;
+    try { exitCode = a.exec(); } catch(std::runtime_error & error) { cout << error.what() << endl; }
+    return exitCode;
 }

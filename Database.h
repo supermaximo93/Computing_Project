@@ -12,6 +12,8 @@
 #include <fstream>
 #include <vector>
 #include <stdexcept>
+#include <tr1/memory>
+#include <tr1/shared_ptr.h>
 
 #include "Utils.h"
 
@@ -19,6 +21,9 @@ template<class recordType>
 class Database
 {
 public:
+    typedef std::vector<recordType> recordList;
+    typedef std::tr1::shared_ptr<recordList> recordListPtr;
+
 #ifdef COMPILE_TESTS
     Database(bool testing = false);
 #else
@@ -53,36 +58,36 @@ public:
     recordType findRecord(const std::string & fieldName, const type & searchTerm);
 
     /*
-    * Finds all the records whose field specified matches the search term, and returns them in a std::vector (which may
+    * Finds all the records whose field specified matches the search term, and returns them in a recordList (which may
     * be empty if no matching records where found). Throws an exception if the database file could not be opened
     */
     template<typename type>
-    std::vector<recordType> * findRecords(const std::string & fieldName, const type & searchTerm);
+    recordListPtr findRecords(const std::string & fieldName, const type & searchTerm);
 
     /*
-    * Finds all the records whose field specified matches the search term from the std::vector given, and returns them
-    * in a std::vector (which may be empty if no matching records where found)
+    * Finds all the records whose field specified matches the search term from the recordList given, and returns them
+    * in a recordList (which may be empty if no matching records where found)
     */
     template<typename type>
-    std::vector<recordType> * findRecords(const std::vector<recordType> & recordsToSearch,
-                                          const std::string & fieldName, const type & searchTerm);
+    recordListPtr findRecords(const recordList & recordsToSearch, const std::string & fieldName,
+                              const type & searchTerm);
 
     /*
-    * Removes all the records from the std::vector given whose field specified does not match the search term given
+    * Removes all the records from the recordList given whose field specified does not match the search term given
     */
     template<typename type>
-    void keepRecords(std::vector<recordType> & records, const std::string & fieldName, const type & searchTerm);
+    void keepRecords(recordList & records, const std::string & fieldName, const type & searchTerm);
 
     /*
-    * Removes all the records from the std::vector given whose field specified matches the search term given
+    * Removes all the records from the recordList given whose field specified matches the search term given
     */
     template<typename type>
-    void removeRecords(std::vector<recordType> & records, const std::string & fieldName, const type & searchTerm);
+    void removeRecords(recordList & records, const std::string & fieldName, const type & searchTerm);
 
     /*
     * Returns all of the records in the database. Throws an exception if the database file could not be opened
     */
-    std::vector<recordType> * allRecords();
+    recordListPtr allRecords();
 
     /*
     * Returns the record at a particular position of the database file, given by an index. Throws an exception if the
@@ -279,16 +284,16 @@ recordType Database<recordType>::findRecord(const std::string & fieldName, const
 }
 
 template<class recordType> template <typename type>
-std::vector<recordType> * Database<recordType>::findRecords(const std::string & fieldName, const type & searchTerm)
+std::tr1::shared_ptr< std::vector<recordType> >
+Database<recordType>::findRecords(const std::string & fieldName, const type & searchTerm)
 {
-    std::vector<recordType> * returnVector = NULL;
+    recordListPtr returnList(new recordList);
 
     std::fstream file;
     file.open(filename.c_str(), std::ios::in | std::ios::binary);
     if (file.is_open())
     {
         std::string lowercaseFieldName = lowerCase(fieldName);
-        returnVector = new std::vector<recordType>;
         recordType tempRecord;
 
         file.seekg(sizeof(idCounter), std::ios_base::beg);
@@ -297,29 +302,30 @@ std::vector<recordType> * Database<recordType>::findRecords(const std::string & 
         {
             tempRecord.readFromFile(file);
             if (file.eof()) break;
-            if (tempRecord.hasMatchingField(lowercaseFieldName, searchTerm)) returnVector->push_back(tempRecord);
+            if (tempRecord.hasMatchingField(lowercaseFieldName, searchTerm)) returnList->push_back(tempRecord);
         }
         file.close();
     }
     else throw(std::runtime_error("Could not open file " + filename));
 
-    return returnVector;
+    return returnList;
 }
 
 template<class recordType> template<typename type>
-std::vector<recordType> * Database<recordType>::findRecords(const std::vector<recordType> & recordsToSearch,
-                                                            const std::string & fieldName, const type & searchTerm)
+std::tr1::shared_ptr< std::vector<recordType> >
+Database<recordType>::findRecords(const std::vector<recordType> & recordsToSearch, const std::string & fieldName,
+                                  const type & searchTerm)
 {
     std::string lowercaseFieldName = lowerCase(fieldName);
-    std::vector<recordType> * returnVector = new std::vector<recordType>;
+    recordListPtr returnList(new recordList);
 
     for (unsigned i = 0; i < recordsToSearch.size(); ++i)
     {
         if (recordsToSearch[i].hasMatchingField(lowercaseFieldName, searchTerm))
-            returnVector->push_back(recordsToSearch[i]);
+            returnList->push_back(recordsToSearch[i]);
     }
 
-    return returnVector;
+    return returnList;
 }
 
 template<class recordType> template<typename type>
@@ -348,15 +354,14 @@ void Database<recordType>::removeRecords(std::vector<recordType> & records, cons
 }
 
 template<class recordType>
-std::vector<recordType> * Database<recordType>::allRecords()
+std::tr1::shared_ptr< std::vector<recordType> > Database<recordType>::allRecords()
 {
-    std::vector<recordType> * returnVector = NULL;
+    recordListPtr returnList(new recordList);
 
     std::fstream file;
     file.open(filename.c_str(), std::ios::in | std::ios::binary);
     if (file.is_open())
     {
-        std::vector<recordType> * returnVector = new std::vector<recordType>;
         recordType tempRecord;
 
         file.seekg(sizeof(idCounter), std::ios_base::beg);
@@ -365,13 +370,13 @@ std::vector<recordType> * Database<recordType>::allRecords()
         {
             tempRecord.readFromFile(file);
             if (file.eof()) break;
-            returnVector->push_back(tempRecord);
+            returnList->push_back(tempRecord);
         }
         file.close();
     }
     else throw(std::runtime_error("Could not open file " + filename));
 
-    return returnVector;
+    return returnList;
 }
 
 template<class recordType>

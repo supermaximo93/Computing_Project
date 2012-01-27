@@ -9,6 +9,7 @@
 #define ASSIGNONCEPOINTER_H
 
 #include <iostream>
+#include <stdexcept>
 
 // A class that makes sure only one instance of each database is created. Also handles database destruction
 template<typename type>
@@ -16,12 +17,20 @@ class AssignOncePointer
 {
 public:
     AssignOncePointer<type>() : pointer(NULL) {}
-    AssignOncePointer<type>(const AssignOncePointer & assignOncePointer) : pointer(assignOncePointer.pointer) {}
     AssignOncePointer<type>(type * const newPointer) : pointer(newPointer) {}
+    AssignOncePointer<type>(const AssignOncePointer &) : pointer(NULL)
+    {
+        throw(std::runtime_error("AssignOncePointer cannot be copied"));
+    }
 
     ~AssignOncePointer()
     {
         delete pointer;
+    }
+
+    void operator =(const AssignOncePointer &)
+    {
+        throw(std::runtime_error("AssignOncePointer cannot be copied"));
     }
 
     void operator =(type * const newPointer)
@@ -29,8 +38,8 @@ public:
         if (pointer == NULL) pointer = newPointer;
         else
         {
-            std::cout << "Reassignment forbidden" << std::endl;
             delete newPointer;
+            throw(std::runtime_error("Reassignment forbidden"));
         }
     }
 
