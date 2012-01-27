@@ -18,8 +18,13 @@ public:
     static int size();
 
     static const std::string databaseFilename;
-    static const int nameLength = 16, addressLineLength = 32, townLength = 16, postcodeLength = 8,
-    phoneNumberLength = 11, emailAddressLength = 128;
+    static const int
+    minNameLength         = 2,  maxNameLength         = 16,
+    minAddressLineLength  = 8,  maxAddressLineLength  = 32,
+    minTownLength         = 4,  maxTownLength         = 16,
+    minPostcodeLength     = 7,  maxPostcodeLength     = 8,
+    minPhoneNumberLength  = 11, maxPhoneNumberLength  = 11,
+    minEmailAddressLength = 6,  maxEmailAddressLength = 128;
 
     Customer(const char * forename = "", const char * surname = "", const char * addressLine1 = "",
              const char * addressLine2 = "", const char * town = "", const char * postcode = "",

@@ -54,17 +54,6 @@ TEST_F(CustomerTest, DoesCustomerRejectEmptyForename)
             << "Exception was not thrown when the forename was set to an empty string";
 }
 
-// Does Customer Reject Empty Forename
-// Records should automatically validate data passed to a setter method, and throw an exception if the data is invalid
-TEST_F(CustomerTest, DoesCustomerRejectEmptyForename)
-{
-    // Create a customer based on the example data, and then attempt to set the forename to an empty string.
-    // An exception should be thrown
-    Customer customer(exampleCustomer);
-    EXPECT_THROW(customer.setForename(""), std::runtime_error)
-            << "Exception was not thrown when the forename was set to an empty string";
-}
-
 // Is Customer With Empty Name Rejected From Database
 // The database should not allow records to be entered when they have invalid data
 TEST_F(CustomerTest, IsCustomerWithEmptyNameRejected)

@@ -16,13 +16,13 @@ const std::string Task::databaseFilename = "tasks.dat";
 Task::Task(const int jobId, const time_t date, const char * newDescription)
     : jobId(jobId), date(date)
 {
-    description = new char[descriptionLength + 1];
+    description = new char[maxDescriptionLength + 1];
     strcpy(description, newDescription);
 }
 
 Task::Task(const Task & task)
 {
-    description = new char[descriptionLength + 1];
+    description = new char[maxDescriptionLength + 1];
     (*this) = task;
 }
 
@@ -44,7 +44,7 @@ void Task::writeToFile(fstream & file) const
     Record::writeToFile(file);
     file.write(reinterpret_cast<const char *>(&jobId), sizeof(jobId));
     file.write(reinterpret_cast<const char *>(&date), sizeof(date));
-    file.write(description, descriptionLength);
+    file.write(description, maxDescriptionLength);
 }
 
 void Task::readFromFile(fstream & file)
@@ -52,12 +52,12 @@ void Task::readFromFile(fstream & file)
     Record::readFromFile(file);
     file.read(reinterpret_cast<char *>(&jobId), sizeof(jobId));
     file.read(reinterpret_cast<char *>(&date), sizeof(date));
-    file.read(description, descriptionLength);
+    file.read(description, maxDescriptionLength);
 }
 
 int Task::size()
 {
-    return Record::size() + sizeof(int) + sizeof(time_t) + descriptionLength;
+    return Record::size() + sizeof(int) + sizeof(time_t) + maxDescriptionLength;
 }
 
 bool Task::hasMatchingField(const string & fieldName, const int searchTerm) const

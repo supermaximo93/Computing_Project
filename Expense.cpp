@@ -13,7 +13,7 @@ using namespace std;
 
 int Expense::size()
 {
-    return Record::size() + sizeof(time_t) + descriptionLength + (sizeof(float) * 2) + sizeof(int);
+    return Record::size() + sizeof(time_t) + maxDescriptionLength + (sizeof(float) * 2) + sizeof(int);
 }
 
 const string Expense::databaseFilename = "expenses.dat";
@@ -21,13 +21,13 @@ const string Expense::databaseFilename = "expenses.dat";
 Expense::Expense(const time_t date, const char * newDescription, const float price, const float vat, const int type)
     : date(date), price(price), vat(vat), type(type)
 {
-    description = new char[descriptionLength + 1];
+    description = new char[maxDescriptionLength + 1];
     strcpy(description, newDescription);
 }
 
 Expense::Expense(const Expense & expense)
 {
-    description = new char[descriptionLength + 1];
+    description = new char[maxDescriptionLength + 1];
     (*this) = expense;
 }
 
@@ -50,7 +50,7 @@ void Expense::writeToFile(fstream & file) const
 {
     Record::writeToFile(file);
     file.write(reinterpret_cast<const char *>(&date), sizeof(date));
-    file.write(description, descriptionLength);
+    file.write(description, maxDescriptionLength);
     file.write(reinterpret_cast<const char *>(&price), sizeof(price));
     file.write(reinterpret_cast<const char *>(&vat), sizeof(vat));
     file.write(reinterpret_cast<const char *>(&type), sizeof(type));
@@ -60,7 +60,7 @@ void Expense::readFromFile(fstream & file)
 {
     Record::readFromFile(file);
     file.read(reinterpret_cast<char *>(&date), sizeof(date));
-    file.read(description, descriptionLength);
+    file.read(description, maxDescriptionLength);
     file.read(reinterpret_cast<char *>(&price), sizeof(price));
     file.read(reinterpret_cast<char *>(&vat), sizeof(vat));
     file.read(reinterpret_cast<char *>(&type), sizeof(type));

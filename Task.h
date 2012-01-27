@@ -17,7 +17,7 @@ class Task : public Record
 {
 public:
     static const std::string databaseFilename;
-    static const int descriptionLength = 256;
+    static const int minDescriptionLength = 0, maxDescriptionLength = 256;
 
     Task(const int jobId = 0, const time_t date = 0, const char * description = "");
     Task(const Task & task);

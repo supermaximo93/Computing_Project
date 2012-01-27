@@ -14,7 +14,8 @@ using namespace std;
 int Customer::size()
 {
     return Record::size() +
-        ((nameLength + addressLineLength + phoneNumberLength) * 2) + townLength + postcodeLength + emailAddressLength;
+        ((maxNameLength + maxAddressLineLength + maxPhoneNumberLength) * 2) + maxTownLength + maxPostcodeLength +
+            maxEmailAddressLength;
 }
 
 const string Customer::databaseFilename = "customers.dat";
@@ -24,15 +25,15 @@ Customer::Customer(const char * newForename, const char * newSurname, const char
                    const char * newHomePhoneNumber, const char * newMobilePhoneNumber, const char * newEmailAddress)
 {
 
-    forename = new char[nameLength + 1];
-    surname = new char[nameLength + 1];
-    addressLine1 = new char[addressLineLength + 1];
-    addressLine2 = new char[addressLineLength + 1];
-    town = new char[townLength + 1];
-    postcode = new char[postcodeLength + 1];
-    homePhoneNumber = new char[phoneNumberLength + 1];
-    mobilePhoneNumber = new char[phoneNumberLength + 1];
-    emailAddress = new char[emailAddressLength + 1];
+    forename = new char[maxNameLength + 1];
+    surname = new char[maxNameLength + 1];
+    addressLine1 = new char[maxAddressLineLength + 1];
+    addressLine2 = new char[maxAddressLineLength + 1];
+    town = new char[maxTownLength + 1];
+    postcode = new char[maxPostcodeLength + 1];
+    homePhoneNumber = new char[maxPhoneNumberLength + 1];
+    mobilePhoneNumber = new char[maxPhoneNumberLength + 1];
+    emailAddress = new char[maxEmailAddressLength + 1];
 
     strcpy(forename, newForename);
     strcpy(surname, newSurname);
@@ -47,15 +48,15 @@ Customer::Customer(const char * newForename, const char * newSurname, const char
 
 Customer::Customer(const Customer & customer)
 {
-    forename = new char[nameLength + 1];
-    surname = new char[nameLength + 1];
-    addressLine1 = new char[addressLineLength + 1];
-    addressLine2 = new char[addressLineLength + 1];
-    town = new char[townLength + 1];
-    postcode = new char[postcodeLength + 1];
-    homePhoneNumber = new char[phoneNumberLength + 1];
-    mobilePhoneNumber = new char[phoneNumberLength + 1];
-    emailAddress = new char[emailAddressLength + 1];
+    forename = new char[maxNameLength + 1];
+    surname = new char[maxNameLength + 1];
+    addressLine1 = new char[maxAddressLineLength + 1];
+    addressLine2 = new char[maxAddressLineLength + 1];
+    town = new char[maxTownLength + 1];
+    postcode = new char[maxPostcodeLength + 1];
+    homePhoneNumber = new char[maxPhoneNumberLength + 1];
+    mobilePhoneNumber = new char[maxPhoneNumberLength + 1];
+    emailAddress = new char[maxEmailAddressLength + 1];
 
     (*this) = customer;
 }
@@ -90,29 +91,29 @@ void Customer::operator =(const Customer & customer)
 void Customer::writeToFile(fstream & file) const
 {
     Record::writeToFile(file);
-    file.write(forename, nameLength);
-    file.write(surname, nameLength);
-    file.write(addressLine1, addressLineLength);
-    file.write(addressLine2, addressLineLength);
-    file.write(town, townLength);
-    file.write(postcode, postcodeLength);
-    file.write(homePhoneNumber, phoneNumberLength);
-    file.write(mobilePhoneNumber, phoneNumberLength);
-    file.write(emailAddress, emailAddressLength);
+    file.write(forename, maxNameLength);
+    file.write(surname, maxNameLength);
+    file.write(addressLine1, maxAddressLineLength);
+    file.write(addressLine2, maxAddressLineLength);
+    file.write(town, maxTownLength);
+    file.write(postcode, maxPostcodeLength);
+    file.write(homePhoneNumber, maxPhoneNumberLength);
+    file.write(mobilePhoneNumber, maxPhoneNumberLength);
+    file.write(emailAddress, maxEmailAddressLength);
 }
 
 void Customer::readFromFile(fstream & file)
 {
     Record::readFromFile(file);
-    file.read(forename, nameLength);
-    file.read(surname, nameLength);
-    file.read(addressLine1, addressLineLength);
-    file.read(addressLine2, addressLineLength);
-    file.read(town, townLength);
-    file.read(postcode, postcodeLength);
-    file.read(homePhoneNumber, phoneNumberLength);
-    file.read(mobilePhoneNumber, phoneNumberLength);
-    file.read(emailAddress, emailAddressLength);
+    file.read(forename, maxNameLength);
+    file.read(surname, maxNameLength);
+    file.read(addressLine1, maxAddressLineLength);
+    file.read(addressLine2, maxAddressLineLength);
+    file.read(town, maxTownLength);
+    file.read(postcode, maxPostcodeLength);
+    file.read(homePhoneNumber, maxPhoneNumberLength);
+    file.read(mobilePhoneNumber, maxPhoneNumberLength);
+    file.read(emailAddress, maxEmailAddressLength);
 }
 
 bool Customer::hasMatchingField(const string & fieldName, const int searchTerm) const

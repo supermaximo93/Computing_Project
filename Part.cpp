@@ -14,7 +14,7 @@ using namespace std;
 
 int Part::size()
 {
-    return Record::size() + sizeof(int) + nameLength + numberLength + (sizeof(float) * 2);
+    return Record::size() + sizeof(int) + maxNameLength + maxNumberLength + (sizeof(float) * 2);
 }
 
 const string Part::databaseFilename = "parts.dat";
@@ -22,16 +22,16 @@ const string Part::databaseFilename = "parts.dat";
 Part::Part(const int jobId, const char * newName, const char * newNumber, const float price, const float vatRate)
     : jobId(jobId), price(price), vatRate(vatRate < 0.0f ? Globals::vatRate : vatRate)
 {
-    name = new char[nameLength + 1];
-    number = new char[numberLength + 1];
+    name = new char[maxNameLength + 1];
+    number = new char[maxNumberLength + 1];
     strcpy(name, newName);
     strcpy(number, newNumber);
 }
 
 Part::Part(const Part & part)
 {
-    name = new char[nameLength + 1];
-    number = new char[numberLength + 1];
+    name = new char[maxNameLength + 1];
+    number = new char[maxNumberLength + 1];
 
     (*this) = part;
 }
@@ -56,8 +56,8 @@ void Part::writeToFile(fstream & file) const
 {
     Record::writeToFile(file);
     file.write(reinterpret_cast<const char *>(&jobId), sizeof(jobId));
-    file.write(name, nameLength);
-    file.write(number, numberLength);
+    file.write(name, maxNameLength);
+    file.write(number, maxNumberLength);
     file.write(reinterpret_cast<const char *>(&price), sizeof(price));
     file.write(reinterpret_cast<const char *>(&vatRate), sizeof(vatRate));
 }
@@ -66,8 +66,8 @@ void Part::readFromFile(fstream & file)
 {
     Record::readFromFile(file);
     file.read(reinterpret_cast<char *>(&jobId), sizeof(jobId));
-    file.read(name, nameLength);
-    file.read(number, numberLength);
+    file.read(name, maxNameLength);
+    file.read(number, maxNumberLength);
     file.read(reinterpret_cast<char *>(&price), sizeof(price));
     file.read(reinterpret_cast<char *>(&vatRate), sizeof(vatRate));
 }

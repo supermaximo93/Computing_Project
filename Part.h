@@ -17,7 +17,9 @@ public:
     static int size();
 
     static const std::string databaseFilename;
-    static const int nameLength = 24, numberLength = 32;
+    static const int
+    minNameLength   = 3, maxNameLength   = 24,
+    minNumberLength = 0, maxNumberLength = 32;
 
     Part(const int jobId = 0, const char * name = "", const char * number = "", const float price = 0.0f,
          const float vatRate = -1.0f);
