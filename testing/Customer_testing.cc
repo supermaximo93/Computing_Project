@@ -54,6 +54,22 @@ TEST_F(CustomerTest, DoesCustomerRejectEmptyForename)
             << "Exception was not thrown when the forename was set to an empty string";
 }
 
+// Does Customer Reject Forename That Is Too Long
+// Records should automatically validate data passed to a setter method, and throw an exception if the data is invalid
+TEST_F(CustomerTest, DoesCustomerRejectForenameThatIsTooLong)
+{
+    // Create a customer based on the example data, and then attempt to set the forename to a string that is longer
+    // than the maximum length allowed. An exception should be thrown
+    Customer customer(exampleCustomer);
+
+    std::string testForename;
+    testForename.reserve(Customer::maxNameLength + 1);
+    while (testForename.size() < Customer::maxNameLength + 1) testForename += 'a';
+
+    EXPECT_THROW(customer.setForename(testForename.c_str()), std::runtime_error)
+            << "Exception was not thrown when the forename was set to a string that is longer than the maximum";
+}
+
 // Is Customer With Empty Name Rejected From Database
 // The database should not allow records to be entered when they have invalid data
 TEST_F(CustomerTest, IsCustomerWithEmptyNameRejected)
@@ -74,7 +90,7 @@ TEST_F(CustomerTest, IsCustomerWithEmptyNameRejected)
     }
     catch (std::runtime_error & error)
     {
-        FAIL() << "An exception was thrown when assigning valid example data to customers: " << error.what();
+        ADD_FAILURE() << "An exception was thrown when assigning valid example data to customers: " << error.what();
     }
 
     unsigned recordCountBefore = database->recordCount();

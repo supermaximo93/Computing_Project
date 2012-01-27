@@ -8,6 +8,8 @@
 #ifndef ASSIGNONCEPOINTER_H
 #define ASSIGNONCEPOINTER_H
 
+#include <iostream>
+
 // A class that makes sure only one instance of each database is created. Also handles database destruction
 template<typename type>
 class AssignOncePointer

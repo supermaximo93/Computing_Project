@@ -11,8 +11,9 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <stdexcept>
 
-#include <SuperMaximo_GameLibrary/Utils.h>
+#include "Utils.h"
 
 template<class recordType>
 class Database
@@ -25,33 +26,73 @@ public:
 #endif
     ~Database();
 
+    /*
+    * Adds a new record to the database, and sets the record's ID. Throws an exception if the record does not pass its
+    * validation (which should be done before addRecord is called anyway), or if the database file could not be opened
+    */
     void addRecord(recordType & record);
 
+    /*
+    * Updates an existing record that has been found from the database or has just been added to it (i.e. the ID of the
+    * record is greater than -1). If the record was updated successfully, then true is returned. An exception is thrown
+    * if the record is a null record (i.e. ID < 0), or if the database file could not be opened
+    */
+    bool updateRecord(const recordType & record);
+
+    /*
+    * Attempts to delete the record with the specified ID (if any), returning true on success. Throws an exception if
+    * the database file could not be opened
+    */
+    bool deleteRecord(const int id);
+
+    /*
+    * Attempts to find the first record whose field specified matches the search term. Returns a null record
+    * (i.e. ID < 0) if a record could not be found. Throws an exception if the database file could not be opened
+    */
+    template<typename type>
+    recordType findRecord(const std::string & fieldName, const type & searchTerm);
+
+    /*
+    * Finds all the records whose field specified matches the search term, and returns them in a std::vector (which may
+    * be empty if no matching records where found). Throws an exception if the database file could not be opened
+    */
     template<typename type>
     std::vector<recordType> * findRecords(const std::string & fieldName, const type & searchTerm);
 
+    /*
+    * Finds all the records whose field specified matches the search term from the std::vector given, and returns them
+    * in a std::vector (which may be empty if no matching records where found)
+    */
     template<typename type>
     std::vector<recordType> * findRecords(const std::vector<recordType> & recordsToSearch,
                                           const std::string & fieldName, const type & searchTerm);
 
+    /*
+    * Removes all the records from the std::vector given whose field specified does not match the search term given
+    */
     template<typename type>
     void keepRecords(std::vector<recordType> & records, const std::string & fieldName, const type & searchTerm);
 
+    /*
+    * Removes all the records from the std::vector given whose field specified matches the search term given
+    */
     template<typename type>
     void removeRecords(std::vector<recordType> & records, const std::string & fieldName, const type & searchTerm);
 
-    template<typename type>
-    recordType findRecord(const type & searchTerm);
-
-    void updateRecord(const recordType & record);
-
-    template<typename type>
-    void deleteRecord(const type & searchTerm);
-
+    /*
+    * Returns all of the records in the database. Throws an exception if the database file could not be opened
+    */
     std::vector<recordType> * allRecords();
 
+    /*
+    * Returns the record at a particular position of the database file, given by an index. Throws an exception if the
+    * database file could not be opened
+    */
     recordType recordAt(const int index);
 
+    /*
+    * Returns the number of records in the database. Throws an exception if the database file could not be opened
+    */
     unsigned recordCount();
 
 private:
@@ -145,20 +186,111 @@ void Database<recordType>::addRecord(recordType & record)
         record.writeToFile(file);
         file.close();
     }
-    else std::cout << "Could not open file " + filename << std::endl;
+    else throw(std::runtime_error("Could not open file " + filename));
+}
+
+template<class recordType>
+bool Database<recordType>::updateRecord(const recordType & record)
+{
+    if (record.null()) throw(std::runtime_error("Record ID must be initialised"));
+
+    recordType tempRecord;
+    std::fstream file;
+    file.open(filename.c_str(), std::ios::in | std::ios::out | std::ios::binary);
+    if (file.is_open())
+    {
+        file.seekg(sizeof(idCounter), std::ios_base::beg);
+
+        while (true)
+        {
+            tempRecord.readFromFile(file);
+            if (file.eof()) break;
+            if (tempRecord == record)
+            {
+                file.seekp(-recordType::size(), std::ios::cur);
+                record.writeToFile(file);
+                file.close();
+                return true;
+            }
+        }
+        file.close();
+        return false;
+    }
+    else throw(std::runtime_error("Could not open file " + filename));
+}
+
+template<class recordType>
+bool Database<recordType>::deleteRecord(const int id)
+{
+    recordType tempRecord;
+    std::fstream file;
+    file.open(filename.c_str(), std::ios::in | std::ios::out | std::ios::binary);
+    if (file.is_open())
+    {
+        file.seekg(sizeof(idCounter), std::ios_base::beg);
+
+        while (true)
+        {
+            tempRecord.readFromFile(file);
+            if (file.eof()) break;
+            if (tempRecord.getId() == id)
+            {
+                file.seekp(-recordType::size(), std::ios::cur);
+                recordType().writeToFile(file);
+                file.close();
+                return true;
+            }
+        }
+        file.close();
+    }
+    else throw(std::runtime_error("Could not open file " + filename));
+
+    std::cout << "Record could not be found. No records were deleted" << std::endl;
+    return false;
+}
+
+template<class recordType> template<typename type>
+recordType Database<recordType>::findRecord(const std::string & fieldName, const type & searchTerm)
+{
+    std::fstream file;
+    file.open(filename.c_str(), std::ios::in | std::ios::binary);
+    if (file.is_open())
+    {
+        std::string lowercaseFieldName = lowerCase(fieldName);
+        recordType tempRecord;
+
+        file.seekg(sizeof(idCounter), std::ios_base::beg);
+
+        while (true)
+        {
+            tempRecord.readFromFile(file);
+            if (file.eof()) break;
+            if (tempRecord.hasMatchingField(lowercaseFieldName, searchTerm))
+            {
+                file.close();
+                return tempRecord;
+            }
+        }
+        file.close();
+    }
+    else throw(std::runtime_error("Could not open file " + filename));
+
+    return recordType();
 }
 
 template<class recordType> template <typename type>
 std::vector<recordType> * Database<recordType>::findRecords(const std::string & fieldName, const type & searchTerm)
 {
-    std::string lowercaseFieldName = SuperMaximo::lowerCase(fieldName);
-    std::vector<recordType> * returnVector = new std::vector<recordType>;
+    std::vector<recordType> * returnVector = NULL;
 
-    recordType tempRecord;
     std::fstream file;
     file.open(filename.c_str(), std::ios::in | std::ios::binary);
     if (file.is_open())
     {
+        std::string lowercaseFieldName = lowerCase(fieldName);
+        returnVector = new std::vector<recordType>;
+        recordType tempRecord;
+
         file.seekg(sizeof(idCounter), std::ios_base::beg);
 
         while (true)
@@ -169,7 +301,7 @@ std::vector<recordType> * Database<recordType>::findRecords(const std::string & 
         }
         file.close();
     }
-    else std::cout << "Could not open file " + filename << std::endl;
+    else throw(std::runtime_error("Could not open file " + filename));
 
     return returnVector;
 }
@@ -178,7 +310,7 @@ template<class recordType> template<typename type>
 std::vector<recordType> * Database<recordType>::findRecords(const std::vector<recordType> & recordsToSearch,
                                                             const std::string & fieldName, const type & searchTerm)
 {
-    std::string lowercaseFieldName = SuperMaximo::lowerCase(fieldName);
+    std::string lowercaseFieldName = lowerCase(fieldName);
     std::vector<recordType> * returnVector = new std::vector<recordType>;
 
     for (unsigned i = 0; i < recordsToSearch.size(); ++i)
@@ -194,7 +326,7 @@ template<class recordType> template<typename type>
 void Database<recordType>::keepRecords(std::vector<recordType> & records, const std::string & fieldName,
                                        const type & searchTerm)
 {
-    std::string lowercaseFieldName = SuperMaximo::lowerCase(fieldName);
+    std::string lowercaseFieldName = lowerCase(fieldName);
 
     for (unsigned i = 0; i < records.size(); ++i)
     {
@@ -206,7 +338,7 @@ template <class recordType> template<typename type>
 void Database<recordType>::removeRecords(std::vector<recordType> & records, const std::string & fieldName,
                                          const type & searchTerm)
 {
-    std::string lowercaseFieldName = SuperMaximo::lowerCase(fieldName);
+    std::string lowercaseFieldName = lowerCase(fieldName);
 
     for (unsigned i = 0; i < records.size(); ++i)
     {
@@ -215,102 +347,18 @@ void Database<recordType>::removeRecords(std::vector<recordType> & records, cons
     }
 }
 
-template<class recordType> template<typename type>
-recordType Database<recordType>::findRecord(const type & searchTerm)
-{
-    recordType tempRecord;
-    std::fstream file;
-    file.open(filename.c_str(), std::ios::in | std::ios::binary);
-    if (file.is_open())
-    {
-        file.seekg(sizeof(idCounter), std::ios_base::beg);
-
-        while (true)
-        {
-            tempRecord.readFromFile(file);
-            if (file.eof()) break;
-            if (tempRecord == searchTerm)
-            {
-                file.close();
-                return tempRecord;
-            }
-        }
-        file.close();
-    }
-    else std::cout << "Could not open file " + filename << std::endl;
-    return recordType();
-}
-
-template<class recordType>
-void Database<recordType>::updateRecord(const recordType & record)
-{
-    if (record.null())
-    {
-        std::cout << "Record ID must be initialised" << std::endl;
-        return;
-    }
-
-    recordType tempRecord;
-    std::fstream file;
-    file.open(filename.c_str(), std::ios::in | std::ios::out | std::ios::binary);
-    if (file.is_open())
-    {
-        file.seekg(sizeof(idCounter), std::ios_base::beg);
-
-        while (true)
-        {
-            tempRecord.readFromFile(file);
-            if (file.eof()) break;
-            if (tempRecord == record) {
-                file.seekp(-recordType::size(), std::ios::cur);
-                record.writeToFile(file);
-                file.close();
-                return;
-            }
-        }
-        file.close();
-    }
-    else std::cout << "Could not open file " + filename << std::endl;
-}
-
-template<class recordType> template<typename type>
-void Database<recordType>::deleteRecord(const type & searchTerm)
-{
-    recordType tempRecord;
-    std::fstream file;
-    file.open(filename.c_str(), std::ios::in | std::ios::out | std::ios::binary);
-    if (file.is_open())
-    {
-        file.seekg(sizeof(idCounter), std::ios_base::beg);
-
-        while (true)
-        {
-            tempRecord.readFromFile(file);
-            if (file.eof()) break;
-            if (tempRecord == searchTerm)
-            {
-                file.seekp(-recordType::size(), std::ios::cur);
-                recordType().writeToFile(file);
-                file.close();
-                return;
-            }
-        }
-        file.close();
-    }
-    else std::cout << "Could not open file " + filename << std::endl;
-    std::cout << "Record could not be found. No records were deleted" << std::endl;
-}
-
 template<class recordType>
 std::vector<recordType> * Database<recordType>::allRecords()
 {
-    std::vector<recordType> * returnVector = new std::vector<recordType>;
-    recordType tempRecord;
+    std::vector<recordType> * returnVector = NULL;
 
     std::fstream file;
     file.open(filename.c_str(), std::ios::in | std::ios::binary);
     if (file.is_open())
     {
+        std::vector<recordType> * returnVector = new std::vector<recordType>;
+        recordType tempRecord;
+
         file.seekg(sizeof(idCounter), std::ios_base::beg);
 
         while (true)
@@ -321,7 +369,7 @@ std::vector<recordType> * Database<recordType>::allRecords()
         }
         file.close();
     }
-    else std::cout << "Could not open file " + filename << std::endl;
+    else throw(std::runtime_error("Could not open file " + filename));
 
     return returnVector;
 }
@@ -329,28 +377,30 @@ std::vector<recordType> * Database<recordType>::allRecords()
 template<class recordType>
 recordType Database<recordType>::recordAt(const int index)
 {
-    recordType tempRecord;
-
     std::fstream file;
     file.open(filename.c_str(), std::ios::in | std::ios::binary);
     if (file.is_open())
     {
+        recordType tempRecord;
+
         file.seekg(0, std::ios_base::end);
         unsigned size = file.tellg();
+
         if (sizeof(idCounter) + (recordType::size() * (index + 1)) > size) // index + 1 because index starts from 0
         {
             file.close();
-            return tempRecord;
+            return recordType();
         }
 
         file.seekg(sizeof(idCounter) + (recordType::size() * index), std::ios_base::beg);
         tempRecord.readFromFile(file);
 
         file.close();
+        return tempRecord;
     }
-    else std::cout << "Could not open file " + filename << std::endl;
+    else throw(std::runtime_error("Could not open file " + filename));
 
-    return tempRecord;
+    return recordType();
 }
 
 template<class recordType>
@@ -366,7 +416,7 @@ unsigned Database<recordType>::recordCount()
 
         return size / recordType::size();
     }
-    else std::cout << "Could not open file " + filename << std::endl;
+    else throw(std::runtime_error("Could not open file " + filename));
 
     return 0;
 }

@@ -2,6 +2,7 @@
 #include "ui_ExpenseDialog.h"
 
 #include "Globals.h"
+#include "Utils.h"
 #include "Expense.h"
 
 ExpenseDialog::ExpenseDialog(Expense * expense, Message * message, QWidget * parent)

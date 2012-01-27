@@ -25,7 +25,8 @@ SOURCES += main.cpp\
     MainWindow.cpp \
     JobDialog.cpp \
     ExpenseDialog.cpp \
-    testing/Customer_testing.cc
+    testing/Customer_testing.cc \
+    Utils.cpp
 
 HEADERS  +=\
         Database.h\
@@ -40,7 +41,8 @@ HEADERS  +=\
     MainWindow.h \
     JobDialog.h \
     ExpenseDialog.h \
-    AssignOncePointer.h
+    AssignOncePointer.h \
+    Utils.h
 
 FORMS    += \
     CustomerDialog.ui \
