@@ -32,72 +32,72 @@ public:
     ~Database();
 
     /*
-    * Adds a new record to the database, and sets the record's ID. Throws an exception if the record does not pass its
-    * validation (which should be done before addRecord is called anyway), or if the database file could not be opened
-    */
+     * Adds a new record to the database, and sets the record's ID. Throws an exception if the record does not pass its
+     * validation (which should be done before addRecord is called anyway), or if the database file could not be opened
+     */
     void addRecord(recordType & record);
 
     /*
-    * Updates an existing record that has been found from the database or has just been added to it (i.e. the ID of the
-    * record is greater than -1). If the record was updated successfully, then true is returned. An exception is thrown
-    * if the record is a null record (i.e. ID < 0), or if the database file could not be opened
-    */
+     * Updates an existing record that has been found from the database or has just been added to it (i.e. the ID of the
+     * record is greater than -1). If the record was updated successfully, then true is returned. An exception is thrown
+     * if the record is a null record (i.e. ID < 0), or if the database file could not be opened
+     */
     bool updateRecord(const recordType & record);
 
     /*
-    * Attempts to delete the record with the specified ID (if any), returning true on success. Throws an exception if
-    * the database file could not be opened
-    */
+     * Attempts to delete the record with the specified ID (if any), returning true on success. Throws an exception if
+     * the database file could not be opened
+     */
     bool deleteRecord(const int id);
 
     /*
-    * Attempts to find the first record whose field specified matches the search term. Returns a null record
-    * (i.e. ID < 0) if a record could not be found. Throws an exception if the database file could not be opened
-    */
+     * Attempts to find the first record whose field specified matches the search term. Returns a null record
+     * (i.e. ID < 0) if a record could not be found. Throws an exception if the database file could not be opened
+     */
     template<typename type>
     recordType findRecord(const std::string & fieldName, const type & searchTerm);
 
     /*
-    * Finds all the records whose field specified matches the search term, and returns them in a recordList (which may
-    * be empty if no matching records where found). Throws an exception if the database file could not be opened
-    */
+     * Finds all the records whose field specified matches the search term, and returns them in a recordList (which may
+     * be empty if no matching records where found). Throws an exception if the database file could not be opened
+     */
     template<typename type>
     recordListPtr findRecords(const std::string & fieldName, const type & searchTerm);
 
     /*
-    * Finds all the records whose field specified matches the search term from the recordList given, and returns them
-    * in a recordList (which may be empty if no matching records where found)
-    */
+     * Finds all the records whose field specified matches the search term from the recordList given, and returns them
+     * in a recordList (which may be empty if no matching records where found)
+     */
     template<typename type>
     recordListPtr findRecords(const recordList & recordsToSearch, const std::string & fieldName,
                               const type & searchTerm);
 
     /*
-    * Removes all the records from the recordList given whose field specified does not match the search term given
-    */
+     * Removes all the records from the recordList given whose field specified does not match the search term given
+     */
     template<typename type>
     void keepRecords(recordList & records, const std::string & fieldName, const type & searchTerm);
 
     /*
-    * Removes all the records from the recordList given whose field specified matches the search term given
-    */
+     * Removes all the records from the recordList given whose field specified matches the search term given
+     */
     template<typename type>
     void removeRecords(recordList & records, const std::string & fieldName, const type & searchTerm);
 
     /*
-    * Returns all of the records in the database. Throws an exception if the database file could not be opened
-    */
+     * Returns all of the records in the database. Throws an exception if the database file could not be opened
+     */
     recordListPtr allRecords();
 
     /*
-    * Returns the record at a particular position of the database file, given by an index. Throws an exception if the
-    * database file could not be opened
-    */
+     * Returns the record at a particular position of the database file, given by an index. Throws an exception if the
+     * database file could not be opened
+     */
     recordType recordAt(const int index);
 
     /*
-    * Returns the number of records in the database. Throws an exception if the database file could not be opened
-    */
+     * Returns the number of records in the database. Throws an exception if the database file could not be opened
+     */
     unsigned recordCount();
 
 private:

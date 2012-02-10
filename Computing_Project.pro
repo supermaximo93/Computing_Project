@@ -26,7 +26,8 @@ SOURCES += main.cpp\
     JobDialog.cpp \
     ExpenseDialog.cpp \
     testing/Customer_testing.cc \
-    Utils.cpp
+    Utils.cpp \
+    testing/Expense_testing.cc
 
 HEADERS  +=\
         Database.h\

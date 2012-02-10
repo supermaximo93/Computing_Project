@@ -7,18 +7,22 @@ using namespace std;
 #ifdef COMPILE_TESTS
 #include <gtest/gtest.h>
 #endif
-
+#include <time.h>
 int main(int argc, char * argv[])
 {
     QApplication a(argc, argv);
+    std::cout << time(NULL) << std::endl;
 
 #ifdef COMPILE_TESTS
     for (int i = 0; i < argc; ++i)
     {
-        if ((strcmp(argv[i], "-t") == 1) || (strcmp(argv[i], "--test") == 1))
+        if ((strcmp(argv[i], "-t") == 0) || (strcmp(argv[i], "--test") == 0))
         {
-            ::testing::InitGoogleTest(&(--argc), ++argv);
-            return RUN_ALL_TESTS();;
+            char arg1[] = "--gtest_output=xml:test_report.xml";
+            char * args[] = { argv[0], arg1 };
+            int argCount = 2;
+            ::testing::InitGoogleTest(&argCount, args);
+            return RUN_ALL_TESTS();
         }
     }
 #endif
