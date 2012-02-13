@@ -13,28 +13,16 @@
 #include <fstream>
 using namespace std;
 
-#include "Database.h"
 #include "Customer.h"
 
 class CustomerTest : public ::testing::Test
 {
 protected:
-    Database<Customer> * database;
     const Customer exampleCustomer;
 
     CustomerTest()
         : exampleCustomer("John", "Doe", "123 Example Lane", "Example Village", "Exampleville", "AB12 3CD",
               "01234567890", "07012345678", "john.doe@example.com") {}
-
-    virtual void SetUp()
-    {
-        database = new Database<Customer>(true);
-    }
-
-    virtual void TearDown()
-    {
-        delete database;
-    }
 };
 
 // Is Customer ID Minus One
@@ -559,38 +547,6 @@ TEST_F(CustomerTest, DoesCustomerReadAndWriteToFileCorrectly)
         else ADD_FAILURE() << "File to write test customer to could not be opened";
         remove(fileName);
     }
-}
-
-// Is Customer With Invalid Data Rejected From Database
-// The database should not allow records to be entered when they have invalid data
-TEST_F(CustomerTest, IsCustomerWithEmptyForenameRejected)
-{
-    // Create a new customer, setting its data (other than the forename, which is empty by default) to example data.
-    // It shouldn't throw validation exceptions
-    Customer customer;
-    try
-    {
-        customer.setSurname(exampleCustomer.getSurname());
-        customer.setAddressLine1(exampleCustomer.getAddressLine1());
-        customer.setAddressLine2(exampleCustomer.getAddressLine2());
-        customer.setTown(exampleCustomer.getTown());
-        customer.setPostcode(exampleCustomer.getPostcode());
-        customer.setHomePhoneNumber(exampleCustomer.getHomePhoneNumber());
-        customer.setMobilePhoneNumber(exampleCustomer.getMobilePhoneNumber());
-        customer.setEmailAddress(exampleCustomer.getEmailAddress());
-    }
-    catch (std::runtime_error & error)
-    {
-        ADD_FAILURE() << "An exception was thrown when assigning valid example data to customers: " << error.what();
-    }
-
-    unsigned recordCountBefore = database->recordCount();
-
-    // An exception should be thrown by the database
-    EXPECT_THROW(database->addRecord(customer), std::runtime_error) << "An exception should have been thrown";
-
-    // The database should have the same number of records as before
-    EXPECT_EQ(recordCountBefore, database->recordCount()) << "Customer with empty name was accepted into the database";
 }
 
 #endif

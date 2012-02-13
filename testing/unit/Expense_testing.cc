@@ -14,27 +14,15 @@
 #include <time.h>
 using namespace std;
 
-#include "Database.h"
 #include "Expense.h"
 
 class ExpenseTest : public ::testing::Test
 {
 protected:
-    Database<Expense> * database;
     const Expense exampleExpense;
 
     ExpenseTest()
         : exampleExpense(time(NULL), "Petrol bill", 30.0, 6.0, 0) {}
-
-    virtual void SetUp()
-    {
-        database = new Database<Expense>(true);
-    }
-
-    virtual void TearDown()
-    {
-        delete database;
-    }
 };
 
 // Is Expense ID Minus One
@@ -153,35 +141,6 @@ TEST_F(ExpenseTest, DoesExpenseReadAndWriteToFileCorrectly)
         else ADD_FAILURE() << "File to write test customer to could not be opened";
         remove(fileName);
     }
-}
-
-// Is Expense With Invalid Data Rejected From Database
-// The database should not allow records to be entered when they have invalid data
-TEST_F(ExpenseTest, IsExpenseWithEmptyDescriptionRejected)
-{
-    // Create a new expense, setting its data (other than the description, which is empty by default) to example data.
-    // It shouldn't throw validation exceptions
-    Expense expense;
-    try
-    {
-        expense.setDate(exampleExpense.getDate());
-        expense.setPrice(exampleExpense.getPrice());
-        expense.setVat(exampleExpense.getVat());
-        expense.setType(exampleExpense.getType());
-    }
-    catch (std::runtime_error & error)
-    {
-        ADD_FAILURE() << "An exception was thrown when assigning valid example data to expenses: " << error.what();
-    }
-
-    unsigned recordCountBefore = database->recordCount();
-
-    // An exception should be thrown by the database
-    EXPECT_THROW(database->addRecord(expense), std::runtime_error) << "An exception should have been thrown";
-
-    // The database should have the same number of records as before
-    EXPECT_EQ(recordCountBefore, database->recordCount())
-            << "Expense with empty description was accepted into the database";
 }
 
 #endif
