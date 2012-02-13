@@ -28,7 +28,8 @@ SOURCES += main.cpp\
     testing/unit/Customer_testing.cc \
     Utils.cpp \
     testing/unit/Expense_testing.cc \
-    testing/unit/Job_testing.cc
+    testing/unit/Job_testing.cc \
+    testing/unit/Part_testing.cc
 
 HEADERS  +=\
         Database.h\

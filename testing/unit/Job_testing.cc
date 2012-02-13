@@ -48,7 +48,7 @@ TEST_F(JobTest, DoesJobRejectDateBeforeNow)
             << "Exception was not thrown when the date was set to a time before now";
 }
 
-// Does Expense Reject Labour Charge Less Than Zero
+// Does Job Reject Labour Charge Less Than Zero
 TEST_F(JobTest, DoesExpenseRejectLabourChargeLessThanZero)
 {
     Job job(exampleJob);
@@ -80,7 +80,7 @@ TEST_F(JobTest, DoesJobReadAndWriteToFileCorrectly)
         else FAIL() << "File to write test job to could not be created";
     }
 
-    { // Read the expense back in and check if the customer matches the original
+    { // Read the job back in and check if the customer matches the original
         fstream inFile;
         inFile.open(fileName);
         if (inFile.is_open(), ios::in | ios::binary)
