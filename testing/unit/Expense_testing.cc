@@ -128,7 +128,7 @@ TEST_F(ExpenseTest, DoesExpenseReadAndWriteToFileCorrectly)
         else FAIL() << "File to write test expense to could not be created";
     }
 
-    { // Read the expense back in and check if the customer matches the original
+    { // Read the expense back in and check if the expense matches the original
         fstream inFile;
         inFile.open(fileName);
         if (inFile.is_open(), ios::in | ios::binary)

@@ -11,7 +11,6 @@
 
 #include <stdexcept>
 #include <fstream>
-#include <time.h>
 using namespace std;
 
 #include "Part.h"
@@ -33,8 +32,8 @@ TEST_F(PartTest, IsPartIdMinusOne)
     EXPECT_EQ(-1, part.getId()) << "Part record that has not been added to the database must have an ID of -1";
 }
 
-// Does Part Reject Customer ID Less Than Zero
-TEST_F(PartTest, DoesPartRejectCustomerIdLessThanZero)
+// Does Part Reject Job ID Less Than Zero
+TEST_F(PartTest, DoesPartRejectJobIdLessThanZero)
 {
     Part part(examplePart);
     EXPECT_THROW(part.setJobId(-1), std::runtime_error)
@@ -146,7 +145,7 @@ TEST_F(PartTest, DoesPartReadAndWriteToFileCorrectly)
         else FAIL() << "File to write test part to could not be created";
     }
 
-    { // Read the part back in and check if the customer matches the original
+    { // Read the part back in and check if the part matches the original
         fstream inFile;
         inFile.open(fileName);
         if (inFile.is_open(), ios::in | ios::binary)
