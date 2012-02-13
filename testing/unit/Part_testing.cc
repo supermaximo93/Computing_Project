@@ -122,4 +122,43 @@ TEST_F(PartTest, DoesPartAutomaticallySetVatRateToTheDefaultInConstructor)
             << "VAT rate was not set to the default in the Part constructor";
 }
 
+// Does Part FieldCompare Member Function Work Correctly
+TEST_F(PartTest, DoesPartFieldCompareMemberFunctionWorkCorrectly)
+{
+    Part lhs(examplePart), rhs(examplePart);
+    EXPECT_TRUE(lhs.fieldCompare(rhs));
+}
+
+// Does Part Read And Write To File Correctly
+TEST_F(PartTest, DoesPartReadAndWriteToFileCorrectly)
+{
+    Part part(examplePart);
+    const char * fileName = "DoesPartReadAndWriteToFileCorrectly.dat.test";
+
+    { // Write the part to a new file
+        fstream outFile;
+        outFile.open(fileName, ios::out | ios::binary);
+        if (outFile.is_open())
+        {
+            part.writeToFile(outFile);
+            outFile.close();
+        }
+        else FAIL() << "File to write test part to could not be created";
+    }
+
+    { // Read the part back in and check if the customer matches the original
+        fstream inFile;
+        inFile.open(fileName);
+        if (inFile.is_open(), ios::in | ios::binary)
+        {
+            Part tempPart;
+            tempPart.readFromFile(inFile);
+            EXPECT_TRUE(tempPart.fieldCompare(part));
+            inFile.close();
+        }
+        else ADD_FAILURE() << "File to write test part to could not be opened";
+        remove(fileName);
+    }
+}
+
 #endif // COMPILE_TESTS

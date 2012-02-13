@@ -510,7 +510,7 @@ TEST_F(CustomerTest, DoesCustomerRejectEmailAddressThatHasInvalidFormat)
     }
 }
 
-// Does Customer Field Compare Member Function Work Correctly
+// Does Customer FieldCompare Member Function Work Correctly
 TEST_F(CustomerTest, DoesCustomerFieldCompareMemberFunctionWorkCorrectly)
 {
     Customer lhs(exampleCustomer), rhs(exampleCustomer);

@@ -56,7 +56,7 @@ TEST_F(JobTest, DoesExpenseRejectLabourChargeLessThanZero)
             << "Exception was not thrown when the labour charge was set to a value less than 0";
 }
 
-// Does Job Field Compare Member Function Work Correctly
+// Does Job FieldCompare Member Function Work Correctly
 TEST_F(JobTest, DoesJobFieldCompareMemberFunctionWorkCorrectly)
 {
     Job lhs(exampleJob), rhs(exampleJob);
@@ -90,7 +90,7 @@ TEST_F(JobTest, DoesJobReadAndWriteToFileCorrectly)
             EXPECT_TRUE(tempJob.fieldCompare(job));
             inFile.close();
         }
-        else ADD_FAILURE() << "File to write test customer to could not be opened";
+        else ADD_FAILURE() << "File to write test job to could not be opened";
         remove(fileName);
     }
 }

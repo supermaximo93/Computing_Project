@@ -104,7 +104,7 @@ TEST_F(ExpenseTest, DoesExpenseRejectTypeLessThanZero)
             << "Exception was not thrown when the type was set to a value less than 0";
 }
 
-// Does Expense Field Compare Member Function Work Correctly
+// Does Expense FieldCompare Member Function Work Correctly
 TEST_F(ExpenseTest, DoesExpenseFieldCompareMemberFunctionWorkCorrectly)
 {
     Expense lhs(exampleExpense), rhs(exampleExpense);
