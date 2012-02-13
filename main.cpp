@@ -7,11 +7,10 @@ using namespace std;
 #ifdef COMPILE_TESTS
 #include <gtest/gtest.h>
 #endif
-#include <time.h>
+
 int main(int argc, char * argv[])
 {
     QApplication a(argc, argv);
-    std::cout << time(NULL) << std::endl;
 
 #ifdef COMPILE_TESTS
     for (int i = 0; i < argc; ++i)
