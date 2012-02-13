@@ -16,18 +16,18 @@ using namespace std;
 
 #include "Expense.h"
 
-class ExpenseTest : public ::testing::Test
+class ExpenseUnitTest : public ::testing::Test
 {
 protected:
     const Expense exampleExpense;
 
-    ExpenseTest()
+    ExpenseUnitTest()
         : exampleExpense(time(NULL) + 100000, "Petrol bill", 30.0, 6.0, 0) {}
 };
 
 // Is Expense ID Minus One
 // A new expense record must have an ID of -1 (a expense record ID will be set when it is added to the database)
-TEST_F(ExpenseTest, IsExpenseIdMinusOne)
+TEST_F(ExpenseUnitTest, IsExpenseIdMinusOne)
 {
     Expense expense;
     EXPECT_EQ(-1, expense.getId()) << "Expense record that has not been added to the database must have an ID of -1";
@@ -35,7 +35,7 @@ TEST_F(ExpenseTest, IsExpenseIdMinusOne)
 
 // Does Expense Reject Date Before Now
 // Records should automatically validate data passed to a setter method, and throw an exception if the data is invalid
-TEST_F(ExpenseTest, DoesExpenseRejectDateBeforeNow)
+TEST_F(ExpenseUnitTest, DoesExpenseRejectDateBeforeNow)
 {
     // Create a expense based on the example data, and then attempt to set the date to a time before now.
     // An exception should be thrown
@@ -46,7 +46,7 @@ TEST_F(ExpenseTest, DoesExpenseRejectDateBeforeNow)
 
 // Does Expense Reject Empty Description
 // Records should automatically validate data passed to a setter method, and throw an exception if the data is invalid
-TEST_F(ExpenseTest, DoesExpenseRejectEmptyDescription)
+TEST_F(ExpenseUnitTest, DoesExpenseRejectEmptyDescription)
 {
     // Create a expense based on the example data, and then attempt to set the description to an empty string.
     // An exception should be thrown
@@ -57,7 +57,7 @@ TEST_F(ExpenseTest, DoesExpenseRejectEmptyDescription)
 
 // Does Expense Reject Description That Is Too Long
 // Records should automatically validate data passed to a setter method, and throw an exception if the data is invalid
-TEST_F(ExpenseTest, DoesExpenseRejectDescriptionThatIsTooLong)
+TEST_F(ExpenseUnitTest, DoesExpenseRejectDescriptionThatIsTooLong)
 {
     // Create a expense based on the example data, and then attempt to set the forename to a string that is longer
     // than the maximum length allowed. An exception should be thrown
@@ -73,7 +73,7 @@ TEST_F(ExpenseTest, DoesExpenseRejectDescriptionThatIsTooLong)
 
 // Does Expense Reject Price Less Than Zero
 // Records should automatically validate data passed to a setter method, and throw an exception if the data is invalid
-TEST_F(ExpenseTest, DoesExpenseRejectPriceLessThanZero)
+TEST_F(ExpenseUnitTest, DoesExpenseRejectPriceLessThanZero)
 {
     // Create a expense based on the example data, and then attempt to set the price to a value less than 0.
     // An exception should be thrown
@@ -84,7 +84,7 @@ TEST_F(ExpenseTest, DoesExpenseRejectPriceLessThanZero)
 
 // Does Expense Reject VAT Less Than Zero
 // Records should automatically validate data passed to a setter method, and throw an exception if the data is invalid
-TEST_F(ExpenseTest, DoesExpenseRejectVATLessThanZero)
+TEST_F(ExpenseUnitTest, DoesExpenseRejectVATLessThanZero)
 {
     // Create a expense based on the example data, and then attempt to set the price to a value less than 0.
     // An exception should be thrown
@@ -95,7 +95,7 @@ TEST_F(ExpenseTest, DoesExpenseRejectVATLessThanZero)
 
 // Does Expense Reject Type Less Than Zero
 // Records should automatically validate data passed to a setter method, and throw an exception if the data is invalid
-TEST_F(ExpenseTest, DoesExpenseRejectTypeLessThanZero)
+TEST_F(ExpenseUnitTest, DoesExpenseRejectTypeLessThanZero)
 {
     // Create a expense based on the example data, and then attempt to set the price to a value less than 0.
     // An exception should be thrown
@@ -105,14 +105,14 @@ TEST_F(ExpenseTest, DoesExpenseRejectTypeLessThanZero)
 }
 
 // Does Expense FieldCompare Member Function Work Correctly
-TEST_F(ExpenseTest, DoesExpenseFieldCompareMemberFunctionWorkCorrectly)
+TEST_F(ExpenseUnitTest, DoesExpenseFieldCompareMemberFunctionWorkCorrectly)
 {
     Expense lhs(exampleExpense), rhs(exampleExpense);
     EXPECT_TRUE(lhs.fieldCompare(rhs));
 }
 
 // Does Expense Read And Write To File Correctly
-TEST_F(ExpenseTest, DoesExpenseReadAndWriteToFileCorrectly)
+TEST_F(ExpenseUnitTest, DoesExpenseReadAndWriteToFileCorrectly)
 {
     Expense expense(exampleExpense);
     const char * fileName = "DoesExpenseReadAndWriteToFileCorrectly.dat.test";

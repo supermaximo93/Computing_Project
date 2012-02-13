@@ -14,7 +14,7 @@ using namespace std;
 
 int Expense::size()
 {
-    return Record::size() + sizeof(time_t) + maxDescriptionLength + (sizeof(double) * 2) + sizeof(int);
+    return Record::size() + sizeof(time_t) + maxDescriptionLength + 1 + (sizeof(double) * 2) + sizeof(int);
 }
 
 const string Expense::databaseFilename = "expenses.dat";

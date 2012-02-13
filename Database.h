@@ -100,8 +100,10 @@ public:
      */
     unsigned recordCount();
 
+    const std::string & filename();
+
 private:
-    std::string filename;
+    std::string filename_;
     int idCounter;
 };
 
@@ -112,14 +114,14 @@ Database<recordType>::Database(bool testing)
 Database<recordType>::Database()
 #endif
 {
-    filename = recordType::databaseFilename;
+    filename_ = recordType::databaseFilename;
 
 #ifdef COMPILE_TESTS
-    if (testing) filename += ".test";
+    if (testing) filename_ += ".test";
 #endif
 
     std::ifstream file;
-    file.open(filename.c_str(), std::ios::binary);
+    file.open(filename_.c_str(), std::ios::binary);
     if (file.is_open())
     {
         file.seekg(0, std::ios_base::beg);
@@ -130,13 +132,13 @@ Database<recordType>::Database()
     {
         idCounter = 0;
         std::ofstream file;
-        file.open(filename.c_str(), std::ios::binary);
+        file.open(filename_.c_str(), std::ios::binary);
         if (file.is_open())
         {
             file.write(reinterpret_cast<const char *>(&idCounter), sizeof(idCounter));
             file.close();
         }
-        else std::cout << "Could not create " + filename << std::endl;
+        else std::cout << "Could not create " + filename_ << std::endl;
     }
 }
 
@@ -144,7 +146,7 @@ template<class recordType>
 Database<recordType>::~Database()
 {
     std::fstream newFile;
-    newFile.open(("temp_" + filename).c_str(), std::ios::out | std::ios::binary);
+    newFile.open(("temp_" + filename_).c_str(), std::ios::out | std::ios::binary);
     if (newFile.is_open())
     {
         newFile.write(reinterpret_cast<const char *>(&idCounter), sizeof(idCounter));
@@ -152,7 +154,7 @@ Database<recordType>::~Database()
         bool fileCopied = false;
         recordType tempRecord;
         std::fstream file;
-        file.open(filename.c_str(), std::ios::in | std::ios::binary);
+        file.open(filename_.c_str(), std::ios::in | std::ios::binary);
         if (file.is_open())
         {
             file.seekg(sizeof(idCounter), std::ios_base::beg);
@@ -166,24 +168,24 @@ Database<recordType>::~Database()
             fileCopied = true;
             file.close();
         }
-        else std::cout << "Could not open file " + filename << std::endl;
+        else std::cout << "Could not open file " + filename_ << std::endl;
         newFile.close();
 
         if (fileCopied)
         {
-            remove(filename.c_str());
-            rename(("temp_" + filename).c_str(), filename.c_str());
+            remove(filename_.c_str());
+            rename(("temp_" + filename_).c_str(), filename_.c_str());
         }
-        else remove(("temp_" + filename).c_str());
+        else remove(("temp_" + filename_).c_str());
     }
-    else std::cout << "Could not create temporary file temp_" + filename << std::endl;
+    else std::cout << "Could not create temporary file temp_" + filename_ << std::endl;
 }
 
 template<class recordType>
 void Database<recordType>::addRecord(recordType & record)
 {
     std::fstream file;
-    file.open(filename.c_str(), std::ios::in | std::ios::out | std::ios::binary);
+    file.open(filename_.c_str(), std::ios::in | std::ios::out | std::ios::binary);
     if (file.is_open())
     {
         file.seekp(0, std::ios_base::end);
@@ -191,7 +193,7 @@ void Database<recordType>::addRecord(recordType & record)
         record.writeToFile(file);
         file.close();
     }
-    else throw(std::runtime_error("Could not open file " + filename));
+    else throw(std::runtime_error("Could not open file " + filename_));
 }
 
 template<class recordType>
@@ -201,7 +203,7 @@ bool Database<recordType>::updateRecord(const recordType & record)
 
     recordType tempRecord;
     std::fstream file;
-    file.open(filename.c_str(), std::ios::in | std::ios::out | std::ios::binary);
+    file.open(filename_.c_str(), std::ios::in | std::ios::out | std::ios::binary);
     if (file.is_open())
     {
         file.seekg(sizeof(idCounter), std::ios_base::beg);
@@ -221,7 +223,7 @@ bool Database<recordType>::updateRecord(const recordType & record)
         file.close();
         return false;
     }
-    else throw(std::runtime_error("Could not open file " + filename));
+    else throw(std::runtime_error("Could not open file " + filename_));
 }
 
 template<class recordType>
@@ -229,7 +231,7 @@ bool Database<recordType>::deleteRecord(const int id)
 {
     recordType tempRecord;
     std::fstream file;
-    file.open(filename.c_str(), std::ios::in | std::ios::out | std::ios::binary);
+    file.open(filename_.c_str(), std::ios::in | std::ios::out | std::ios::binary);
     if (file.is_open())
     {
         file.seekg(sizeof(idCounter), std::ios_base::beg);
@@ -248,7 +250,7 @@ bool Database<recordType>::deleteRecord(const int id)
         }
         file.close();
     }
-    else throw(std::runtime_error("Could not open file " + filename));
+    else throw(std::runtime_error("Could not open file " + filename_));
 
     std::cout << "Record could not be found. No records were deleted" << std::endl;
     return false;
@@ -258,7 +260,7 @@ template<class recordType> template<typename type>
 recordType Database<recordType>::findRecord(const std::string & fieldName, const type & searchTerm)
 {
     std::fstream file;
-    file.open(filename.c_str(), std::ios::in | std::ios::binary);
+    file.open(filename_.c_str(), std::ios::in | std::ios::binary);
     if (file.is_open())
     {
         std::string lowercaseFieldName = lowerCase(fieldName);
@@ -278,7 +280,7 @@ recordType Database<recordType>::findRecord(const std::string & fieldName, const
         }
         file.close();
     }
-    else throw(std::runtime_error("Could not open file " + filename));
+    else throw(std::runtime_error("Could not open file " + filename_));
 
     return recordType();
 }
@@ -290,7 +292,7 @@ Database<recordType>::findRecords(const std::string & fieldName, const type & se
     recordListPtr returnList(new recordList);
 
     std::fstream file;
-    file.open(filename.c_str(), std::ios::in | std::ios::binary);
+    file.open(filename_.c_str(), std::ios::in | std::ios::binary);
     if (file.is_open())
     {
         std::string lowercaseFieldName = lowerCase(fieldName);
@@ -306,7 +308,7 @@ Database<recordType>::findRecords(const std::string & fieldName, const type & se
         }
         file.close();
     }
-    else throw(std::runtime_error("Could not open file " + filename));
+    else throw(std::runtime_error("Could not open file " + filename_));
 
     return returnList;
 }
@@ -336,7 +338,11 @@ void Database<recordType>::keepRecords(std::vector<recordType> & records, const 
 
     for (unsigned i = 0; i < records.size(); ++i)
     {
-        if (!records[i].hasMatchingField(lowercaseFieldName, searchTerm)) records.erase(records.begin() + i);
+        if (!records[i].hasMatchingField(lowercaseFieldName, searchTerm))
+        {
+            records.erase(records.begin() + i);
+            --i;
+        }
     }
 }
 
@@ -349,7 +355,10 @@ void Database<recordType>::removeRecords(std::vector<recordType> & records, cons
     for (unsigned i = 0; i < records.size(); ++i)
     {
         if (records[i].hasMatchingField(lowercaseFieldName, searchTerm))
+        {
             records.erase(records.begin() + i);
+            --i;
+        }
     }
 }
 
@@ -359,7 +368,7 @@ std::tr1::shared_ptr< std::vector<recordType> > Database<recordType>::allRecords
     recordListPtr returnList(new recordList);
 
     std::fstream file;
-    file.open(filename.c_str(), std::ios::in | std::ios::binary);
+    file.open(filename_.c_str(), std::ios::in | std::ios::binary);
     if (file.is_open())
     {
         recordType tempRecord;
@@ -374,7 +383,7 @@ std::tr1::shared_ptr< std::vector<recordType> > Database<recordType>::allRecords
         }
         file.close();
     }
-    else throw(std::runtime_error("Could not open file " + filename));
+    else throw(std::runtime_error("Could not open file " + filename_));
 
     return returnList;
 }
@@ -383,7 +392,7 @@ template<class recordType>
 recordType Database<recordType>::recordAt(const int index)
 {
     std::fstream file;
-    file.open(filename.c_str(), std::ios::in | std::ios::binary);
+    file.open(filename_.c_str(), std::ios::in | std::ios::binary);
     if (file.is_open())
     {
         recordType tempRecord;
@@ -403,7 +412,7 @@ recordType Database<recordType>::recordAt(const int index)
         file.close();
         return tempRecord;
     }
-    else throw(std::runtime_error("Could not open file " + filename));
+    else throw(std::runtime_error("Could not open file " + filename_));
 
     return recordType();
 }
@@ -412,18 +421,32 @@ template<class recordType>
 unsigned Database<recordType>::recordCount()
 {
     std::fstream file;
-    file.open(filename.c_str(), std::ios::in | std::ios::binary);
+    file.open(filename_.c_str(), std::ios::in | std::ios::binary);
     if (file.is_open())
     {
-        file.seekg(0, std::ios_base::end);
-        unsigned size = (unsigned)file.tellg() - sizeof(idCounter);
+        file.seekg(sizeof(idCounter), std::ios_base::beg);
+
+        recordType tempRecord;
+        unsigned count = 0;
+        while (true)
+        {
+            tempRecord.readFromFile(file);
+            if (file.eof()) break;
+            if (tempRecord.getId() >= 0) ++count;
+        }
         file.close();
 
-        return size / recordType::size();
+        return count;
     }
-    else throw(std::runtime_error("Could not open file " + filename));
+    else throw(std::runtime_error("Could not open file " + filename_));
 
     return 0;
+}
+
+template<class recordType>
+const std::string & Database<recordType>::filename()
+{
+    return filename_;
 }
 
 #endif /* DATABASE_H_ */

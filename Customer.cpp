@@ -15,7 +15,7 @@ int Customer::size()
 {
     return Record::size() +
         ((maxNameLength + maxAddressLineLength + maxPhoneNumberLength) * 2) + maxTownLength + maxPostcodeLength +
-            maxEmailAddressLength;
+            maxEmailAddressLength + 9;
 }
 
 const string Customer::databaseFilename = "customers.dat";

@@ -32,7 +32,8 @@ SOURCES += main.cpp\
     testing/unit/Part_testing.cc \
     testing/unit/Task_testing.cc \
     TaskDialog.cpp \
-    PartDialog.cpp
+    PartDialog.cpp \
+    testing/integration/CustomerDatabase_testing.cc
 
 HEADERS  +=\
         Database.h\

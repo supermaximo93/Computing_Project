@@ -16,24 +16,24 @@ using namespace std;
 
 #include "Job.h"
 
-class JobTest : public ::testing::Test
+class JobUnitTest : public ::testing::Test
 {
 protected:
     const Job exampleJob;
 
-    JobTest()
+    JobUnitTest()
         : exampleJob(0, time(NULL) + 100000, 50.0, 0, 0) {}
 };
 
 // Is Job ID Minus One
-TEST_F(JobTest, IsJobIdMinusOne)
+TEST_F(JobUnitTest, IsJobIdMinusOne)
 {
     Job job;
     EXPECT_EQ(-1, job.getId()) << "Job record that has not been added to the database must have an ID of -1";
 }
 
 // Does Job Reject Customer ID Less Than Zero
-TEST_F(JobTest, DoesJobRejectCustomerIdLessThanZero)
+TEST_F(JobUnitTest, DoesJobRejectCustomerIdLessThanZero)
 {
     Job job(exampleJob);
     EXPECT_THROW(job.setCustomerId(-1), std::runtime_error)
@@ -41,7 +41,7 @@ TEST_F(JobTest, DoesJobRejectCustomerIdLessThanZero)
 }
 
 // Does Job Reject Date Before Now
-TEST_F(JobTest, DoesJobRejectDateBeforeNow)
+TEST_F(JobUnitTest, DoesJobRejectDateBeforeNow)
 {
     Job job(exampleJob);
     EXPECT_THROW(job.setDate(time(NULL) - 100000), std::runtime_error)
@@ -49,7 +49,7 @@ TEST_F(JobTest, DoesJobRejectDateBeforeNow)
 }
 
 // Does Job Reject Labour Charge Less Than Zero
-TEST_F(JobTest, DoesExpenseRejectLabourChargeLessThanZero)
+TEST_F(JobUnitTest, DoesExpenseRejectLabourChargeLessThanZero)
 {
     Job job(exampleJob);
     EXPECT_THROW(job.setLabourCharge(-10.0), std::runtime_error)
@@ -57,14 +57,14 @@ TEST_F(JobTest, DoesExpenseRejectLabourChargeLessThanZero)
 }
 
 // Does Job FieldCompare Member Function Work Correctly
-TEST_F(JobTest, DoesJobFieldCompareMemberFunctionWorkCorrectly)
+TEST_F(JobUnitTest, DoesJobFieldCompareMemberFunctionWorkCorrectly)
 {
     Job lhs(exampleJob), rhs(exampleJob);
     EXPECT_TRUE(lhs.fieldCompare(rhs));
 }
 
 // Does Job Read And Write To File Correctly
-TEST_F(JobTest, DoesJobReadAndWriteToFileCorrectly)
+TEST_F(JobUnitTest, DoesJobReadAndWriteToFileCorrectly)
 {
     Job job(exampleJob);
     const char * fileName = "DoesJobReadAndWriteToFileCorrectly.dat.test";

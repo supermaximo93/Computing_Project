@@ -16,24 +16,24 @@ using namespace std;
 #include "Part.h"
 #include "Globals.h"
 
-class PartTest : public ::testing::Test
+class PartUnitTest : public ::testing::Test
 {
 protected:
     const Part examplePart;
 
-    PartTest()
+    PartUnitTest()
         : examplePart(0, "Tap", "12345", 20.0, 20.0) {}
 };
 
 // Is Part ID Minus One
-TEST_F(PartTest, IsPartIdMinusOne)
+TEST_F(PartUnitTest, IsPartIdMinusOne)
 {
     Part part;
     EXPECT_EQ(-1, part.getId()) << "Part record that has not been added to the database must have an ID of -1";
 }
 
 // Does Part Reject Job ID Less Than Zero
-TEST_F(PartTest, DoesPartRejectJobIdLessThanZero)
+TEST_F(PartUnitTest, DoesPartRejectJobIdLessThanZero)
 {
     Part part(examplePart);
     EXPECT_THROW(part.setJobId(-1), std::runtime_error)
@@ -41,7 +41,7 @@ TEST_F(PartTest, DoesPartRejectJobIdLessThanZero)
 }
 
 // Does Part Reject Empty Name
-TEST_F(PartTest, DoesPartRejectEmptyName)
+TEST_F(PartUnitTest, DoesPartRejectEmptyName)
 {
     Part part(examplePart);
     EXPECT_THROW(part.setName(""), std::runtime_error)
@@ -49,7 +49,7 @@ TEST_F(PartTest, DoesPartRejectEmptyName)
 }
 
 // Does Part Reject Name That Is Too Short
-TEST_F(PartTest, DoesPartRejectNameThatIsTooShort)
+TEST_F(PartUnitTest, DoesPartRejectNameThatIsTooShort)
 {
     Part part(examplePart);
 
@@ -62,7 +62,7 @@ TEST_F(PartTest, DoesPartRejectNameThatIsTooShort)
 }
 
 // Does Part Reject Name That Is Too Long
-TEST_F(PartTest, DoesPartRejectNameThatIsTooLong)
+TEST_F(PartUnitTest, DoesPartRejectNameThatIsTooLong)
 {
     Part part(examplePart);
 
@@ -76,7 +76,7 @@ TEST_F(PartTest, DoesPartRejectNameThatIsTooLong)
 
 // Does Part Accept Empty Part Number
 // The part number field is optional
-TEST_F(PartTest, DoesPartAcceptEmptyPartNumber)
+TEST_F(PartUnitTest, DoesPartAcceptEmptyPartNumber)
 {
     Part part(examplePart);
     EXPECT_NO_THROW(part.setNumber(""))
@@ -84,7 +84,7 @@ TEST_F(PartTest, DoesPartAcceptEmptyPartNumber)
 }
 
 // Does Part Reject Part Number That Is Too Long
-TEST_F(PartTest, DoesPartRejectPartNumberThatIsTooLong)
+TEST_F(PartUnitTest, DoesPartRejectPartNumberThatIsTooLong)
 {
     Part part(examplePart);
 
@@ -97,7 +97,7 @@ TEST_F(PartTest, DoesPartRejectPartNumberThatIsTooLong)
 }
 
 // Does Part Reject Price Less Than Zero
-TEST_F(PartTest, DoesPartRejectPriceLessThanZero)
+TEST_F(PartUnitTest, DoesPartRejectPriceLessThanZero)
 {
     Part part(examplePart);
     EXPECT_THROW(part.setPrice(-10.0), std::runtime_error)
@@ -105,7 +105,7 @@ TEST_F(PartTest, DoesPartRejectPriceLessThanZero)
 }
 
 // Does Part Reject VAT Rate Less Than Zero
-TEST_F(PartTest, DoesPartRejectVatRateLessThanZero)
+TEST_F(PartUnitTest, DoesPartRejectVatRateLessThanZero)
 {
     Part part(examplePart);
     EXPECT_THROW(part.setVatRate(-10.0), std::runtime_error)
@@ -114,7 +114,7 @@ TEST_F(PartTest, DoesPartRejectVatRateLessThanZero)
 
 // Does Part Automatically Set VAT Rate To The Default In Constructor
 // If no VAT rate is given to the Part record's constructor, then the VAT rate should be set to the default value
-TEST_F(PartTest, DoesPartAutomaticallySetVatRateToTheDefaultInConstructor)
+TEST_F(PartUnitTest, DoesPartAutomaticallySetVatRateToTheDefaultInConstructor)
 {
     Part part(0, "Tap", "12345", 20.0);
     EXPECT_EQ(Globals::vatRate, part.getVatRate())
@@ -122,14 +122,14 @@ TEST_F(PartTest, DoesPartAutomaticallySetVatRateToTheDefaultInConstructor)
 }
 
 // Does Part FieldCompare Member Function Work Correctly
-TEST_F(PartTest, DoesPartFieldCompareMemberFunctionWorkCorrectly)
+TEST_F(PartUnitTest, DoesPartFieldCompareMemberFunctionWorkCorrectly)
 {
     Part lhs(examplePart), rhs(examplePart);
     EXPECT_TRUE(lhs.fieldCompare(rhs));
 }
 
 // Does Part Read And Write To File Correctly
-TEST_F(PartTest, DoesPartReadAndWriteToFileCorrectly)
+TEST_F(PartUnitTest, DoesPartReadAndWriteToFileCorrectly)
 {
     Part part(examplePart);
     const char * fileName = "DoesPartReadAndWriteToFileCorrectly.dat.test";

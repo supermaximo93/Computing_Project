@@ -15,19 +15,19 @@ using namespace std;
 
 #include "Customer.h"
 
-class CustomerTest : public ::testing::Test
+class CustomerUnitTest : public ::testing::Test
 {
 protected:
     const Customer exampleCustomer;
 
-    CustomerTest()
+    CustomerUnitTest()
         : exampleCustomer("John", "Doe", "123 Example Lane", "Example Village", "Exampleville", "AB12 3CD",
               "01234567890", "07012345678", "john.doe@example.com") {}
 };
 
 // Is Customer ID Minus One
 // A new customer record must have an ID of -1 (a customer record ID will be set when it is added to the database)
-TEST_F(CustomerTest, IsCustomerIdMinusOne)
+TEST_F(CustomerUnitTest, IsCustomerIdMinusOne)
 {
     Customer customer;
     EXPECT_EQ(-1, customer.getId()) << "Customer record that has not been added to the database must have an ID of -1";
@@ -36,7 +36,7 @@ TEST_F(CustomerTest, IsCustomerIdMinusOne)
 
 // Does Customer Reject Empty Forename
 // Records should automatically validate data passed to a setter method, and throw an exception if the data is invalid
-TEST_F(CustomerTest, DoesCustomerRejectEmptyForename)
+TEST_F(CustomerUnitTest, DoesCustomerRejectEmptyForename)
 {
     // Create a customer based on the example data, and then attempt to set the forename to an empty string.
     // An exception should be thrown
@@ -46,7 +46,7 @@ TEST_F(CustomerTest, DoesCustomerRejectEmptyForename)
 }
 
 // Does Customer Reject Forename That Is Too Short
-TEST_F(CustomerTest, DoesCustomerRejectForenameThatIsTooShort)
+TEST_F(CustomerUnitTest, DoesCustomerRejectForenameThatIsTooShort)
 {
     // Create a customer based on the example data, and then attempt to set the forename to a string shorter than the
     // minimum length. An exception should be thrown
@@ -60,7 +60,7 @@ TEST_F(CustomerTest, DoesCustomerRejectForenameThatIsTooShort)
 }
 
 // Does Customer Reject Forename That Is Too Long
-TEST_F(CustomerTest, DoesCustomerRejectForenameThatIsTooLong)
+TEST_F(CustomerUnitTest, DoesCustomerRejectForenameThatIsTooLong)
 {
     // Create a customer based on the example data, and then attempt to set the forename to a string that is longer
     // than the maximum length allowed. An exception should be thrown
@@ -76,7 +76,7 @@ TEST_F(CustomerTest, DoesCustomerRejectForenameThatIsTooLong)
 
 
 // Does Customer Reject Empty Surname
-TEST_F(CustomerTest, DoesCustomerRejectEmptySurname)
+TEST_F(CustomerUnitTest, DoesCustomerRejectEmptySurname)
 {
     Customer customer(exampleCustomer);
     EXPECT_THROW(customer.setSurname(""), std::runtime_error)
@@ -84,7 +84,7 @@ TEST_F(CustomerTest, DoesCustomerRejectEmptySurname)
 }
 
 // Does Customer Reject Surname That Is Too Short
-TEST_F(CustomerTest, DoesCustomerRejectSurnameThatIsTooShort)
+TEST_F(CustomerUnitTest, DoesCustomerRejectSurnameThatIsTooShort)
 {
     Customer customer(exampleCustomer);
 
@@ -97,7 +97,7 @@ TEST_F(CustomerTest, DoesCustomerRejectSurnameThatIsTooShort)
 }
 
 // Does Customer Reject Surname That Is Too Long
-TEST_F(CustomerTest, DoesCustomerRejectSurnameThatIsTooLong)
+TEST_F(CustomerUnitTest, DoesCustomerRejectSurnameThatIsTooLong)
 {
     Customer customer(exampleCustomer);
 
@@ -111,7 +111,7 @@ TEST_F(CustomerTest, DoesCustomerRejectSurnameThatIsTooLong)
 
 
 // Does Customer Reject Empty Address Line 1
-TEST_F(CustomerTest, DoesCustomerRejectEmptyAddressLine1)
+TEST_F(CustomerUnitTest, DoesCustomerRejectEmptyAddressLine1)
 {
     Customer customer(exampleCustomer);
     EXPECT_THROW(customer.setAddressLine1(""), std::runtime_error)
@@ -119,7 +119,7 @@ TEST_F(CustomerTest, DoesCustomerRejectEmptyAddressLine1)
 }
 
 // Does Customer Reject Address Line 1 That Is Too Short
-TEST_F(CustomerTest, DoesCustomerRejectAddressLine1ThatIsTooShort)
+TEST_F(CustomerUnitTest, DoesCustomerRejectAddressLine1ThatIsTooShort)
 {
     Customer customer(exampleCustomer);
 
@@ -132,7 +132,7 @@ TEST_F(CustomerTest, DoesCustomerRejectAddressLine1ThatIsTooShort)
 }
 
 // Does Customer Reject Address Line 1 That Is Too Long
-TEST_F(CustomerTest, DoesCustomerRejectAddressLine1ThatIsTooLong)
+TEST_F(CustomerUnitTest, DoesCustomerRejectAddressLine1ThatIsTooLong)
 {
     Customer customer(exampleCustomer);
 
@@ -146,7 +146,7 @@ TEST_F(CustomerTest, DoesCustomerRejectAddressLine1ThatIsTooLong)
 
 
 // Does Customer Reject Empty Town
-TEST_F(CustomerTest, DoesCustomerRejectEmptyTown)
+TEST_F(CustomerUnitTest, DoesCustomerRejectEmptyTown)
 {
     Customer customer(exampleCustomer);
     EXPECT_THROW(customer.setSurname(""), std::runtime_error)
@@ -154,7 +154,7 @@ TEST_F(CustomerTest, DoesCustomerRejectEmptyTown)
 }
 
 // Does Customer Reject Town That Is Too Short
-TEST_F(CustomerTest, DoesCustomerRejectTownThatIsTooShort)
+TEST_F(CustomerUnitTest, DoesCustomerRejectTownThatIsTooShort)
 {
     Customer customer(exampleCustomer);
 
@@ -167,7 +167,7 @@ TEST_F(CustomerTest, DoesCustomerRejectTownThatIsTooShort)
 }
 
 // Does Customer Reject Town That Is Too Long
-TEST_F(CustomerTest, DoesCustomerRejectTownThatIsTooLong)
+TEST_F(CustomerUnitTest, DoesCustomerRejectTownThatIsTooLong)
 {
     Customer customer(exampleCustomer);
 
@@ -181,7 +181,7 @@ TEST_F(CustomerTest, DoesCustomerRejectTownThatIsTooLong)
 
 
 // Does Customer Reject Empty Postcode
-TEST_F(CustomerTest, DoesCustomerRejectEmptyPostcode)
+TEST_F(CustomerUnitTest, DoesCustomerRejectEmptyPostcode)
 {
     Customer customer(exampleCustomer);
     EXPECT_THROW(customer.setPostcode(""), std::runtime_error)
@@ -189,7 +189,7 @@ TEST_F(CustomerTest, DoesCustomerRejectEmptyPostcode)
 }
 
 // Does Customer Reject Postcode That Is Too Short
-TEST_F(CustomerTest, DoesCustomerRejectPostcodeThatIsTooShort)
+TEST_F(CustomerUnitTest, DoesCustomerRejectPostcodeThatIsTooShort)
 {
     Customer customer(exampleCustomer);
 
@@ -202,7 +202,7 @@ TEST_F(CustomerTest, DoesCustomerRejectPostcodeThatIsTooShort)
 }
 
 // Does Customer Reject Postcode That Is Too Long
-TEST_F(CustomerTest, DoesCustomerRejectPostcodeThatIsTooLong)
+TEST_F(CustomerUnitTest, DoesCustomerRejectPostcodeThatIsTooLong)
 {
     Customer customer(exampleCustomer);
 
@@ -215,7 +215,7 @@ TEST_F(CustomerTest, DoesCustomerRejectPostcodeThatIsTooLong)
 }
 
 // Does Customer Accept Postcode That Has Valid Format
-TEST_F(CustomerTest, DoesCustomerAcceptPostcodeThatHasValidFormat)
+TEST_F(CustomerUnitTest, DoesCustomerAcceptPostcodeThatHasValidFormat)
 {
     Customer customer(exampleCustomer);
 
@@ -235,7 +235,7 @@ TEST_F(CustomerTest, DoesCustomerAcceptPostcodeThatHasValidFormat)
 }
 
 // Does Customer Reject Postcode That Has Invalid Format
-TEST_F(CustomerTest, DoesCustomerRejectPostcodeThatHasInvalidFormat)
+TEST_F(CustomerUnitTest, DoesCustomerRejectPostcodeThatHasInvalidFormat)
 {
     Customer customer(exampleCustomer);
 
@@ -256,7 +256,7 @@ TEST_F(CustomerTest, DoesCustomerRejectPostcodeThatHasInvalidFormat)
 
 
 // Does Customer Reject Empty Home Phone Number
-TEST_F(CustomerTest, DoesCustomerRejectEmptyHomePhoneNumber)
+TEST_F(CustomerUnitTest, DoesCustomerRejectEmptyHomePhoneNumber)
 {
     // Create a customer based on the example data, and then attempt to set the home phone number to an empty string.
     // An exception should be thrown
@@ -266,7 +266,7 @@ TEST_F(CustomerTest, DoesCustomerRejectEmptyHomePhoneNumber)
 }
 
 // Does Customer Reject Home Phone Number That Is Too Short
-TEST_F(CustomerTest, DoesCustomerRejectHomePhoneNumberThatIsTooShort)
+TEST_F(CustomerUnitTest, DoesCustomerRejectHomePhoneNumberThatIsTooShort)
 {
     // Create a customer based on the example data, and then attempt to set the home phone number to a string that is
     // shorter than the minimum length allowed. An exception should be thrown
@@ -282,7 +282,7 @@ TEST_F(CustomerTest, DoesCustomerRejectHomePhoneNumberThatIsTooShort)
 }
 
 // Does Customer Reject Home Phone Number That Is Too Long
-TEST_F(CustomerTest, DoesCustomerRejectHomePhoneNumberThatIsTooLong)
+TEST_F(CustomerUnitTest, DoesCustomerRejectHomePhoneNumberThatIsTooLong)
 {
     // Create a customer based on the example data, and then attempt to set the home phone number to a string that is
     // longer than the maximum length allowed. An exception should be thrown
@@ -298,7 +298,7 @@ TEST_F(CustomerTest, DoesCustomerRejectHomePhoneNumberThatIsTooLong)
 }
 
 // Does Customer Accept Home Phone Number That Has Valid Format
-TEST_F(CustomerTest, DoesCustomerAcceptHomePhoneNumberThatHasValidFormat)
+TEST_F(CustomerUnitTest, DoesCustomerAcceptHomePhoneNumberThatHasValidFormat)
 {
     Customer customer(exampleCustomer);
 
@@ -319,7 +319,7 @@ TEST_F(CustomerTest, DoesCustomerAcceptHomePhoneNumberThatHasValidFormat)
 }
 
 // Does Customer Reject Home Phone Number That Has Invalid Format
-TEST_F(CustomerTest, DoesCustomerRejectHomePhoneNumberThatHasInvalidFormat)
+TEST_F(CustomerUnitTest, DoesCustomerRejectHomePhoneNumberThatHasInvalidFormat)
 {
     Customer customer(exampleCustomer);
 
@@ -341,7 +341,7 @@ TEST_F(CustomerTest, DoesCustomerRejectHomePhoneNumberThatHasInvalidFormat)
 
 
 // Does Customer Accept Empty Mobile Phone Number
-TEST_F(CustomerTest, DoesCustomerAcceptEmptyMobilePhoneNumber)
+TEST_F(CustomerUnitTest, DoesCustomerAcceptEmptyMobilePhoneNumber)
 {
     // Create a customer based on the example data, and then attempt to set the mobile phone number to an empty string.
     // An exception should not be thrown because the mobile phone number field is optional
@@ -351,7 +351,7 @@ TEST_F(CustomerTest, DoesCustomerAcceptEmptyMobilePhoneNumber)
 }
 
 // Does Customer Reject Mobile Phone Number That Is Too Short
-TEST_F(CustomerTest, DoesCustomerRejectMobilePhoneNumberThatIsTooShort)
+TEST_F(CustomerUnitTest, DoesCustomerRejectMobilePhoneNumberThatIsTooShort)
 {
     // Create a customer based on the example data, and then attempt to set the mobile phone number to a string that is
     // shorter than the minimum length allowed. An exception should be thrown
@@ -367,7 +367,7 @@ TEST_F(CustomerTest, DoesCustomerRejectMobilePhoneNumberThatIsTooShort)
 }
 
 // Does Customer Reject Mobile Phone Number That Is Too Long
-TEST_F(CustomerTest, DoesCustomerRejectMobilePhoneNumberThatIsTooLong)
+TEST_F(CustomerUnitTest, DoesCustomerRejectMobilePhoneNumberThatIsTooLong)
 {
     // Create a customer based on the example data, and then attempt to set the mobile phone number to a string that is
     // longer than the maximum length allowed. An exception should be thrown
@@ -383,7 +383,7 @@ TEST_F(CustomerTest, DoesCustomerRejectMobilePhoneNumberThatIsTooLong)
 }
 
 // Does Customer Accept Mobile Phone Number That Has Valid Format
-TEST_F(CustomerTest, DoesCustomerAcceptMobilePhoneNumberThatHasValidFormat)
+TEST_F(CustomerUnitTest, DoesCustomerAcceptMobilePhoneNumberThatHasValidFormat)
 {
     Customer customer(exampleCustomer);
 
@@ -404,7 +404,7 @@ TEST_F(CustomerTest, DoesCustomerAcceptMobilePhoneNumberThatHasValidFormat)
 }
 
 // Does Customer Reject Mobile Phone Number That Has Invalid Format
-TEST_F(CustomerTest, DoesCustomerRejectMobilePhoneNumberThatHasInvalidFormat)
+TEST_F(CustomerUnitTest, DoesCustomerRejectMobilePhoneNumberThatHasInvalidFormat)
 {
     Customer customer(exampleCustomer);
 
@@ -426,7 +426,7 @@ TEST_F(CustomerTest, DoesCustomerRejectMobilePhoneNumberThatHasInvalidFormat)
 
 
 // Does Customer Reject Empty Email Address
-TEST_F(CustomerTest, DoesCustomerRejectEmptyEmailAddress)
+TEST_F(CustomerUnitTest, DoesCustomerRejectEmptyEmailAddress)
 {
     // Create a customer based on the example data, and then attempt to set the email address to an empty string.
     // An exception should be thrown
@@ -436,7 +436,7 @@ TEST_F(CustomerTest, DoesCustomerRejectEmptyEmailAddress)
 }
 
 // Does Customer Reject Email Address That Is Too Short
-TEST_F(CustomerTest, DoesCustomerRejectEmailAddressThatIsTooShort)
+TEST_F(CustomerUnitTest, DoesCustomerRejectEmailAddressThatIsTooShort)
 {
     // Create a customer based on the example data, and then attempt to set the email address to a string that is
     // shorter than the minimum length allowed. An exception should be thrown
@@ -451,7 +451,7 @@ TEST_F(CustomerTest, DoesCustomerRejectEmailAddressThatIsTooShort)
 }
 
 // Does Customer Reject Email Address That Is Too Long
-TEST_F(CustomerTest, DoesCustomerRejectEmailAddressThatIsTooLong)
+TEST_F(CustomerUnitTest, DoesCustomerRejectEmailAddressThatIsTooLong)
 {
     // Create a customer based on the example data, and then attempt to set the email address to a string that is
     // longer than the maximum length allowed. An exception should be thrown
@@ -469,7 +469,7 @@ TEST_F(CustomerTest, DoesCustomerRejectEmailAddressThatIsTooLong)
 }
 
 // Does Customer Accept Email Address That Has Valid Format
-TEST_F(CustomerTest, DoesCustomerAcceptEmailAddressThatHasValidFormat)
+TEST_F(CustomerUnitTest, DoesCustomerAcceptEmailAddressThatHasValidFormat)
 {
     Customer customer(exampleCustomer);
 
@@ -491,7 +491,7 @@ TEST_F(CustomerTest, DoesCustomerAcceptEmailAddressThatHasValidFormat)
 }
 
 // Does Customer Reject Email Address That Has Invalid Format
-TEST_F(CustomerTest, DoesCustomerRejectEmailAddressThatHasInvalidFormat)
+TEST_F(CustomerUnitTest, DoesCustomerRejectEmailAddressThatHasInvalidFormat)
 {
     Customer customer(exampleCustomer);
 
@@ -511,14 +511,14 @@ TEST_F(CustomerTest, DoesCustomerRejectEmailAddressThatHasInvalidFormat)
 }
 
 // Does Customer FieldCompare Member Function Work Correctly
-TEST_F(CustomerTest, DoesCustomerFieldCompareMemberFunctionWorkCorrectly)
+TEST_F(CustomerUnitTest, DoesCustomerFieldCompareMemberFunctionWorkCorrectly)
 {
     Customer lhs(exampleCustomer), rhs(exampleCustomer);
     EXPECT_TRUE(lhs.fieldCompare(rhs));
 }
 
 // Does Customer Read And Write To File Correctly
-TEST_F(CustomerTest, DoesCustomerReadAndWriteToFileCorrectly)
+TEST_F(CustomerUnitTest, DoesCustomerReadAndWriteToFileCorrectly)
 {
     Customer customer(exampleCustomer);
     const char * fileName = "DoesCustomerReadAndWriteToFileCorrectly.dat.test";

@@ -15,7 +15,7 @@ using namespace std;
 
 int Part::size()
 {
-    return Record::size() + sizeof(int) + maxNameLength + maxNumberLength + (sizeof(double) * 2);
+    return Record::size() + sizeof(int) + maxNameLength + maxNumberLength + 2 + (sizeof(double) * 2);
 }
 
 const string Part::databaseFilename = "parts.dat";

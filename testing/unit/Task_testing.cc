@@ -16,24 +16,24 @@ using namespace std;
 
 #include "Task.h"
 
-class TaskTest : public ::testing::Test
+class TaskUnitTest : public ::testing::Test
 {
 protected:
     const Task exampleTask;
 
-    TaskTest()
+    TaskUnitTest()
         : exampleTask(0, time(NULL) + 100000, "Example task") {}
 };
 
 // Is Task ID Minus One
-TEST_F(TaskTest, IsTaskIdMinusOne)
+TEST_F(TaskUnitTest, IsTaskIdMinusOne)
 {
     Task task;
     EXPECT_EQ(-1, task.getId()) << "Task record that has not been added to the database must have an ID of -1";
 }
 
 // Does Task Reject Job ID Less Than Zero
-TEST_F(TaskTest, DoesTaskRejectJobIdLessThanZero)
+TEST_F(TaskUnitTest, DoesTaskRejectJobIdLessThanZero)
 {
     Task task(exampleTask);
     EXPECT_THROW(task.setJobId(-1), std::runtime_error)
@@ -41,7 +41,7 @@ TEST_F(TaskTest, DoesTaskRejectJobIdLessThanZero)
 }
 
 // Does Task Reject Date Before Now
-TEST_F(TaskTest, DoesTaskRejectDateBeforeNow)
+TEST_F(TaskUnitTest, DoesTaskRejectDateBeforeNow)
 {
     Task task(exampleTask);
     EXPECT_THROW(task.setDate(time(NULL) - 100000), std::runtime_error)
@@ -49,7 +49,7 @@ TEST_F(TaskTest, DoesTaskRejectDateBeforeNow)
 }
 
 // Does Task Reject Empty Description
-TEST_F(TaskTest, DoesTaskRejectEmptyDescription)
+TEST_F(TaskUnitTest, DoesTaskRejectEmptyDescription)
 {
     Task task(exampleTask);
     EXPECT_THROW(task.setDescription(""), std::runtime_error)
@@ -57,7 +57,7 @@ TEST_F(TaskTest, DoesTaskRejectEmptyDescription)
 }
 
 // Does Task Reject Description That Is Too Long
-TEST_F(TaskTest, DoesTaskRejectDescriptionThatIsTooLong)
+TEST_F(TaskUnitTest, DoesTaskRejectDescriptionThatIsTooLong)
 {
     Task task(exampleTask);
 
@@ -70,14 +70,14 @@ TEST_F(TaskTest, DoesTaskRejectDescriptionThatIsTooLong)
 }
 
 // Does Task FieldCompare Member Function Work Correctly
-TEST_F(TaskTest, DoesTaskFieldCompareMemberFunctionWorkCorrectly)
+TEST_F(TaskUnitTest, DoesTaskFieldCompareMemberFunctionWorkCorrectly)
 {
     Task lhs(exampleTask), rhs(exampleTask);
     EXPECT_TRUE(lhs.fieldCompare(rhs));
 }
 
 // Does Task Read And Write To File Correctly
-TEST_F(TaskTest, DoesTaskReadAndWriteToFileCorrectly)
+TEST_F(TaskUnitTest, DoesTaskReadAndWriteToFileCorrectly)
 {
     Task task(exampleTask);
     const char * fileName = "DoesTaskReadAndWriteToFileCorrectly.dat.test";

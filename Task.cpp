@@ -57,7 +57,7 @@ void Task::readFromFile(fstream & file)
 
 int Task::size()
 {
-    return Record::size() + sizeof(int) + sizeof(time_t) + maxDescriptionLength;
+    return Record::size() + sizeof(int) + sizeof(time_t) + maxDescriptionLength + 1;
 }
 
 bool Task::hasMatchingField(const string & fieldName, const int searchTerm) const
