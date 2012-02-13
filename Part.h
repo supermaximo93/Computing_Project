@@ -35,6 +35,9 @@ public:
     bool hasMatchingField(const std::string & fieldName, const char * searchTerm) const;
     bool hasMatchingField(const std::string & fieldName, const float searchTerm) const;
 
+    bool fieldCompare(const Part & rhs) const;
+    bool completeCompare(const Part & rhs) const;
+
     int getJobId() const;
     void setJobId(const int newJobId);
 

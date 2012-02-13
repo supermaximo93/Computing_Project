@@ -40,6 +40,11 @@ public:
     bool hasMatchingField(const std::string & fieldName, int searchTerm) const; // Won't work without it
     bool hasMatchingField(const std::string & fieldName, const char * searchTerm) const;
 
+    // Returns whether the fields of the passed record, other than ID, match
+    bool fieldCompare(const Customer & rhs) const;
+    // Returns whether the fields of the passed record, including ID, match
+    bool completeCompare(const Customer & rhs) const;
+
     const char * getForename() const;
     void setForename(const char * newForename);
 

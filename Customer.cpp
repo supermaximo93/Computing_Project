@@ -91,29 +91,29 @@ void Customer::operator =(const Customer & customer)
 void Customer::writeToFile(fstream & file) const
 {
     Record::writeToFile(file);
-    file.write(forename, maxNameLength);
-    file.write(surname, maxNameLength);
-    file.write(addressLine1, maxAddressLineLength);
-    file.write(addressLine2, maxAddressLineLength);
-    file.write(town, maxTownLength);
-    file.write(postcode, maxPostcodeLength);
-    file.write(homePhoneNumber, maxPhoneNumberLength);
-    file.write(mobilePhoneNumber, maxPhoneNumberLength);
-    file.write(emailAddress, maxEmailAddressLength);
+    file.write(forename, maxNameLength + 1);
+    file.write(surname, maxNameLength + 1);
+    file.write(addressLine1, maxAddressLineLength + 1);
+    file.write(addressLine2, maxAddressLineLength + 1);
+    file.write(town, maxTownLength + 1);
+    file.write(postcode, maxPostcodeLength + 1);
+    file.write(homePhoneNumber, maxPhoneNumberLength + 1);
+    file.write(mobilePhoneNumber, maxPhoneNumberLength + 1);
+    file.write(emailAddress, maxEmailAddressLength + 1);
 }
 
 void Customer::readFromFile(fstream & file)
 {
     Record::readFromFile(file);
-    file.read(forename, maxNameLength);
-    file.read(surname, maxNameLength);
-    file.read(addressLine1, maxAddressLineLength);
-    file.read(addressLine2, maxAddressLineLength);
-    file.read(town, maxTownLength);
-    file.read(postcode, maxPostcodeLength);
-    file.read(homePhoneNumber, maxPhoneNumberLength);
-    file.read(mobilePhoneNumber, maxPhoneNumberLength);
-    file.read(emailAddress, maxEmailAddressLength);
+    file.read(forename, maxNameLength + 1);
+    file.read(surname, maxNameLength + 1);
+    file.read(addressLine1, maxAddressLineLength + 1);
+    file.read(addressLine2, maxAddressLineLength + 1);
+    file.read(town, maxTownLength + 1);
+    file.read(postcode, maxPostcodeLength + 1);
+    file.read(homePhoneNumber, maxPhoneNumberLength + 1);
+    file.read(mobilePhoneNumber, maxPhoneNumberLength + 1);
+    file.read(emailAddress, maxEmailAddressLength + 1);
 }
 
 bool Customer::hasMatchingField(const string & fieldName, const int searchTerm) const
@@ -134,6 +134,26 @@ bool Customer::hasMatchingField(const string & fieldName, const char * searchTer
     else if (fieldName == "emailaddress") return (strcmp(emailAddress, searchTerm) == 0);
 
     return false;
+}
+
+bool Customer::fieldCompare(const Customer & rhs) const
+{
+    if (strcmp(forename, rhs.forename) != 0) return false;
+    if (strcmp(surname, rhs.surname) != 0) return false;
+    if (strcmp(addressLine1, rhs.addressLine1) != 0) return false;
+    if (strcmp(addressLine2, rhs.addressLine2) != 0) return false;
+    if (strcmp(town, rhs.town) != 0) return false;
+    if (strcmp(postcode, rhs.postcode) != 0) return false;
+    if (strcmp(homePhoneNumber, rhs.homePhoneNumber) != 0) return false;
+    if (strcmp(mobilePhoneNumber, rhs.mobilePhoneNumber) != 0) return false;
+    if (strcmp(emailAddress, rhs.emailAddress) != 0) return false;
+    return true;
+}
+
+bool Customer::completeCompare(const Customer & rhs) const
+{
+    if (getId() != rhs.getId()) return false;
+    return fieldCompare(rhs);
 }
 
 const char * Customer::getForename() const

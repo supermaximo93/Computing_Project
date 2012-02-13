@@ -10,6 +10,8 @@
 #include <gtest/gtest.h>
 
 #include <stdexcept>
+#include <fstream>
+using namespace std;
 
 #include "Database.h"
 #include "Customer.h"
@@ -225,7 +227,7 @@ TEST_F(CustomerTest, DoesCustomerRejectPostcodeThatIsTooLong)
 }
 
 // Does Customer Accept Postcode That Has Valid Format
-TEST_F(CustomerTest, DoesCustomerRejectPostcodeThatHasValidFormat)
+TEST_F(CustomerTest, DoesCustomerAcceptPostcodeThatHasValidFormat)
 {
     Customer customer(exampleCustomer);
 
@@ -237,7 +239,7 @@ TEST_F(CustomerTest, DoesCustomerRejectPostcodeThatHasValidFormat)
     };
 
     // Loop through and check each postcode. An exception should not be thrown
-    for (unsigned i = 0; strcmp(postcodes[i], "END") == 0; ++i)
+    for (unsigned i = 0; strcmp(postcodes[i], "END") != 0; ++i)
     {
         EXPECT_NO_THROW(customer.setPostcode(postcodes[i]))
                 << "Exception was thrown when the postcode was set to a string with a valid postcode format";
@@ -257,7 +259,7 @@ TEST_F(CustomerTest, DoesCustomerRejectPostcodeThatHasInvalidFormat)
     };
 
     // Loop through and check each postcode. An exception should be thrown
-    for (unsigned i = 0; strcmp(postcodes[i], "END") == 0; ++i)
+    for (unsigned i = 0; strcmp(postcodes[i], "END") != 0; ++i)
     {
         EXPECT_THROW(customer.setPostcode(postcodes[i]), std::runtime_error)
                 << "Exception was not thrown when the postcode was set to a string with an invalid postcode format";
@@ -320,7 +322,7 @@ TEST_F(CustomerTest, DoesCustomerAcceptHomePhoneNumberThatHasValidFormat)
     };
 
     // Loop through and check each phone number. An exception should not be thrown
-    for (unsigned i = 0; strcmp(phoneNumbers[i], "END") == 0; ++i)
+    for (unsigned i = 0; strcmp(phoneNumbers[i], "END") != 0; ++i)
     {
         EXPECT_NO_THROW(customer.setHomePhoneNumber(phoneNumbers[i]))
                 << "Exception was thrown when the home phone number was set to a string with a valid phone number"
@@ -341,7 +343,7 @@ TEST_F(CustomerTest, DoesCustomerRejectHomePhoneNumberThatHasInvalidFormat)
     };
 
     // Loop through and check each phone number. An exception should not be thrown
-    for (unsigned i = 0; strcmp(phoneNumbers[i], "END") == 0; ++i)
+    for (unsigned i = 0; strcmp(phoneNumbers[i], "END") != 0; ++i)
     {
         EXPECT_THROW(customer.setHomePhoneNumber(phoneNumbers[i]), std::runtime_error)
                 << "Exception was not thrown when the home phone number was set to a string with an invalid phone "
@@ -356,7 +358,7 @@ TEST_F(CustomerTest, DoesCustomerAcceptEmptyMobilePhoneNumber)
     // Create a customer based on the example data, and then attempt to set the mobile phone number to an empty string.
     // An exception should not be thrown because the mobile phone number field is optional
     Customer customer(exampleCustomer);
-    EXPECT_THROW(customer.setMobilePhoneNumber(""), std::runtime_error)
+    EXPECT_NO_THROW(customer.setMobilePhoneNumber(""))
             << "Exception was thrown when the mobile phone number was set to an empty string";
 }
 
@@ -405,7 +407,7 @@ TEST_F(CustomerTest, DoesCustomerAcceptMobilePhoneNumberThatHasValidFormat)
     };
 
     // Loop through and check each phone number. An exception should not be thrown
-    for (unsigned i = 0; strcmp(phoneNumbers[i], "END") == 0; ++i)
+    for (unsigned i = 0; strcmp(phoneNumbers[i], "END") != 0; ++i)
     {
         EXPECT_NO_THROW(customer.setMobilePhoneNumber(phoneNumbers[i]))
                 << "Exception was thrown when the mobile phone number was set to a string with a valid phone number"
@@ -426,7 +428,7 @@ TEST_F(CustomerTest, DoesCustomerRejectMobilePhoneNumberThatHasInvalidFormat)
     };
 
     // Loop through and check each phone number. An exception should not be thrown
-    for (unsigned i = 0; strcmp(phoneNumbers[i], "END") == 0; ++i)
+    for (unsigned i = 0; strcmp(phoneNumbers[i], "END") != 0; ++i)
     {
         EXPECT_THROW(customer.setMobilePhoneNumber(phoneNumbers[i]), std::runtime_error)
                 << "Exception was not thrown when the mobile phone number was set to a string with an invalid phone "
@@ -493,7 +495,7 @@ TEST_F(CustomerTest, DoesCustomerAcceptEmailAddressThatHasValidFormat)
     };
 
     // Loop through and check each phone number. An exception should not be thrown
-    for (unsigned i = 0; strcmp(emailAddresses[i], "END") == 0; ++i)
+    for (unsigned i = 0; strcmp(emailAddresses[i], "END") != 0; ++i)
     {
         EXPECT_NO_THROW(customer.setEmailAddress(emailAddresses[i]))
                 << "Exception was thrown when the email address was set to a string with a valid email address format";
@@ -512,11 +514,50 @@ TEST_F(CustomerTest, DoesCustomerRejectEmailAddressThatHasInvalidFormat)
     };
 
     // Loop through and check each email address. An exception should not be thrown
-    for (unsigned i = 0; strcmp(emailAddresses[i], "END") == 0; ++i)
+    for (unsigned i = 0; strcmp(emailAddresses[i], "END") != 0; ++i)
     {
         EXPECT_THROW(customer.setEmailAddress(emailAddresses[i]), std::runtime_error)
                 << "Exception was not thrown when the email address was set to a string with an invalid emai address"
                    "format";
+    }
+}
+
+// Does Customer Field Compare Member Function Work Correctly
+TEST_F(CustomerTest, DoesCustomerFieldCompareMemberFunctionWorkCorrectly)
+{
+    Customer lhs(exampleCustomer), rhs(exampleCustomer);
+    EXPECT_TRUE(lhs.fieldCompare(rhs));
+}
+
+// Does Customer Read And Write To File Correctly
+TEST_F(CustomerTest, DoesCustomerReadAndWriteToFileCorrectly)
+{
+    Customer customer(exampleCustomer);
+    const char * fileName = "DoesCustomerReadAndWriteToFileCorrectly.dat.test";
+
+    { // Write the customer to a new file
+        fstream outFile;
+        outFile.open(fileName, ios::out | ios::binary);
+        if (outFile.is_open())
+        {
+            customer.writeToFile(outFile);
+            outFile.close();
+        }
+        else FAIL() << "File to write test customer to could not be created";
+    }
+
+    { // Read the customer back in and check if the customer matches the original
+        fstream inFile;
+        inFile.open(fileName);
+        if (inFile.is_open(), ios::in | ios::binary)
+        {
+            Customer tempCustomer;
+            tempCustomer.readFromFile(inFile);
+            EXPECT_TRUE(tempCustomer.fieldCompare(customer));
+            inFile.close();
+        }
+        else ADD_FAILURE() << "File to write test customer to could not be opened";
+        remove(fileName);
     }
 }
 

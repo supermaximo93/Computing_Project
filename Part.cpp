@@ -6,6 +6,7 @@
  */
 
 #include <fstream>
+#include <cmath>
 #include <string.h>
 using namespace std;
 
@@ -56,8 +57,8 @@ void Part::writeToFile(fstream & file) const
 {
     Record::writeToFile(file);
     file.write(reinterpret_cast<const char *>(&jobId), sizeof(jobId));
-    file.write(name, maxNameLength);
-    file.write(number, maxNumberLength);
+    file.write(name, maxNameLength + 1);
+    file.write(number, maxNumberLength + 1);
     file.write(reinterpret_cast<const char *>(&price), sizeof(price));
     file.write(reinterpret_cast<const char *>(&vatRate), sizeof(vatRate));
 }
@@ -66,8 +67,8 @@ void Part::readFromFile(fstream & file)
 {
     Record::readFromFile(file);
     file.read(reinterpret_cast<char *>(&jobId), sizeof(jobId));
-    file.read(name, maxNameLength);
-    file.read(number, maxNumberLength);
+    file.read(name, maxNameLength + 1);
+    file.read(number, maxNumberLength + 1);
     file.read(reinterpret_cast<char *>(&price), sizeof(price));
     file.read(reinterpret_cast<char *>(&vatRate), sizeof(vatRate));
 }
@@ -90,6 +91,22 @@ bool Part::hasMatchingField(const string & fieldName, const float searchTerm) co
     if (fieldName == "price") return (price == searchTerm);
     else if (fieldName == "vatRate") return (vatRate == searchTerm);
     return false;
+}
+
+bool Part::fieldCompare(const Part & rhs) const
+{
+    if (jobId != rhs.jobId) return false;
+    if (strcmp(name, rhs.name) != 0) return false;
+    if (strcmp(number, rhs.number) != 0) return false;
+    if (fabs(price - rhs.price) > 0.001) return false;
+    if (fabs(vatRate - rhs.vatRate) > 0.001) return false;
+    return true;
+}
+
+bool Part::completeCompare(const Part & rhs) const
+{
+    if (getId() != rhs.getId()) return false;
+    return fieldCompare(rhs);
 }
 
 int Part::getJobId() const

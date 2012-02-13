@@ -36,6 +36,9 @@ public:
     bool hasMatchingField(const std::string & fieldName, const float searchTerm) const;
     bool hasMatchingField(const std::string & fieldName, const int searchTerm) const;
 
+    bool fieldCompare(const Expense & rhs) const;
+    bool completeCompare(const Expense & rhs) const;
+
     time_t getDate() const;
     void setDate(const time_t newDate);
 

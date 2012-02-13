@@ -10,7 +10,9 @@
 #include <gtest/gtest.h>
 
 #include <stdexcept>
+#include <fstream>
 #include <time.h>
+using namespace std;
 
 #include "Database.h"
 #include "Expense.h"
@@ -112,6 +114,45 @@ TEST_F(ExpenseTest, DoesExpenseRejectTypeLessThanZero)
     Expense expense(exampleExpense);
     EXPECT_THROW(expense.setType(-1), std::runtime_error)
             << "Exception was not thrown when the type was set to a value less than 0";
+}
+
+// Does Expense Field Compare Member Function Work Correctly
+TEST_F(ExpenseTest, DoesExpenseFieldCompareMemberFunctionWorkCorrectly)
+{
+    Expense lhs(exampleExpense), rhs(exampleExpense);
+    EXPECT_TRUE(lhs.fieldCompare(rhs));
+}
+
+// Does Expense Read And Write To File Correctly
+TEST_F(ExpenseTest, DoesExpenseReadAndWriteToFileCorrectly)
+{
+    Expense expense(exampleExpense);
+    const char * fileName = "DoesExpenseReadAndWriteToFileCorrectly.dat.test";
+
+    { // Write the expense to a new file
+        fstream outFile;
+        outFile.open(fileName, ios::out | ios::binary);
+        if (outFile.is_open())
+        {
+            expense.writeToFile(outFile);
+            outFile.close();
+        }
+        else FAIL() << "File to write test customer to could not be created";
+    }
+
+    { // Read the expense back in and check if the customer matches the original
+        fstream inFile;
+        inFile.open(fileName);
+        if (inFile.is_open(), ios::in | ios::binary)
+        {
+            Expense tempExpense;
+            tempExpense.readFromFile(inFile);
+            EXPECT_TRUE(tempExpense.fieldCompare(expense));
+            inFile.close();
+        }
+        else ADD_FAILURE() << "File to write test customer to could not be opened";
+        remove(fileName);
+    }
 }
 
 // Is Expense With Invalid Data Rejected From Database

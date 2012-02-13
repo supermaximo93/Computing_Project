@@ -6,6 +6,7 @@
  */
 
 #include <fstream>
+#include <cmath>
 using namespace std;
 
 #include "Globals.h"
@@ -63,6 +64,23 @@ bool Job::hasMatchingField(const string & fieldName, const float searchTerm) con
     if (fieldName == "labourcharge") return (labourCharge == searchTerm);
     else if (fieldName == "vat") return (vat == searchTerm);
     return false;
+}
+
+bool Job::fieldCompare(const Job & rhs) const
+{
+    if (customerId != rhs.customerId) return false;
+    if (date != rhs.date) return false;
+    if (fabs(labourCharge - rhs.labourCharge) > 0.001) return false;
+    if (fabs(vat - rhs.vat) > 0.001) return false;
+    if (completionState != rhs.completionState) return false;
+    if (paymentMethod != rhs.paymentMethod) return false;
+    return true;
+}
+
+bool Job::completeCompare(const Job & rhs) const
+{
+    if (getId() != rhs.getId()) return false;
+    return fieldCompare(rhs);
 }
 
 int Job::getCustomerId() const

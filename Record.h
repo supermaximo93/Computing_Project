@@ -21,6 +21,7 @@ class Expense;
 class Record
 {
 public:
+    // Only compares ID for speed. Use fieldCompare or completeCompare for comparing all fields of derivative classes
     bool operator ==(const Record & record) const;
     bool operator ==(const int recordId) const;
     void operator =(const Record & record);

@@ -30,6 +30,9 @@ public:
     bool hasMatchingField(const std::string & fieldName, const time_t searchTerm) const;
     bool hasMatchingField(const std::string & fieldName, const float searchTerm) const;
 
+    bool fieldCompare(const Job & rhs) const;
+    bool completeCompare(const Job & rhs) const;
+
     int getCustomerId() const;
     void setCustomerId(const int newCustomerId);
 

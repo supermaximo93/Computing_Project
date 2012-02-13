@@ -6,6 +6,7 @@
  */
 
 #include <fstream>
+#include <cmath>
 #include <string.h>
 using namespace std;
 
@@ -50,7 +51,7 @@ void Expense::writeToFile(fstream & file) const
 {
     Record::writeToFile(file);
     file.write(reinterpret_cast<const char *>(&date), sizeof(date));
-    file.write(description, maxDescriptionLength);
+    file.write(description, maxDescriptionLength + 1);
     file.write(reinterpret_cast<const char *>(&price), sizeof(price));
     file.write(reinterpret_cast<const char *>(&vat), sizeof(vat));
     file.write(reinterpret_cast<const char *>(&type), sizeof(type));
@@ -60,7 +61,7 @@ void Expense::readFromFile(fstream & file)
 {
     Record::readFromFile(file);
     file.read(reinterpret_cast<char *>(&date), sizeof(date));
-    file.read(description, maxDescriptionLength);
+    file.read(description, maxDescriptionLength + 1);
     file.read(reinterpret_cast<char *>(&price), sizeof(price));
     file.read(reinterpret_cast<char *>(&vat), sizeof(vat));
     file.read(reinterpret_cast<char *>(&type), sizeof(type));
@@ -89,6 +90,22 @@ bool Expense::hasMatchingField(const string & fieldName, const int searchTerm) c
 {
     if (fieldName == "type") return (type == searchTerm);
     return Record::hasMatchingField(fieldName, searchTerm);
+}
+
+bool Expense::fieldCompare(const Expense & rhs) const
+{
+    if (date != rhs.date) return false;
+    if (strcmp(description, rhs.description) != 0) return false;
+    if (fabs(price - rhs.price) > 0.001) return false; // Accouting for floating point error
+    if (fabs(vat - rhs.vat) > 0.001) return false;
+    if (type != rhs.type) return false;
+    return true;
+}
+
+bool Expense::completeCompare(const Expense & rhs) const
+{
+    if (getId() != rhs.getId()) return false;
+    return fieldCompare(rhs);
 }
 
 time_t Expense::getDate() const

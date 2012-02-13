@@ -44,7 +44,7 @@ void Task::writeToFile(fstream & file) const
     Record::writeToFile(file);
     file.write(reinterpret_cast<const char *>(&jobId), sizeof(jobId));
     file.write(reinterpret_cast<const char *>(&date), sizeof(date));
-    file.write(description, maxDescriptionLength);
+    file.write(description, maxDescriptionLength + 1);
 }
 
 void Task::readFromFile(fstream & file)
@@ -52,7 +52,7 @@ void Task::readFromFile(fstream & file)
     Record::readFromFile(file);
     file.read(reinterpret_cast<char *>(&jobId), sizeof(jobId));
     file.read(reinterpret_cast<char *>(&date), sizeof(date));
-    file.read(description, maxDescriptionLength);
+    file.read(description, maxDescriptionLength + 1);
 }
 
 int Task::size()
@@ -76,6 +76,20 @@ bool Task::hasMatchingField(const string & fieldName, const char * searchTerm) c
 {
     if (fieldName == "description") return (strcmp(description, searchTerm) == 0);
     return false;
+}
+
+bool Task::fieldCompare(const Task & rhs) const
+{
+    if (jobId != rhs.jobId) return false;
+    if (date != rhs.date) return false;
+    if (strcmp(description, rhs.description) != 0) return false;
+    return true;
+}
+
+bool Task::completeCompare(const Task & rhs) const
+{
+    if (getId() != rhs.getId()) return false;
+    return fieldCompare(rhs);
 }
 
 int Task::getJobId() const
