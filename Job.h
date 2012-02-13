@@ -20,7 +20,7 @@ public:
 
     static const std::string databaseFilename;
 
-    Job(const int customerId = 0, const time_t date = 0, const float labourCharge = 0.0f,
+    Job(const int customerId = 0, const time_t date = 0, const double labourCharge = 0.0,
         const int completionState = 0, const int paymentMethod = 0);
 
     void writeToFile(std::fstream & file) const;
@@ -28,7 +28,7 @@ public:
 
     bool hasMatchingField(const std::string & fieldName, const int searchTerm) const;
     bool hasMatchingField(const std::string & fieldName, const time_t searchTerm) const;
-    bool hasMatchingField(const std::string & fieldName, const float searchTerm) const;
+    bool hasMatchingField(const std::string & fieldName, const double searchTerm) const;
 
     bool fieldCompare(const Job & rhs) const;
     bool completeCompare(const Job & rhs) const;
@@ -39,10 +39,10 @@ public:
     time_t getDate() const;
     void setDate(const time_t newDate);
 
-    float getLabourCharge() const;
-    void setLabourCharge(const float newLabourCharge); // Recalculates VAT
+    double getLabourCharge() const;
+    void setLabourCharge(const double newLabourCharge); // Recalculates VAT
 
-    float getVat() const; // No setter because VAT is automatically calculated
+    double getVat() const; // No setter because VAT is automatically calculated
 
     int getCompletionState() const;
     void setCompletionState(const int newCompletionState);
@@ -53,7 +53,7 @@ public:
 private:
     int customerId, completionState, paymentMethod;
     time_t date;
-    float labourCharge, vat;
+    double labourCharge, vat;
 };
 
 #endif /* JOB_H_ */

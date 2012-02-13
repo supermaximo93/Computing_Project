@@ -21,8 +21,8 @@ public:
     static const std::string databaseFilename;
     static const int minDescriptionLength = 0, maxDescriptionLength = 256;
 
-    Expense(const time_t date = 0, const char * description = "", const float price = 0.0f,
-            const float vat = 0.0f, const int type = 0);
+    Expense(const time_t date = 0, const char * description = "", const double price = 0.0,
+            const double vat = 0.0, const int type = 0);
     Expense(const Expense & expense);
     ~Expense();
 
@@ -33,7 +33,7 @@ public:
 
     bool hasMatchingField(const std::string & fieldName, const time_t searchTerm) const;
     bool hasMatchingField(const std::string & fieldName, const char * searchTerm) const;
-    bool hasMatchingField(const std::string & fieldName, const float searchTerm) const;
+    bool hasMatchingField(const std::string & fieldName, const double searchTerm) const;
     bool hasMatchingField(const std::string & fieldName, const int searchTerm) const;
 
     bool fieldCompare(const Expense & rhs) const;
@@ -45,11 +45,11 @@ public:
     const char * getDescription() const;
     void setDescription(const char * newDescription);
 
-    float getPrice() const;
-    void setPrice(const float newPrice);
+    double getPrice() const;
+    void setPrice(const double newPrice);
 
-    float getVat() const;
-    void setVat(const float newVat);
+    double getVat() const;
+    void setVat(const double newVat);
 
     int getType() const;
     void setType(const int newType);
@@ -57,7 +57,7 @@ public:
 private:
     time_t date;
     char * description;
-    float price, vat;
+    double price, vat;
     int type;
 };
 

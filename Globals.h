@@ -11,7 +11,7 @@
 namespace Globals
 {
 
-const float vatRate = 20.0f;
+const double vatRate = 20.0;
 
 }
 

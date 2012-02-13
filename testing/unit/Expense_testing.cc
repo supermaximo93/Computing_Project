@@ -24,7 +24,7 @@ protected:
     const Expense exampleExpense;
 
     ExpenseTest()
-        : exampleExpense(time(NULL), "Petrol bill", 30.0f, 6.0f, 0) {}
+        : exampleExpense(time(NULL), "Petrol bill", 30.0, 6.0, 0) {}
 
     virtual void SetUp()
     {
@@ -90,7 +90,7 @@ TEST_F(ExpenseTest, DoesExpenseRejectPriceLessThanZero)
     // Create a expense based on the example data, and then attempt to set the price to a value less than 0.
     // An exception should be thrown
     Expense expense(exampleExpense);
-    EXPECT_THROW(expense.setPrice(-10.0f), std::runtime_error)
+    EXPECT_THROW(expense.setPrice(-10.0), std::runtime_error)
             << "Exception was not thrown when the price was set to a value less than 0";
 }
 
@@ -101,7 +101,7 @@ TEST_F(ExpenseTest, DoesExpenseRejectVATLessThanZero)
     // Create a expense based on the example data, and then attempt to set the price to a value less than 0.
     // An exception should be thrown
     Expense expense(exampleExpense);
-    EXPECT_THROW(expense.setVat(-10.0f), std::runtime_error)
+    EXPECT_THROW(expense.setVat(-10.0), std::runtime_error)
             << "Exception was not thrown when the VAT was set to a value less than 0";
 }
 

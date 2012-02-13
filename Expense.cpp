@@ -14,12 +14,12 @@ using namespace std;
 
 int Expense::size()
 {
-    return Record::size() + sizeof(time_t) + maxDescriptionLength + (sizeof(float) * 2) + sizeof(int);
+    return Record::size() + sizeof(time_t) + maxDescriptionLength + (sizeof(double) * 2) + sizeof(int);
 }
 
 const string Expense::databaseFilename = "expenses.dat";
 
-Expense::Expense(const time_t date, const char * newDescription, const float price, const float vat, const int type)
+Expense::Expense(const time_t date, const char * newDescription, const double price, const double vat, const int type)
     : date(date), price(price), vat(vat), type(type)
 {
     description = new char[maxDescriptionLength + 1];
@@ -79,7 +79,7 @@ bool Expense::hasMatchingField(const string & fieldName, const char * searchTerm
     return false;
 }
 
-bool Expense::hasMatchingField(const string & fieldName, const float searchTerm) const
+bool Expense::hasMatchingField(const string & fieldName, const double searchTerm) const
 {
     if (fieldName == "price") return (price == searchTerm);
     else if (fieldName == "vat") return (vat == searchTerm);
@@ -96,8 +96,8 @@ bool Expense::fieldCompare(const Expense & rhs) const
 {
     if (date != rhs.date) return false;
     if (strcmp(description, rhs.description) != 0) return false;
-    if (fabs(price - rhs.price) > 0.001) return false; // Accouting for floating point error
-    if (fabs(vat - rhs.vat) > 0.001) return false;
+    if (fabs(price - rhs.price) > 0.00001) return false; // Accouting for floating point error
+    if (fabs(vat - rhs.vat) > 0.00001) return false;
     if (type != rhs.type) return false;
     return true;
 }
@@ -128,22 +128,22 @@ void Expense::setDescription(const char * newDescription)
     strcpy(description, newDescription);
 }
 
-float Expense::getPrice() const
+double Expense::getPrice() const
 {
     return price;
 }
 
-void Expense::setPrice(const float newPrice)
+void Expense::setPrice(const double newPrice)
 {
     price = newPrice;
 }
 
-float Expense::getVat() const
+double Expense::getVat() const
 {
     return vat;
 }
 
-void Expense::setVat(const float newVat)
+void Expense::setVat(const double newVat)
 {
     vat = newVat;
 }

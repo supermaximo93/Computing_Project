@@ -15,13 +15,13 @@ using namespace std;
 
 int Part::size()
 {
-    return Record::size() + sizeof(int) + maxNameLength + maxNumberLength + (sizeof(float) * 2);
+    return Record::size() + sizeof(int) + maxNameLength + maxNumberLength + (sizeof(double) * 2);
 }
 
 const string Part::databaseFilename = "parts.dat";
 
-Part::Part(const int jobId, const char * newName, const char * newNumber, const float price, const float vatRate)
-    : jobId(jobId), price(price), vatRate(vatRate < 0.0f ? Globals::vatRate : vatRate)
+Part::Part(const int jobId, const char * newName, const char * newNumber, const double price, const double vatRate)
+    : jobId(jobId), price(price), vatRate(vatRate < 0.0 ? Globals::vatRate : vatRate)
 {
     name = new char[maxNameLength + 1];
     number = new char[maxNumberLength + 1];
@@ -86,7 +86,7 @@ bool Part::hasMatchingField(const string & fieldName, const char * searchTerm) c
     return false;
 }
 
-bool Part::hasMatchingField(const string & fieldName, const float searchTerm) const
+bool Part::hasMatchingField(const string & fieldName, const double searchTerm) const
 {
     if (fieldName == "price") return (price == searchTerm);
     else if (fieldName == "vatRate") return (vatRate == searchTerm);
@@ -98,8 +98,8 @@ bool Part::fieldCompare(const Part & rhs) const
     if (jobId != rhs.jobId) return false;
     if (strcmp(name, rhs.name) != 0) return false;
     if (strcmp(number, rhs.number) != 0) return false;
-    if (fabs(price - rhs.price) > 0.001) return false;
-    if (fabs(vatRate - rhs.vatRate) > 0.001) return false;
+    if (fabs(price - rhs.price) > 0.00001) return false;
+    if (fabs(vatRate - rhs.vatRate) > 0.00001) return false;
     return true;
 }
 
@@ -139,22 +139,22 @@ void Part::setNumber(const char * newNumber)
     strcpy(number, newNumber);
 }
 
-float Part::getPrice() const
+double Part::getPrice() const
 {
     return price;
 }
 
-void Part::setPrice(const float newPrice)
+void Part::setPrice(const double newPrice)
 {
     price = newPrice;
 }
 
-float Part::getVatRate() const
+double Part::getVatRate() const
 {
     return vatRate;
 }
 
-void Part::setVatRate(const float newVatRate)
+void Part::setVatRate(const double newVatRate)
 {
     vatRate = newVatRate;
 }

@@ -39,10 +39,10 @@ ExpenseDialog::~ExpenseDialog()
 void ExpenseDialog::recalculateTotalPrice()
 {
     QByteArray byteArray = ui->lineEdit_priceExclVat->text().toLocal8Bit();
-    float priceExclVat = strtod(byteArray.data(), NULL);
+    double priceExclVat = strtod(byteArray.data(), NULL);
     byteArray = ui->lineEdit_vat->text().toLocal8Bit();
-    float vat = strtod(byteArray.data(), NULL) / 100.0f;
-    ui->lineEdit_totalPrice->setText(toString(priceExclVat * (1.0f + vat)).c_str());
+    double vat = strtod(byteArray.data(), NULL) / 100.0;
+    ui->lineEdit_totalPrice->setText(toString(priceExclVat * (1.0 + vat)).c_str());
 }
 
 void ExpenseDialog::on_pushButton_cancel_clicked()

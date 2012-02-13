@@ -13,12 +13,12 @@ using namespace std;
 #include "Job.h"
 
 int Job::size() {
-    return Record::size() + (sizeof(int) * 3) + sizeof(time_t) + (sizeof(float) * 2);
+    return Record::size() + (sizeof(int) * 3) + sizeof(time_t) + (sizeof(double) * 2);
 }
 
 const string Job::databaseFilename = "jobs.dat";
 
-Job::Job(const int customerId, const time_t date, const float labourCharge, const int completionState,
+Job::Job(const int customerId, const time_t date, const double labourCharge, const int completionState,
          const int paymentMethod) :
     customerId(customerId), completionState(completionState), paymentMethod(paymentMethod), date(date),
     labourCharge(labourCharge), vat(labourCharge * Globals::vatRate) {}
@@ -59,7 +59,7 @@ bool Job::hasMatchingField(const string & fieldName, const time_t searchTerm) co
     return false;
 }
 
-bool Job::hasMatchingField(const string & fieldName, const float searchTerm) const
+bool Job::hasMatchingField(const string & fieldName, const double searchTerm) const
 {
     if (fieldName == "labourcharge") return (labourCharge == searchTerm);
     else if (fieldName == "vat") return (vat == searchTerm);
@@ -70,8 +70,8 @@ bool Job::fieldCompare(const Job & rhs) const
 {
     if (customerId != rhs.customerId) return false;
     if (date != rhs.date) return false;
-    if (fabs(labourCharge - rhs.labourCharge) > 0.001) return false;
-    if (fabs(vat - rhs.vat) > 0.001) return false;
+    if (fabs(labourCharge - rhs.labourCharge) > 0.00001) return false;
+    if (fabs(vat - rhs.vat) > 0.00001) return false;
     if (completionState != rhs.completionState) return false;
     if (paymentMethod != rhs.paymentMethod) return false;
     return true;
@@ -103,18 +103,18 @@ void Job::setDate(const time_t newDate)
     date = newDate;
 }
 
-float Job::getLabourCharge() const
+double Job::getLabourCharge() const
 {
     return labourCharge;
 }
 
-void Job::setLabourCharge(const float newLabourCharge)
+void Job::setLabourCharge(const double newLabourCharge)
 {
     labourCharge = newLabourCharge;
     vat = labourCharge * Globals::vatRate;
 }
 
-float Job::getVat() const
+double Job::getVat() const
 {
     return vat;
 }

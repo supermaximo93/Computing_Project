@@ -21,8 +21,8 @@ public:
     minNameLength   = 3, maxNameLength   = 24,
     minNumberLength = 0, maxNumberLength = 32;
 
-    Part(const int jobId = 0, const char * name = "", const char * number = "", const float price = 0.0f,
-         const float vatRate = -1.0f);
+    Part(const int jobId = 0, const char * name = "", const char * number = "", const double price = 0.0,
+         const double vatRate = -1.0);
     Part(const Part & part);
     ~Part();
 
@@ -33,7 +33,7 @@ public:
 
     bool hasMatchingField(const std::string & fieldName, const int searchTerm) const;
     bool hasMatchingField(const std::string & fieldName, const char * searchTerm) const;
-    bool hasMatchingField(const std::string & fieldName, const float searchTerm) const;
+    bool hasMatchingField(const std::string & fieldName, const double searchTerm) const;
 
     bool fieldCompare(const Part & rhs) const;
     bool completeCompare(const Part & rhs) const;
@@ -47,16 +47,16 @@ public:
     const char * getNumber() const;
     void setNumber(const char * newNumber);
 
-    float getPrice() const;
-    void setPrice(const float newPrice);
+    double getPrice() const;
+    void setPrice(const double newPrice);
 
-    float getVatRate() const;
-    void setVatRate(const float newVatRate);
+    double getVatRate() const;
+    void setVatRate(const double newVatRate);
 
 private:
     int jobId;
     char * name, * number;
-    float price, vatRate;
+    double price, vatRate;
 };
 
 #endif /* PART_H_ */
