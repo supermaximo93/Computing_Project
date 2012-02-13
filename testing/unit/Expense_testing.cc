@@ -22,7 +22,7 @@ protected:
     const Expense exampleExpense;
 
     ExpenseTest()
-        : exampleExpense(time(NULL), "Petrol bill", 30.0, 6.0, 0) {}
+        : exampleExpense(time(NULL) + 100000, "Petrol bill", 30.0, 6.0, 0) {}
 };
 
 // Is Expense ID Minus One
@@ -40,7 +40,7 @@ TEST_F(ExpenseTest, DoesExpenseRejectDateBeforeNow)
     // Create a expense based on the example data, and then attempt to set the date to a time before now.
     // An exception should be thrown
     Expense expense(exampleExpense);
-    EXPECT_THROW(expense.setDate(time(NULL) - 1000000), std::runtime_error)
+    EXPECT_THROW(expense.setDate(time(NULL) - 100000), std::runtime_error)
             << "Exception was not thrown when the date was set to a time before now";
 }
 
@@ -125,7 +125,7 @@ TEST_F(ExpenseTest, DoesExpenseReadAndWriteToFileCorrectly)
             expense.writeToFile(outFile);
             outFile.close();
         }
-        else FAIL() << "File to write test customer to could not be created";
+        else FAIL() << "File to write test expense to could not be created";
     }
 
     { // Read the expense back in and check if the customer matches the original
@@ -138,9 +138,9 @@ TEST_F(ExpenseTest, DoesExpenseReadAndWriteToFileCorrectly)
             EXPECT_TRUE(tempExpense.fieldCompare(expense));
             inFile.close();
         }
-        else ADD_FAILURE() << "File to write test customer to could not be opened";
+        else ADD_FAILURE() << "File to write test expense to could not be opened";
         remove(fileName);
     }
 }
 
-#endif
+#endif // COMPILE_TESTS

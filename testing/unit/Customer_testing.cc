@@ -549,4 +549,4 @@ TEST_F(CustomerTest, DoesCustomerReadAndWriteToFileCorrectly)
     }
 }
 
-#endif
+#endif // COMPILE_TESTS
