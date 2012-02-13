@@ -30,7 +30,9 @@ SOURCES += main.cpp\
     testing/unit/Expense_testing.cc \
     testing/unit/Job_testing.cc \
     testing/unit/Part_testing.cc \
-    testing/unit/Task_testing.cc
+    testing/unit/Task_testing.cc \
+    TaskDialog.cpp \
+    PartDialog.cpp
 
 HEADERS  +=\
         Database.h\
@@ -46,10 +48,14 @@ HEADERS  +=\
     JobDialog.h \
     ExpenseDialog.h \
     AssignOncePointer.h \
-    Utils.h
+    Utils.h \
+    TaskDialog.h \
+    PartDialog.h
 
 FORMS    += \
     CustomerDialog.ui \
     MainWindow.ui \
     JobDialog.ui \
-    ExpenseDialog.ui
+    ExpenseDialog.ui \
+    TaskDialog.ui \
+    PartDialog.ui

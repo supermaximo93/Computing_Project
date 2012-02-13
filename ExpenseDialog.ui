@@ -16,7 +16,7 @@
   <widget class="QPushButton" name="pushButton_submit">
    <property name="geometry">
     <rect>
-     <x>50</x>
+     <x>80</x>
      <y>320</y>
      <width>97</width>
      <height>27</height>
@@ -29,7 +29,7 @@
   <widget class="QPushButton" name="pushButton_cancel">
    <property name="geometry">
     <rect>
-     <x>240</x>
+     <x>210</x>
      <y>320</y>
      <width>97</width>
      <height>27</height>
@@ -68,9 +68,6 @@
        <string>Description</string>
       </property>
      </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QTextEdit" name="textEdit_description"/>
     </item>
     <item row="2" column="0">
      <widget class="QLabel" name="label_priceExclVat">
@@ -112,15 +109,18 @@
     <item row="5" column="1">
      <widget class="QComboBox" name="comboBox_typeHeading"/>
     </item>
+    <item row="1" column="1">
+     <widget class="QPlainTextEdit" name="plainTextEdit_description"/>
+    </item>
    </layout>
   </widget>
-  <widget class="QLabel" name="label_welcome">
+  <widget class="QLabel" name="label_businessExpense">
    <property name="geometry">
     <rect>
      <x>30</x>
      <y>10</y>
      <width>251</width>
-     <height>21</height>
+     <height>31</height>
     </rect>
    </property>
    <property name="font">

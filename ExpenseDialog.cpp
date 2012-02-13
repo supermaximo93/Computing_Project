@@ -70,7 +70,7 @@ void ExpenseDialog::on_pushButton_submit_clicked()
         return;
     }
 
-    QByteArray byteArray = ui->textEdit_description->toPlainText().toLocal8Bit();
+    QByteArray byteArray = ui->plainTextEdit_description->toPlainText().toLocal8Bit();
     expenseToEdit->setDescription(byteArray.data());
 
     if (ui->pushButton_submit->text() == "Save")
