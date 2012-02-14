@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>JobNew</class>
+ <widget class="QDialog" name="JobNew">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>510</width>
+    <height>644</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QWidget" name="formLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>40</y>
+     <width>187</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <layout class="QFormLayout" name="formLayout_dateCustomer">
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_date">
+      <property name="text">
+       <string>Date</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QDateEdit" name="dateEdit_date"/>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_customer">
+      <property name="text">
+       <string>Customer</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QComboBox" name="comboBox_customer"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="formLayoutWidget_2">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>280</y>
+     <width>261</width>
+     <height>128</height>
+    </rect>
+   </property>
+   <layout class="QFormLayout" name="formLayout_charges">
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_labourCharge">
+      <property name="text">
+       <string>Labour Charge</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_totalChargeExclVat">
+      <property name="text">
+       <string>Total Chage (excl.VAT)</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_vat">
+      <property name="text">
+       <string>VAT</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="label_totalChargeInclVat">
+      <property name="text">
+       <string>Total Charge (incl. VAT)</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLineEdit" name="lineEdit_labourCharge"/>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="lineEdit_totalChargeExclVat"/>
+    </item>
+    <item row="2" column="1">
+     <widget class="QLineEdit" name="lineEdit_vat"/>
+    </item>
+    <item row="3" column="1">
+     <widget class="QLineEdit" name="lineEdit_totalChargeInclVat"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QPushButton" name="pushButton_submit">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>600</y>
+     <width>97</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Submit</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_cancel">
+   <property name="geometry">
+    <rect>
+     <x>270</x>
+     <y>600</y>
+     <width>97</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Cancel</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_part">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>130</y>
+     <width>41</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Parts</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_addPart">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>150</y>
+     <width>97</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Add part</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_tasks">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>200</y>
+     <width>41</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Tasks</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_addTask">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>220</y>
+     <width>97</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Add task</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_completionState">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>440</y>
+     <width>121</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Completion State</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="comboBox_completionState">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>440</y>
+     <width>131</width>
+     <height>27</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QWidget" name="verticalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>360</x>
+     <y>430</y>
+     <width>121</width>
+     <height>80</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QPushButton" name="pushButton_3">
+      <property name="text">
+       <string>Send invoice</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pushButton_4">
+      <property name="text">
+       <string>Mark as paid</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="horizontalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>530</y>
+     <width>361</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout_paidBy">
+    <item>
+     <widget class="QLabel" name="label_paidBy">
+      <property name="text">
+       <string>Paid by</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QComboBox" name="comboBox_paidBy"/>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pushButton_sendReciept">
+      <property name="text">
+       <string>Send reciept</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QLabel" name="label_job">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>10</y>
+     <width>51</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Job</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

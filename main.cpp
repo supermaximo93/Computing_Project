@@ -2,7 +2,7 @@
 using namespace std;
 
 #include <QtGui/QApplication>
-#include "MainWindow.h"
+#include "dialogs/main/MainWindow.h"
 
 #ifdef COMPILE_TESTS
 #include <gtest/gtest.h>

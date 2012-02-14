@@ -21,19 +21,19 @@ SOURCES += main.cpp\
         Job.cpp\
         Part.cpp\
         Task.cpp \
-    CustomerDialog.cpp \
-    MainWindow.cpp \
-    JobDialog.cpp \
-    ExpenseDialog.cpp \
     testing/unit/Customer_testing.cc \
     Utils.cpp \
     testing/unit/Expense_testing.cc \
     testing/unit/Job_testing.cc \
     testing/unit/Part_testing.cc \
     testing/unit/Task_testing.cc \
-    TaskDialog.cpp \
-    PartDialog.cpp \
-    testing/integration/CustomerDatabase_testing.cc
+    testing/integration/CustomerDatabase_testing.cc \
+    dialogs/main/MainWindow.cpp \
+    dialogs/task/TaskDialog.cpp \
+    dialogs/customer/CustomerNew.cpp \
+    dialogs/expense/ExpenseNew.cpp \
+    dialogs/job/JobNew.cpp \
+    dialogs/part/PartNew.cpp
 
 HEADERS  +=\
         Database.h\
@@ -44,19 +44,19 @@ HEADERS  +=\
         Job.h\
         Part.h\
         Task.h \
-    CustomerDialog.h \
-    MainWindow.h \
-    JobDialog.h \
-    ExpenseDialog.h \
     AssignOncePointer.h \
     Utils.h \
-    TaskDialog.h \
-    PartDialog.h
+    dialogs/main/MainWindow.h \
+    dialogs/customer/CustomerNew.h \
+    dialogs/expense/ExpenseNew.h \
+    dialogs/job/JobNew.h \
+    dialogs/part/PartNew.h \
+    dialogs/task/TaskNew.h
 
-FORMS    += \
-    CustomerDialog.ui \
-    MainWindow.ui \
-    JobDialog.ui \
-    ExpenseDialog.ui \
-    TaskDialog.ui \
-    PartDialog.ui
+FORMS += \
+    dialogs/main/MainWindow.ui \
+    dialogs/task/TaskDialog.ui \
+    dialogs/customer/CustomerNew.ui \
+    dialogs/expense/ExpenseNew.ui \
+    dialogs/job/JobNew.ui \
+    dialogs/part/PartNew.ui

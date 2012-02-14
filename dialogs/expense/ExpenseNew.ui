@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ExpenseNew</class>
+ <widget class="QDialog" name="ExpenseNew">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>390</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QPushButton" name="pushButton_submit">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>320</y>
+     <width>97</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Submit</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_cancel">
+   <property name="geometry">
+    <rect>
+     <x>210</x>
+     <y>320</y>
+     <width>97</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Cancel</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="formLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>50</y>
+     <width>227</width>
+     <height>245</height>
+    </rect>
+   </property>
+   <layout class="QFormLayout" name="formLayout">
+    <property name="fieldGrowthPolicy">
+     <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+    </property>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_date">
+      <property name="text">
+       <string>Date</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QDateEdit" name="dateEdit_date"/>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_description">
+      <property name="text">
+       <string>Description</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_priceExclVat">
+      <property name="text">
+       <string>Price (excl. VAT)</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QLineEdit" name="lineEdit_priceExclVat"/>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="label_vat">
+      <property name="text">
+       <string>VAT</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QLineEdit" name="lineEdit_vat"/>
+    </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="label_totalPrice">
+      <property name="text">
+       <string>Total Price</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="QLineEdit" name="lineEdit_totalPrice"/>
+    </item>
+    <item row="5" column="0">
+     <widget class="QLabel" name="label_typeHeading">
+      <property name="text">
+       <string>Type heading</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="1">
+     <widget class="QComboBox" name="comboBox_typeHeading"/>
+    </item>
+    <item row="1" column="1">
+     <widget class="QPlainTextEdit" name="plainTextEdit_description"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QLabel" name="label_businessExpense">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>10</y>
+     <width>251</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>22</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Business Expense</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
