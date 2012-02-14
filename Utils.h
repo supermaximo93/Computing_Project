@@ -20,7 +20,23 @@ struct Message
     Message(const std::string & newMessage, const int newData) : message(newMessage), data(newData) {}
 };
 
+class QString;
+
+struct Date
+{
+    unsigned minute, hour, day, month, year;
+
+    Date(time_t seconds);
+    operator QString();
+};
+
+std::ostream & operator <<(std::ostream & stream, const Date & date);
+
 std::string lowerCase(const std::string & str);
+
+void showInfoDialog(const char * message);
+void showErrorDialog(const char * message);
+bool showYesNoDialog(const char * question);
 
 template <typename type>
 std::string toString(const type & variable)

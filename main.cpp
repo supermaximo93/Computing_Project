@@ -8,6 +8,8 @@ using namespace std;
 #include <gtest/gtest.h>
 #endif
 
+#include "Databases.h"
+
 int main(int argc, char * argv[])
 {
     QApplication a(argc, argv);
@@ -25,6 +27,8 @@ int main(int argc, char * argv[])
         }
     }
 #endif
+
+    Databases::init();
 
     MainWindow w;
     w.show();

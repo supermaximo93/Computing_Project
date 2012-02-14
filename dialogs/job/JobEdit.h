@@ -1,29 +1,29 @@
 /*
- * JobNew.h
+ * JobEdit.h
  *
  *  Created on: 14 Feb 2012
  *      Author: Max Foster
  */
 
-#ifndef JOBNEW_H
-#define JOBNEW_H
+#ifndef JOBEDIT_H
+#define JOBEDIT_H
 
 #include <QDialog>
 
+#include "Job.h"
+
 namespace Ui
 {
-    class JobNew;
+    class JobEdit;
 }
 
-class Job;
-
-class JobNew : public QDialog
+class JobEdit : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit JobNew(Job & job, QWidget * parent = NULL);
-    ~JobNew();
+    explicit JobEdit(Job & job, QWidget * parent = NULL);
+    ~JobEdit();
 
     void updateView();
 
@@ -33,8 +33,8 @@ private slots:
     void on_pushButton_submit_released();
 
 private:
-    Ui::JobNew * ui;
-    Job & job;
+    Ui::JobEdit * ui;
+    Job & job, jobCopy;
 };
 
-#endif // JOBNEW_H
+#endif // JOBEDIT_H

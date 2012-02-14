@@ -17,12 +17,13 @@ namespace Ui
 
 class TaskNew : public QDialog
 {
+    Q_OBJECT
+
 public:
     explicit TaskNew(QWidget * parent = NULL);
     ~TaskNew();
 
 private:
-    Q_OBJECT
     Ui::TaskNew * ui;
 };
 

@@ -10,12 +10,13 @@ namespace Ui
 
 class ExpenseNew : public QDialog
 {
+    Q_OBJECT
+
 public:
     explicit ExpenseNew(QWidget * parent = NULL);
     ~ExpenseNew();
 
 private:
-    Q_OBJECT
     Ui::ExpenseNew * ui;
 };
 

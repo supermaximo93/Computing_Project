@@ -10,12 +10,16 @@ namespace Ui
 
 class MainWindow : public QMainWindow
 {
+    Q_OBJECT
+
 public:
     explicit MainWindow(QWidget * parent = NULL);
     ~MainWindow();
 
+private slots:
+    void on_pushButton_addNewJob_released();
+
 private:
-    Q_OBJECT
     Ui::MainWindow * ui;
 };
 

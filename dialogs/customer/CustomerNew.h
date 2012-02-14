@@ -10,12 +10,13 @@ namespace Ui
 
 class CustomerNew : public QDialog
 {
+    Q_OBJECT
+
 public:
     explicit CustomerNew(QWidget * parent = NULL);
     ~CustomerNew();
 
 private:
-    Q_OBJECT
     Ui::CustomerNew * ui;
 };
 
