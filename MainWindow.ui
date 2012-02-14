@@ -14,35 +14,6 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QPushButton" name="pushButton_openCustomerScreen">
-    <property name="geometry">
-     <rect>
-      <x>440</x>
-      <y>340</y>
-      <width>171</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="toolTip">
-     <string/>
-    </property>
-    <property name="text">
-     <string>Open customer screen</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_newBusinessExpense">
-    <property name="geometry">
-     <rect>
-      <x>440</x>
-      <y>380</y>
-      <width>171</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>New business expense</string>
-    </property>
-   </widget>
    <widget class="QCalendarWidget" name="calendar">
     <property name="geometry">
      <rect>

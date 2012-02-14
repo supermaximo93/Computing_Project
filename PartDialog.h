@@ -18,7 +18,7 @@ namespace Ui
 class PartDialog : public QDialog
 {
 public:
-    explicit PartDialog(QWidget * parent = 0);
+    explicit PartDialog(QWidget * parent = NULL);
     ~PartDialog();
 
 private:

@@ -29,7 +29,7 @@ int main(int argc, char * argv[])
     MainWindow w;
     w.show();
 
-    int exitCode;
-    try { exitCode = a.exec(); } catch(std::runtime_error & error) { cout << error.what() << endl; }
+    int exitCode = 1;
+    try { exitCode = a.exec(); } catch(const std::exception & e) { cout << e.what() << endl; }
     return exitCode;
 }

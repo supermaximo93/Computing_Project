@@ -18,7 +18,7 @@ namespace Ui
 class TaskDialog : public QDialog
 {
 public:
-    explicit TaskDialog(QWidget * parent = 0);
+    explicit TaskDialog(QWidget * parent = NULL);
     ~TaskDialog();
 
 private:
