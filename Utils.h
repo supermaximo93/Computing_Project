@@ -21,13 +21,18 @@ struct Message
 };
 
 class QString;
+class QDateTime;
 
 struct Date
 {
-    unsigned minute, hour, day, month, year;
+    unsigned seconds, minute, hour, day, month, year;
 
     Date(time_t seconds);
+    Date(unsigned minute, unsigned hour, unsigned day, unsigned month, unsigned year);
+
     operator QString();
+    operator QDateTime();
+    operator time_t();
 };
 
 std::ostream & operator <<(std::ostream & stream, const Date & date);

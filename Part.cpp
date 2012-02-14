@@ -21,7 +21,7 @@ int Part::size()
 const string Part::databaseFilename = "parts.dat";
 
 Part::Part(const int jobId, const char * newName, const char * newNumber, const double price, const double vatRate)
-    : jobId(jobId), price(price), vatRate(vatRate < 0.0 ? Globals::vatRate : vatRate)
+    : jobId(jobId), price(price), vatRate(vatRate < 0.0 ? Globals::vatRate(time(NULL)) : vatRate)
 {
     name = new char[maxNameLength + 1];
     number = new char[maxNumberLength + 1];

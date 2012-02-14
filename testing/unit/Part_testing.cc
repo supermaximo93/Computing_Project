@@ -117,7 +117,7 @@ TEST_F(PartUnitTest, DoesPartRejectVatRateLessThanZero)
 TEST_F(PartUnitTest, DoesPartAutomaticallySetVatRateToTheDefaultInConstructor)
 {
     Part part(0, "Tap", "12345", 20.0);
-    EXPECT_EQ(Globals::vatRate, part.getVatRate())
+    EXPECT_EQ(Globals::vatRate(time(NULL)), part.getVatRate())
             << "VAT rate was not set to the default in the Part constructor";
 }
 

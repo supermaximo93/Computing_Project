@@ -8,10 +8,15 @@
 #ifndef GLOBALS_H_
 #define GLOBALS_H_
 
+#include <ctime>
+
+class Date;
+
 namespace Globals
 {
 
-const double vatRate = 20.0;
+double vatRate(const Date & time); // Get the VAT rate at a particular time in history
+double vatRate(time_t time);
 
 }
 

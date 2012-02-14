@@ -22,7 +22,7 @@ protected:
     const Job exampleJob;
 
     JobUnitTest()
-        : exampleJob(0, time(NULL) + 100000, 50.0, 0, 0) {}
+        : exampleJob(0, time(NULL) + 100000, 50.0, Job::DONE_PAID, Job::CASH) {}
 };
 
 // Is Job ID Minus One

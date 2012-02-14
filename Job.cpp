@@ -7,6 +7,7 @@
 
 #include <fstream>
 #include <cmath>
+#include <ctime>
 using namespace std;
 
 #include "Globals.h"
@@ -20,8 +21,8 @@ const string Job::databaseFilename = "jobs.dat";
 
 Job::Job(const int customerId, const time_t date, const double labourCharge, const int completionState,
          const int paymentMethod) :
-    customerId(customerId), completionState(completionState), paymentMethod(paymentMethod), date(date),
-    labourCharge(labourCharge), vat(labourCharge * Globals::vatRate) {}
+    customerId(customerId), completionState(completionState), paymentMethod(paymentMethod),
+    date(date == 0 ? time(NULL) : date), labourCharge(labourCharge), vat(labourCharge * Globals::vatRate(this->date)) {}
 
 void Job::writeToFile(fstream & file) const
 {
@@ -111,7 +112,7 @@ double Job::getLabourCharge() const
 void Job::setLabourCharge(const double newLabourCharge)
 {
     labourCharge = newLabourCharge;
-    vat = labourCharge * Globals::vatRate;
+    vat = labourCharge * Globals::vatRate(date);
 }
 
 double Job::getVat() const

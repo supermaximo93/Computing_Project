@@ -5,6 +5,8 @@
  *      Author: Max Foster
  */
 
+using namespace std;
+
 #include "JobController.h"
 #include "Databases.h"
 #include "Database.h"
@@ -14,8 +16,7 @@
 
 #include "dialogs/job/JobIndex.h"
 #include "dialogs/job/JobShow.h"
-#include "dialogs/job/JobNew.h"
-#include "dialogs/job/JobEdit.h"
+#include "dialogs/job/JobForm.h"
 
 void JobController::Index(QWidget * caller)
 {
@@ -74,7 +75,7 @@ void JobController::Show(Job & job, QWidget * caller)
 Job JobController::New(QWidget * caller)
 {
     Job job;
-    JobNew view(job, caller);
+    JobForm view(job, caller);
     view.setModal(true);
     int result = view.exec();
     return (result == QDialog::Rejected ? Job() : job);
@@ -101,7 +102,7 @@ void JobController::Edit(const int jobId, QWidget * caller)
 
 void JobController::Edit(Job & job, QWidget * caller)
 {
-    JobEdit view(job, caller);
+    JobForm view(job, caller);
     view.setModal(true);
     view.exec();
 }
@@ -138,18 +139,62 @@ bool JobController::Update(const Job & job, QWidget *)
     return success;
 }
 
+void addError(vector<string> & errors, const char * error)
+{
+    // Add the error to the list if it isn't already found in the list
+    bool alreadyAdded = false;
+    for (unsigned i = 0; i < errors.size(); ++i)
+    {
+        if (errors[i] == error)
+        {
+            alreadyAdded = true;
+            break;
+        }
+    }
+    if (!alreadyAdded) errors.push_back(error + '\n');
+}
+
 bool JobController::Destroy(const int jobId, QWidget *)
 {
-    bool success = false;
-    try { success = Databases::jobs().deleteRecord(jobId); }
-    catch (const std::exception & e)
+    // Delete all associated parts and tasks first, recording any errors
+    vector<string> errors;
+    Database<Part>::recordListPtr parts = Databases::parts().findRecords("jobId", jobId);
+    Database<Task>::recordListPtr tasks = Databases::tasks().findRecords("jobId", jobId);
+    errors.reserve(parts->size() + tasks->size());
+    for (unsigned i = 0; i < parts->size(); ++i)
     {
-        showErrorDialog(e.what());
-        return false;
+        try { Databases::parts().deleteRecord(parts->at(i).getId()); }
+        catch (const std::exception & e) { addError(errors, e.what()); }
+    }
+    for (unsigned i = 0; i < tasks->size(); ++i)
+    {
+        try { Databases::tasks().deleteRecord(tasks->at(i).getId()); }
+        catch (const std::exception & e) { addError(errors, e.what()); }
     }
 
-    if (!success) showErrorDialog("There was an error with removing the job from the database");
-    return success;
+    // If there were errors, report them
+    if (errors.size() > 0)
+    {
+        string errorMessage;
+        errorMessage.reserve(1024);
+        for (unsigned i = 0; i < errors.size(); ++i) errorMessage += errors[i];
+        showErrorDialog(errorMessage.c_str());
+    }
+    else // otherwise try and delete the job record
+    {
+        bool success = false;
+        try { success = Databases::jobs().deleteRecord(jobId); }
+        catch (const std::exception & e)
+        {
+            showErrorDialog(e.what());
+            return false;
+        }
+
+        if (!success) showErrorDialog("There was an error with removing the job from the database");
+        return success;
+    }
+
+    return false;
 }
 
 bool JobController::Destroy(Job & job, QWidget * caller)
@@ -161,4 +206,16 @@ bool JobController::Destroy(Job & job, QWidget * caller)
     }
 
     return false;
+}
+
+Database<Job>::recordListPtr getAllJobs()
+{
+    Database<Job>::recordListPtr jobs;
+    try { jobs = Databases::jobs().allRecords(); }
+    catch (const std::exception & e)
+    {
+        showErrorDialog(e.what());
+        return Database<Job>::recordListPtr(new Database<Job>::recordList);
+    }
+    return jobs;
 }

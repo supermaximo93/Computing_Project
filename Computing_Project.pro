@@ -32,13 +32,14 @@ SOURCES += main.cpp\
     dialogs/task/TaskDialog.cpp \
     dialogs/customer/CustomerNew.cpp \
     dialogs/expense/ExpenseNew.cpp \
-    dialogs/job/JobNew.cpp \
     dialogs/part/PartNew.cpp \
-    dialogs/job/JobEdit.cpp \
     dialogs/job/JobShow.cpp \
     dialogs/job/JobIndex.cpp \
     JobController.cpp \
-    Databases.cpp
+    Databases.cpp \
+    CustomerController.cpp \
+    Globals.cpp \
+    dialogs/job/JobForm.cpp
 
 HEADERS  +=\
         Database.h\
@@ -54,22 +55,21 @@ HEADERS  +=\
     dialogs/main/MainWindow.h \
     dialogs/customer/CustomerNew.h \
     dialogs/expense/ExpenseNew.h \
-    dialogs/job/JobNew.h \
     dialogs/part/PartNew.h \
     dialogs/task/TaskNew.h \
     JobController.h \
-    dialogs/job/JobEdit.h \
     dialogs/job/JobShow.h \
     dialogs/job/JobIndex.h \
-    Databases.h
+    Databases.h \
+    CustomerController.h \
+    dialogs/job/JobForm.h
 
 FORMS += \
     dialogs/main/MainWindow.ui \
     dialogs/task/TaskDialog.ui \
     dialogs/customer/CustomerNew.ui \
     dialogs/expense/ExpenseNew.ui \
-    dialogs/job/JobNew.ui \
     dialogs/part/PartNew.ui \
-    dialogs/job/JobEdit.ui \
     dialogs/job/JobShow.ui \
-    dialogs/job/JobIndex.ui
+    dialogs/job/JobIndex.ui \
+    dialogs/job/JobForm.ui

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>JobDialog</class>
- <widget class="QDialog" name="JobDialog">
+ <class>JobForm</class>
+ <widget class="QDialog" name="JobForm">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -18,7 +18,7 @@
     <rect>
      <x>80</x>
      <y>40</y>
-     <width>187</width>
+     <width>226</width>
      <height>71</height>
     </rect>
    </property>
@@ -30,9 +30,6 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="1">
-     <widget class="QDateEdit" name="dateEdit_date"/>
-    </item>
     <item row="1" column="0">
      <widget class="QLabel" name="label_customer">
       <property name="text">
@@ -43,22 +40,38 @@
     <item row="1" column="1">
      <widget class="QComboBox" name="comboBox_customer"/>
     </item>
+    <item row="0" column="1">
+     <widget class="QDateTimeEdit" name="dateTimeEdit_date"/>
+    </item>
    </layout>
   </widget>
   <widget class="QWidget" name="formLayoutWidget_2">
    <property name="geometry">
     <rect>
      <x>70</x>
-     <y>280</y>
-     <width>261</width>
-     <height>128</height>
+     <y>330</y>
+     <width>267</width>
+     <height>111</height>
     </rect>
    </property>
    <layout class="QFormLayout" name="formLayout_charges">
+    <property name="fieldGrowthPolicy">
+     <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+    </property>
     <item row="0" column="0">
      <widget class="QLabel" name="label_labourCharge">
       <property name="text">
        <string>Labour Charge</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QDoubleSpinBox" name="doubleSpinBox_labourCharge">
+      <property name="prefix">
+       <string>£</string>
+      </property>
+      <property name="maximum">
+       <double>100000.000000000000000</double>
       </property>
      </widget>
     </item>
@@ -83,17 +96,26 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="1">
-     <widget class="QLineEdit" name="lineEdit_labourCharge"/>
-    </item>
     <item row="1" column="1">
-     <widget class="QLineEdit" name="lineEdit_totalChargeExclVat"/>
+     <widget class="QLabel" name="label_totalChargeExclVatE">
+      <property name="text">
+       <string>total charge</string>
+      </property>
+     </widget>
     </item>
     <item row="2" column="1">
-     <widget class="QLineEdit" name="lineEdit_vat"/>
+     <widget class="QLabel" name="label_vatE">
+      <property name="text">
+       <string>vat</string>
+      </property>
+     </widget>
     </item>
     <item row="3" column="1">
-     <widget class="QLineEdit" name="lineEdit_totalChargeInclVat"/>
+     <widget class="QLabel" name="label_totalChargeInclVatE">
+      <property name="text">
+       <string>total charge</string>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -123,24 +145,11 @@
     <string>Cancel</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_part">
-   <property name="geometry">
-    <rect>
-     <x>80</x>
-     <y>130</y>
-     <width>41</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Parts</string>
-   </property>
-  </widget>
   <widget class="QPushButton" name="pushButton_addPart">
    <property name="geometry">
     <rect>
-     <x>80</x>
-     <y>150</y>
+     <x>330</x>
+     <y>170</y>
      <width>97</width>
      <height>27</height>
     </rect>
@@ -149,24 +158,11 @@
     <string>Add part</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_tasks">
-   <property name="geometry">
-    <rect>
-     <x>80</x>
-     <y>200</y>
-     <width>41</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Tasks</string>
-   </property>
-  </widget>
   <widget class="QPushButton" name="pushButton_addTask">
    <property name="geometry">
     <rect>
-     <x>80</x>
-     <y>220</y>
+     <x>330</x>
+     <y>270</y>
      <width>97</width>
      <height>27</height>
     </rect>
@@ -175,61 +171,12 @@
     <string>Add task</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_completionState">
-   <property name="geometry">
-    <rect>
-     <x>40</x>
-     <y>440</y>
-     <width>121</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Completion State</string>
-   </property>
-  </widget>
-  <widget class="QComboBox" name="comboBox_completionState">
-   <property name="geometry">
-    <rect>
-     <x>170</x>
-     <y>440</y>
-     <width>131</width>
-     <height>27</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QWidget" name="verticalLayoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>360</x>
-     <y>430</y>
-     <width>121</width>
-     <height>80</height>
-    </rect>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
-     <widget class="QPushButton" name="pushButton_3">
-      <property name="text">
-       <string>Send invoice</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="pushButton_4">
-      <property name="text">
-       <string>Mark as paid</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
   <widget class="QWidget" name="horizontalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>60</x>
-     <y>530</y>
-     <width>361</width>
+     <x>70</x>
+     <y>520</y>
+     <width>241</width>
      <height>31</height>
     </rect>
    </property>
@@ -244,22 +191,15 @@
     <item>
      <widget class="QComboBox" name="comboBox_paidBy"/>
     </item>
-    <item>
-     <widget class="QPushButton" name="pushButton_sendReciept">
-      <property name="text">
-       <string>Send reciept</string>
-      </property>
-     </widget>
-    </item>
    </layout>
   </widget>
-  <widget class="QLabel" name="label_job">
+  <widget class="QLabel" name="label_title">
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>10</y>
-     <width>51</width>
-     <height>21</height>
+     <y>0</y>
+     <width>231</width>
+     <height>31</height>
     </rect>
    </property>
    <property name="font">
@@ -270,8 +210,89 @@
     </font>
    </property>
    <property name="text">
-    <string>Job</string>
+    <string>Job form title</string>
    </property>
+  </widget>
+  <widget class="QLabel" name="label_part">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>140</y>
+     <width>41</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Parts</string>
+   </property>
+  </widget>
+  <widget class="QListWidget" name="listWidget_partsE">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>160</y>
+     <width>256</width>
+     <height>71</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_tasks">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>230</y>
+     <width>41</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Tasks</string>
+   </property>
+  </widget>
+  <widget class="QListWidget" name="listWidget_tasksE">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>250</y>
+     <width>256</width>
+     <height>71</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_addNewCustomer">
+   <property name="geometry">
+    <rect>
+     <x>320</x>
+     <y>70</y>
+     <width>141</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Add new customer</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="horizontalLayoutWidget_2">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>480</y>
+     <width>351</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QLabel" name="label_completionState">
+      <property name="text">
+       <string>Completion State</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QComboBox" name="comboBox_completionState"/>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>

@@ -8,6 +8,8 @@
 #ifndef JOBCONTROLLER_H
 #define JOBCONTROLLER_H
 
+#include "Database.h"
+
 class QWidget;
 class Job;
 
@@ -30,6 +32,8 @@ bool Update(const Job & job, QWidget * caller);
 
 bool Destroy(int jobId, QWidget * caller);
 bool Destroy(Job & job, QWidget * caller);
+
+Database<Job>::recordListPtr getAllJobs();
 
 }
 

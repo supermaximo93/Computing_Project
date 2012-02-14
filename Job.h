@@ -16,6 +16,23 @@
 class Job : public Record
 {
 public:
+    enum CompletionState
+    {
+        NOT_DONE = 0,
+        DONE_UNPAID,
+        DONE_PAID
+    };
+
+    enum PaymentMethod
+    {
+        NA = 0,
+        CASH,
+        CHEQUE,
+        CREDIT,
+        DEBIT,
+        BANK_TRANSFER
+    };
+
     static int size();
 
     static const std::string databaseFilename;

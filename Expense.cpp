@@ -7,6 +7,7 @@
 
 #include <fstream>
 #include <cmath>
+#include <ctime>
 #include <string.h>
 using namespace std;
 
@@ -20,7 +21,7 @@ int Expense::size()
 const string Expense::databaseFilename = "expenses.dat";
 
 Expense::Expense(const time_t date, const char * newDescription, const double price, const double vat, const int type)
-    : date(date), price(price), vat(vat), type(type)
+    : date(date == 0 ? time(NULL) : date), price(price), vat(vat), type(type)
 {
     description = new char[maxDescriptionLength + 1];
     strcpy(description, newDescription);

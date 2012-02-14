@@ -6,6 +6,7 @@
  */
 
 #include <fstream>
+#include <ctime>
 #include <string.h>
 using namespace std;
 
@@ -14,7 +15,7 @@ using namespace std;
 const std::string Task::databaseFilename = "tasks.dat";
 
 Task::Task(const int jobId, const time_t date, const char * newDescription)
-    : jobId(jobId), date(date)
+    : jobId(jobId), date(date == 0 ? time(NULL) : date)
 {
     description = new char[maxDescriptionLength + 1];
     strcpy(description, newDescription);
