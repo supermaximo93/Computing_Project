@@ -19,7 +19,13 @@ class Expense;
 namespace Databases
 {
 
+#ifdef COMPILE_TESTS
+void init(bool testing = false);
+#else
 void init();
+#endif
+
+void finalise();
 
 Database<Customer> & customers();
 Database<Expense> & expenses();

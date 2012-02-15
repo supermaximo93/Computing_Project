@@ -42,7 +42,8 @@ SOURCES += main.cpp\
     dialogs/job/JobForm.cpp \
     PartController.cpp \
     TaskController.cpp \
-    dialogs/job/PaymentMethodDialog.cpp
+    dialogs/job/PaymentMethodDialog.cpp \
+    testing/integration/JobController_testing.cc
 
 HEADERS  +=\
         Database.h\

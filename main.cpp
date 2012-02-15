@@ -9,6 +9,7 @@ using namespace std;
 #endif
 
 #include "Databases.h"
+#include "Utils.h"
 
 int main(int argc, char * argv[])
 {
@@ -34,6 +35,8 @@ int main(int argc, char * argv[])
     w.show();
 
     int exitCode = 1;
-    try { exitCode = a.exec(); } catch(const std::exception & e) { cout << e.what() << endl; }
+    try { exitCode = a.exec(); } catch(const std::exception & e) { showFatalDialog(e.what()); }
+
+    Databases::finalise();
     return exitCode;
 }

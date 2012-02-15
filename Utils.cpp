@@ -80,6 +80,12 @@ void showErrorDialog(const char * message)
     messageBox.exec();
 }
 
+void showFatalDialog(const char * message)
+{
+    QMessageBox messageBox(QMessageBox::Critical, "Fatal Error", message);
+    messageBox.exec();
+}
+
 bool showYesNoDialog(const char * question)
 {
     QMessageBox messageBox(QMessageBox::Question, " ", question, QMessageBox::Yes | QMessageBox::No);

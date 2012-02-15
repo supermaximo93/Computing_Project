@@ -41,6 +41,7 @@ std::string lowerCase(const std::string & str);
 
 void showInfoDialog(const char * message);
 void showErrorDialog(const char * message);
+void showFatalDialog(const char * message);
 bool showYesNoDialog(const char * question);
 
 const char * createFullName(const char * forename, const char * surname);
