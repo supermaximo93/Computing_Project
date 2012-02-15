@@ -57,12 +57,12 @@ void JobForm::updateView()
     for (unsigned i = 0; i < parts.size(); ++i) ui->listWidget_partsE->addItem(parts[i].getName());
 
     ui->listWidget_tasksE->clear();
-    const unsigned descriptionPreviewLength = 63;
+    const unsigned descriptionPreviewLength = 31;
     char descriptionPreview[descriptionPreviewLength + 4];
     for (unsigned i = 0; i < tasks.size(); ++i)
     {
         strncpy(descriptionPreview, tasks[i].getDescription(), descriptionPreviewLength);
-        strcat(descriptionPreview, "...");
+        if (strlen(tasks[i].getDescription()) > descriptionPreviewLength) strcat(descriptionPreview, "...");
         ui->listWidget_tasksE->addItem(descriptionPreview);
     }
 
@@ -98,7 +98,7 @@ void addRecordsToDatabase(std::vector<T> & records, const int jobId, bool(*creat
     }
 }
 
-void JobForm::addJobsAndTasksToDatabase()
+void JobForm::addPartsAndTasksToDatabase()
 {
     vector<string> errors;
     addRecordsToDatabase(parts, job.getId(), PartController::Create, errors);
@@ -113,7 +113,7 @@ void JobForm::on_pushButton_submit_released()
     {
         if (JobController::Create(job, this))
         {
-            addJobsAndTasksToDatabase();
+            addPartsAndTasksToDatabase();
             done(Accepted);
         }
     }
@@ -121,7 +121,7 @@ void JobForm::on_pushButton_submit_released()
     {
         if (JobController::Update(job, this))
         {
-            addJobsAndTasksToDatabase();
+            addPartsAndTasksToDatabase();
             done(Accepted);
         }
     }

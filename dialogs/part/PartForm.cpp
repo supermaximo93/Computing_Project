@@ -12,7 +12,7 @@
 #include "PartController.h"
 
 PartForm::PartForm(Part & part, QWidget * parent)
-    : QDialog(parent), formType(part.null() ? NEW : EDIT), ui(new Ui::PartForm), part(part)
+    : QDialog(parent), formType((part.null() && !part.pending) ? NEW : EDIT), ui(new Ui::PartForm), part(part)
 {
     ui->setupUi(this);
 
@@ -104,10 +104,11 @@ void PartForm::on_doubleSpinBox_vatRate_valueChanged(double value)
 void PartForm::on_pushButton_submit_released()
 {
     if (!setRecordData()) return;
-    if (formType == EDIT)
+    if ((formType == EDIT) && (!part.null()))
     {
         if (!PartController::Update(part, this)) return;
-    } else part.pending = true;
+    }
+    else part.pending = true;
     done(Accepted);
 }
 

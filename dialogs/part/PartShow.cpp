@@ -47,7 +47,12 @@ void PartShow::on_pushButton_delete_released()
 {
     if (!showYesNoDialog("Are you sure you want to delete this part?")) return;
 
-    if (PartController::Destroy(part, this))
+    if (part.pending)
+    {
+        part = Part();
+        done(Accepted);
+    }
+    else if (PartController::Destroy(part, this))
     {
         showInfoDialog("The part was deleted successfully");
         done(Accepted);

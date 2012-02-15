@@ -44,12 +44,12 @@ void JobShow::updateView()
     for (unsigned i = 0; i < parts.size(); ++i) ui->listWidget_partsE->addItem(parts[i].getName());
 
     ui->listWidget_tasksE->clear();
-    const unsigned descriptionPreviewLength = 63;
+    const unsigned descriptionPreviewLength = 31;
     char descriptionPreview[descriptionPreviewLength + 4];
     for (unsigned i = 0; i < tasks.size(); ++i)
     {
         strncpy(descriptionPreview, tasks[i].getDescription(), descriptionPreviewLength);
-        strcat(descriptionPreview, "...");
+        if (strlen(tasks[i].getDescription()) > descriptionPreviewLength) strcat(descriptionPreview, "...");
         ui->listWidget_tasksE->addItem(descriptionPreview);
     }
 
@@ -114,6 +114,7 @@ void JobShow::on_pushButton_edit_released()
 {
     JobController::Edit(job, this);
     parts = *JobController::getJobParts(job.getId());
+    tasks = *JobController::getJobTasks(job.getId());
     updateView();
 }
 

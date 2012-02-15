@@ -72,7 +72,7 @@ private:
     Database<Part>::recordList & parts;
     Database<Task>::recordList & tasks;
 
-    void addJobsAndTasksToDatabase();
+    void addPartsAndTasksToDatabase();
 
     bool setRecordData();
 

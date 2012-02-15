@@ -1,25 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>TaskDialog</class>
- <widget class="QDialog" name="TaskDialog">
+ <class>TaskShow</class>
+ <widget class="QDialog" name="TaskShow">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>310</width>
     <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <widget class="QPushButton" name="pushButton_edit">
+   <property name="geometry">
+    <rect>
+     <x>110</x>
+     <y>230</y>
+     <width>97</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Edit</string>
+   </property>
+  </widget>
   <widget class="QLabel" name="label_task">
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>10</x>
      <y>20</y>
-     <width>71</width>
-     <height>21</height>
+     <width>261</width>
+     <height>31</height>
     </rect>
    </property>
    <property name="font">
@@ -36,9 +49,9 @@
   <widget class="QWidget" name="formLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>50</x>
-     <y>70</y>
-     <width>199</width>
+     <x>40</x>
+     <y>80</y>
+     <width>241</width>
      <height>113</height>
     </rect>
    </property>
@@ -50,9 +63,6 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="1">
-     <widget class="QDateEdit" name="dateEdit_date"/>
-    </item>
     <item row="1" column="0">
      <widget class="QLabel" name="label_description">
       <property name="text">
@@ -61,34 +71,48 @@
      </widget>
     </item>
     <item row="1" column="1">
-     <widget class="QPlainTextEdit" name="plainTextEdit_description"/>
+     <widget class="QPlainTextEdit" name="plainTextEdit_descriptionE">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLabel" name="label_dateE">
+      <property name="text">
+       <string>date</string>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
-  <widget class="QPushButton" name="pushButton_submit">
+  <widget class="QPushButton" name="pushButton_ok">
    <property name="geometry">
     <rect>
-     <x>50</x>
-     <y>220</y>
+     <x>10</x>
+     <y>230</y>
      <width>97</width>
      <height>27</height>
     </rect>
    </property>
    <property name="text">
-    <string>Submit</string>
+    <string>OK</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_cancel">
+  <widget class="QPushButton" name="pushButton_delete">
    <property name="geometry">
     <rect>
-     <x>170</x>
-     <y>220</y>
+     <x>210</x>
+     <y>230</y>
      <width>97</width>
      <height>27</height>
     </rect>
    </property>
    <property name="text">
-    <string>Cancel</string>
+    <string>Delete</string>
    </property>
   </widget>
  </widget>
