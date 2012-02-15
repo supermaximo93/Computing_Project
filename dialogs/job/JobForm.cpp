@@ -15,24 +15,17 @@
 #include "Customer.h"
 #include "JobController.h"
 #include "CustomerController.h"
+#include "PartController.h"
+#include "TaskController.h"
 
-JobForm::JobForm(Job & job, QWidget * parent)
-    : QDialog(parent), formType(job.null() ? NEW : EDIT), ui(new Ui::JobForm), job(job)
+JobForm::JobForm(Job & job, Database<Customer>::recordList & customers, Database<Part>::recordList & parts,
+                 Database<Task>::recordList & tasks, QWidget * parent)
+    : QDialog(parent), formType(job.null() ? NEW : EDIT), ui(new Ui::JobForm), job(job), customers(customers),
+      parts(parts), tasks(tasks)
 {
     ui->setupUi(this);
 
     ui->label_title->setText(formType == NEW ? "New Job" : "Editing Job");
-
-    ui->comboBox_completionState->addItem("Not done", Job::NOT_DONE);
-    ui->comboBox_completionState->addItem("Done - not paid", Job::DONE_UNPAID);
-    ui->comboBox_completionState->addItem("Done - paid", Job::DONE_PAID);
-
-    ui->comboBox_paidBy->addItem("N/A", Job::NA);
-    ui->comboBox_paidBy->addItem("Cash", Job::CASH);
-    ui->comboBox_paidBy->addItem("Cheque", Job::CHEQUE);
-    ui->comboBox_paidBy->addItem("Credit", Job::CREDIT);
-    ui->comboBox_paidBy->addItem("Debit", Job::DEBIT);
-    ui->comboBox_paidBy->addItem("Bank transfer", Job::BANK_TRANSFER);
 
     updateView();
 }
@@ -44,19 +37,19 @@ JobForm::~JobForm()
 
 void JobForm::updateView()
 {
-    Database<Customer>::recordListPtr customers = CustomerController::getAllCustomers();
-    ui->comboBox_customer->clear();
-
     ui->dateTimeEdit_date->setDateTime(Date(job.getDate()));
 
-    char fullName[(Customer::maxNameLength * 2) + 2];
-    for (unsigned i = 0; i < customers->size(); ++i)
+    ui->comboBox_customer->clear();
+    unsigned customerIndex = 0;
+    for (unsigned i = 0; i < customers.size(); ++i)
     {
-        strcpy(fullName, customers->at(i).getForename());
-        strcat(fullName, " ");
-        strcat(fullName, customers->at(i).getSurname());
-        ui->comboBox_customer->addItem(fullName, customers->at(i).getId());
+        const Customer & customer = customers[i];
+        const int customerId = customer.getId();
+        if ((formType == EDIT) && (customerId == job.getCustomerId())) customerIndex = i;
+
+        ui->comboBox_customer->addItem(createFullName(customer.getForename(), customer.getSurname()), customerId);
     }
+    ui->comboBox_customer->setCurrentIndex(customerIndex);
 
     for (unsigned i = 0; i < parts.size(); ++i) ui->listWidget_partsE->addItem(parts[i].getName());
 
@@ -185,7 +178,7 @@ void JobForm::on_doubleSpinBox_labourCharge_valueChanged(double value)
 void JobForm::on_comboBox_completionState_currentIndexChanged(int index)
 {
     ui->comboBox_completionState->setStyleSheet("");
-    try { job.setCompletionState(ui->comboBox_completionState->itemData(index).toInt()); }
+    try { job.setCompletionState(index); }
     catch (const std::exception & e)
     {
         showErrorDialog(e.what());
@@ -196,10 +189,58 @@ void JobForm::on_comboBox_completionState_currentIndexChanged(int index)
 void JobForm::on_comboBox_paidBy_currentIndexChanged(int index)
 {
     ui->comboBox_completionState->setStyleSheet("");
-    try { job.setPaymentMethod(ui->comboBox_completionState->itemData(index).toInt()); }
+    try { job.setPaymentMethod(index); }
     catch (const std::exception & e)
     {
         showErrorDialog(e.what());
         ui->comboBox_completionState->setStyleSheet("QComboBox { background-color: red; }");
+    }
+}
+
+void JobForm::on_pushButton_addNewCustomer_released()
+{
+    Customer customer = CustomerController::New(this);
+    if (!customer.null())
+    {
+        customers.push_back(customer);
+        try { job.setCustomerId(customer.getId()); }
+        catch (const std::exception & e) { showErrorDialog(e.what()); }
+        updateView();
+    }
+}
+
+void JobForm::on_listWidget_partsE_doubleClicked(const QModelIndex & index)
+{
+    Part & part = parts[index.row()];
+    PartController::Show(part, this);
+    if (part.null()) parts.erase(parts.begin() + index.row());
+    updateView();
+}
+
+void JobForm::on_listWidget_tasksE_doubleClicked(const QModelIndex & index)
+{
+    Task & task = tasks[index.row()];
+    TaskController::Show(task, this);
+    if (task.null()) tasks.erase(tasks.begin() + index.row());
+    updateView();
+}
+
+void JobForm::on_pushButton_addPart_released()
+{
+    Part part = PartController::New(this);
+    if (!part.null())
+    {
+        parts.push_back(part);
+        updateView();
+    }
+}
+
+void JobForm::on_pushButton_addTask_released()
+{
+    Task task = TaskController::New(this);
+    if (!task.null())
+    {
+        tasks.push_back(task);
+        updateView();
     }
 }

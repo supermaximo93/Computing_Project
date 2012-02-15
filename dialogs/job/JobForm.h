@@ -18,15 +18,18 @@ namespace Ui
 #include "Database.h"
 
 class Job;
+class Customer;
 class Part;
 class Task;
+class QModelIndex;
 
 class JobForm : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit JobForm(Job & job, QWidget * parent = NULL);
+    explicit JobForm(Job & job, Database<Customer>::recordList & customers, Database<Part>::recordList & parts,
+                     Database<Task>::recordList & tasks, QWidget * parent = NULL);
     ~JobForm();
 
     void updateView();
@@ -46,6 +49,16 @@ private slots:
 
     void on_comboBox_paidBy_currentIndexChanged(int index);
 
+    void on_pushButton_addNewCustomer_released();
+
+    void on_listWidget_partsE_doubleClicked(const QModelIndex & index);
+
+    void on_listWidget_tasksE_doubleClicked(const QModelIndex & index);
+
+    void on_pushButton_addPart_released();
+
+    void on_pushButton_addTask_released();
+
 private:
     enum
     {
@@ -55,8 +68,9 @@ private:
 
     Ui::JobForm * ui;
     Job & job;
-    Database<Part>::recordList parts;
-    Database<Task>::recordList tasks;
+    Database<Customer>::recordList & customers;
+    Database<Part>::recordList & parts;
+    Database<Task>::recordList & tasks;
 
     bool setRecordData();
 

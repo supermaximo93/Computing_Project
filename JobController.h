@@ -33,6 +33,7 @@ bool Update(const Job & job, QWidget * caller);
 bool Destroy(int jobId, QWidget * caller);
 bool Destroy(Job & job, QWidget * caller);
 
+Job getJob(int jobId);
 Database<Job>::recordListPtr getAllJobs();
 
 }

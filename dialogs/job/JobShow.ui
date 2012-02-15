@@ -102,7 +102,7 @@
      </widget>
     </item>
     <item row="3" column="1">
-     <widget class="QLabel" name="label_totalChargeIncVatE">
+     <widget class="QLabel" name="label_totalChargeInclVatE">
       <property name="text">
        <string>total charge</string>
       </property>
@@ -162,7 +162,7 @@
     <string>Completion State</string>
    </property>
   </widget>
-  <widget class="QWidget" name="verticalLayoutWidget">
+  <widget class="QWidget" name="verticalWidget_sendInvoiceMarkAsPaid" native="true">
    <property name="geometry">
     <rect>
      <x>360</x>
@@ -173,14 +173,14 @@
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QPushButton" name="pushButton_3">
+     <widget class="QPushButton" name="pushButton_sendInvoice">
       <property name="text">
        <string>Send invoice</string>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QPushButton" name="pushButton_4">
+     <widget class="QPushButton" name="pushButton_markAsPaid">
       <property name="text">
        <string>Mark as paid</string>
       </property>
@@ -188,13 +188,13 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="horizontalLayoutWidget">
+  <widget class="QWidget" name="horizontalWidget_paidBy" native="true">
    <property name="geometry">
     <rect>
      <x>60</x>
      <y>530</y>
      <width>361</width>
-     <height>31</height>
+     <height>51</height>
     </rect>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout_paidBy">
@@ -320,32 +320,6 @@
     </rect>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_viewPartDetails">
-   <property name="geometry">
-    <rect>
-     <x>350</x>
-     <y>170</y>
-     <width>131</width>
-     <height>27</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>View part details</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton_viewTaskDetails">
-   <property name="geometry">
-    <rect>
-     <x>350</x>
-     <y>260</y>
-     <width>131</width>
-     <height>27</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>View task details</string>
-   </property>
-  </widget>
   <widget class="QPushButton" name="pushButton_delete">
    <property name="geometry">
     <rect>
@@ -357,6 +331,19 @@
    </property>
    <property name="text">
     <string>Delete</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_markAsDone">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>470</y>
+     <width>111</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Mark as done</string>
    </property>
   </widget>
  </widget>

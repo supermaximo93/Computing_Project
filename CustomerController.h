@@ -33,6 +33,7 @@ bool Update(const Customer & customer, QWidget * caller);
 bool Destroy(int customerId, QWidget * caller);
 bool Destroy(Customer & customer, QWidget * caller);
 
+Customer getCustomer(int customerId);
 Database<Customer>::recordListPtr getAllCustomers();
 
 }

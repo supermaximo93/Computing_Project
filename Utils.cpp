@@ -90,3 +90,14 @@ bool showYesNoDialog(const char * question)
     default: return false;
     }
 }
+
+const char * createFullName(const char * forename, const char * surname)
+{
+    static char name[1024];
+
+    strcpy(name, forename);
+    strcat(name, " ");
+    strcat(name, surname);
+
+    return name;
+}

@@ -43,6 +43,8 @@ void showInfoDialog(const char * message);
 void showErrorDialog(const char * message);
 bool showYesNoDialog(const char * question);
 
+const char * createFullName(const char * forename, const char * surname);
+
 template <typename type>
 std::string toString(const type & variable)
 {

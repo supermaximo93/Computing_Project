@@ -189,7 +189,38 @@
      </widget>
     </item>
     <item>
-     <widget class="QComboBox" name="comboBox_paidBy"/>
+     <widget class="QComboBox" name="comboBox_paidBy">
+      <item>
+       <property name="text">
+        <string>N/A</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Cash</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Cheque</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Credit</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Debit</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Bank Transfer</string>
+       </property>
+      </item>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -290,7 +321,23 @@
      </widget>
     </item>
     <item>
-     <widget class="QComboBox" name="comboBox_completionState"/>
+     <widget class="QComboBox" name="comboBox_completionState">
+      <item>
+       <property name="text">
+        <string>Not done</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Done - not paid</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Done - paid</string>
+       </property>
+      </item>
+     </widget>
     </item>
    </layout>
   </widget>

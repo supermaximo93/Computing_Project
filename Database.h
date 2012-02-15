@@ -432,7 +432,7 @@ unsigned Database<recordType>::recordCount()
         {
             tempRecord.readFromFile(file);
             if (file.eof()) break;
-            if (tempRecord.getId() >= 0) ++count;
+            if (!tempRecord.null()) ++count;
         }
         file.close();
 

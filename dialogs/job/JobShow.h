@@ -20,14 +20,15 @@ namespace Ui
 class Job;
 class Part;
 class Task;
+class QModelIndex;
 
 class JobShow : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit JobShow(Job & job, const Database<Part>::recordList & parts,
-                     const Database<Task>::recordList & tasks, QWidget * parent = 0);
+    explicit JobShow(Job & job, Database<Part>::recordList & parts, Database<Task>::recordList & tasks,
+                     QWidget * parent = 0);
     ~JobShow();
 
     void updateView();
@@ -39,11 +40,31 @@ private slots:
 
     void on_pushButton_delete_released();
 
+    void on_pushButton_viewCustomerDetails_released();
+
+    void on_listWidget_partsE_doubleClicked(const QModelIndex &index);
+
+    void on_listWidget_tasksE_doubleClicked(const QModelIndex &index);
+
+    void on_pushButton_markAsDone_released();
+
+    void on_pushButton_sendInvoice_released();
+
+    void on_pushButton_markAsPaid_released();
+
+    void on_pushButton_sendReciept_released();
+
 private:
     Ui::JobShow * ui;
     Job & job;
-    const Database<Part>::recordList & parts;
-    const Database<Task>::recordList & tasks;
+    Database<Part>::recordList & parts;
+    Database<Task>::recordList & tasks;
+
+    void updateCharges();
+    double getTotalChargeExclVat();
+    double getTotalChargeInclVat();
+
+    bool setNewJobCompletionState(int state);
 };
 
 #endif // JOBSHOW_H

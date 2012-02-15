@@ -39,7 +39,10 @@ SOURCES += main.cpp\
     Databases.cpp \
     CustomerController.cpp \
     Globals.cpp \
-    dialogs/job/JobForm.cpp
+    dialogs/job/JobForm.cpp \
+    PartController.cpp \
+    TaskController.cpp \
+    dialogs/job/PaymentMethodDialog.cpp
 
 HEADERS  +=\
         Database.h\
@@ -62,7 +65,10 @@ HEADERS  +=\
     dialogs/job/JobIndex.h \
     Databases.h \
     CustomerController.h \
-    dialogs/job/JobForm.h
+    dialogs/job/JobForm.h \
+    PartController.h \
+    TaskController.h \
+    dialogs/job/PaymentMethodDialog.h
 
 FORMS += \
     dialogs/main/MainWindow.ui \
@@ -72,4 +78,5 @@ FORMS += \
     dialogs/part/PartNew.ui \
     dialogs/job/JobShow.ui \
     dialogs/job/JobIndex.ui \
-    dialogs/job/JobForm.ui
+    dialogs/job/JobForm.ui \
+    dialogs/job/PaymentMethodDialog.ui

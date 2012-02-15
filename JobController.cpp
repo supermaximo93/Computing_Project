@@ -11,6 +11,7 @@ using namespace std;
 #include "Databases.h"
 #include "Database.h"
 #include "Job.h"
+#include "Customer.h"
 #include "Part.h"
 #include "Task.h"
 
@@ -75,7 +76,18 @@ void JobController::Show(Job & job, QWidget * caller)
 Job JobController::New(QWidget * caller)
 {
     Job job;
-    JobForm view(job, caller);
+    Database<Part>::recordList parts;
+    Database<Task>::recordList tasks;
+
+    Database<Customer>::recordListPtr customers;
+    try { customers = Databases::customers().allRecords(); }
+    catch (const std::exception & e)
+    {
+        showErrorDialog(e.what());
+        return job;
+    }
+
+    JobForm view(job, *customers, parts, tasks, caller);
     view.setModal(true);
     int result = view.exec();
     return (result == QDialog::Rejected ? Job() : job);
@@ -102,7 +114,22 @@ void JobController::Edit(const int jobId, QWidget * caller)
 
 void JobController::Edit(Job & job, QWidget * caller)
 {
-    JobForm view(job, caller);
+    Database<Customer>::recordListPtr customers;
+    Database<Part>::recordListPtr parts;
+    Database<Task>::recordListPtr tasks;
+    try
+    {
+        customers = Databases::customers().allRecords();
+        parts = Databases::parts().findRecords("jobId", job.getId());
+        tasks = Databases::tasks().findRecords("tasks", job.getId());
+    }
+    catch (const std::exception & e)
+    {
+        showErrorDialog(e.what());
+        return;
+    }
+
+    JobForm view(job, *customers, *parts, *tasks, caller);
     view.setModal(true);
     view.exec();
 }
@@ -208,7 +235,19 @@ bool JobController::Destroy(Job & job, QWidget * caller)
     return false;
 }
 
-Database<Job>::recordListPtr getAllJobs()
+Job JobController::getJob(int jobId)
+{
+    Job job;
+    try { job = Databases::jobs().findRecord("id", jobId); }
+    catch (const std::exception & e)
+    {
+        showErrorDialog(e.what());
+        return Job();
+    }
+    return job;
+}
+
+Database<Job>::recordListPtr JobController::getAllJobs()
 {
     Database<Job>::recordListPtr jobs;
     try { jobs = Databases::jobs().allRecords(); }
