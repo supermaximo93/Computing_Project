@@ -33,7 +33,7 @@ public:
 private slots:
     void on_pushButton_ok_released();
 
-    void on_listWidget_jobsE_doubleClicked(const QModelIndex & index);
+    void on_tableWidget_doubleClicked(const QModelIndex & index);
 
     void on_pushButton_addNewJob_released();
 

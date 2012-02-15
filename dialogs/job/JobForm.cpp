@@ -54,10 +54,11 @@ void JobForm::updateView()
     for (unsigned i = 0; i < parts.size(); ++i) ui->listWidget_partsE->addItem(parts[i].getName());
 
     const unsigned descriptionPreviewLength = 63;
-    char descriptionPreview[descriptionPreviewLength + 1];
+    char descriptionPreview[descriptionPreviewLength + 4];
     for (unsigned i = 0; i < tasks.size(); ++i)
     {
         strncpy(descriptionPreview, tasks[i].getDescription(), descriptionPreviewLength);
+        strcat(descriptionPreview, "...");
         ui->listWidget_tasksE->addItem(descriptionPreview);
     }
 
