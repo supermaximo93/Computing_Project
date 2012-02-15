@@ -12,6 +12,8 @@
 
 class QWidget;
 class Job;
+class Part;
+class Task;
 
 namespace JobController
 {
@@ -35,6 +37,8 @@ bool Destroy(Job & job, QWidget * caller);
 
 Job getJob(int jobId);
 Database<Job>::recordListPtr getAllJobs();
+Database<Part>::recordListPtr getJobParts(int jobId);
+Database<Task>::recordListPtr getJobTasks(int jobId);
 
 }
 

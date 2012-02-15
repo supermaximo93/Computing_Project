@@ -50,7 +50,7 @@ void JobController::Show(const int jobId, QWidget * caller)
         return;
     }
 
-    JobController::Show(job, caller);
+    Show(job, caller);
 }
 
 void JobController::Show(Job & job, QWidget * caller)
@@ -89,8 +89,7 @@ Job JobController::New(QWidget * caller)
 
     JobForm view(job, *customers, parts, tasks, caller);
     view.setModal(true);
-    int result = view.exec();
-    return (result == QDialog::Rejected ? Job() : job);
+    return (view.exec() == QDialog::Rejected ? Job() : job);
 }
 
 void JobController::Edit(const int jobId, QWidget * caller)
@@ -166,21 +165,6 @@ bool JobController::Update(const Job & job, QWidget *)
     return success;
 }
 
-void addError(vector<string> & errors, const char * error)
-{
-    // Add the error to the list if it isn't already found in the list
-    bool alreadyAdded = false;
-    for (unsigned i = 0; i < errors.size(); ++i)
-    {
-        if (errors[i] == error)
-        {
-            alreadyAdded = true;
-            break;
-        }
-    }
-    if (!alreadyAdded) errors.push_back(error + '\n');
-}
-
 bool JobController::Destroy(const int jobId, QWidget *)
 {
     // Delete all associated parts and tasks first, recording any errors
@@ -200,13 +184,7 @@ bool JobController::Destroy(const int jobId, QWidget *)
     }
 
     // If there were errors, report them
-    if (errors.size() > 0)
-    {
-        string errorMessage;
-        errorMessage.reserve(1024);
-        for (unsigned i = 0; i < errors.size(); ++i) errorMessage += errors[i];
-        showErrorDialog(errorMessage.c_str());
-    }
+    if (errors.size() > 0) showErrorDialog(errors);
     else // otherwise try and delete the job record
     {
         bool success = false;
@@ -257,4 +235,28 @@ Database<Job>::recordListPtr JobController::getAllJobs()
         return Database<Job>::recordListPtr(new Database<Job>::recordList);
     }
     return jobs;
+}
+
+Database<Part>::recordListPtr JobController::getJobParts(const int jobId)
+{
+    Database<Part>::recordListPtr parts;
+    try { parts = Databases::parts().findRecords("jobId", jobId); }
+    catch (const std::exception & e)
+    {
+        showErrorDialog(e.what());
+        return Database<Part>::recordListPtr(new Database<Part>::recordList);
+    }
+    return parts;
+}
+
+Database<Task>::recordListPtr JobController::getJobTasks(const int jobId)
+{
+    Database<Task>::recordListPtr tasks;
+    try { tasks = Databases::tasks().findRecords("jobId", jobId); }
+    catch (const std::exception & e)
+    {
+        showErrorDialog(e.what());
+        return Database<Task>::recordListPtr(new Database<Task>::recordList);
+    }
+    return tasks;
 }

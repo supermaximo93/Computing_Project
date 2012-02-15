@@ -72,6 +72,8 @@ private:
     Database<Part>::recordList & parts;
     Database<Task>::recordList & tasks;
 
+    void addJobsAndTasksToDatabase();
+
     bool setRecordData();
 
     void updateCharges();

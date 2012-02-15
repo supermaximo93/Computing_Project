@@ -21,6 +21,8 @@ public:
     minNameLength   = 3, maxNameLength   = 24,
     minNumberLength = 0, maxNumberLength = 32;
 
+    bool pending; // Used when the part has been created successfully, but hasn't been added to the database yet
+
     Part(const int jobId = 0, const char * name = "", const char * number = "", const double price = 0.0,
          const double vatRate = -1.0);
     Part(const Part & part);

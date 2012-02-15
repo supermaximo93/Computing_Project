@@ -40,8 +40,10 @@ void JobShow::updateView()
     Customer customer = CustomerController::getCustomer(job.getCustomerId());
     ui->label_customerNameE->setText(createFullName(customer.getForename(), customer.getSurname()));
 
+    ui->listWidget_partsE->clear();
     for (unsigned i = 0; i < parts.size(); ++i) ui->listWidget_partsE->addItem(parts[i].getName());
 
+    ui->listWidget_tasksE->clear();
     const unsigned descriptionPreviewLength = 63;
     char descriptionPreview[descriptionPreviewLength + 4];
     for (unsigned i = 0; i < tasks.size(); ++i)
@@ -111,6 +113,7 @@ void JobShow::on_pushButton_ok_released()
 void JobShow::on_pushButton_edit_released()
 {
     JobController::Edit(job, this);
+    parts = *JobController::getJobParts(job.getId());
     updateView();
 }
 

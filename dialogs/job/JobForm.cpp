@@ -5,6 +5,8 @@
  *      Author: Max Foster
  */
 
+using namespace std;
+
 #include "JobForm.h"
 #include "ui_JobForm.h"
 
@@ -51,8 +53,10 @@ void JobForm::updateView()
     }
     ui->comboBox_customer->setCurrentIndex(customerIndex);
 
+    ui->listWidget_partsE->clear();
     for (unsigned i = 0; i < parts.size(); ++i) ui->listWidget_partsE->addItem(parts[i].getName());
 
+    ui->listWidget_tasksE->clear();
     const unsigned descriptionPreviewLength = 63;
     char descriptionPreview[descriptionPreviewLength + 4];
     for (unsigned i = 0; i < tasks.size(); ++i)
@@ -73,16 +77,53 @@ void JobForm::on_pushButton_cancel_released()
     done(Rejected);
 }
 
+template<typename T>
+void addRecordsToDatabase(std::vector<T> & records, const int jobId, bool(*createFunction)(T&, QWidget*),
+                          vector<string> & errorList)
+{
+    for (unsigned i = 0; i < records.size(); ++i)
+    {
+        if (records[i].getId() >= 0) continue;
+        if (records[i].getJobId() != jobId)
+        {
+            try { records[i].setJobId(jobId); }
+            catch (const std::exception & e)
+            {
+                addError(errorList, e.what());
+                continue;
+            }
+        }
+        createFunction(records[i], NULL);
+        records[i].pending = false;
+    }
+}
+
+void JobForm::addJobsAndTasksToDatabase()
+{
+    vector<string> errors;
+    addRecordsToDatabase(parts, job.getId(), PartController::Create, errors);
+    addRecordsToDatabase(tasks, job.getId(), TaskController::Create, errors);
+    if (errors.size() > 0) showErrorDialog(errors);
+}
+
 void JobForm::on_pushButton_submit_released()
 {
     if (!setRecordData()) return;
     if (formType == NEW)
     {
-        if (JobController::Create(job, this)) done(Accepted);
+        if (JobController::Create(job, this))
+        {
+            addJobsAndTasksToDatabase();
+            done(Accepted);
+        }
     }
     else
     {
-        if (JobController::Update(job, this)) done(Accepted);
+        if (JobController::Update(job, this))
+        {
+            addJobsAndTasksToDatabase();
+            done(Accepted);
+        }
     }
 }
 
@@ -139,7 +180,7 @@ double JobForm::getTotalChargeInclVat()
 
 void JobForm::on_dateTimeEdit_date_dateTimeChanged(const QDateTime & date)
 {
-    ui->dateTimeEdit_date->setStyleSheet("");
+    bool success = true;
     try
     {
         job.setDate(Date(date.time().minute(), date.time().hour(), date.date().day(), date.date().month(),
@@ -147,54 +188,83 @@ void JobForm::on_dateTimeEdit_date_dateTimeChanged(const QDateTime & date)
     }
     catch (const std::exception & e)
     {
-        showErrorDialog(e.what());
+        success = false;
+        ui->dateTimeEdit_date->setToolTip(e.what());
         ui->dateTimeEdit_date->setStyleSheet("QDateTimeEdit { background-color: red; }");
+    }
+    if (success)
+    {
+        ui->dateTimeEdit_date->setStyleSheet("");
+        ui->dateTimeEdit_date->setToolTip("");
     }
 }
 
 void JobForm::on_comboBox_customer_currentIndexChanged(int index)
 {
-    ui->comboBox_customer->setStyleSheet("");
+    bool success = true;
     try { job.setCustomerId(ui->comboBox_customer->itemData(index).toInt()); }
     catch (const std::exception & e)
     {
-        showErrorDialog(e.what());
+        success = false;
+        ui->comboBox_customer->setToolTip(e.what());
         ui->comboBox_customer->setStyleSheet("QComboBox { background-color: red; }");
+    }
+    if (success)
+    {
+        ui->comboBox_customer->setStyleSheet("");
+        ui->comboBox_customer->setToolTip("");
     }
 }
 
 void JobForm::on_doubleSpinBox_labourCharge_valueChanged(double value)
 {
-    ui->doubleSpinBox_labourCharge->setStyleSheet("");
+    bool success = true;
     try { job.setLabourCharge(value); }
     catch (const std::exception & e)
     {
-        showErrorDialog(e.what());
+        success = false;
+        ui->doubleSpinBox_labourCharge->setToolTip(e.what());
         ui->doubleSpinBox_labourCharge->setValue(job.getLabourCharge());
         ui->doubleSpinBox_labourCharge->setStyleSheet("QDoubleSpinBox { background-color: red; }");
     }
+    if (success)
+    {
+        ui->doubleSpinBox_labourCharge->setStyleSheet("");
+        ui->doubleSpinBox_labourCharge->setToolTip("");
+    }
+
     updateCharges();
 }
 
 void JobForm::on_comboBox_completionState_currentIndexChanged(int index)
 {
-    ui->comboBox_completionState->setStyleSheet("");
+    bool success = true;
     try { job.setCompletionState(index); }
     catch (const std::exception & e)
     {
-        showErrorDialog(e.what());
+        ui->comboBox_completionState->setToolTip(e.what());
         ui->comboBox_completionState->setStyleSheet("QComboBox { background-color: red; }");
+    }
+    if (success)
+    {
+        ui->comboBox_completionState->setStyleSheet("");
+        ui->comboBox_completionState->setToolTip("");
     }
 }
 
 void JobForm::on_comboBox_paidBy_currentIndexChanged(int index)
 {
-    ui->comboBox_completionState->setStyleSheet("");
+    bool success = true;
     try { job.setPaymentMethod(index); }
     catch (const std::exception & e)
     {
-        showErrorDialog(e.what());
+        ui->comboBox_completionState->setToolTip(e.what());
         ui->comboBox_completionState->setStyleSheet("QComboBox { background-color: red; }");
+    }
+    if (success)
+    {
+        ui->comboBox_completionState->setStyleSheet("");
+        ui->comboBox_completionState->setToolTip("");
     }
 }
 
@@ -214,7 +284,7 @@ void JobForm::on_listWidget_partsE_doubleClicked(const QModelIndex & index)
 {
     Part & part = parts[index.row()];
     PartController::Show(part, this);
-    if (part.null()) parts.erase(parts.begin() + index.row());
+    if (part.null() && !part.pending) parts.erase(parts.begin() + index.row());
     updateView();
 }
 
@@ -222,14 +292,14 @@ void JobForm::on_listWidget_tasksE_doubleClicked(const QModelIndex & index)
 {
     Task & task = tasks[index.row()];
     TaskController::Show(task, this);
-    if (task.null()) tasks.erase(tasks.begin() + index.row());
+    if (task.null() && !task.pending) tasks.erase(tasks.begin() + index.row());
     updateView();
 }
 
 void JobForm::on_pushButton_addPart_released()
 {
     Part part = PartController::New(this);
-    if (!part.null())
+    if (part.pending)
     {
         parts.push_back(part);
         updateView();
@@ -239,7 +309,7 @@ void JobForm::on_pushButton_addPart_released()
 void JobForm::on_pushButton_addTask_released()
 {
     Task task = TaskController::New(this);
-    if (!task.null())
+    if (task.pending)
     {
         tasks.push_back(task);
         updateView();

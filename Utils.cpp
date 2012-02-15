@@ -80,6 +80,14 @@ void showErrorDialog(const char * message)
     messageBox.exec();
 }
 
+void showErrorDialog(const vector<string> & errors)
+{
+    string errorMessage;
+    errorMessage.reserve(1024);
+    for (unsigned i = 0; i < errors.size(); ++i) errorMessage += errors[i];
+    showErrorDialog(errorMessage.c_str());
+}
+
 void showFatalDialog(const char * message)
 {
     QMessageBox messageBox(QMessageBox::Critical, "Fatal Error", message);
@@ -106,4 +114,19 @@ const char * createFullName(const char * forename, const char * surname)
     strcat(name, surname);
 
     return name;
+}
+
+void addError(vector<string> & errors, const char * error)
+{
+    // Add the error to the list if it isn't already found in the list
+    bool alreadyAdded = false;
+    for (unsigned i = 0; i < errors.size(); ++i)
+    {
+        if (errors[i] == error)
+        {
+            alreadyAdded = true;
+            break;
+        }
+    }
+    if (!alreadyAdded) errors.push_back(error + '\n');
 }

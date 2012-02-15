@@ -32,7 +32,6 @@ SOURCES += main.cpp\
     dialogs/task/TaskDialog.cpp \
     dialogs/customer/CustomerNew.cpp \
     dialogs/expense/ExpenseNew.cpp \
-    dialogs/part/PartNew.cpp \
     dialogs/job/JobShow.cpp \
     dialogs/job/JobIndex.cpp \
     JobController.cpp \
@@ -43,7 +42,10 @@ SOURCES += main.cpp\
     PartController.cpp \
     TaskController.cpp \
     dialogs/job/PaymentMethodDialog.cpp \
-    testing/integration/JobController_testing.cc
+    testing/integration/JobController_testing.cc \
+    dialogs/part/PartForm.cpp \
+    dialogs/part/PartShow.cpp \
+    testing/integration/PartController_testing.cc
 
 HEADERS  +=\
         Database.h\
@@ -59,7 +61,6 @@ HEADERS  +=\
     dialogs/main/MainWindow.h \
     dialogs/customer/CustomerNew.h \
     dialogs/expense/ExpenseNew.h \
-    dialogs/part/PartNew.h \
     dialogs/task/TaskNew.h \
     JobController.h \
     dialogs/job/JobShow.h \
@@ -69,15 +70,18 @@ HEADERS  +=\
     dialogs/job/JobForm.h \
     PartController.h \
     TaskController.h \
-    dialogs/job/PaymentMethodDialog.h
+    dialogs/job/PaymentMethodDialog.h \
+    dialogs/part/PartForm.h \
+    dialogs/part/PartShow.h
 
 FORMS += \
     dialogs/main/MainWindow.ui \
     dialogs/task/TaskDialog.ui \
     dialogs/customer/CustomerNew.ui \
     dialogs/expense/ExpenseNew.ui \
-    dialogs/part/PartNew.ui \
     dialogs/job/JobShow.ui \
     dialogs/job/JobIndex.ui \
     dialogs/job/JobForm.ui \
-    dialogs/job/PaymentMethodDialog.ui
+    dialogs/job/PaymentMethodDialog.ui \
+    dialogs/part/PartForm.ui \
+    dialogs/part/PartShow.ui

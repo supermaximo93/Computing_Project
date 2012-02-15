@@ -21,7 +21,7 @@ int Part::size()
 const string Part::databaseFilename = "parts.dat";
 
 Part::Part(const int jobId, const char * newName, const char * newNumber, const double price, const double vatRate)
-    : jobId(jobId), price(price), vatRate(vatRate < 0.0 ? Globals::vatRate(time(NULL)) : vatRate)
+    : pending(false), jobId(jobId), price(price), vatRate(vatRate < 0.0 ? Globals::vatRate(time(NULL)) : vatRate)
 {
     name = new char[maxNameLength + 1];
     number = new char[maxNumberLength + 1];
@@ -45,6 +45,7 @@ Part::~Part()
 
 void Part::operator =(const Part & part)
 {
+    pending = part.pending;
     *((Record*)this) = (Record)part;
     jobId = part.jobId;
     strcpy(name, part.name);

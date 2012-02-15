@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>PartNew</class>
- <widget class="QDialog" name="PartNew">
+ <class>PartForm</class>
+ <widget class="QDialog" name="PartForm">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>341</width>
     <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QLabel" name="label_part">
+  <widget class="QLabel" name="label_partFormTitleE">
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>20</y>
-     <width>71</width>
-     <height>21</height>
+     <y>10</y>
+     <width>221</width>
+     <height>31</height>
     </rect>
    </property>
    <property name="font">
@@ -30,7 +30,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Part</string>
+    <string>Part form title</string>
    </property>
   </widget>
   <widget class="QWidget" name="formLayoutWidget">
@@ -78,10 +78,14 @@
      <widget class="QLineEdit" name="lineEdit_partNumber"/>
     </item>
     <item row="2" column="1">
-     <widget class="QLineEdit" name="lineEdit_partPrice"/>
+     <widget class="QDoubleSpinBox" name="doubleSpinBox_price">
+      <property name="maximum">
+       <double>1000000.000000000000000</double>
+      </property>
+     </widget>
     </item>
     <item row="3" column="1">
-     <widget class="QLineEdit" name="lineEdit_vatRate"/>
+     <widget class="QDoubleSpinBox" name="doubleSpinBox_vatRate"/>
     </item>
    </layout>
   </widget>

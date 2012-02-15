@@ -19,6 +19,8 @@ public:
     static const std::string databaseFilename;
     static const int minDescriptionLength = 0, maxDescriptionLength = 256;
 
+    bool pending;
+
     Task(const int jobId = -1, const time_t date = 0, const char * description = "");
     Task(const Task & task);
     ~Task();
