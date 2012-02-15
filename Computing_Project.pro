@@ -45,7 +45,11 @@ SOURCES += main.cpp\
     testing/integration/JobController_testing.cc \
     dialogs/part/PartForm.cpp \
     dialogs/part/PartShow.cpp \
-    testing/integration/PartController_testing.cc
+    testing/integration/PartController_testing.cc \
+    testing/integration/TaskController_testing.cc \
+    testing/integration/CustomerController_testing.cc \
+    ExpenseController.cpp \
+    testing/integration/ExpenseController_testing.cc
 
 HEADERS  +=\
         Database.h\
@@ -72,7 +76,8 @@ HEADERS  +=\
     TaskController.h \
     dialogs/job/PaymentMethodDialog.h \
     dialogs/part/PartForm.h \
-    dialogs/part/PartShow.h
+    dialogs/part/PartShow.h \
+    ExpenseController.h
 
 FORMS += \
     dialogs/main/MainWindow.ui \

@@ -12,6 +12,7 @@
 
 class QWidget;
 class Customer;
+class Job;
 
 namespace CustomerController
 {
@@ -35,6 +36,7 @@ bool Destroy(Customer & customer, QWidget * caller);
 
 Customer getCustomer(int customerId);
 Database<Customer>::recordListPtr getAllCustomers();
+Database<Job>::recordListPtr getCustomerJobs(int customerId);
 
 }
 

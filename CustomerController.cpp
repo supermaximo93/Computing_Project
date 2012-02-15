@@ -8,6 +8,7 @@
 #include "CustomerController.h"
 #include "Databases.h"
 #include "Customer.h"
+#include "Job.h"
 
 void CustomerController::Index(QWidget * caller)
 {
@@ -81,4 +82,9 @@ Database<Customer>::recordListPtr CustomerController::getAllCustomers()
         return Database<Customer>::recordListPtr(new Database<Customer>::recordList);
     }
     return customers;
+}
+
+Database<Job>::recordListPtr CustomerController::getCustomerJobs(int customerId)
+{
+    return Database<Job>::recordListPtr(new Database<Job>::recordList);
 }

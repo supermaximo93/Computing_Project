@@ -12,23 +12,18 @@
 #include "Databases.h"
 #include "PartController.h"
 #include "Part.h"
-#include "Job.h"
 
 class PartControllerIntegrationTest : public ::testing::Test
 {
 protected:
     const Part examplePart;
-    const Job exampleJob;
 
     PartControllerIntegrationTest()
-        : examplePart(0, "Tap", "12345", 20.0, 20.0),
-          exampleJob(0, time(NULL) + 100000, 50.0, Job::DONE_UNPAID, Job::NA) {}
+        : examplePart(0, "Tap", "12345", 20.0, 20.0) {}
 
     virtual void SetUp()
     {
         Databases::init(true);
-        Job job(exampleJob);
-        Databases::jobs().addRecord(job);
 
         Part part(examplePart);
         for (unsigned i = 0; i < 20; ++i)
@@ -41,11 +36,8 @@ protected:
 
     virtual void TearDown()
     {
-        std::string jobsFilename = Databases::jobs().filename(),
-                partsFilename = Databases::parts().filename();
-
+        std::string partsFilename = Databases::parts().filename();
         Databases::finalise();
-        remove(jobsFilename.c_str());
         remove(partsFilename.c_str());
     }
 };
@@ -91,9 +83,7 @@ TEST_F(PartControllerIntegrationTest, DoesUpdateWork)
             << "The Part Controller did not catch an exception";
 
     Part tempPart;
-    try { tempPart = Databases::parts().recordAt(0); }
-    catch (const std::exception & e) { FAIL() << e.what(); }
-
+    try { tempPart = Databases::parts().recordAt(0); } catch (const std::exception & e) { FAIL() << e.what(); }
     EXPECT_TRUE(part.completeCompare(tempPart))
             << "The part was not updated in the database correctly";
 
@@ -113,8 +103,7 @@ TEST_F(PartControllerIntegrationTest, DoesDestroyWork)
     catch (const std::exception & e) { FAIL() << e.what(); }
 
     Part part;
-    try { part = Databases::parts().recordAt(0); }
-    catch (const std::exception & e) { FAIL() << e.what(); }
+    try { part = Databases::parts().recordAt(0); } catch (const std::exception & e) { FAIL() << e.what(); }
 
     EXPECT_NO_THROW(PartController::Destroy(part, NULL))
             << "The Part Controller did not catch an exception";
