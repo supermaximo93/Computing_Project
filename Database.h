@@ -379,7 +379,7 @@ std::tr1::shared_ptr< std::vector<recordType> > Database<recordType>::allRecords
         {
             tempRecord.readFromFile(file);
             if (file.eof()) break;
-            returnList->push_back(tempRecord);
+            if (!tempRecord.null()) returnList->push_back(tempRecord);
         }
         file.close();
     }

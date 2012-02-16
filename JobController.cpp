@@ -120,7 +120,7 @@ void JobController::Edit(Job & job, QWidget * caller)
     {
         customers = Databases::customers().allRecords();
         parts = Databases::parts().findRecords("jobId", job.getId());
-        tasks = Databases::tasks().findRecords("tasks", job.getId());
+        tasks = Databases::tasks().findRecords("jobId", job.getId());
     }
     catch (const std::exception & e)
     {
