@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>CustomerNew</class>
- <widget class="QDialog" name="CustomerNew">
+ <class>CustomerForm</class>
+ <widget class="QDialog" name="CustomerForm">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -173,7 +173,7 @@
   <widget class="QPushButton" name="pushButton_cancel">
    <property name="geometry">
     <rect>
-     <x>240</x>
+     <x>180</x>
      <y>410</y>
      <width>97</width>
      <height>27</height>
@@ -186,7 +186,7 @@
   <widget class="QPushButton" name="pushButton_submit">
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>70</x>
      <y>410</y>
      <width>97</width>
      <height>27</height>
@@ -196,26 +196,13 @@
     <string>Submit</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_newJob">
-   <property name="geometry">
-    <rect>
-     <x>130</x>
-     <y>410</y>
-     <width>97</width>
-     <height>27</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Add new job</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_customer">
+  <widget class="QLabel" name="label_customerFormTitle">
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>20</y>
-     <width>131</width>
-     <height>21</height>
+     <y>10</y>
+     <width>331</width>
+     <height>31</height>
     </rect>
    </property>
    <property name="font">
@@ -226,7 +213,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Customer</string>
+    <string>Customer form title</string>
    </property>
   </widget>
  </widget>

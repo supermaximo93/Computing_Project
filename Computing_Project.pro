@@ -29,7 +29,6 @@ SOURCES += main.cpp\
     testing/unit/Task_testing.cc \
     testing/integration/CustomerDatabase_testing.cc \
     dialogs/main/MainWindow.cpp \
-    dialogs/customer/CustomerNew.cpp \
     dialogs/job/JobShow.cpp \
     dialogs/job/JobIndex.cpp \
     JobController.cpp \
@@ -52,7 +51,10 @@ SOURCES += main.cpp\
     dialogs/task/TaskShow.cpp \
     dialogs/expense/ExpenseForm.cpp \
     dialogs/expense/ExpenseShow.cpp \
-    dialogs/expense/ExpenseIndex.cpp
+    dialogs/expense/ExpenseIndex.cpp \
+    dialogs/customer/CustomerForm.cpp \
+    dialogs/customer/CustomerShow.cpp \
+    dialogs/customer/CustomerIndex.cpp
 
 HEADERS  +=\
         Database.h\
@@ -66,7 +68,6 @@ HEADERS  +=\
     AssignOncePointer.h \
     Utils.h \
     dialogs/main/MainWindow.h \
-    dialogs/customer/CustomerNew.h \
     JobController.h \
     dialogs/job/JobShow.h \
     dialogs/job/JobIndex.h \
@@ -83,11 +84,13 @@ HEADERS  +=\
     dialogs/task/TaskShow.h \
     dialogs/expense/ExpenseForm.h \
     dialogs/expense/ExpenseShow.h \
-    dialogs/expense/ExpenseIndex.h
+    dialogs/expense/ExpenseIndex.h \
+    dialogs/customer/CustomerForm.h \
+    dialogs/customer/CustomerShow.h \
+    dialogs/customer/CustomerIndex.h
 
 FORMS += \
     dialogs/main/MainWindow.ui \
-    dialogs/customer/CustomerNew.ui \
     dialogs/job/JobShow.ui \
     dialogs/job/JobIndex.ui \
     dialogs/job/JobForm.ui \
@@ -98,4 +101,7 @@ FORMS += \
     dialogs/task/TaskShow.ui \
     dialogs/expense/ExpenseForm.ui \
     dialogs/expense/ExpenseShow.ui \
-    dialogs/expense/ExpenseIndex.ui
+    dialogs/expense/ExpenseIndex.ui \
+    dialogs/customer/CustomerForm.ui \
+    dialogs/customer/CustomerShow.ui \
+    dialogs/customer/CustomerIndex.ui
