@@ -43,7 +43,7 @@ void ExpenseForm::on_pushButton_submit_released()
 {
     if (!setRecordData()) return;
 
-    if ((formType == EDIT) && expense.null())
+    if (formType == EDIT)
     {
         if (ExpenseController::Update(expense, this)) done(Accepted);
     }
