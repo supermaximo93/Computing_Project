@@ -19,6 +19,8 @@ public:
 private slots:
     void on_pushButton_addNewJob_released();
 
+    void on_pushButton_viewAllExpenses_released();
+
 private:
     Ui::MainWindow * ui;
 };

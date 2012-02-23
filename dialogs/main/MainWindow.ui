@@ -189,7 +189,7 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_addNewExpense">
+   <widget class="QPushButton" name="pushButton_viewAllExpenses">
     <property name="geometry">
      <rect>
       <x>240</x>
@@ -199,7 +199,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Add new expense</string>
+     <string>View all expenses</string>
     </property>
    </widget>
    <widget class="QListWidget" name="listWidget_jobs">

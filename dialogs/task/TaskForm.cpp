@@ -56,10 +56,7 @@ void TaskForm::on_dateTimeEdit_date_dateTimeChanged(const QDateTime & date)
 void TaskForm::on_plainTextEdit_description_textChanged()
 {
     bool success = true;
-    try
-    {
-        task.setDescription(ui->plainTextEdit_description->toPlainText().toStdString().c_str());
-    }
+    try { task.setDescription(ui->plainTextEdit_description->toPlainText().toStdString().c_str()); }
     catch (const std::exception & e)
     {
         success = false;
