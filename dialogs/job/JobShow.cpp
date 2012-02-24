@@ -21,7 +21,7 @@
 #include "Utils.h"
 #include "Globals.h"
 
-JobShow::JobShow(Job & job, Database<Part>::recordList & parts, Database<Task>::recordList & tasks, QWidget * parent)
+JobShow::JobShow(Job &job, Database<Part>::recordList &parts, Database<Task>::recordList &tasks, QWidget *parent)
     : QDialog(parent), ui(new Ui::JobShow), job(job), parts(parts), tasks(tasks)
 {
     ui->setupUi(this);
@@ -149,17 +149,17 @@ void JobShow::on_pushButton_viewCustomerDetails_released()
     else updateView();
 }
 
-void JobShow::on_listWidget_partsE_doubleClicked(const QModelIndex & index)
+void JobShow::on_listWidget_partsE_doubleClicked(const QModelIndex &index)
 {
-    Part & part = parts[index.row()];
+    Part &part = parts[index.row()];
     PartController::Show(part, this);
     if (part.null()) parts.erase(parts.begin() + index.row());
     updateView();
 }
 
-void JobShow::on_listWidget_tasksE_doubleClicked(const QModelIndex & index)
+void JobShow::on_listWidget_tasksE_doubleClicked(const QModelIndex &index)
 {
-    Task & task = tasks[index.row()];
+    Task &task = tasks[index.row()];
     TaskController::Show(task, this);
     if (task.null()) tasks.erase(tasks.begin() + index.row());
     updateView();
@@ -182,12 +182,12 @@ void JobShow::on_pushButton_markAsPaid_released()
     if (dialog.exec() == Accepted)
     {
         try { job.setPaymentMethod(paymentMethod); }
-        catch (const std::exception & e) { showErrorDialog(e.what()); return; }
+        catch (const std::exception &e) { showErrorDialog(e.what()); return; }
 
         if (!setNewJobCompletionState(Job::DONE_PAID)) // This'll update the record in the database automatically
         {
             try { job.setPaymentMethod(Job::NA); }
-            catch (const std::exception & e) { showErrorDialog(e.what()); }
+            catch (const std::exception &e) { showErrorDialog(e.what()); }
         }
     }
 }
@@ -202,13 +202,13 @@ bool JobShow::setNewJobCompletionState(const int state)
     const int previousCompletionState = job.getCompletionState();
 
     try { job.setCompletionState(state); }
-    catch (const std::exception & e) { showErrorDialog(e.what()); return false; }
+    catch (const std::exception &e) { showErrorDialog(e.what()); return false; }
 
     if (JobController::Update(job, this)) updateView();
     else
     {
         try { job.setCompletionState(previousCompletionState); }
-        catch (const std::exception & e) { showErrorDialog(e.what()); }
+        catch (const std::exception &e) { showErrorDialog(e.what()); }
         return false;
     }
 

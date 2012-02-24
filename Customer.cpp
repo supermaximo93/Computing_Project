@@ -20,9 +20,9 @@ int Customer::size()
 
 const string Customer::databaseFilename = "customers.dat";
 
-Customer::Customer(const char * newForename, const char * newSurname, const char * newAddressLine1,
-                   const char * newAddressLine2, const char * newTown, const char * newPostcode,
-                   const char * newHomePhoneNumber, const char * newMobilePhoneNumber, const char * newEmailAddress)
+Customer::Customer(const char *newForename, const char *newSurname, const char *newAddressLine1,
+                   const char *newAddressLine2, const char *newTown, const char *newPostcode,
+                   const char *newHomePhoneNumber, const char *newMobilePhoneNumber, const char *newEmailAddress)
 {
 
     forename = new char[maxNameLength + 1];
@@ -46,7 +46,7 @@ Customer::Customer(const char * newForename, const char * newSurname, const char
     strcpy(emailAddress, newEmailAddress);
 }
 
-Customer::Customer(const Customer & customer)
+Customer::Customer(const Customer &customer)
 {
     forename = new char[maxNameLength + 1];
     surname = new char[maxNameLength + 1];
@@ -74,7 +74,7 @@ Customer::~Customer()
     delete[] emailAddress;
 }
 
-void Customer::operator =(const Customer & customer)
+void Customer::operator =(const Customer &customer)
 {
     *((Record*)this) = (Record)customer;
     strcpy(forename, customer.forename);
@@ -88,7 +88,7 @@ void Customer::operator =(const Customer & customer)
     strcpy(emailAddress, customer.emailAddress);
 }
 
-void Customer::writeToFile(fstream & file) const
+void Customer::writeToFile(fstream &file) const
 {
     Record::writeToFile(file);
     file.write(forename, maxNameLength + 1);
@@ -102,7 +102,7 @@ void Customer::writeToFile(fstream & file) const
     file.write(emailAddress, maxEmailAddressLength + 1);
 }
 
-void Customer::readFromFile(fstream & file)
+void Customer::readFromFile(fstream &file)
 {
     Record::readFromFile(file);
     file.read(forename, maxNameLength + 1);
@@ -116,12 +116,12 @@ void Customer::readFromFile(fstream & file)
     file.read(emailAddress, maxEmailAddressLength + 1);
 }
 
-bool Customer::hasMatchingField(const string & fieldName, const int searchTerm) const
+bool Customer::hasMatchingField(const string &fieldName, const int searchTerm) const
 {
     return Record::hasMatchingField(fieldName, searchTerm);
 }
 
-bool Customer::hasMatchingField(const string & fieldName, const char * searchTerm) const
+bool Customer::hasMatchingField(const string &fieldName, const char *searchTerm) const
 {
     if (fieldName == "forename") return (strcmp(forename, searchTerm) == 0);
     else if (fieldName == "surname") return (strcmp(surname, searchTerm) == 0);
@@ -136,7 +136,7 @@ bool Customer::hasMatchingField(const string & fieldName, const char * searchTer
     return false;
 }
 
-bool Customer::fieldCompare(const Customer & rhs) const
+bool Customer::fieldCompare(const Customer &rhs) const
 {
     if (strcmp(forename, rhs.forename) != 0) return false;
     if (strcmp(surname, rhs.surname) != 0) return false;
@@ -150,7 +150,7 @@ bool Customer::fieldCompare(const Customer & rhs) const
     return true;
 }
 
-bool Customer::completeCompare(const Customer & rhs) const
+bool Customer::completeCompare(const Customer &rhs) const
 {
     if (getId() != rhs.getId()) return false;
     return fieldCompare(rhs);
@@ -161,7 +161,7 @@ const char * Customer::getForename() const
     return forename;
 }
 
-void Customer::setForename(const char * newForename)
+void Customer::setForename(const char *newForename)
 {
     strcpy(forename, newForename);
 }
@@ -171,7 +171,7 @@ const char * Customer::getSurname() const
     return surname;
 }
 
-void Customer::setSurname(const char * newSurname)
+void Customer::setSurname(const char *newSurname)
 {
     strcpy(surname, newSurname);
 }
@@ -181,7 +181,7 @@ const char * Customer::getAddressLine1() const
     return addressLine1;
 }
 
-void Customer::setAddressLine1(const char * newAddressLine1)
+void Customer::setAddressLine1(const char *newAddressLine1)
 {
     strcpy(addressLine1, newAddressLine1);
 }
@@ -191,7 +191,7 @@ const char * Customer::getAddressLine2() const
     return addressLine2;
 }
 
-void Customer::setAddressLine2(const char * newAddressLine2)
+void Customer::setAddressLine2(const char *newAddressLine2)
 {
     strcpy(addressLine2, newAddressLine2);
 }
@@ -201,7 +201,7 @@ const char * Customer::getTown() const
     return town;
 }
 
-void Customer::setTown(const char * newTown)
+void Customer::setTown(const char *newTown)
 {
     strcpy(town, newTown);
 }
@@ -211,7 +211,7 @@ const char * Customer::getPostcode() const
     return postcode;
 }
 
-void Customer::setPostcode(const char * newPostcode)
+void Customer::setPostcode(const char *newPostcode)
 {
     strcpy(postcode, newPostcode);
 }
@@ -221,7 +221,7 @@ const char * Customer::getHomePhoneNumber() const
     return homePhoneNumber;
 }
 
-void Customer::setHomePhoneNumber(const char * newHomePhoneNumber)
+void Customer::setHomePhoneNumber(const char *newHomePhoneNumber)
 {
     strcpy(homePhoneNumber, newHomePhoneNumber);
 }
@@ -231,7 +231,7 @@ const char * Customer::getMobilePhoneNumber() const
     return mobilePhoneNumber;
 }
 
-void Customer::setMobilePhoneNumber(const char * newMobilePhoneNumber)
+void Customer::setMobilePhoneNumber(const char *newMobilePhoneNumber)
 {
     strcpy(mobilePhoneNumber, newMobilePhoneNumber);
 }
@@ -241,7 +241,7 @@ const char * Customer::getEmailAddress() const
     return emailAddress;
 }
 
-void Customer::setEmailAddress(const char * newEmailAddress)
+void Customer::setEmailAddress(const char *newEmailAddress)
 {
     strcpy(emailAddress, newEmailAddress);
 }

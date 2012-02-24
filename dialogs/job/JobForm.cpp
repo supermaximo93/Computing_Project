@@ -20,8 +20,8 @@ using namespace std;
 #include "PartController.h"
 #include "TaskController.h"
 
-JobForm::JobForm(Job & job, Database<Customer>::recordList & customers, Database<Part>::recordList & parts,
-                 Database<Task>::recordList & tasks, QWidget * parent)
+JobForm::JobForm(Job &job, Database<Customer>::recordList &customers, Database<Part>::recordList &parts,
+                 Database<Task>::recordList &tasks, QWidget *parent)
     : QDialog(parent), formType(job.null() ? NEW : EDIT), ui(new Ui::JobForm), job(job), customers(customers),
       parts(parts), tasks(tasks)
 {
@@ -45,7 +45,7 @@ void JobForm::updateView()
     unsigned customerIndex = 0;
     for (unsigned i = 0; i < customers.size(); ++i)
     {
-        const Customer & customer = customers[i];
+        const Customer &customer = customers[i];
         const int customerId = customer.getId();
         if ((formType == EDIT) && (customerId == job.getCustomerId())) customerIndex = i;
 
@@ -78,8 +78,8 @@ void JobForm::on_pushButton_cancel_released()
 }
 
 template<typename T>
-void addRecordsToDatabase(std::vector<T> & records, const int jobId, bool(*createFunction)(T&, QWidget*),
-                          vector<string> & errorList)
+void addRecordsToDatabase(std::vector<T> &records, const int jobId, bool(*createFunction)(T&, QWidget*),
+                          vector<string> &errorList)
 {
     for (unsigned i = 0; i < records.size(); ++i)
     {
@@ -87,7 +87,7 @@ void addRecordsToDatabase(std::vector<T> & records, const int jobId, bool(*creat
         if (records[i].getJobId() != jobId)
         {
             try { records[i].setJobId(jobId); }
-            catch (const std::exception & e)
+            catch (const std::exception &e)
             {
                 addError(errorList, e.what());
                 continue;
@@ -178,7 +178,7 @@ double JobForm::getTotalChargeInclVat()
     return totalCharge;
 }
 
-void JobForm::on_dateTimeEdit_date_dateTimeChanged(const QDateTime & date)
+void JobForm::on_dateTimeEdit_date_dateTimeChanged(const QDateTime &date)
 {
     bool success = true;
     try
@@ -186,7 +186,7 @@ void JobForm::on_dateTimeEdit_date_dateTimeChanged(const QDateTime & date)
         job.setDate(Date(date.time().minute(), date.time().hour(), date.date().day(), date.date().month(),
                          date.date().year()));
     }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         success = false;
         ui->dateTimeEdit_date->setToolTip(e.what());
@@ -203,7 +203,7 @@ void JobForm::on_comboBox_customer_currentIndexChanged(int index)
 {
     bool success = true;
     try { job.setCustomerId(ui->comboBox_customer->itemData(index).toInt()); }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         success = false;
         ui->comboBox_customer->setToolTip(e.what());
@@ -220,7 +220,7 @@ void JobForm::on_doubleSpinBox_labourCharge_valueChanged(double value)
 {
     bool success = true;
     try { job.setLabourCharge(value); }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         success = false;
         ui->doubleSpinBox_labourCharge->setToolTip(e.what());
@@ -240,7 +240,7 @@ void JobForm::on_comboBox_completionState_currentIndexChanged(int index)
 {
     bool success = true;
     try { job.setCompletionState(index); }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         ui->comboBox_completionState->setToolTip(e.what());
         ui->comboBox_completionState->setStyleSheet("QComboBox { background-color: red; }");
@@ -256,7 +256,7 @@ void JobForm::on_comboBox_paidBy_currentIndexChanged(int index)
 {
     bool success = true;
     try { job.setPaymentMethod(index); }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         ui->comboBox_completionState->setToolTip(e.what());
         ui->comboBox_completionState->setStyleSheet("QComboBox { background-color: red; }");
@@ -275,22 +275,22 @@ void JobForm::on_pushButton_addNewCustomer_released()
     {
         customers.push_back(customer);
         try { job.setCustomerId(customer.getId()); }
-        catch (const std::exception & e) { showErrorDialog(e.what()); }
+        catch (const std::exception &e) { showErrorDialog(e.what()); }
         updateView();
     }
 }
 
-void JobForm::on_listWidget_partsE_doubleClicked(const QModelIndex & index)
+void JobForm::on_listWidget_partsE_doubleClicked(const QModelIndex &index)
 {
-    Part & part = parts[index.row()];
+    Part &part = parts[index.row()];
     PartController::Show(part, this);
     if (part.null() && !part.pending) parts.erase(parts.begin() + index.row());
     updateView();
 }
 
-void JobForm::on_listWidget_tasksE_doubleClicked(const QModelIndex & index)
+void JobForm::on_listWidget_tasksE_doubleClicked(const QModelIndex &index)
 {
-    Task & task = tasks[index.row()];
+    Task &task = tasks[index.row()];
     TaskController::Show(task, this);
     if (task.null() && !task.pending) tasks.erase(tasks.begin() + index.row());
     updateView();

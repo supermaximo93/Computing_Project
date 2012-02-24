@@ -11,7 +11,7 @@
 #include "Expense.h"
 #include "ExpenseController.h"
 
-ExpenseIndex::ExpenseIndex(Database<Expense>::recordList & expenses, QWidget * parent)
+ExpenseIndex::ExpenseIndex(Database<Expense>::recordList &expenses, QWidget * parent)
     : QDialog(parent), ui(new Ui::ExpenseIndex), expenses(expenses)
 {
     ui->setupUi(this);
@@ -60,9 +60,9 @@ void ExpenseIndex::on_pushButton_addNewExpense_released()
     }
 }
 
-void ExpenseIndex::on_tableWidget_doubleClicked(const QModelIndex & index)
+void ExpenseIndex::on_tableWidget_doubleClicked(const QModelIndex &index)
 {
-    Expense & expense = expenses[index.row()];
+    Expense &expense = expenses[index.row()];
     ExpenseController::Show(expense, this);
     if (expense.null()) expenses.erase(expenses.begin() + index.row());
     updateView();

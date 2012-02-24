@@ -47,7 +47,7 @@ TEST_F(PartControllerIntegrationTest, DoesCreateWork)
 {
     unsigned recordCountBefore;
     try { recordCountBefore = Databases::parts().recordCount(); }
-    catch (const std::exception & e) { FAIL() << e.what(); }
+    catch (const std::exception &e) { FAIL() << e.what(); }
 
     Part part(examplePart);
     EXPECT_NO_THROW(PartController::Create(part, NULL))
@@ -58,7 +58,7 @@ TEST_F(PartControllerIntegrationTest, DoesCreateWork)
 
     unsigned recordCountAfter;
     try { recordCountAfter = Databases::parts().recordCount(); }
-    catch (const std::exception & e) { FAIL() << e.what(); }
+    catch (const std::exception &e) { FAIL() << e.what(); }
 
     EXPECT_EQ(recordCountBefore + 1, recordCountAfter)
             << "The part was not added to the database properly";
@@ -69,7 +69,7 @@ TEST_F(PartControllerIntegrationTest, DoesUpdateWork)
 {
     unsigned recordCountBefore;
     try { recordCountBefore = Databases::parts().recordCount(); }
-    catch (const std::exception & e) { FAIL() << e.what(); }
+    catch (const std::exception &e) { FAIL() << e.what(); }
 
     Part part;
     try
@@ -77,19 +77,19 @@ TEST_F(PartControllerIntegrationTest, DoesUpdateWork)
         part = Databases::parts().recordAt(0);
         part.setPrice(part.getPrice() + 10.0);
     }
-    catch (const std::exception & e) { FAIL() << e.what(); }
+    catch (const std::exception &e) { FAIL() << e.what(); }
 
     EXPECT_NO_THROW(PartController::Update(part, NULL))
             << "The Part Controller did not catch an exception";
 
     Part tempPart;
-    try { tempPart = Databases::parts().recordAt(0); } catch (const std::exception & e) { FAIL() << e.what(); }
+    try { tempPart = Databases::parts().recordAt(0); } catch (const std::exception &e) { FAIL() << e.what(); }
     EXPECT_TRUE(part.completeCompare(tempPart))
             << "The part was not updated in the database correctly";
 
     unsigned recordCountAfter;
     try { recordCountAfter = Databases::parts().recordCount(); }
-    catch (const std::exception & e) { FAIL() << e.what(); }
+    catch (const std::exception &e) { FAIL() << e.what(); }
 
     EXPECT_EQ(recordCountBefore, recordCountAfter)
             << "A record was added to the database while updating an existing part";
@@ -100,10 +100,10 @@ TEST_F(PartControllerIntegrationTest, DoesDestroyWork)
 {
     unsigned recordCountBefore;
     try { recordCountBefore = Databases::parts().recordCount(); }
-    catch (const std::exception & e) { FAIL() << e.what(); }
+    catch (const std::exception &e) { FAIL() << e.what(); }
 
     Part part;
-    try { part = Databases::parts().recordAt(0); } catch (const std::exception & e) { FAIL() << e.what(); }
+    try { part = Databases::parts().recordAt(0); } catch (const std::exception &e) { FAIL() << e.what(); }
 
     EXPECT_NO_THROW(PartController::Destroy(part, NULL))
             << "The Part Controller did not catch an exception";
@@ -113,7 +113,7 @@ TEST_F(PartControllerIntegrationTest, DoesDestroyWork)
 
     unsigned recordCountAfter;
     try { recordCountAfter = Databases::parts().recordCount(); }
-    catch (const std::exception & e) { FAIL() << e.what(); }
+    catch (const std::exception &e) { FAIL() << e.what(); }
 
     EXPECT_EQ(recordCountBefore - 1, recordCountAfter)
             << "The part was not removed from the database properly";

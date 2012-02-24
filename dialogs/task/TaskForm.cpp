@@ -12,7 +12,7 @@
 #include "TaskController.h"
 #include "Utils.h"
 
-TaskForm::TaskForm(Task & task, QWidget * parent)
+TaskForm::TaskForm(Task &task, QWidget *parent)
     : QDialog(parent), formType((task.null() && !task.pending) ? NEW : EDIT), ui(new Ui::TaskForm), task(task)
 {
     ui->setupUi(this);
@@ -32,7 +32,7 @@ void TaskForm::updateView()
     ui->plainTextEdit_description->setPlainText(task.getDescription());
 }
 
-void TaskForm::on_dateTimeEdit_date_dateTimeChanged(const QDateTime & date)
+void TaskForm::on_dateTimeEdit_date_dateTimeChanged(const QDateTime &date)
 {
     bool success = true;
     try
@@ -40,7 +40,7 @@ void TaskForm::on_dateTimeEdit_date_dateTimeChanged(const QDateTime & date)
         task.setDate(Date(date.time().minute(), date.time().hour(), date.date().day(), date.date().month(),
                           date.date().year()));
     }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         success = false;
         ui->dateTimeEdit_date->setToolTip(e.what());
@@ -57,7 +57,7 @@ void TaskForm::on_plainTextEdit_description_textChanged()
 {
     bool success = true;
     try { task.setDescription(ui->plainTextEdit_description->toPlainText().toStdString().c_str()); }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         success = false;
         ui->plainTextEdit_description->setToolTip(e.what());

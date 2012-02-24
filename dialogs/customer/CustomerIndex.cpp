@@ -8,7 +8,7 @@
 #include "CustomerIndex.h"
 #include "ui_CustomerIndex.h"
 
-CustomerIndex::CustomerIndex(QWidget * parent)
+CustomerIndex::CustomerIndex(QWidget *parent)
     : QDialog(parent), ui(new Ui::CustomerIndex)
 {
     ui->setupUi(this);

@@ -8,7 +8,7 @@
 #include "PaymentMethodDialog.h"
 #include "ui_PaymentMethodDialog.h"
 
-PaymentMethodDialog::PaymentMethodDialog(int & paymentMethodToSet, QWidget * parent)
+PaymentMethodDialog::PaymentMethodDialog(int &paymentMethodToSet, QWidget *parent)
     : QDialog(parent), ui(new Ui::PaymentMethodDialog), paymentMethodToSet(paymentMethodToSet)
 {
     ui->setupUi(this);

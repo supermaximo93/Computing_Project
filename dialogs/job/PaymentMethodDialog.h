@@ -19,7 +19,7 @@ class PaymentMethodDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit PaymentMethodDialog(int & paymentMethodToSet, QWidget * parent = NULL);
+    explicit PaymentMethodDialog(int &paymentMethodToSet, QWidget *parent = NULL);
     ~PaymentMethodDialog();
 
 private slots:
@@ -28,8 +28,8 @@ private slots:
     void on_buttonBox_rejected();
 
 private:
-    Ui::PaymentMethodDialog * ui;
-    int & paymentMethodToSet;
+    Ui::PaymentMethodDialog *ui;
+    int &paymentMethodToSet;
 };
 
 #endif // PAYMENTMETHODDIALOG_H

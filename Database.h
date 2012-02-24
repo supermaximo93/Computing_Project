@@ -35,14 +35,14 @@ public:
      * Adds a new record to the database, and sets the record's ID. Throws an exception if the record does not pass its
      * validation (which should be done before addRecord is called anyway), or if the database file could not be opened
      */
-    void addRecord(recordType & record);
+    void addRecord(recordType &record);
 
     /*
      * Updates an existing record that has been found from the database or has just been added to it (i.e. the ID of the
      * record is greater than -1). If the record was updated successfully, then true is returned. An exception is thrown
      * if the record is a null record (i.e. ID < 0), or if the database file could not be opened
      */
-    bool updateRecord(const recordType & record);
+    bool updateRecord(const recordType &record);
 
     /*
      * Attempts to delete the record with the specified ID (if any), returning true on success. Throws an exception if
@@ -55,34 +55,34 @@ public:
      * (i.e. ID < 0) if a record could not be found. Throws an exception if the database file could not be opened
      */
     template<typename type>
-    recordType findRecord(const std::string & fieldName, const type & searchTerm);
+    recordType findRecord(const std::string &fieldName, const type &searchTerm);
 
     /*
      * Finds all the records whose field specified matches the search term, and returns them in a recordList (which may
      * be empty if no matching records where found). Throws an exception if the database file could not be opened
      */
     template<typename type>
-    recordListPtr findRecords(const std::string & fieldName, const type & searchTerm);
+    recordListPtr findRecords(const std::string &fieldName, const type &searchTerm);
 
     /*
      * Finds all the records whose field specified matches the search term from the recordList given, and returns them
      * in a recordList (which may be empty if no matching records where found)
      */
     template<typename type>
-    recordListPtr findRecords(const recordList & recordsToSearch, const std::string & fieldName,
-                              const type & searchTerm);
+    recordListPtr findRecords(const recordList &recordsToSearch, const std::string &fieldName,
+                              const type &searchTerm);
 
     /*
      * Removes all the records from the recordList given whose field specified does not match the search term given
      */
     template<typename type>
-    void keepRecords(recordList & records, const std::string & fieldName, const type & searchTerm);
+    void keepRecords(recordList &records, const std::string &fieldName, const type &searchTerm);
 
     /*
      * Removes all the records from the recordList given whose field specified matches the search term given
      */
     template<typename type>
-    void removeRecords(recordList & records, const std::string & fieldName, const type & searchTerm);
+    void removeRecords(recordList &records, const std::string &fieldName, const type &searchTerm);
 
     /*
      * Returns all of the records in the database. Throws an exception if the database file could not be opened
@@ -182,7 +182,7 @@ Database<recordType>::~Database()
 }
 
 template<class recordType>
-void Database<recordType>::addRecord(recordType & record)
+void Database<recordType>::addRecord(recordType &record)
 {
     std::fstream file;
     file.open(filename_.c_str(), std::ios::in | std::ios::out | std::ios::binary);
@@ -197,7 +197,7 @@ void Database<recordType>::addRecord(recordType & record)
 }
 
 template<class recordType>
-bool Database<recordType>::updateRecord(const recordType & record)
+bool Database<recordType>::updateRecord(const recordType &record)
 {
     if (record.null()) throw(std::runtime_error("Record ID must be initialised"));
 
@@ -257,7 +257,7 @@ bool Database<recordType>::deleteRecord(const int id)
 }
 
 template<class recordType> template<typename type>
-recordType Database<recordType>::findRecord(const std::string & fieldName, const type & searchTerm)
+recordType Database<recordType>::findRecord(const std::string &fieldName, const type &searchTerm)
 {
     std::fstream file;
     file.open(filename_.c_str(), std::ios::in | std::ios::binary);
@@ -287,7 +287,7 @@ recordType Database<recordType>::findRecord(const std::string & fieldName, const
 
 template<class recordType> template <typename type>
 std::tr1::shared_ptr< std::vector<recordType> >
-Database<recordType>::findRecords(const std::string & fieldName, const type & searchTerm)
+Database<recordType>::findRecords(const std::string &fieldName, const type &searchTerm)
 {
     recordListPtr returnList(new recordList);
 
@@ -315,8 +315,8 @@ Database<recordType>::findRecords(const std::string & fieldName, const type & se
 
 template<class recordType> template<typename type>
 std::tr1::shared_ptr< std::vector<recordType> >
-Database<recordType>::findRecords(const std::vector<recordType> & recordsToSearch, const std::string & fieldName,
-                                  const type & searchTerm)
+Database<recordType>::findRecords(const std::vector<recordType> &recordsToSearch, const std::string &fieldName,
+                                  const type &searchTerm)
 {
     std::string lowercaseFieldName = lowerCase(fieldName);
     recordListPtr returnList(new recordList);
@@ -331,8 +331,8 @@ Database<recordType>::findRecords(const std::vector<recordType> & recordsToSearc
 }
 
 template<class recordType> template<typename type>
-void Database<recordType>::keepRecords(std::vector<recordType> & records, const std::string & fieldName,
-                                       const type & searchTerm)
+void Database<recordType>::keepRecords(std::vector<recordType> &records, const std::string &fieldName,
+                                       const type &searchTerm)
 {
     std::string lowercaseFieldName = lowerCase(fieldName);
 
@@ -347,8 +347,8 @@ void Database<recordType>::keepRecords(std::vector<recordType> & records, const 
 }
 
 template <class recordType> template<typename type>
-void Database<recordType>::removeRecords(std::vector<recordType> & records, const std::string & fieldName,
-                                         const type & searchTerm)
+void Database<recordType>::removeRecords(std::vector<recordType> &records, const std::string &fieldName,
+                                         const type &searchTerm)
 {
     std::string lowercaseFieldName = lowerCase(fieldName);
 

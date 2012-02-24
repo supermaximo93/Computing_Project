@@ -80,7 +80,7 @@ TEST_F(TaskUnitTest, DoesTaskFieldCompareMemberFunctionWorkCorrectly)
 TEST_F(TaskUnitTest, DoesTaskReadAndWriteToFileCorrectly)
 {
     Task task(exampleTask);
-    const char * fileName = "DoesTaskReadAndWriteToFileCorrectly.dat.test";
+    const char *fileName = "DoesTaskReadAndWriteToFileCorrectly.dat.test";
 
     { // Write the task to a new file
         fstream outFile;

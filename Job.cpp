@@ -24,7 +24,7 @@ Job::Job(const int customerId, const time_t date, const double labourCharge, con
     customerId(customerId), completionState(completionState), paymentMethod(paymentMethod),
     date(date == 0 ? time(NULL) : date), labourCharge(labourCharge), vat(labourCharge * Globals::vatRate(this->date)) {}
 
-void Job::writeToFile(fstream & file) const
+void Job::writeToFile(fstream &file) const
 {
     Record::writeToFile(file);
     file.write(reinterpret_cast<const char *>(&customerId), sizeof(customerId));
@@ -35,7 +35,7 @@ void Job::writeToFile(fstream & file) const
     file.write(reinterpret_cast<const char *>(&paymentMethod), sizeof(paymentMethod));
 }
 
-void Job::readFromFile(fstream & file)
+void Job::readFromFile(fstream &file)
 {
     Record::readFromFile(file);
     file.read(reinterpret_cast<char *>(&customerId), sizeof(customerId));
@@ -46,7 +46,7 @@ void Job::readFromFile(fstream & file)
     file.read(reinterpret_cast<char *>(&paymentMethod), sizeof(paymentMethod));
 }
 
-bool Job::hasMatchingField(const string & fieldName, const int searchTerm) const
+bool Job::hasMatchingField(const string &fieldName, const int searchTerm) const
 {
     if (fieldName == "customerid") return (customerId == searchTerm);
     else if (fieldName == "completionstate") return (completionState == searchTerm);
@@ -54,20 +54,20 @@ bool Job::hasMatchingField(const string & fieldName, const int searchTerm) const
     return Record::hasMatchingField(fieldName, searchTerm);
 }
 
-bool Job::hasMatchingField(const string & fieldName, const time_t searchTerm) const
+bool Job::hasMatchingField(const string &fieldName, const time_t searchTerm) const
 {
     if (fieldName == "date") return (date == searchTerm);
     return false;
 }
 
-bool Job::hasMatchingField(const string & fieldName, const double searchTerm) const
+bool Job::hasMatchingField(const string &fieldName, const double searchTerm) const
 {
     if (fieldName == "labourcharge") return (labourCharge == searchTerm);
     else if (fieldName == "vat") return (vat == searchTerm);
     return false;
 }
 
-bool Job::fieldCompare(const Job & rhs) const
+bool Job::fieldCompare(const Job &rhs) const
 {
     if (customerId != rhs.customerId) return false;
     if (date != rhs.date) return false;
@@ -78,7 +78,7 @@ bool Job::fieldCompare(const Job & rhs) const
     return true;
 }
 
-bool Job::completeCompare(const Job & rhs) const
+bool Job::completeCompare(const Job &rhs) const
 {
     if (getId() != rhs.getId()) return false;
     return fieldCompare(rhs);

@@ -58,7 +58,7 @@ TEST_F(JobControllerIntegrationTest, DoesCreateWork)
 {
     unsigned recordCountBefore;
     try { recordCountBefore = Databases::jobs().recordCount(); }
-    catch (const std::exception & e) { FAIL() << e.what(); }
+    catch (const std::exception &e) { FAIL() << e.what(); }
 
     Job job(exampleJob);
     EXPECT_NO_THROW(JobController::Create(job, NULL)) // The controllers should handle any exceptions
@@ -68,7 +68,7 @@ TEST_F(JobControllerIntegrationTest, DoesCreateWork)
             << "The job was not added to the database properly";
 
     unsigned recordCountAfter;
-    try { recordCountAfter = Databases::jobs().recordCount(); } catch (const std::exception & e) { FAIL() << e.what(); }
+    try { recordCountAfter = Databases::jobs().recordCount(); } catch (const std::exception &e) { FAIL() << e.what(); }
 
     EXPECT_EQ(recordCountBefore + 1, recordCountAfter)
             << "The job was not added to the database properly";
@@ -79,7 +79,7 @@ TEST_F(JobControllerIntegrationTest, DoesUpdateWork)
 {
     unsigned recordCountBefore;
     try { recordCountBefore = Databases::jobs().recordCount(); }
-    catch (const std::exception & e) { FAIL() << e.what(); }
+    catch (const std::exception &e) { FAIL() << e.what(); }
 
     Job job;
     try
@@ -87,19 +87,19 @@ TEST_F(JobControllerIntegrationTest, DoesUpdateWork)
         job = Databases::jobs().recordAt(0);
         job.setDate(job.getDate() + 86400);
     }
-    catch (const std::exception & e) { FAIL() << e.what(); }
+    catch (const std::exception &e) { FAIL() << e.what(); }
 
     EXPECT_NO_THROW(JobController::Update(job, NULL))
             << "The Job Controller did not catch an exception";
 
     Job tempJob;
-    try { tempJob = Databases::jobs().recordAt(0); } catch (const std::exception & e) { FAIL() << e.what(); }
+    try { tempJob = Databases::jobs().recordAt(0); } catch (const std::exception &e) { FAIL() << e.what(); }
 
     EXPECT_TRUE(job.completeCompare(tempJob))
             << "The job was not updated in the database correctly";
 
     unsigned recordCountAfter;
-    try { recordCountAfter = Databases::jobs().recordCount(); } catch (const std::exception & e) { FAIL() << e.what(); }
+    try { recordCountAfter = Databases::jobs().recordCount(); } catch (const std::exception &e) { FAIL() << e.what(); }
 
     EXPECT_EQ(recordCountBefore, recordCountAfter)
             << "A record was added to the database while updating an existing job";
@@ -110,10 +110,10 @@ TEST_F(JobControllerIntegrationTest, DoesDestroyWork)
 {
     unsigned recordCountBefore;
     try { recordCountBefore = Databases::jobs().recordCount(); }
-    catch (const std::exception & e) { FAIL() << e.what(); }
+    catch (const std::exception &e) { FAIL() << e.what(); }
 
     Job job;
-    try { job = Databases::jobs().recordAt(0); } catch (const std::exception & e) { FAIL() << e.what(); }
+    try { job = Databases::jobs().recordAt(0); } catch (const std::exception &e) { FAIL() << e.what(); }
 
     EXPECT_NO_THROW(JobController::Destroy(job, NULL))
             << "The Job Controller did not catch an exception";
@@ -122,7 +122,7 @@ TEST_F(JobControllerIntegrationTest, DoesDestroyWork)
             << "The job was not removed from the database properly";
 
     unsigned recordCountAfter;
-    try { recordCountAfter = Databases::jobs().recordCount(); } catch (const std::exception & e) { FAIL() << e.what(); }
+    try { recordCountAfter = Databases::jobs().recordCount(); } catch (const std::exception &e) { FAIL() << e.what(); }
 
     EXPECT_EQ(recordCountBefore - 1, recordCountAfter)
             << "The job was not removed from the database properly";
@@ -133,7 +133,7 @@ TEST_F(JobControllerIntegrationTest, DoesGetJobPartsWork)
 {
     // Get a job and create a part to work with
     Job job;
-    try { job = Databases::jobs().recordAt(0); } catch (const std::exception & e) { FAIL() << e.what(); }
+    try { job = Databases::jobs().recordAt(0); } catch (const std::exception &e) { FAIL() << e.what(); }
 
     Part part(examplePart);
     try // Set the part's jobId to the job's ID, and add it to the database
@@ -141,7 +141,7 @@ TEST_F(JobControllerIntegrationTest, DoesGetJobPartsWork)
         part.setJobId(job.getId());
         Databases::parts().addRecord(part);
     }
-    catch (const std::exception & e) { FAIL() << e.what(); }
+    catch (const std::exception &e) { FAIL() << e.what(); }
 
     Database<Part>::recordListPtr parts;
     EXPECT_NO_THROW(parts = JobController::getJobParts(job.getId()))
@@ -166,7 +166,7 @@ TEST_F(JobControllerIntegrationTest, DoesGetJobPartsWork)
 TEST_F(JobControllerIntegrationTest, DoesGetJobTasksWork)
 {
     Job job;
-    try { job = Databases::jobs().recordAt(0); } catch (const std::exception & e) { FAIL() << e.what(); }
+    try { job = Databases::jobs().recordAt(0); } catch (const std::exception &e) { FAIL() << e.what(); }
 
     Task task(exampleTask);
     try
@@ -174,7 +174,7 @@ TEST_F(JobControllerIntegrationTest, DoesGetJobTasksWork)
         task.setJobId(job.getId());
         Databases::tasks().addRecord(task);
     }
-    catch (const std::exception & e) { FAIL() << e.what(); }
+    catch (const std::exception &e) { FAIL() << e.what(); }
 
     Database<Task>::recordListPtr tasks;
     EXPECT_NO_THROW(tasks = JobController::getJobTasks(job.getId()))

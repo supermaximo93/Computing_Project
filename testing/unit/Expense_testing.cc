@@ -115,7 +115,7 @@ TEST_F(ExpenseUnitTest, DoesExpenseFieldCompareMemberFunctionWorkCorrectly)
 TEST_F(ExpenseUnitTest, DoesExpenseReadAndWriteToFileCorrectly)
 {
     Expense expense(exampleExpense);
-    const char * fileName = "DoesExpenseReadAndWriteToFileCorrectly.dat.test";
+    const char *fileName = "DoesExpenseReadAndWriteToFileCorrectly.dat.test";
 
     { // Write the expense to a new file
         fstream outFile;

@@ -20,11 +20,11 @@ class CustomerForm : public QDialog
     Q_OBJECT
 
 public:
-    explicit CustomerForm(QWidget * parent = NULL);
+    explicit CustomerForm(QWidget *parent = NULL);
     ~CustomerForm();
 
 private:
-    Ui::CustomerForm * ui;
+    Ui::CustomerForm *ui;
 };
 
 #endif // CUSTOMERFORM_H

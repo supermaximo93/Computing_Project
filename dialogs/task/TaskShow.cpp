@@ -12,7 +12,7 @@
 #include "TaskController.h"
 #include "Utils.h"
 
-TaskShow::TaskShow(Task & task, QWidget * parent)
+TaskShow::TaskShow(Task &task, QWidget *parent)
     : QDialog(parent), ui(new Ui::TaskShow), task(task)
 {
     ui->setupUi(this);

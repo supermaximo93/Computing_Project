@@ -17,7 +17,7 @@ using namespace std;
 #include "CustomerController.h"
 #include "Utils.h"
 
-JobIndex::JobIndex(Database<Job>::recordList & jobs, QWidget * parent)
+JobIndex::JobIndex(Database<Job>::recordList &jobs, QWidget *parent)
     : QDialog(parent), ui(new Ui::JobIndex), jobs(jobs)
 {
     ui->setupUi(this);
@@ -56,9 +56,9 @@ void JobIndex::on_pushButton_ok_released()
     done(Accepted);
 }
 
-void JobIndex::on_tableWidget_doubleClicked(const QModelIndex & index)
+void JobIndex::on_tableWidget_doubleClicked(const QModelIndex &index)
 {
-    Job & job = jobs[index.row()];
+    Job &job = jobs[index.row()];
     JobController::Show(job, this);
     if (job.null()) jobs.erase(jobs.begin() + index.row());
     updateView();

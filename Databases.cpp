@@ -14,11 +14,11 @@
 #include "Task.h"
 #include "AssignOncePointer.h"
 
-static Database<Customer> * customerDatabasePtr = NULL;
-static Database<Expense> * expenseDatabasePtr = NULL;
-static Database<Job> * jobDatabasePtr = NULL;
-static Database<Part> * partDatabasePtr = NULL;
-static Database<Task> * taskDatabasePtr = NULL;
+static Database<Customer> *customerDatabasePtr = NULL;
+static Database<Expense> *expenseDatabasePtr = NULL;
+static Database<Job> *jobDatabasePtr = NULL;
+static Database<Part> *partDatabasePtr = NULL;
+static Database<Task> *taskDatabasePtr = NULL;
 
 static bool initialised = false;
 

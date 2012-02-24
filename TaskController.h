@@ -16,22 +16,22 @@ class Task;
 namespace TaskController
 {
 
-void Index(QWidget * caller);
+void Index(QWidget *caller);
 
-void Show(int taskId, QWidget * caller);
-void Show(Task & task, QWidget * caller);
+void Show(int taskId, QWidget *caller);
+void Show(Task &task, QWidget *caller);
 
-Task New(QWidget * caller);
+Task New(QWidget *caller);
 
-void Edit(int taskId, QWidget * caller);
-void Edit(Task & task, QWidget * caller);
+void Edit(int taskId, QWidget *caller);
+void Edit(Task &task, QWidget *caller);
 
-bool Create(Task & taskAttributes, QWidget * caller);
+bool Create(Task &taskAttributes, QWidget *caller);
 
-bool Update(const Task & task, QWidget * caller);
+bool Update(const Task &task, QWidget *caller);
 
-bool Destroy(int taskId, QWidget * caller);
-bool Destroy(Task & task, QWidget * caller);
+bool Destroy(int taskId, QWidget *caller);
+bool Destroy(Task &task, QWidget *caller);
 
 Task getTask(int taskId);
 Database<Task>::recordListPtr getAllTasks();

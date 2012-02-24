@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>359</width>
-    <height>307</height>
+    <width>666</width>
+    <height>290</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -37,7 +37,7 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>260</y>
+     <y>250</y>
      <width>97</width>
      <height>27</height>
     </rect>
@@ -189,7 +189,7 @@
    <property name="geometry">
     <rect>
      <x>130</x>
-     <y>260</y>
+     <y>250</y>
      <width>97</width>
      <height>27</height>
     </rect>
@@ -202,13 +202,61 @@
    <property name="geometry">
     <rect>
      <x>240</x>
-     <y>260</y>
+     <y>250</y>
      <width>97</width>
      <height>27</height>
     </rect>
    </property>
    <property name="text">
     <string>Delete</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="verticalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>370</x>
+     <y>60</y>
+     <width>281</width>
+     <height>211</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QListView" name="listView_jobs"/>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pushButton_addJob">
+      <property name="text">
+       <string>Add job</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>370</x>
+     <y>40</y>
+     <width>61</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Jobs for</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_customerNameE2">
+   <property name="geometry">
+    <rect>
+     <x>430</x>
+     <y>40</y>
+     <width>221</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>customer name</string>
    </property>
   </widget>
  </widget>

@@ -12,7 +12,7 @@
 #include "PartController.h"
 #include "Utils.h"
 
-PartShow::PartShow(Part & part, QWidget * parent)
+PartShow::PartShow(Part &part, QWidget *parent)
     : QDialog(parent), ui(new Ui::PartShow), part(part)
 {
     ui->setupUi(this);

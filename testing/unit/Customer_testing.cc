@@ -220,7 +220,7 @@ TEST_F(CustomerUnitTest, DoesCustomerAcceptPostcodeThatHasValidFormat)
     Customer customer(exampleCustomer);
 
     // An array of valid postcodes to test
-    const char * postcodes[] = {
+    const char *postcodes[] = {
         "SA65 9RL", "BS39 4DJ", "WD6 2FN", "TQ7 4LL", "CV8 3DD", "S13 7RG", "CO13 0QE", "UB8 9TG", "WS3 2JG", "WV7 3NF",
         "IV14 9BH", "CF99 1NA", "OL14 6PD", "LA21 8ER", "HP8 4PD", "PA68 6EL", "IV16 9YX", "WR9 8BH", "B66 1NS",
         "END"
@@ -240,7 +240,7 @@ TEST_F(CustomerUnitTest, DoesCustomerRejectPostcodeThatHasInvalidFormat)
     Customer customer(exampleCustomer);
 
     // An array of invalid postcodes to test
-    const char * postcodes[] = {
+    const char *postcodes[] = {
         "SA659RL", "B439 4DJ", "976 232", "T17 4LL", "CV8 3", "S13 72G", "CO13 075", "2546783", "WS3 ", "WV7321",
         "IV14 9B3", "CF99-1NA", "0014 6PD", "3A21 8ER", "HP84PD", " 6EL", "IV16/9YX", "!R9 8BH", "B-6 1NS",
         "END"
@@ -303,7 +303,7 @@ TEST_F(CustomerUnitTest, DoesCustomerAcceptHomePhoneNumberThatHasValidFormat)
     Customer customer(exampleCustomer);
 
     // An array of valid phone numbers to test
-    const char * phoneNumbers[] = {
+    const char *phoneNumbers[] = {
         "01234567891", "95741358901", "95410654980", "01252496417", "98405456397", "02345287974", "01547786511",
         "01647954012", "97658412615",
         "END"
@@ -324,7 +324,7 @@ TEST_F(CustomerUnitTest, DoesCustomerRejectHomePhoneNumberThatHasInvalidFormat)
     Customer customer(exampleCustomer);
 
     // An array of invalid phone numbers to test
-    const char * phoneNumbers[] = {
+    const char *phoneNumbers[] = {
         "012345f7891", "9qw41358901", "9510654980", "012524964", "p8405456397", "02-45287974", "0/54778/511",
         "01e6479$$12", "phonenumber",
         "END"
@@ -388,7 +388,7 @@ TEST_F(CustomerUnitTest, DoesCustomerAcceptMobilePhoneNumberThatHasValidFormat)
     Customer customer(exampleCustomer);
 
     // An array of valid phone numbers to test
-    const char * phoneNumbers[] = {
+    const char *phoneNumbers[] = {
         "01234567891", "95741358901", "95410654980", "01252496417", "98405456397", "02345287974", "01547786511",
         "01647954012", "97658412615",
         "END"
@@ -409,7 +409,7 @@ TEST_F(CustomerUnitTest, DoesCustomerRejectMobilePhoneNumberThatHasInvalidFormat
     Customer customer(exampleCustomer);
 
     // An array of invalid phone numbers to test
-    const char * phoneNumbers[] = {
+    const char *phoneNumbers[] = {
         "012345f7891", "9qw41358901", "9510654980", "012524964", "p8405456397", "02-45287974", "0/54778/511",
         "01e6479$$12", "phonenumber",
         "END"
@@ -474,7 +474,7 @@ TEST_F(CustomerUnitTest, DoesCustomerAcceptEmailAddressThatHasValidFormat)
     Customer customer(exampleCustomer);
 
     // An array of valid email addresses to test
-    const char * emailAddresses[] = {
+    const char *emailAddresses[] = {
         "example@example.com", "example@example.uk", "example@example.co.uk", "example@example.net", "a@b.uk",
         "abcdefghijklmnopqrstuvwxyz",
         "Loremipsumdolorsitametconsecteturadipiscingelitposuere.radipiscin@" // one large 128 character email
@@ -496,7 +496,7 @@ TEST_F(CustomerUnitTest, DoesCustomerRejectEmailAddressThatHasInvalidFormat)
     Customer customer(exampleCustomer);
 
     // An array of invalid email addresses to test
-    const char * emailAddresses[] = {
+    const char *emailAddresses[] = {
         "example.com", "example@example", "example.example.com", "@example", "@example.co.uk", "example",
         "END"
     };
@@ -521,7 +521,7 @@ TEST_F(CustomerUnitTest, DoesCustomerFieldCompareMemberFunctionWorkCorrectly)
 TEST_F(CustomerUnitTest, DoesCustomerReadAndWriteToFileCorrectly)
 {
     Customer customer(exampleCustomer);
-    const char * fileName = "DoesCustomerReadAndWriteToFileCorrectly.dat.test";
+    const char *fileName = "DoesCustomerReadAndWriteToFileCorrectly.dat.test";
 
     { // Write the customer to a new file
         fstream outFile;

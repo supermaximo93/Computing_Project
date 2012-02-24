@@ -67,7 +67,7 @@ TEST_F(JobUnitTest, DoesJobFieldCompareMemberFunctionWorkCorrectly)
 TEST_F(JobUnitTest, DoesJobReadAndWriteToFileCorrectly)
 {
     Job job(exampleJob);
-    const char * fileName = "DoesJobReadAndWriteToFileCorrectly.dat.test";
+    const char *fileName = "DoesJobReadAndWriteToFileCorrectly.dat.test";
 
     { // Write the job to a new file
         fstream outFile;

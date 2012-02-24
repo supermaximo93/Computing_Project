@@ -47,7 +47,7 @@ TEST_F(ExpenseControllerIntegrationTest, DoesCreateWork)
 {
     unsigned recordCountBefore;
     try { recordCountBefore = Databases::expenses().recordCount(); }
-    catch (const std::exception & e) { FAIL() << e.what(); }
+    catch (const std::exception &e) { FAIL() << e.what(); }
 
     Expense expense(exampleExpense);
     EXPECT_NO_THROW(ExpenseController::Create(expense, NULL))
@@ -58,7 +58,7 @@ TEST_F(ExpenseControllerIntegrationTest, DoesCreateWork)
 
     unsigned recordCountAfter;
     try { recordCountAfter = Databases::expenses().recordCount(); }
-    catch (const std::exception & e) { FAIL() << e.what(); }
+    catch (const std::exception &e) { FAIL() << e.what(); }
 
     EXPECT_EQ(recordCountBefore + 1, recordCountAfter)
             << "The expense was not added to the database properly";
@@ -69,7 +69,7 @@ TEST_F(ExpenseControllerIntegrationTest, DoesUpdateWork)
 {
     unsigned recordCountBefore;
     try { recordCountBefore = Databases::expenses().recordCount(); }
-    catch (const std::exception & e) { FAIL() << e.what(); }
+    catch (const std::exception &e) { FAIL() << e.what(); }
 
     Expense expense;
     try
@@ -77,19 +77,19 @@ TEST_F(ExpenseControllerIntegrationTest, DoesUpdateWork)
         expense = Databases::expenses().recordAt(0);
         expense.setPrice(expense.getPrice() + 10.0);
     }
-    catch (const std::exception & e) { FAIL() << e.what(); }
+    catch (const std::exception &e) { FAIL() << e.what(); }
 
     EXPECT_NO_THROW(ExpenseController::Update(expense, NULL))
             << "The Expense Controller did not catch an exception";
 
     Expense tempExpense;
-    try { tempExpense = Databases::expenses().recordAt(0); } catch (const std::exception & e) { FAIL() << e.what(); }
+    try { tempExpense = Databases::expenses().recordAt(0); } catch (const std::exception &e) { FAIL() << e.what(); }
     EXPECT_TRUE(expense.completeCompare(tempExpense))
             << "The expense was not updated in the database correctly";
 
     unsigned recordCountAfter;
     try { recordCountAfter = Databases::expenses().recordCount(); }
-    catch (const std::exception & e) { FAIL() << e.what(); }
+    catch (const std::exception &e) { FAIL() << e.what(); }
 
     EXPECT_EQ(recordCountBefore, recordCountAfter)
             << "A record was added to the database while updating an existing expense";
@@ -100,10 +100,10 @@ TEST_F(ExpenseControllerIntegrationTest, DoesDestroyWork)
 {
     unsigned recordCountBefore;
     try { recordCountBefore = Databases::expenses().recordCount(); }
-    catch (const std::exception & e) { FAIL() << e.what(); }
+    catch (const std::exception &e) { FAIL() << e.what(); }
 
     Expense expense;
-    try { expense = Databases::expenses().recordAt(0); } catch (const std::exception & e) { FAIL() << e.what(); }
+    try { expense = Databases::expenses().recordAt(0); } catch (const std::exception &e) { FAIL() << e.what(); }
 
     EXPECT_NO_THROW(ExpenseController::Destroy(expense, NULL))
             << "The Expense Controller did not catch an exception";
@@ -113,7 +113,7 @@ TEST_F(ExpenseControllerIntegrationTest, DoesDestroyWork)
 
     unsigned recordCountAfter;
     try { recordCountAfter = Databases::expenses().recordCount(); }
-    catch (const std::exception & e) { FAIL() << e.what(); }
+    catch (const std::exception &e) { FAIL() << e.what(); }
 
     EXPECT_EQ(recordCountBefore - 1, recordCountAfter)
             << "The expense was not removed from the database properly";

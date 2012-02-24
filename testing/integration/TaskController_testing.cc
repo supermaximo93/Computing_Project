@@ -47,7 +47,7 @@ TEST_F(TaskControllerIntegrationTest, DoesCreateWork)
 {
     unsigned recordCountBefore;
     try { recordCountBefore = Databases::tasks().recordCount(); }
-    catch (const std::exception & e) { FAIL() << e.what(); }
+    catch (const std::exception &e) { FAIL() << e.what(); }
 
     Task task(exampleTask);
     EXPECT_NO_THROW(TaskController::Create(task, NULL))
@@ -58,7 +58,7 @@ TEST_F(TaskControllerIntegrationTest, DoesCreateWork)
 
     unsigned recordCountAfter;
     try { recordCountAfter = Databases::tasks().recordCount(); }
-    catch (const std::exception & e) { FAIL() << e.what(); }
+    catch (const std::exception &e) { FAIL() << e.what(); }
 
     EXPECT_EQ(recordCountBefore + 1, recordCountAfter)
             << "The task was not added to the database properly";
@@ -69,7 +69,7 @@ TEST_F(TaskControllerIntegrationTest, DoesUpdateWork)
 {
     unsigned recordCountBefore;
     try { recordCountBefore = Databases::tasks().recordCount(); }
-    catch (const std::exception & e) { FAIL() << e.what(); }
+    catch (const std::exception &e) { FAIL() << e.what(); }
 
     Task task;
     try
@@ -77,19 +77,19 @@ TEST_F(TaskControllerIntegrationTest, DoesUpdateWork)
         task = Databases::tasks().recordAt(0);
         task.setDate(task.getDate() + 86400);
     }
-    catch (const std::exception & e) { FAIL() << e.what(); }
+    catch (const std::exception &e) { FAIL() << e.what(); }
 
     EXPECT_NO_THROW(TaskController::Update(task, NULL))
             << "The Task Controller did not catch an exception";
 
     Task tempTask;
-    try { tempTask = Databases::tasks().recordAt(0); } catch (const std::exception & e) { FAIL() << e.what(); }
+    try { tempTask = Databases::tasks().recordAt(0); } catch (const std::exception &e) { FAIL() << e.what(); }
     EXPECT_TRUE(task.completeCompare(tempTask))
             << "The task was not updated in the database correctly";
 
     unsigned recordCountAfter;
     try { recordCountAfter = Databases::tasks().recordCount(); }
-    catch (const std::exception & e) { FAIL() << e.what(); }
+    catch (const std::exception &e) { FAIL() << e.what(); }
 
     EXPECT_EQ(recordCountBefore, recordCountAfter)
             << "A record was added to the database while updating an existing task";
@@ -100,10 +100,10 @@ TEST_F(TaskControllerIntegrationTest, DoesDestroyWork)
 {
     unsigned recordCountBefore;
     try { recordCountBefore = Databases::tasks().recordCount(); }
-    catch (const std::exception & e) { FAIL() << e.what(); }
+    catch (const std::exception &e) { FAIL() << e.what(); }
 
     Task task;
-    try { task = Databases::tasks().recordAt(0); } catch (const std::exception & e) { FAIL() << e.what(); }
+    try { task = Databases::tasks().recordAt(0); } catch (const std::exception &e) { FAIL() << e.what(); }
 
     EXPECT_NO_THROW(TaskController::Destroy(task, NULL))
             << "The Task Controller did not catch an exception";
@@ -113,7 +113,7 @@ TEST_F(TaskControllerIntegrationTest, DoesDestroyWork)
 
     unsigned recordCountAfter;
     try { recordCountAfter = Databases::tasks().recordCount(); }
-    catch (const std::exception & e) { FAIL() << e.what(); }
+    catch (const std::exception &e) { FAIL() << e.what(); }
 
     EXPECT_EQ(recordCountBefore - 1, recordCountAfter)
             << "The task was not removed from the database properly";

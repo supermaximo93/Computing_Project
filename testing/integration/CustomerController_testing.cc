@@ -54,7 +54,7 @@ TEST_F(CustomerControllerIntegrationTest, DoesCreateWork)
 {
     unsigned recordCountBefore;
     try { recordCountBefore = Databases::customers().recordCount(); }
-    catch (const std::exception & e) { FAIL() << e.what(); }
+    catch (const std::exception &e) { FAIL() << e.what(); }
 
     Customer customer(exampleCustomer);
     EXPECT_NO_THROW(CustomerController::Create(customer, NULL)) // The controllers should handle any exceptions
@@ -65,7 +65,7 @@ TEST_F(CustomerControllerIntegrationTest, DoesCreateWork)
 
     unsigned recordCountAfter;
     try { recordCountAfter = Databases::customers().recordCount(); }
-    catch (const std::exception & e) { FAIL() << e.what(); }
+    catch (const std::exception &e) { FAIL() << e.what(); }
 
     EXPECT_EQ(recordCountBefore + 1, recordCountAfter)
             << "The customer was not added to the database properly";
@@ -76,7 +76,7 @@ TEST_F(CustomerControllerIntegrationTest, DoesUpdateWork)
 {
     unsigned recordCountBefore;
     try { recordCountBefore = Databases::customers().recordCount(); }
-    catch (const std::exception & e) { FAIL() << e.what(); }
+    catch (const std::exception &e) { FAIL() << e.what(); }
 
     Customer customer;
     try
@@ -85,21 +85,21 @@ TEST_F(CustomerControllerIntegrationTest, DoesUpdateWork)
         customer.setForename("Jane");
         customer.setSurname("Doe");
     }
-    catch (const std::exception & e) { FAIL() << e.what(); }
+    catch (const std::exception &e) { FAIL() << e.what(); }
 
     EXPECT_NO_THROW(CustomerController::Update(customer, NULL))
             << "The Customer Controller did not catch an exception";
 
     Customer tempCustomer;
     try { tempCustomer = Databases::customers().recordAt(0); }
-    catch (const std::exception & e) { FAIL() << e.what(); }
+    catch (const std::exception &e) { FAIL() << e.what(); }
 
     EXPECT_TRUE(customer.completeCompare(tempCustomer))
             << "The customer was not updated in the database correctly";
 
     unsigned recordCountAfter;
     try { recordCountAfter = Databases::customers().recordCount(); }
-    catch (const std::exception & e) { FAIL() << e.what(); }
+    catch (const std::exception &e) { FAIL() << e.what(); }
 
     EXPECT_EQ(recordCountBefore, recordCountAfter)
             << "A record was added to the database while updating an existing customer";
@@ -110,11 +110,11 @@ TEST_F(CustomerControllerIntegrationTest, DoesDestroyWork)
 {
     unsigned recordCountBefore;
     try { recordCountBefore = Databases::customers().recordCount(); }
-    catch (const std::exception & e) { FAIL() << e.what(); }
+    catch (const std::exception &e) { FAIL() << e.what(); }
 
     Customer customer;
     try { customer = Databases::customers().recordAt(0); }
-    catch (const std::exception & e) { FAIL() << e.what(); }
+    catch (const std::exception &e) { FAIL() << e.what(); }
 
     EXPECT_NO_THROW(CustomerController::Destroy(customer, NULL))
             << "The Customer Controller did not catch an exception";
@@ -124,7 +124,7 @@ TEST_F(CustomerControllerIntegrationTest, DoesDestroyWork)
 
     unsigned recordCountAfter;
     try { recordCountAfter = Databases::customers().recordCount(); }
-    catch (const std::exception & e) { FAIL() << e.what(); }
+    catch (const std::exception &e) { FAIL() << e.what(); }
 
     EXPECT_EQ(recordCountBefore - 1, recordCountAfter)
             << "The customer was not removed from the database properly";
@@ -135,7 +135,7 @@ TEST_F(CustomerControllerIntegrationTest, DoesGetCustomerJobsWork)
 {
     // Get a customer and create a job to work with
     Customer customer;
-    try { customer = Databases::customers().recordAt(0); } catch (const std::exception & e) { FAIL() << e.what(); }
+    try { customer = Databases::customers().recordAt(0); } catch (const std::exception &e) { FAIL() << e.what(); }
 
     Job job(exampleJob);
     try // Set the job's customerId to the customer's ID, and add it to the database
@@ -143,7 +143,7 @@ TEST_F(CustomerControllerIntegrationTest, DoesGetCustomerJobsWork)
         job.setCustomerId(customer.getId());
         Databases::jobs().addRecord(job);
     }
-    catch (const std::exception & e) { FAIL() << e.what(); }
+    catch (const std::exception &e) { FAIL() << e.what(); }
 
     Database<Job>::recordListPtr jobs;
     EXPECT_NO_THROW(jobs = CustomerController::getCustomerJobs(customer.getId()))

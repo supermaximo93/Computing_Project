@@ -18,7 +18,7 @@ using namespace std;
 
 Date::Date(const time_t seconds_)
 {
-    tm * time = localtime(&seconds_);
+    tm *time = localtime(&seconds_);
     seconds = time->tm_sec;
     minute = time->tm_min;
     hour = time->tm_hour;
@@ -45,7 +45,7 @@ Date::operator QDateTime()
 Date::operator time_t()
 {
     time_t t = 0;
-    tm * time = localtime(&t);
+    tm *time = localtime(&t);
     time->tm_sec = seconds;
     time->tm_min = minute;
     time->tm_hour = hour;
@@ -55,32 +55,32 @@ Date::operator time_t()
     return mktime(time);
 }
 
-std::ostream & operator <<(std::ostream & stream, const Date & date)
+std::ostream & operator <<(std::ostream &stream, const Date &date)
 {
     stream << date.day << "/" << date.month << "/" << date.year << " - " << date.hour << ":" << date.minute;
     return stream;
 }
 
-string lowerCase(const string & str)
+string lowerCase(const string &str)
 {
     string returnStr = str;
     transform(returnStr.begin(), returnStr.end(), returnStr.begin(), ::tolower);
     return returnStr;
 }
 
-void showInfoDialog(const char * message)
+void showInfoDialog(const char *message)
 {
     QMessageBox messageBox(QMessageBox::Information, " ", message);
     messageBox.exec();
 }
 
-void showErrorDialog(const char * message)
+void showErrorDialog(const char *message)
 {
     QMessageBox messageBox(QMessageBox::Warning, "Error", message);
     messageBox.exec();
 }
 
-void showErrorDialog(const vector<string> & errors)
+void showErrorDialog(const vector<string> &errors)
 {
     string errorMessage;
     errorMessage.reserve(1024);
@@ -88,13 +88,13 @@ void showErrorDialog(const vector<string> & errors)
     showErrorDialog(errorMessage.c_str());
 }
 
-void showFatalDialog(const char * message)
+void showFatalDialog(const char *message)
 {
     QMessageBox messageBox(QMessageBox::Critical, "Fatal Error", message);
     messageBox.exec();
 }
 
-bool showYesNoDialog(const char * question)
+bool showYesNoDialog(const char *question)
 {
     QMessageBox messageBox(QMessageBox::Question, " ", question, QMessageBox::Yes | QMessageBox::No);
     messageBox.setDefaultButton(QMessageBox::No);
@@ -105,7 +105,7 @@ bool showYesNoDialog(const char * question)
     }
 }
 
-const char * createFullName(const char * forename, const char * surname)
+const char * createFullName(const char *forename, const char *surname)
 {
     static char name[1024];
 
@@ -116,7 +116,7 @@ const char * createFullName(const char * forename, const char * surname)
     return name;
 }
 
-void addError(vector<string> & errors, const char * error)
+void addError(vector<string> &errors, const char *error)
 {
     // Add the error to the list if it isn't already found in the list
     bool alreadyAdded = false;

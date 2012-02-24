@@ -8,7 +8,7 @@
 #include "Globals.h"
 #include "Utils.h"
 
-double Globals::vatRate(const Date & time) // TODO: make it get VAT rate from different periods of time
+double Globals::vatRate(const Date &time) // TODO: make it get VAT rate from different periods of time
 {
     return 20.0;
 }

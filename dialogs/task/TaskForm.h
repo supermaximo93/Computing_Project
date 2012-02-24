@@ -23,13 +23,13 @@ class TaskForm : public QDialog
     Q_OBJECT
 
 public:
-    explicit TaskForm(Task & task, QWidget * parent = NULL);
+    explicit TaskForm(Task &task, QWidget *parent = NULL);
     ~TaskForm();
 
     void updateView();
 
 private slots:
-    void on_dateTimeEdit_date_dateTimeChanged(const QDateTime & date);
+    void on_dateTimeEdit_date_dateTimeChanged(const QDateTime &date);
 
     void on_plainTextEdit_description_textChanged();
 
@@ -44,8 +44,8 @@ private:
         EDIT
     } const formType;
 
-    Ui::TaskForm * ui;
-    Task & task;
+    Ui::TaskForm *ui;
+    Task &task;
 
     bool setRecordData();
 };

@@ -11,7 +11,7 @@
 #include "Expense.h"
 #include "ExpenseController.h"
 
-ExpenseShow::ExpenseShow(Expense & expense, QWidget * parent)
+ExpenseShow::ExpenseShow(Expense &expense, QWidget *parent)
     : QDialog(parent), ui(new Ui::ExpenseShow), expense(expense)
 {
     ui->setupUi(this);

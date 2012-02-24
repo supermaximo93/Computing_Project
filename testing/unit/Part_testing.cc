@@ -132,7 +132,7 @@ TEST_F(PartUnitTest, DoesPartFieldCompareMemberFunctionWorkCorrectly)
 TEST_F(PartUnitTest, DoesPartReadAndWriteToFileCorrectly)
 {
     Part part(examplePart);
-    const char * fileName = "DoesPartReadAndWriteToFileCorrectly.dat.test";
+    const char *fileName = "DoesPartReadAndWriteToFileCorrectly.dat.test";
 
     { // Write the part to a new file
         fstream outFile;

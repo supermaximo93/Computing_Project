@@ -13,7 +13,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget * parent = NULL);
+    explicit MainWindow(QWidget *parent = NULL);
     ~MainWindow();
 
 private slots:
@@ -22,7 +22,7 @@ private slots:
     void on_pushButton_viewAllExpenses_released();
 
 private:
-    Ui::MainWindow * ui;
+    Ui::MainWindow *ui;
 };
 
 #endif // MAINWINDOW_H

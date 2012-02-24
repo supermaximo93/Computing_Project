@@ -22,7 +22,7 @@ class TaskShow : public QDialog
     Q_OBJECT
 
 public:
-    explicit TaskShow(Task & task, QWidget * parent = NULL);
+    explicit TaskShow(Task &task, QWidget *parent = NULL);
     ~TaskShow();
 
     void updateView();
@@ -35,8 +35,8 @@ private slots:
     void on_pushButton_delete_released();
 
 private:
-    Ui::TaskShow * ui;
-    Task & task;
+    Ui::TaskShow *ui;
+    Task &task;
 };
 
 #endif // TASKSHOW_H

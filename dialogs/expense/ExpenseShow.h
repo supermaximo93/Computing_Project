@@ -22,7 +22,7 @@ class ExpenseShow : public QDialog
     Q_OBJECT
 
 public:
-    explicit ExpenseShow(Expense & expense, QWidget * parent = NULL);
+    explicit ExpenseShow(Expense &expense, QWidget *parent = NULL);
     ~ExpenseShow();
 
     void updateView();
@@ -35,9 +35,9 @@ private slots:
     void on_pushButton_delete_released();
 
 private:
-    Ui::ExpenseShow * ui;
+    Ui::ExpenseShow *ui;
 
-    Expense & expense;
+    Expense &expense;
 };
 
 #endif // EXPENSESHOW_H

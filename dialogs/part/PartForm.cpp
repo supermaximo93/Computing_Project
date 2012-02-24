@@ -11,7 +11,7 @@
 #include "Part.h"
 #include "PartController.h"
 
-PartForm::PartForm(Part & part, QWidget * parent)
+PartForm::PartForm(Part &part, QWidget *parent)
     : QDialog(parent), formType((part.null() && !part.pending) ? NEW : EDIT), ui(new Ui::PartForm), part(part)
 {
     ui->setupUi(this);
@@ -33,11 +33,11 @@ void PartForm::updateView()
     ui->doubleSpinBox_vatRate->setValue(part.getVatRate());
 }
 
-void PartForm::on_lineEdit_partName_textEdited(const QString & value)
+void PartForm::on_lineEdit_partName_textEdited(const QString &value)
 {
     bool success = true;
     try { part.setName(value.toStdString().c_str()); }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         success = false;
         ui->lineEdit_partName->setToolTip(e.what());
@@ -50,11 +50,11 @@ void PartForm::on_lineEdit_partName_textEdited(const QString & value)
     }
 }
 
-void PartForm::on_lineEdit_partNumber_textEdited(const QString & value)
+void PartForm::on_lineEdit_partNumber_textEdited(const QString &value)
 {
     bool success = true;
     try { part.setNumber(value.toStdString().c_str()); }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         success = false;
         ui->lineEdit_partNumber->setToolTip(e.what());
@@ -71,7 +71,7 @@ void PartForm::on_doubleSpinBox_price_valueChanged(double value)
 {
     bool success = true;
     try { part.setPrice(value); }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         success = false;
         ui->doubleSpinBox_price->setToolTip(e.what());
@@ -88,7 +88,7 @@ void PartForm::on_doubleSpinBox_vatRate_valueChanged(double value)
 {
     bool success = true;
     try { part.setVatRate(value); }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         success = false;
         ui->doubleSpinBox_vatRate->setToolTip(e.what());

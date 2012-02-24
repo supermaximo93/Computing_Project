@@ -25,7 +25,7 @@ class JobIndex : public QDialog
     Q_OBJECT
 
 public:
-    explicit JobIndex(Database<Job>::recordList & jobs, QWidget * parent = NULL);
+    explicit JobIndex(Database<Job>::recordList &jobs, QWidget *parent = NULL);
     ~JobIndex();
 
     void updateView();
@@ -33,13 +33,13 @@ public:
 private slots:
     void on_pushButton_ok_released();
 
-    void on_tableWidget_doubleClicked(const QModelIndex & index);
+    void on_tableWidget_doubleClicked(const QModelIndex &index);
 
     void on_pushButton_addNewJob_released();
 
 private:
-    Ui::JobIndex * ui;
-    Database<Job>::recordList & jobs;
+    Ui::JobIndex *ui;
+    Database<Job>::recordList &jobs;
 };
 
 #endif // JOBINDEX_H

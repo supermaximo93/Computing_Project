@@ -19,11 +19,11 @@ using namespace std;
 #include "dialogs/job/JobShow.h"
 #include "dialogs/job/JobForm.h"
 
-void JobController::Index(QWidget * caller)
+void JobController::Index(QWidget *caller)
 {
     Database<Job>::recordListPtr jobs;
     try { jobs = Databases::jobs().allRecords(); }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         showErrorDialog(e.what());
         return;
@@ -34,11 +34,11 @@ void JobController::Index(QWidget * caller)
     view.exec();
 }
 
-void JobController::Show(const int jobId, QWidget * caller)
+void JobController::Show(const int jobId, QWidget *caller)
 {
     Job job;
     try { job = Databases::jobs().findRecord("id", jobId); }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         showErrorDialog(e.what());
         return;
@@ -53,7 +53,7 @@ void JobController::Show(const int jobId, QWidget * caller)
     Show(job, caller);
 }
 
-void JobController::Show(Job & job, QWidget * caller)
+void JobController::Show(Job &job, QWidget *caller)
 {
     Database<Part>::recordListPtr parts;
     Database<Task>::recordListPtr tasks;
@@ -62,7 +62,7 @@ void JobController::Show(Job & job, QWidget * caller)
         parts = Databases::parts().findRecords("jobId", job.getId());
         tasks = Databases::tasks().findRecords("jobId", job.getId());
     }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         showErrorDialog(e.what());
         return;
@@ -73,7 +73,7 @@ void JobController::Show(Job & job, QWidget * caller)
     view.exec();
 }
 
-Job JobController::New(QWidget * caller)
+Job JobController::New(QWidget *caller)
 {
     Job job;
     Database<Part>::recordList parts;
@@ -81,7 +81,7 @@ Job JobController::New(QWidget * caller)
 
     Database<Customer>::recordListPtr customers;
     try { customers = Databases::customers().allRecords(); }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         showErrorDialog(e.what());
         return job;
@@ -92,11 +92,11 @@ Job JobController::New(QWidget * caller)
     return (view.exec() == QDialog::Rejected ? Job() : job);
 }
 
-void JobController::Edit(const int jobId, QWidget * caller)
+void JobController::Edit(const int jobId, QWidget *caller)
 {
     Job job;
     try { job = Databases::jobs().findRecord("id", jobId); }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         showErrorDialog(e.what());
         return;
@@ -111,7 +111,7 @@ void JobController::Edit(const int jobId, QWidget * caller)
     Edit(job, caller);
 }
 
-void JobController::Edit(Job & job, QWidget * caller)
+void JobController::Edit(Job &job, QWidget *caller)
 {
     Database<Customer>::recordListPtr customers;
     Database<Part>::recordListPtr parts;
@@ -122,7 +122,7 @@ void JobController::Edit(Job & job, QWidget * caller)
         parts = Databases::parts().findRecords("jobId", job.getId());
         tasks = Databases::tasks().findRecords("jobId", job.getId());
     }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         showErrorDialog(e.what());
         return;
@@ -133,10 +133,10 @@ void JobController::Edit(Job & job, QWidget * caller)
     view.exec();
 }
 
-bool JobController::Create(Job & jobAttributes, QWidget *)
+bool JobController::Create(Job &jobAttributes, QWidget *)
 {
     try { Databases::jobs().addRecord(jobAttributes); }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         showErrorDialog(e.what());
         return false;
@@ -151,11 +151,11 @@ bool JobController::Create(Job & jobAttributes, QWidget *)
     return true;
 }
 
-bool JobController::Update(const Job & job, QWidget *)
+bool JobController::Update(const Job &job, QWidget *)
 {
     bool success = false;
     try { success = Databases::jobs().updateRecord(job); }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         showErrorDialog(e.what());
         return false;
@@ -175,12 +175,12 @@ bool JobController::Destroy(const int jobId, QWidget *)
     for (unsigned i = 0; i < parts->size(); ++i)
     {
         try { Databases::parts().deleteRecord(parts->at(i).getId()); }
-        catch (const std::exception & e) { addError(errors, e.what()); }
+        catch (const std::exception &e) { addError(errors, e.what()); }
     }
     for (unsigned i = 0; i < tasks->size(); ++i)
     {
         try { Databases::tasks().deleteRecord(tasks->at(i).getId()); }
-        catch (const std::exception & e) { addError(errors, e.what()); }
+        catch (const std::exception &e) { addError(errors, e.what()); }
     }
 
     // If there were errors, report them
@@ -189,7 +189,7 @@ bool JobController::Destroy(const int jobId, QWidget *)
     {
         bool success = false;
         try { success = Databases::jobs().deleteRecord(jobId); }
-        catch (const std::exception & e)
+        catch (const std::exception &e)
         {
             showErrorDialog(e.what());
             return false;
@@ -202,7 +202,7 @@ bool JobController::Destroy(const int jobId, QWidget *)
     return false;
 }
 
-bool JobController::Destroy(Job & job, QWidget * caller)
+bool JobController::Destroy(Job &job, QWidget *caller)
 {
     if (Destroy(job.getId(), caller))
     {
@@ -217,7 +217,7 @@ Job JobController::getJob(int jobId)
 {
     Job job;
     try { job = Databases::jobs().findRecord("id", jobId); }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         showErrorDialog(e.what());
         return Job();
@@ -229,7 +229,7 @@ Database<Job>::recordListPtr JobController::getAllJobs()
 {
     Database<Job>::recordListPtr jobs;
     try { jobs = Databases::jobs().allRecords(); }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         showErrorDialog(e.what());
         return Database<Job>::recordListPtr(new Database<Job>::recordList);
@@ -241,7 +241,7 @@ Database<Part>::recordListPtr JobController::getJobParts(const int jobId)
 {
     Database<Part>::recordListPtr parts;
     try { parts = Databases::parts().findRecords("jobId", jobId); }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         showErrorDialog(e.what());
         return Database<Part>::recordListPtr(new Database<Part>::recordList);
@@ -253,7 +253,7 @@ Database<Task>::recordListPtr JobController::getJobTasks(const int jobId)
 {
     Database<Task>::recordListPtr tasks;
     try { tasks = Databases::tasks().findRecords("jobId", jobId); }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         showErrorDialog(e.what());
         return Database<Task>::recordListPtr(new Database<Task>::recordList);

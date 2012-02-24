@@ -8,7 +8,7 @@
 #include "CustomerForm.h"
 #include "ui_CustomerForm.h"
 
-CustomerForm::CustomerForm(QWidget * parent)
+CustomerForm::CustomerForm(QWidget *parent)
     : QDialog(parent), ui(new Ui::CustomerForm)
 {
     ui->setupUi(this);

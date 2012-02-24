@@ -22,15 +22,15 @@ class PartForm : public QDialog
     Q_OBJECT
 
 public:
-    explicit PartForm(Part & part, QWidget * parent = NULL);
+    explicit PartForm(Part &part, QWidget *parent = NULL);
     ~PartForm();
 
     void updateView();
 
 private slots:
-    void on_lineEdit_partName_textEdited(const QString & value);
+    void on_lineEdit_partName_textEdited(const QString &value);
 
-    void on_lineEdit_partNumber_textEdited(const QString & value);
+    void on_lineEdit_partNumber_textEdited(const QString &value);
 
     void on_doubleSpinBox_price_valueChanged(double value);
 
@@ -47,8 +47,8 @@ private:
         EDIT
     } const formType;
 
-    Ui::PartForm * ui;
-    Part & part;
+    Ui::PartForm *ui;
+    Part &part;
 
     bool setRecordData();
 };

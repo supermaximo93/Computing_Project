@@ -20,7 +20,7 @@ int Part::size()
 
 const string Part::databaseFilename = "parts.dat";
 
-Part::Part(const int jobId, const char * newName, const char * newNumber, const double price, const double vatRate)
+Part::Part(const int jobId, const char *newName, const char *newNumber, const double price, const double vatRate)
     : pending(false), jobId(jobId), price(price), vatRate(vatRate < 0.0 ? Globals::vatRate(time(NULL)) : vatRate)
 {
     name = new char[maxNameLength + 1];
@@ -29,7 +29,7 @@ Part::Part(const int jobId, const char * newName, const char * newNumber, const 
     strcpy(number, newNumber);
 }
 
-Part::Part(const Part & part)
+Part::Part(const Part &part)
 {
     name = new char[maxNameLength + 1];
     number = new char[maxNumberLength + 1];
@@ -43,7 +43,7 @@ Part::~Part()
     delete[] number;
 }
 
-void Part::operator =(const Part & part)
+void Part::operator =(const Part &part)
 {
     pending = part.pending;
     *((Record*)this) = (Record)part;
@@ -54,7 +54,7 @@ void Part::operator =(const Part & part)
     vatRate = part.vatRate;
 }
 
-void Part::writeToFile(fstream & file) const
+void Part::writeToFile(fstream &file) const
 {
     Record::writeToFile(file);
     file.write(reinterpret_cast<const char *>(&jobId), sizeof(jobId));
@@ -64,7 +64,7 @@ void Part::writeToFile(fstream & file) const
     file.write(reinterpret_cast<const char *>(&vatRate), sizeof(vatRate));
 }
 
-void Part::readFromFile(fstream & file)
+void Part::readFromFile(fstream &file)
 {
     Record::readFromFile(file);
     file.read(reinterpret_cast<char *>(&jobId), sizeof(jobId));
@@ -74,27 +74,27 @@ void Part::readFromFile(fstream & file)
     file.read(reinterpret_cast<char *>(&vatRate), sizeof(vatRate));
 }
 
-bool Part::hasMatchingField(const string & fieldName, const int searchTerm) const
+bool Part::hasMatchingField(const string &fieldName, const int searchTerm) const
 {
     if (fieldName == "jobid") return (jobId == searchTerm);
     return Record::hasMatchingField(fieldName, searchTerm);
 }
 
-bool Part::hasMatchingField(const string & fieldName, const char * searchTerm) const
+bool Part::hasMatchingField(const string &fieldName, const char *searchTerm) const
 {
     if (fieldName == "name") return (strcmp(name, searchTerm) == 0);
     else if (fieldName == "number") return (strcmp(number, searchTerm) == 0);
     return false;
 }
 
-bool Part::hasMatchingField(const string & fieldName, const double searchTerm) const
+bool Part::hasMatchingField(const string &fieldName, const double searchTerm) const
 {
     if (fieldName == "price") return (price == searchTerm);
     else if (fieldName == "vatRate") return (vatRate == searchTerm);
     return false;
 }
 
-bool Part::fieldCompare(const Part & rhs) const
+bool Part::fieldCompare(const Part &rhs) const
 {
     if (jobId != rhs.jobId) return false;
     if (strcmp(name, rhs.name) != 0) return false;
@@ -104,7 +104,7 @@ bool Part::fieldCompare(const Part & rhs) const
     return true;
 }
 
-bool Part::completeCompare(const Part & rhs) const
+bool Part::completeCompare(const Part &rhs) const
 {
     if (getId() != rhs.getId()) return false;
     return fieldCompare(rhs);
@@ -125,7 +125,7 @@ const char * Part::getName() const
     return name;
 }
 
-void Part::setName(const char * newName)
+void Part::setName(const char *newName)
 {
     strcpy(name, newName);
 }
@@ -135,7 +135,7 @@ const char * Part::getNumber() const
     return number;
 }
 
-void Part::setNumber(const char * newNumber)
+void Part::setNumber(const char *newNumber)
 {
     strcpy(number, newNumber);
 }

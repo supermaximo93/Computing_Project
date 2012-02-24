@@ -17,7 +17,7 @@ class AssignOncePointer
 {
 public:
     AssignOncePointer<type>() : pointer(NULL) {}
-    AssignOncePointer<type>(type * const newPointer) : pointer(newPointer) {}
+    AssignOncePointer<type>(type *const newPointer) : pointer(newPointer) {}
     AssignOncePointer<type>(const AssignOncePointer &) : pointer(NULL)
     {
         throw(std::runtime_error("AssignOncePointer cannot be copied"));
@@ -33,7 +33,7 @@ public:
         throw(std::runtime_error("AssignOncePointer cannot be copied"));
     }
 
-    void operator =(type * const newPointer)
+    void operator =(type *const newPointer)
     {
         if (pointer == NULL) pointer = newPointer;
         else
@@ -59,7 +59,7 @@ public:
     }
 
 private:
-    type * pointer;
+    type *pointer;
 };
 
 #endif // ASSIGNONCEPOINTER_H

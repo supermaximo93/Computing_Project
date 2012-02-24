@@ -22,14 +22,14 @@ class Record
 {
 public:
     // Only compares ID for speed. Use fieldCompare or completeCompare for comparing all fields of derivative classes
-    bool operator ==(const Record & record) const;
+    bool operator ==(const Record &record) const;
     bool operator ==(const int recordId) const;
-    void operator =(const Record & record);
+    void operator =(const Record &record);
 
     int getId() const;
     bool null() const;
 
-    bool hasMatchingField(const std::string & fieldName, const int searchTerm) const;
+    bool hasMatchingField(const std::string &fieldName, const int searchTerm) const;
 
     friend class Database<Record>;
     friend class Database<Customer>;
@@ -43,8 +43,8 @@ protected:
 
     Record();
 
-    void writeToFile(std::fstream & file) const;
-    void readFromFile(std::fstream & file);
+    void writeToFile(std::fstream &file) const;
+    void readFromFile(std::fstream &file);
 
 private:
     int id;

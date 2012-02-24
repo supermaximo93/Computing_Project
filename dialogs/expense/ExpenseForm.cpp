@@ -12,7 +12,7 @@
 #include "ExpenseController.h"
 #include "Utils.h"
 
-ExpenseForm::ExpenseForm(Expense & expense, QWidget * parent)
+ExpenseForm::ExpenseForm(Expense &expense, QWidget *parent)
     : QDialog(parent), formType(expense.null() ? NEW : EDIT), ui(new Ui::ExpenseForm), expense(expense)
 {
     ui->setupUi(this);
@@ -58,12 +58,12 @@ void ExpenseForm::on_pushButton_cancel_released()
     done(Rejected);
 }
 
-void ExpenseForm::on_dateTimeEdit_date_dateTimeChanged(const QDateTime & date)
+void ExpenseForm::on_dateTimeEdit_date_dateTimeChanged(const QDateTime &date)
 {
     bool success = true;
     try { expense.setDate(Date(date.time().minute(), date.time().hour(), date.date().day(), date.date().month(),
                                date.date().year())); }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         success = false;
         ui->dateTimeEdit_date->setToolTip(e.what());
@@ -80,7 +80,7 @@ void ExpenseForm::on_plainTextEdit_description_textChanged()
 {
     bool success = true;
     try { expense.setDescription(ui->plainTextEdit_description->toPlainText().toStdString().c_str()); }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         success = false;
         ui->plainTextEdit_description->setToolTip(e.what());
@@ -97,7 +97,7 @@ void ExpenseForm::on_doubleSpinBox_priceExclVat_valueChanged(const double value)
 {
     bool success = true;
     try { expense.setPrice(value); }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         success = false;
         ui->doubleSpinBox_priceExclVat->setToolTip(e.what());
@@ -114,7 +114,7 @@ void ExpenseForm::on_doubleSpinBox_vat_valueChanged(const double value)
 {
     bool success = true;
     try { expense.setVat(value); }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         success = false;
         ui->doubleSpinBox_vat->setToolTip(e.what());
@@ -131,7 +131,7 @@ void ExpenseForm::on_comboBox_typeHeading_currentIndexChanged(const int index)
 {
     bool success = true;
     try { expense.setType(index); }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         success = false;
         ui->comboBox_typeHeading->setToolTip(e.what());

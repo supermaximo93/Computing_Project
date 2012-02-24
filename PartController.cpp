@@ -14,11 +14,11 @@
 
 void PartController::Index(QWidget *) {} // Parts are only accessible through a Job, so no need for an index screen
 
-void PartController::Show(int partId, QWidget * caller)
+void PartController::Show(int partId, QWidget *caller)
 {
     Part part;
     try { Databases::parts().findRecord("id", partId); }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         showErrorDialog(e.what());
         return;
@@ -33,14 +33,14 @@ void PartController::Show(int partId, QWidget * caller)
     Show(part, caller);
 }
 
-void PartController::Show(Part & part, QWidget * caller)
+void PartController::Show(Part &part, QWidget *caller)
 {
     PartShow view(part, caller);
     view.setModal(true);
     view.exec();
 }
 
-Part PartController::New(QWidget * caller)
+Part PartController::New(QWidget *caller)
 {
     Part part;
     PartForm view(part, caller);
@@ -48,11 +48,11 @@ Part PartController::New(QWidget * caller)
     return (view.exec() == QDialog::Rejected ? Part() : part);
 }
 
-void PartController::Edit(int partId, QWidget * caller)
+void PartController::Edit(int partId, QWidget *caller)
 {
     Part part;
     try { Databases::parts().findRecord("id", partId); }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         showErrorDialog(e.what());
         return;
@@ -67,17 +67,17 @@ void PartController::Edit(int partId, QWidget * caller)
     Edit(part, caller);
 }
 
-void PartController::Edit(Part & part, QWidget * caller)
+void PartController::Edit(Part &part, QWidget *caller)
 {
     PartForm view(part, caller);
     view.setModal(true);
     view.exec();
 }
 
-bool PartController::Create(Part & partAttributes, QWidget *)
+bool PartController::Create(Part &partAttributes, QWidget *)
 {
     try { Databases::parts().addRecord(partAttributes); }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         showErrorDialog(e.what());
         return false;
@@ -92,11 +92,11 @@ bool PartController::Create(Part & partAttributes, QWidget *)
     return true;
 }
 
-bool PartController::Update(const Part & part, QWidget *)
+bool PartController::Update(const Part &part, QWidget *)
 {
     bool success = false;
     try { success = Databases::parts().updateRecord(part); }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         showErrorDialog(e.what());
         return false;
@@ -110,7 +110,7 @@ bool PartController::Destroy(int partId, QWidget *)
 {
     bool success = false;
     try { success = Databases::parts().deleteRecord(partId); }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         showErrorDialog(e.what());
         return false;
@@ -120,7 +120,7 @@ bool PartController::Destroy(int partId, QWidget *)
     return success;
 }
 
-bool PartController::Destroy(Part & part, QWidget * caller)
+bool PartController::Destroy(Part &part, QWidget *caller)
 {
     if (Destroy(part.getId(), caller))
     {
@@ -135,7 +135,7 @@ Part PartController::getPart(int partId)
 {
     Part part;
     try { part = Databases::parts().findRecord("id", partId); }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         showErrorDialog(e.what());
         return Part();
@@ -147,7 +147,7 @@ Database<Part>::recordListPtr PartController::getAllParts()
 {
     Database<Part>::recordListPtr parts;
     try { parts = Databases::parts().allRecords(); }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         showErrorDialog(e.what());
         return Database<Part>::recordListPtr(new Database<Part>::recordList);

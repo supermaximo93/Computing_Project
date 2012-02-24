@@ -28,8 +28,8 @@ class JobForm : public QDialog
     Q_OBJECT
 
 public:
-    explicit JobForm(Job & job, Database<Customer>::recordList & customers, Database<Part>::recordList & parts,
-                     Database<Task>::recordList & tasks, QWidget * parent = NULL);
+    explicit JobForm(Job &job, Database<Customer>::recordList &customers, Database<Part>::recordList &parts,
+                     Database<Task>::recordList &tasks, QWidget *parent = NULL);
     ~JobForm();
 
     void updateView();
@@ -41,7 +41,7 @@ private slots:
 
     void on_comboBox_customer_currentIndexChanged(int index);
 
-    void on_dateTimeEdit_date_dateTimeChanged(const QDateTime & date);
+    void on_dateTimeEdit_date_dateTimeChanged(const QDateTime &date);
 
     void on_doubleSpinBox_labourCharge_valueChanged(double value);
 
@@ -51,9 +51,9 @@ private slots:
 
     void on_pushButton_addNewCustomer_released();
 
-    void on_listWidget_partsE_doubleClicked(const QModelIndex & index);
+    void on_listWidget_partsE_doubleClicked(const QModelIndex &index);
 
-    void on_listWidget_tasksE_doubleClicked(const QModelIndex & index);
+    void on_listWidget_tasksE_doubleClicked(const QModelIndex &index);
 
     void on_pushButton_addPart_released();
 
@@ -66,11 +66,11 @@ private:
         EDIT
     } const formType;
 
-    Ui::JobForm * ui;
-    Job & job;
-    Database<Customer>::recordList & customers;
-    Database<Part>::recordList & parts;
-    Database<Task>::recordList & tasks;
+    Ui::JobForm *ui;
+    Job &job;
+    Database<Customer>::recordList &customers;
+    Database<Part>::recordList &parts;
+    Database<Task>::recordList &tasks;
 
     void addPartsAndTasksToDatabase();
 

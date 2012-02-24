@@ -14,11 +14,11 @@
 
 void TaskController::Index(QWidget *) {}
 
-void TaskController::Show(int taskId, QWidget * caller)
+void TaskController::Show(int taskId, QWidget *caller)
 {
     Task task;
     try { Databases::tasks().findRecord("id", taskId); }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         showErrorDialog(e.what());
         return;
@@ -33,14 +33,14 @@ void TaskController::Show(int taskId, QWidget * caller)
     Show(task, caller);
 }
 
-void TaskController::Show(Task & task, QWidget * caller)
+void TaskController::Show(Task &task, QWidget *caller)
 {
     TaskShow view(task, caller);
     view.setModal(true);
     view.exec();
 }
 
-Task TaskController::New(QWidget * caller)
+Task TaskController::New(QWidget *caller)
 {
     Task task;
     TaskForm view(task, caller);
@@ -48,11 +48,11 @@ Task TaskController::New(QWidget * caller)
     return (view.exec() == QDialog::Rejected ? Task() : task);
 }
 
-void TaskController::Edit(int taskId, QWidget * caller)
+void TaskController::Edit(int taskId, QWidget *caller)
 {
     Task task;
     try { Databases::tasks().findRecord("id", taskId); }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         showErrorDialog(e.what());
         return;
@@ -67,17 +67,17 @@ void TaskController::Edit(int taskId, QWidget * caller)
     Edit(task, caller);
 }
 
-void TaskController::Edit(Task & task, QWidget * caller)
+void TaskController::Edit(Task &task, QWidget *caller)
 {
     TaskForm view(task, caller);
     view.setModal(true);
     view.exec();
 }
 
-bool TaskController::Create(Task & taskAttributes, QWidget *)
+bool TaskController::Create(Task &taskAttributes, QWidget *)
 {
     try { Databases::tasks().addRecord(taskAttributes); }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         showErrorDialog(e.what());
         return false;
@@ -92,11 +92,11 @@ bool TaskController::Create(Task & taskAttributes, QWidget *)
     return true;
 }
 
-bool TaskController::Update(const Task & task, QWidget *)
+bool TaskController::Update(const Task &task, QWidget *)
 {
     bool success = false;
     try { success = Databases::tasks().updateRecord(task); }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         showErrorDialog(e.what());
         return false;
@@ -110,7 +110,7 @@ bool TaskController::Destroy(int taskId, QWidget *)
 {
     bool success = false;
     try { success = Databases::tasks().deleteRecord(taskId); }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         showErrorDialog(e.what());
         return false;
@@ -120,7 +120,7 @@ bool TaskController::Destroy(int taskId, QWidget *)
     return success;
 }
 
-bool TaskController::Destroy(Task & task, QWidget * caller)
+bool TaskController::Destroy(Task &task, QWidget *caller)
 {
     if (Destroy(task.getId(), caller))
     {
@@ -135,7 +135,7 @@ Task TaskController::getTask(int taskId)
 {
     Task task;
     try { task = Databases::tasks().findRecord("id", taskId); }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         showErrorDialog(e.what());
         return Task();
@@ -147,7 +147,7 @@ Database<Task>::recordListPtr TaskController::getAllTasks()
 {
     Database<Task>::recordListPtr tasks;
     try { tasks = Databases::tasks().allRecords(); }
-    catch (const std::exception & e)
+    catch (const std::exception &e)
     {
         showErrorDialog(e.what());
         return Database<Task>::recordListPtr(new Database<Task>::recordList);

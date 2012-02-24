@@ -22,7 +22,7 @@ class PartShow : public QDialog
     Q_OBJECT
 
 public:
-    explicit PartShow(Part & part, QWidget * parent = NULL);
+    explicit PartShow(Part &part, QWidget *parent = NULL);
     ~PartShow();
 
     void updateView();
@@ -35,8 +35,8 @@ private slots:
     void on_pushButton_delete_released();
 
 private:
-    Ui::PartShow * ui;
-    Part & part;
+    Ui::PartShow *ui;
+    Part &part;
 };
 
 #endif // PARTSHOW_H

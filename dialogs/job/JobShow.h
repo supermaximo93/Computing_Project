@@ -27,8 +27,8 @@ class JobShow : public QDialog
     Q_OBJECT
 
 public:
-    explicit JobShow(Job & job, Database<Part>::recordList & parts, Database<Task>::recordList & tasks,
-                     QWidget * parent = 0);
+    explicit JobShow(Job &job, Database<Part>::recordList &parts, Database<Task>::recordList &tasks,
+                     QWidget *parent = NULL);
     ~JobShow();
 
     void updateView();
@@ -55,10 +55,10 @@ private slots:
     void on_pushButton_sendReciept_released();
 
 private:
-    Ui::JobShow * ui;
-    Job & job;
-    Database<Part>::recordList & parts;
-    Database<Task>::recordList & tasks;
+    Ui::JobShow *ui;
+    Job &job;
+    Database<Part>::recordList &parts;
+    Database<Task>::recordList &tasks;
 
     void updateCharges();
     double getTotalChargeExclVat();

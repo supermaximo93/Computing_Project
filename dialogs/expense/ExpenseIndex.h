@@ -25,7 +25,7 @@ class ExpenseIndex : public QDialog
     Q_OBJECT
 
 public:
-    explicit ExpenseIndex(Database<Expense>::recordList & expenses, QWidget * parent = NULL);
+    explicit ExpenseIndex(Database<Expense>::recordList &expenses, QWidget *parent = NULL);
     ~ExpenseIndex();
 
     void updateView();
@@ -35,12 +35,12 @@ private slots:
 
     void on_pushButton_addNewExpense_released();
 
-    void on_tableWidget_doubleClicked(const QModelIndex & index);
+    void on_tableWidget_doubleClicked(const QModelIndex &index);
 
 private:
-    Ui::ExpenseIndex * ui;
+    Ui::ExpenseIndex *ui;
 
-    Database<Expense>::recordList & expenses;
+    Database<Expense>::recordList &expenses;
 };
 
 #endif // EXPENSEINDEX_H

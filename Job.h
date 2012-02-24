@@ -40,15 +40,15 @@ public:
     Job(const int customerId = 0, const time_t date = 0, const double labourCharge = 0.0,
         const int completionState = 0, const int paymentMethod = 0);
 
-    void writeToFile(std::fstream & file) const;
-    void readFromFile(std::fstream & file);
+    void writeToFile(std::fstream &file) const;
+    void readFromFile(std::fstream &file);
 
-    bool hasMatchingField(const std::string & fieldName, const int searchTerm) const;
-    bool hasMatchingField(const std::string & fieldName, const time_t searchTerm) const;
-    bool hasMatchingField(const std::string & fieldName, const double searchTerm) const;
+    bool hasMatchingField(const std::string &fieldName, const int searchTerm) const;
+    bool hasMatchingField(const std::string &fieldName, const time_t searchTerm) const;
+    bool hasMatchingField(const std::string &fieldName, const double searchTerm) const;
 
-    bool fieldCompare(const Job & rhs) const;
-    bool completeCompare(const Job & rhs) const;
+    bool fieldCompare(const Job &rhs) const;
+    bool completeCompare(const Job &rhs) const;
 
     int getCustomerId() const;
     void setCustomerId(const int newCustomerId);

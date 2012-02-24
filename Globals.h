@@ -15,7 +15,7 @@ class Date;
 namespace Globals
 {
 
-double vatRate(const Date & time); // Get the VAT rate at a particular time in history
+double vatRate(const Date &time); // Get the VAT rate at a particular time in history
 double vatRate(time_t time);
 
 }
