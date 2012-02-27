@@ -83,9 +83,10 @@ void ExpenseController::Edit(int expenseId, QWidget *caller)
 
 void ExpenseController::Edit(Expense &expense, QWidget *caller)
 {
-    ExpenseForm view(expense, caller);
+    Expense tempExpense = expense;
+    ExpenseForm view(tempExpense, caller);
     view.setModal(true);
-    view.exec();
+    if (view.exec() == ExpenseForm::Accepted) expense = tempExpense;
 }
 
 bool ExpenseController::Create(Expense &expenseAttributes, QWidget *)

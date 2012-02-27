@@ -69,9 +69,10 @@ void PartController::Edit(int partId, QWidget *caller)
 
 void PartController::Edit(Part &part, QWidget *caller)
 {
-    PartForm view(part, caller);
+    Part tempPart = part;
+    PartForm view(tempPart, caller);
     view.setModal(true);
-    view.exec();
+    if (view.exec() == PartForm::Accepted) part = tempPart;
 }
 
 bool PartController::Create(Part &partAttributes, QWidget *)

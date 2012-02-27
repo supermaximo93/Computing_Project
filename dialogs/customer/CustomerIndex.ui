@@ -59,13 +59,13 @@
     <string>All Customers</string>
    </property>
   </widget>
-  <widget class="QListView" name="listView">
+  <widget class="QListWidget" name="listWidget">
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>50</y>
+     <y>60</y>
      <width>331</width>
-     <height>431</height>
+     <height>421</height>
     </rect>
    </property>
   </widget>

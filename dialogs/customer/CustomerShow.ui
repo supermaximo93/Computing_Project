@@ -60,28 +60,28 @@
      <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
     </property>
     <item row="0" column="0">
-     <widget class="QLabel" name="label_addressLine1_2">
+     <widget class="QLabel" name="label_addressLine1">
       <property name="text">
        <string>Address Line 1</string>
       </property>
      </widget>
     </item>
     <item row="1" column="0">
-     <widget class="QLabel" name="label_addressLine2_2">
+     <widget class="QLabel" name="label_addressLine2">
       <property name="text">
        <string>Address Line 2</string>
       </property>
      </widget>
     </item>
     <item row="2" column="0">
-     <widget class="QLabel" name="label_town_2">
+     <widget class="QLabel" name="label_town">
       <property name="text">
        <string>Town/City</string>
       </property>
      </widget>
     </item>
     <item row="3" column="0">
-     <widget class="QLabel" name="label_postcode_2">
+     <widget class="QLabel" name="label_postcode">
       <property name="text">
        <string>Postcode</string>
       </property>
@@ -114,21 +114,21 @@
      </spacer>
     </item>
     <item row="5" column="0">
-     <widget class="QLabel" name="label_homePhone_2">
+     <widget class="QLabel" name="label_homePhone">
       <property name="text">
        <string>Home Phone</string>
       </property>
      </widget>
     </item>
     <item row="6" column="0">
-     <widget class="QLabel" name="label_mobilePhone_2">
+     <widget class="QLabel" name="label_mobilePhone">
       <property name="text">
        <string>Mobile Phone</string>
       </property>
      </widget>
     </item>
     <item row="7" column="0">
-     <widget class="QLabel" name="label_emailAddress_2">
+     <widget class="QLabel" name="label_emailAddress">
       <property name="text">
        <string>Email Address</string>
       </property>
@@ -222,7 +222,7 @@
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QListView" name="listView_jobs"/>
+     <widget class="QListWidget" name="listWidget_jobs"/>
     </item>
     <item>
      <widget class="QPushButton" name="pushButton_addJob">

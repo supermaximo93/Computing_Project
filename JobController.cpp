@@ -128,9 +128,10 @@ void JobController::Edit(Job &job, QWidget *caller)
         return;
     }
 
-    JobForm view(job, *customers, *parts, *tasks, caller);
+    Job tempJob = job;
+    JobForm view(tempJob, *customers, *parts, *tasks, caller);
     view.setModal(true);
-    view.exec();
+    if (view.exec() == JobForm::Accepted) job = tempJob;
 }
 
 bool JobController::Create(Job &jobAttributes, QWidget *)

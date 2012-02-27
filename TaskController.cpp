@@ -69,9 +69,10 @@ void TaskController::Edit(int taskId, QWidget *caller)
 
 void TaskController::Edit(Task &task, QWidget *caller)
 {
-    TaskForm view(task, caller);
+    Task tempTask = task;
+    TaskForm view(tempTask, caller);
     view.setModal(true);
-    view.exec();
+    if (view.exec() == TaskForm::Accepted) task = tempTask;
 }
 
 bool TaskController::Create(Task &taskAttributes, QWidget *)
