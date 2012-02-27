@@ -5,6 +5,8 @@
  *      Author: Max Foster
  */
 
+using namespace std;
+
 #include "CustomerController.h"
 #include "Databases.h"
 #include "Customer.h"
@@ -132,16 +134,33 @@ bool CustomerController::Update(const Customer &customer, QWidget *)
 
 bool CustomerController::Destroy(const int customerId, QWidget *)
 {
-    bool success = false;
-    try { success = Databases::customers().deleteRecord(customerId); }
-    catch (const std::exception &e)
+    // Delete all associated jobs first, recording any errors
+    vector<string> errors;
+    Database<Job>::recordListPtr jobs = Databases::jobs().findRecords("customerId", customerId);
+    errors.reserve(jobs->size());
+    for (unsigned i = 0; i < jobs->size(); ++i)
     {
-        showErrorDialog(e.what());
-        return false;
+        try { Databases::jobs().deleteRecord(jobs->at(i).getId()); }
+        catch (const std::exception &e) { addError(errors, e.what()); }
     }
 
-    if (!success) showErrorDialog("There was an error with removing the customer from the database");
-    return success;
+    // If there were errors, report them
+    if (errors.size() > 0) showErrorDialog(errors);
+    else // otherwise try and delete the customer record
+    {
+        bool success = false;
+        try { success = Databases::customers().deleteRecord(customerId); }
+        catch (const std::exception &e)
+        {
+            showErrorDialog(e.what());
+            return false;
+        }
+
+        if (!success) showErrorDialog("There was an error with removing the customer from the database");
+        return success;
+    }
+
+    return false;
 }
 
 bool CustomerController::Destroy(Customer &customer, QWidget * caller)

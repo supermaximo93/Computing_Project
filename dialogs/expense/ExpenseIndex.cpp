@@ -39,7 +39,7 @@ void ExpenseIndex::updateView()
     for (unsigned i = 0; i < expenses.size(); ++i)
     {
         strncpy(description, expenses[i].getDescription(), descriptionLength);
-        strcat(description, "...");
+        if (strlen(expenses[i].getDescription()) > descriptionLength) strcat(description, "...");
         ui->tableWidget->setItem(i, 0, new QTableWidgetItem(QString(description)));
         ui->tableWidget->setItem(i, 1, new QTableWidgetItem((QString)Date(expenses[i].getDate())));
     }

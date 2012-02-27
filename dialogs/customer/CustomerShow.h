@@ -38,7 +38,7 @@ private slots:
 
     void on_pushButton_delete_released();
 
-    void on_listView_jobs_doubleClicked(const QModelIndex &index);
+    void on_listWidget_jobs_doubleClicked(const QModelIndex &index);
 
     void on_pushButton_addJob_released();
 

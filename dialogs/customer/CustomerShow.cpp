@@ -67,7 +67,7 @@ void CustomerShow::on_pushButton_delete_released()
     }
 }
 
-void CustomerShow::on_listView_jobs_doubleClicked(const QModelIndex &index)
+void CustomerShow::on_listWidget_jobs_doubleClicked(const QModelIndex &index)
 {
     Job & job = jobs[index.row()];
     JobController::Show(job, this);
