@@ -78,6 +78,7 @@ void CustomerShow::on_listView_jobs_doubleClicked(const QModelIndex &index)
 void CustomerShow::on_pushButton_addJob_released()
 {
     Job job = JobController::New(this);
+    job.setCustomerId(customer.getId());
     if (!job.null() && (job.getCustomerId() == customer.getId()))
     {
         jobs.push_back(job);

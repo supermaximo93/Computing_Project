@@ -28,7 +28,7 @@ void ExpenseController::Index(QWidget *caller)
     view.exec();
 }
 
-void ExpenseController::Show(int expenseId, QWidget *caller)
+void ExpenseController::Show(const int expenseId, QWidget *caller)
 {
     Expense expense;
     try { expense = Databases::expenses().findRecord("id", expenseId); }
@@ -62,7 +62,7 @@ Expense ExpenseController::New(QWidget *caller)
     return (view.exec() == QDialog::Rejected ? Expense() : expense);
 }
 
-void ExpenseController::Edit(int expenseId, QWidget *caller)
+void ExpenseController::Edit(const int expenseId, QWidget *caller)
 {
     Expense expense;
     try { expense = Databases::expenses().findRecord("id", expenseId); }
@@ -121,7 +121,7 @@ bool ExpenseController::Update(const Expense &expense, QWidget *)
     return success;
 }
 
-bool ExpenseController::Destroy(int expenseId, QWidget *)
+bool ExpenseController::Destroy(const int expenseId, QWidget *)
 {
     bool success = false;
     try { success = Databases::expenses().deleteRecord(expenseId); }
@@ -146,7 +146,7 @@ bool ExpenseController::Destroy(Expense &expense, QWidget *caller)
     return false;
 }
 
-Expense ExpenseController::getExpense(int expenseId)
+Expense ExpenseController::getExpense(const int expenseId)
 {
     Expense expense;
     try { expense = Databases::expenses().findRecord("id", expenseId); }

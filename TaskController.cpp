@@ -14,7 +14,7 @@
 
 void TaskController::Index(QWidget *) {}
 
-void TaskController::Show(int taskId, QWidget *caller)
+void TaskController::Show(const int taskId, QWidget *caller)
 {
     Task task;
     try { Databases::tasks().findRecord("id", taskId); }
@@ -48,7 +48,7 @@ Task TaskController::New(QWidget *caller)
     return (view.exec() == QDialog::Rejected ? Task() : task);
 }
 
-void TaskController::Edit(int taskId, QWidget *caller)
+void TaskController::Edit(const int taskId, QWidget *caller)
 {
     Task task;
     try { Databases::tasks().findRecord("id", taskId); }
@@ -107,7 +107,7 @@ bool TaskController::Update(const Task &task, QWidget *)
     return success;
 }
 
-bool TaskController::Destroy(int taskId, QWidget *)
+bool TaskController::Destroy(const int taskId, QWidget *)
 {
     bool success = false;
     try { success = Databases::tasks().deleteRecord(taskId); }
@@ -132,7 +132,7 @@ bool TaskController::Destroy(Task &task, QWidget *caller)
     return false;
 }
 
-Task TaskController::getTask(int taskId)
+Task TaskController::getTask(const int taskId)
 {
     Task task;
     try { task = Databases::tasks().findRecord("id", taskId); }

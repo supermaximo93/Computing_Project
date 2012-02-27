@@ -14,7 +14,7 @@
 
 void PartController::Index(QWidget *) {} // Parts are only accessible through a Job, so no need for an index screen
 
-void PartController::Show(int partId, QWidget *caller)
+void PartController::Show(const int partId, QWidget *caller)
 {
     Part part;
     try { Databases::parts().findRecord("id", partId); }
@@ -48,7 +48,7 @@ Part PartController::New(QWidget *caller)
     return (view.exec() == QDialog::Rejected ? Part() : part);
 }
 
-void PartController::Edit(int partId, QWidget *caller)
+void PartController::Edit(const int partId, QWidget *caller)
 {
     Part part;
     try { Databases::parts().findRecord("id", partId); }
@@ -107,7 +107,7 @@ bool PartController::Update(const Part &part, QWidget *)
     return success;
 }
 
-bool PartController::Destroy(int partId, QWidget *)
+bool PartController::Destroy(const int partId, QWidget *)
 {
     bool success = false;
     try { success = Databases::parts().deleteRecord(partId); }
@@ -132,7 +132,7 @@ bool PartController::Destroy(Part &part, QWidget *caller)
     return false;
 }
 
-Part PartController::getPart(int partId)
+Part PartController::getPart(const int partId)
 {
     Part part;
     try { part = Databases::parts().findRecord("id", partId); }

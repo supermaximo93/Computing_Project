@@ -214,7 +214,7 @@ bool JobController::Destroy(Job &job, QWidget *caller)
     return false;
 }
 
-Job JobController::getJob(int jobId)
+Job JobController::getJob(const int jobId)
 {
     Job job;
     try { job = Databases::jobs().findRecord("id", jobId); }

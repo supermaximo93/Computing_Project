@@ -21,6 +21,8 @@ private slots:
 
     void on_pushButton_viewAllExpenses_released();
 
+    void on_pushButton_released();
+
 private:
     Ui::MainWindow *ui;
 };

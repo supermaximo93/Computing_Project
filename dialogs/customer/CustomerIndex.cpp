@@ -16,6 +16,8 @@ CustomerIndex::CustomerIndex(Database<Customer>::recordList &customers, QWidget 
     : QDialog(parent), ui(new Ui::CustomerIndex), customers(customers)
 {
     ui->setupUi(this);
+
+    updateView();
 }
 
 CustomerIndex::~CustomerIndex()

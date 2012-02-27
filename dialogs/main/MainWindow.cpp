@@ -3,6 +3,7 @@
 
 #include "JobController.h"
 #include "ExpenseController.h"
+#include "CustomerController.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -23,4 +24,9 @@ void MainWindow::on_pushButton_addNewJob_released()
 void MainWindow::on_pushButton_viewAllExpenses_released()
 {
     ExpenseController::Index(this);
+}
+
+void MainWindow::on_pushButton_released()
+{
+    CustomerController::Index(this);
 }
