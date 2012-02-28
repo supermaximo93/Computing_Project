@@ -41,6 +41,7 @@ void JobForm::updateView()
 {
     ui->dateTimeEdit_date->setDateTime(Date(job.getDate()));
 
+    ui->comboBox_customer->blockSignals(true); // Need to block signals as when addItem is called, a callback is called
     ui->comboBox_customer->clear();
     unsigned customerIndex = 0;
     for (unsigned i = 0; i < customers.size(); ++i)
@@ -52,6 +53,8 @@ void JobForm::updateView()
         ui->comboBox_customer->addItem(createFullName(customer.getForename(), customer.getSurname()), customerId);
     }
     ui->comboBox_customer->setCurrentIndex(customerIndex);
+    ui->pushButton_viewCustomer->setVisible(ui->comboBox_customer->count() > 0);
+    ui->comboBox_customer->blockSignals(false);
 
     ui->listWidget_partsE->clear();
     for (unsigned i = 0; i < parts.size(); ++i) ui->listWidget_partsE->addItem(parts[i].getName());
@@ -278,6 +281,14 @@ void JobForm::on_pushButton_addNewCustomer_released()
         catch (const std::exception &e) { showErrorDialog(e.what()); }
         updateView();
     }
+}
+
+void JobForm::on_pushButton_viewCustomer_released()
+{
+    Customer & customer = customers[ui->comboBox_customer->currentIndex()];
+    CustomerController::Show(customer, this);
+    if (customer.null()) customers.erase(customers.begin() + ui->comboBox_customer->currentIndex());
+    updateView();
 }
 
 void JobForm::on_listWidget_partsE_doubleClicked(const QModelIndex &index)

@@ -31,7 +31,7 @@ void ExpenseShow::updateView()
     ui->label_priceExclVatE->setText(toString(expense.getPrice()).c_str());
     ui->label_vatE->setText(toString(expense.getVat()).c_str());
     double totalPrice = expense.getPrice() + expense.getVat();
-    ui->label_totalPriceE->setText(QString(toString(totalPrice).c_str()).append(L'£'));
+    ui->label_totalPriceE->setText(QString(toString(totalPrice).c_str()).prepend(L'£'));
 }
 
 void ExpenseShow::on_pushButton_ok_released()

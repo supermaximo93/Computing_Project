@@ -51,6 +51,8 @@ private slots:
 
     void on_pushButton_addNewCustomer_released();
 
+    void on_pushButton_viewCustomer_released();
+
     void on_listWidget_partsE_doubleClicked(const QModelIndex &index);
 
     void on_listWidget_tasksE_doubleClicked(const QModelIndex &index);

@@ -34,7 +34,7 @@ void ExpenseForm::updateView()
     ui->doubleSpinBox_vat->setValue(expense.getVat());
 
     double totalPrice = expense.getPrice() + expense.getVat();
-    ui->label_totalPriceE->setText(QString(toString(totalPrice).c_str()).append(L'£'));
+    ui->label_totalPriceE->setText(QString(toString(totalPrice).c_str()).prepend(L'£'));
 
     ui->comboBox_typeHeading->setCurrentIndex(expense.getType());
 }

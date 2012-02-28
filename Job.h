@@ -37,7 +37,7 @@ public:
 
     static const std::string databaseFilename;
 
-    Job(const int customerId = 0, const time_t date = 0, const double labourCharge = 0.0,
+    Job(const int customerId = -1, const time_t date = 0, const double labourCharge = 0.0,
         const int completionState = 0, const int paymentMethod = 0);
 
     void writeToFile(std::fstream &file) const;
