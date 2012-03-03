@@ -40,6 +40,8 @@ private slots:
 
     void on_pushButton_cancel_released();
 
+    void on_spinBox_quantity_valueChanged(int value);
+
 private:
     enum
     {

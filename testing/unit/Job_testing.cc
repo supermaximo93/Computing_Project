@@ -22,7 +22,7 @@ protected:
     const Job exampleJob;
 
     JobUnitTest()
-        : exampleJob(0, time(NULL) + 100000, 50.0, Job::DONE_PAID, Job::CASH) {}
+        : exampleJob(0, time(NULL) + 100000, "Replaced boiler", 50.0, Job::DONE_PAID, Job::CASH) {}
 };
 
 // Is Job ID Minus One
@@ -46,6 +46,27 @@ TEST_F(JobUnitTest, DoesJobRejectDateBeforeNow)
     Job job(exampleJob);
     EXPECT_THROW(job.setDate(time(NULL) - 100000), std::runtime_error)
             << "Exception was not thrown when the date was set to a time before now";
+}
+
+// Does Job Reject Empty Description
+TEST_F(JobUnitTest, DoesJobRejectEmptyDescription)
+{
+    Job job(exampleJob);
+    EXPECT_THROW(job.setDescription(""), std::runtime_error)
+            << "Exception was not thrown when the description was set to an empty string";
+}
+
+// Does Job Reject Description That Is Too Long
+TEST_F(JobUnitTest, DoesJobRejectDescriptionThatIsTooLong)
+{
+    Job job(exampleJob);
+
+    std::string testDescription;
+    testDescription.reserve(Job::maxDescriptionLength + 1);
+    while (testDescription.size() < Job::maxDescriptionLength + 1) testDescription += 'a';
+
+    EXPECT_THROW(job.setDescription(testDescription.c_str()), std::runtime_error)
+            << "Exception was not thrown when the description was set to a string that is longer than the maximum";
 }
 
 // Does Job Reject Labour Charge Less Than Zero

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>510</width>
+    <width>717</width>
     <height>644</height>
    </rect>
   </property>
@@ -126,7 +126,7 @@
   <widget class="QLabel" name="label_part">
    <property name="geometry">
     <rect>
-     <x>80</x>
+     <x>440</x>
      <y>130</y>
      <width>41</width>
      <height>17</height>
@@ -139,7 +139,7 @@
   <widget class="QLabel" name="label_tasks">
    <property name="geometry">
     <rect>
-     <x>80</x>
+     <x>440</x>
      <y>220</y>
      <width>41</width>
      <height>17</height>
@@ -303,7 +303,7 @@
   <widget class="QListWidget" name="listWidget_tasksE">
    <property name="geometry">
     <rect>
-     <x>80</x>
+     <x>440</x>
      <y>240</y>
      <width>256</width>
      <height>71</height>
@@ -313,7 +313,7 @@
   <widget class="QListWidget" name="listWidget_partsE">
    <property name="geometry">
     <rect>
-     <x>80</x>
+     <x>440</x>
      <y>150</y>
      <width>256</width>
      <height>71</height>
@@ -344,6 +344,32 @@
    </property>
    <property name="text">
     <string>Mark as done</string>
+   </property>
+  </widget>
+  <widget class="QPlainTextEdit" name="plainTextEdit_descriptionE">
+   <property name="geometry">
+    <rect>
+     <x>73</x>
+     <y>170</y>
+     <width>271</width>
+     <height>111</height>
+    </rect>
+   </property>
+   <property name="readOnly">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_description">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>140</y>
+     <width>91</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Description</string>
    </property>
   </widget>
  </widget>

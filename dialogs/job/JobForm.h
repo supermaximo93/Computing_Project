@@ -39,9 +39,11 @@ private slots:
 
     void on_pushButton_submit_released();
 
+    void on_dateTimeEdit_date_dateTimeChanged(const QDateTime &date);
+
     void on_comboBox_customer_currentIndexChanged(int index);
 
-    void on_dateTimeEdit_date_dateTimeChanged(const QDateTime &date);
+    void on_plainTextEdit_description_textChanged();
 
     void on_doubleSpinBox_labourCharge_valueChanged(double value);
 

@@ -15,13 +15,15 @@ using namespace std;
 
 int Part::size()
 {
-    return Record::size() + sizeof(int) + maxNameLength + maxNumberLength + 2 + (sizeof(double) * 2);
+    return Record::size() + (sizeof(int) * 2) + maxNameLength + maxNumberLength + 2 + (sizeof(double) * 2);
 }
 
 const string Part::databaseFilename = "parts.dat";
 
-Part::Part(const int jobId, const char *newName, const char *newNumber, const double price, const double vatRate)
-    : pending(false), jobId(jobId), price(price), vatRate(vatRate < 0.0 ? Globals::vatRate(time(NULL)) : vatRate)
+Part::Part(const int jobId, const char *newName, const char *newNumber, const double price, const double vatRate,
+           const int quantity)
+    : pending(false), jobId(jobId), quantity(quantity), price(price),
+      vatRate(vatRate < 0.0 ? Globals::vatRate(time(NULL)) : vatRate)
 {
     name = new char[maxNameLength + 1];
     number = new char[maxNumberLength + 1];
@@ -52,6 +54,7 @@ void Part::operator =(const Part &part)
     strcpy(number, part.number);
     price = part.price;
     vatRate = part.vatRate;
+    quantity = part.quantity;
 }
 
 void Part::writeToFile(fstream &file) const
@@ -62,6 +65,7 @@ void Part::writeToFile(fstream &file) const
     file.write(number, maxNumberLength + 1);
     file.write(reinterpret_cast<const char *>(&price), sizeof(price));
     file.write(reinterpret_cast<const char *>(&vatRate), sizeof(vatRate));
+    file.write(reinterpret_cast<const char *>(&quantity), sizeof(quantity));
 }
 
 void Part::readFromFile(fstream &file)
@@ -72,11 +76,13 @@ void Part::readFromFile(fstream &file)
     file.read(number, maxNumberLength + 1);
     file.read(reinterpret_cast<char *>(&price), sizeof(price));
     file.read(reinterpret_cast<char *>(&vatRate), sizeof(vatRate));
+    file.read(reinterpret_cast<char *>(&quantity), sizeof(quantity));
 }
 
 bool Part::hasMatchingField(const string &fieldName, const int searchTerm) const
 {
     if (fieldName == "jobid") return (jobId == searchTerm);
+    else if (fieldName == "quantity") return (quantity == searchTerm);
     return Record::hasMatchingField(fieldName, searchTerm);
 }
 
@@ -101,6 +107,7 @@ bool Part::fieldCompare(const Part &rhs) const
     if (strcmp(number, rhs.number) != 0) return false;
     if (fabs(price - rhs.price) > 0.00001) return false;
     if (fabs(vatRate - rhs.vatRate) > 0.00001) return false;
+    if (quantity != rhs.quantity) return false;
     return true;
 }
 
@@ -158,4 +165,14 @@ double Part::getVatRate() const
 void Part::setVatRate(const double newVatRate)
 {
     vatRate = newVatRate;
+}
+
+int Part::getQuantity() const
+{
+    return quantity;
+}
+
+void Part::setQuantity(const int newQuantity)
+{
+    quantity = newQuantity;
 }

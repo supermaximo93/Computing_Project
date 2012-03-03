@@ -40,8 +40,17 @@ void JobShow::updateView()
     Customer customer = CustomerController::getCustomer(job.getCustomerId());
     ui->label_customerNameE->setText(createFullName(customer.getForename(), customer.getSurname()));
 
+    ui->plainTextEdit_descriptionE->setPlainText(job.getDescription());
+
     ui->listWidget_partsE->clear();
-    for (unsigned i = 0; i < parts.size(); ++i) ui->listWidget_partsE->addItem(parts[i].getName());
+    char partString[64];
+    for (unsigned i = 0; i < parts.size(); ++i)
+    {
+        strcpy(partString, toString(parts[i].getQuantity()).c_str());
+        strcat(partString, "x ");
+        strcat(partString, parts[i].getName());
+        ui->listWidget_partsE->addItem(partString);
+    }
 
     ui->listWidget_tasksE->clear();
     const unsigned descriptionPreviewLength = 31;
@@ -91,7 +100,7 @@ void JobShow::updateCharges()
 double JobShow::getTotalChargeExclVat()
 {
     double totalCharge = job.getLabourCharge();
-    for (unsigned i = 0; i < parts.size(); ++i) totalCharge += parts[i].getPrice();
+    for (unsigned i = 0; i < parts.size(); ++i) totalCharge += parts[i].getPrice() * parts[i].getQuantity();
     return totalCharge;
 }
 
@@ -100,7 +109,7 @@ double JobShow::getTotalChargeInclVat()
     double totalCharge = job.getLabourCharge() * (1.0 + (Globals::vatRate(Date(job.getDate())) / 100.0));
 
     for (unsigned i = 0; i < parts.size(); ++i)
-        totalCharge += parts[i].getPrice() * (1.0 + (parts[i].getVatRate() / 100.0));
+        totalCharge += parts[i].getPrice() * parts[i].getQuantity() * (1.0 + (parts[i].getVatRate() / 100.0));
 
     return totalCharge;
 }

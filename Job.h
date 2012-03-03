@@ -36,15 +36,22 @@ public:
     static int size();
 
     static const std::string databaseFilename;
+    static const int minDescriptionLength = 0, maxDescriptionLength = 256;
 
-    Job(const int customerId = -1, const time_t date = 0, const double labourCharge = 0.0,
+    Job(const int customerId = -1, const time_t date = 0, const char *description = "", const double labourCharge = 0.0,
         const int completionState = 0, const int paymentMethod = 0);
+
+    Job(const Job &job);
+    ~Job();
+
+    void operator =(const Job &job);
 
     void writeToFile(std::fstream &file) const;
     void readFromFile(std::fstream &file);
 
     bool hasMatchingField(const std::string &fieldName, const int searchTerm) const;
     bool hasMatchingField(const std::string &fieldName, const time_t searchTerm) const;
+    bool hasMatchingField(const std::string &fieldName, const char * searchTerm) const;
     bool hasMatchingField(const std::string &fieldName, const double searchTerm) const;
 
     bool fieldCompare(const Job &rhs) const;
@@ -55,6 +62,9 @@ public:
 
     time_t getDate() const;
     void setDate(const time_t newDate);
+
+    const char * getDescription() const;
+    void setDescription(const char *newDescription);
 
     double getLabourCharge() const;
     void setLabourCharge(const double newLabourCharge); // Recalculates VAT
@@ -70,6 +80,7 @@ public:
 private:
     int customerId, completionState, paymentMethod;
     time_t date;
+    char *description;
     double labourCharge, vat;
 };
 

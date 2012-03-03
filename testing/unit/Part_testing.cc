@@ -121,6 +121,22 @@ TEST_F(PartUnitTest, DoesPartAutomaticallySetVatRateToTheDefaultInConstructor)
             << "VAT rate was not set to the default in the Part constructor";
 }
 
+// Does Part Reject Quantity Equal To Zero
+TEST_F(PartUnitTest, DoesPartRejectQuantityEqualToZero)
+{
+    Part part(examplePart);
+    EXPECT_THROW(part.setQuantity(0), std::runtime_error)
+            << "Exception was not thrown when the quantity was set to 0";
+}
+
+// Does Part Reject Quantity Less Than Zero
+TEST_F(PartUnitTest, DoesPartRejectQuantityLessThanZero)
+{
+    Part part(examplePart);
+    EXPECT_THROW(part.setQuantity(-1), std::runtime_error)
+            << "Exception was not thrown when the quantity was set to a value less than 0";
+}
+
 // Does Part FieldCompare Member Function Work Correctly
 TEST_F(PartUnitTest, DoesPartFieldCompareMemberFunctionWorkCorrectly)
 {

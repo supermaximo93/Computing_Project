@@ -23,7 +23,7 @@ protected:
     CustomerControllerIntegrationTest()
         : exampleCustomer("John", "Doe", "123 Example Lane", "Example Village", "Exampleville", "AB12 3CD",
               "01234567890", "07012345678", "john.doe@example.com"),
-          exampleJob(0, time(NULL) + 100000, 50.0, Job::DONE_UNPAID, Job::NA) {}
+          exampleJob(0, time(NULL) + 100000, "Replace boiler", 50.0, Job::DONE_UNPAID, Job::NA) {}
 
     virtual void SetUp()
     {

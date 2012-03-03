@@ -8,27 +8,57 @@
 #include <fstream>
 #include <cmath>
 #include <ctime>
+#include <cstring>
 using namespace std;
 
 #include "Globals.h"
 #include "Job.h"
 
 int Job::size() {
-    return Record::size() + (sizeof(int) * 3) + sizeof(time_t) + (sizeof(double) * 2);
+    return Record::size() + (sizeof(int) * 3) + sizeof(time_t) + maxDescriptionLength + 1 + (sizeof(double) * 2);
 }
 
 const string Job::databaseFilename = "jobs.dat";
 
-Job::Job(const int customerId, const time_t date, const double labourCharge, const int completionState,
-         const int paymentMethod) :
+Job::Job(const int customerId, const time_t date, const char *newDescription, const double labourCharge,
+         const int completionState, const int paymentMethod) :
     customerId(customerId), completionState(completionState), paymentMethod(paymentMethod),
-    date(date == 0 ? time(NULL) : date), labourCharge(labourCharge), vat(labourCharge * Globals::vatRate(this->date)) {}
+    date(date == 0 ? time(NULL) : date), labourCharge(labourCharge), vat(labourCharge * Globals::vatRate(this->date))
+{
+    description = new char[maxDescriptionLength + 1];
+    strcpy(description, newDescription);
+}
+
+Job::Job(const Job &job)
+{
+    description = new char[maxDescriptionLength + 1];
+    (*this) = job;
+}
+
+Job::~Job()
+{
+    delete[] description;
+}
+
+void Job::operator =(const Job &job)
+{
+    *((Record*)this) = (Record)job;
+
+    customerId = job.customerId;
+    strcpy(description, job.description);
+    completionState = job.completionState;
+    paymentMethod = job.paymentMethod;
+    date = job.date;
+    labourCharge = job.labourCharge;
+    vat = job.vat;
+}
 
 void Job::writeToFile(fstream &file) const
 {
     Record::writeToFile(file);
     file.write(reinterpret_cast<const char *>(&customerId), sizeof(customerId));
     file.write(reinterpret_cast<const char *>(&date), sizeof(date));
+    file.write(description, maxDescriptionLength + 1);
     file.write(reinterpret_cast<const char *>(&labourCharge), sizeof(labourCharge));
     file.write(reinterpret_cast<const char *>(&vat), sizeof(vat));
     file.write(reinterpret_cast<const char *>(&completionState), sizeof(completionState));
@@ -40,6 +70,7 @@ void Job::readFromFile(fstream &file)
     Record::readFromFile(file);
     file.read(reinterpret_cast<char *>(&customerId), sizeof(customerId));
     file.read(reinterpret_cast<char *>(&date), sizeof(date));
+    file.read(description, maxDescriptionLength + 1);
     file.read(reinterpret_cast<char *>(&labourCharge), sizeof(labourCharge));
     file.read(reinterpret_cast<char *>(&vat), sizeof(vat));
     file.read(reinterpret_cast<char *>(&completionState), sizeof(completionState));
@@ -60,6 +91,12 @@ bool Job::hasMatchingField(const string &fieldName, const time_t searchTerm) con
     return false;
 }
 
+bool Job::hasMatchingField(const string &fieldName, const char * searchTerm) const
+{
+    if (fieldName == "description") return (strcmp(description, searchTerm) == 0);
+    return false;
+}
+
 bool Job::hasMatchingField(const string &fieldName, const double searchTerm) const
 {
     if (fieldName == "labourcharge") return (labourCharge == searchTerm);
@@ -75,6 +112,7 @@ bool Job::fieldCompare(const Job &rhs) const
     if (fabs(vat - rhs.vat) > 0.00001) return false;
     if (completionState != rhs.completionState) return false;
     if (paymentMethod != rhs.paymentMethod) return false;
+    if (strcmp(description, rhs.description) != 0) return false;
     return true;
 }
 
@@ -102,6 +140,16 @@ time_t Job::getDate() const
 void Job::setDate(const time_t newDate)
 {
     date = newDate;
+}
+
+const char * Job::getDescription() const
+{
+    return description;
+}
+
+void Job::setDescription(const char *newDescription)
+{
+    strcpy(description, newDescription);
 }
 
 double Job::getLabourCharge() const

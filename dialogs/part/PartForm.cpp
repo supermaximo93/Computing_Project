@@ -31,6 +31,7 @@ void PartForm::updateView()
     ui->lineEdit_partNumber->setText(part.getNumber());
     ui->doubleSpinBox_price->setValue(part.getPrice());
     ui->doubleSpinBox_vatRate->setValue(part.getVatRate());
+    ui->spinBox_quantity->setValue(part.getQuantity());
 }
 
 void PartForm::on_lineEdit_partName_textEdited(const QString &value)
@@ -101,6 +102,23 @@ void PartForm::on_doubleSpinBox_vatRate_valueChanged(double value)
     }
 }
 
+void PartForm::on_spinBox_quantity_valueChanged(int value)
+{
+    bool success = true;
+    try { part.setQuantity(value); }
+    catch (const std::exception &e)
+    {
+        success = false;
+        ui->doubleSpinBox_vatRate->setToolTip(e.what());
+        ui->doubleSpinBox_vatRate->setStyleSheet("QSpinBox { background-color: red; }");
+    }
+    if (success)
+    {
+        ui->doubleSpinBox_vatRate->setStyleSheet("");
+        ui->doubleSpinBox_vatRate->setToolTip("");
+    }
+}
+
 void PartForm::on_pushButton_submit_released()
 {
     if (!setRecordData()) return;
@@ -132,6 +150,9 @@ bool PartForm::setRecordData()
 
     on_doubleSpinBox_vatRate_valueChanged(ui->doubleSpinBox_vatRate->value());
     if (ui->doubleSpinBox_vatRate->styleSheet() != "") success = false;
+
+    on_spinBox_quantity_valueChanged(ui->spinBox_quantity->value());
+    if (ui->spinBox_quantity->styleSheet() != "") success = false;
 
     return success;
 }

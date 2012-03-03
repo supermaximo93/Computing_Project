@@ -30,6 +30,7 @@ void PartShow::updateView()
     ui->label_partNumberE->setText(part.getNumber());
     ui->label_partPriceE->setText(QString(toString(part.getPrice()).c_str()).prepend(L'£'));
     ui->label_vatRateE->setText((toString(part.getVatRate()) + '%').c_str());
+    ui->label_quantityE->setText(toString(part.getQuantity()).c_str());
 }
 
 void PartShow::on_pushButton_ok_released()

@@ -23,7 +23,7 @@ protected:
     const Task exampleTask;
 
     JobControllerIntegrationTest()
-        : exampleJob(0, time(NULL) + 100000, 50.0, Job::DONE_UNPAID, Job::NA),
+        : exampleJob(0, time(NULL) + 100000, "Replace sink", 50.0, Job::DONE_UNPAID, Job::NA),
           examplePart(0, "Tap", "12345", 20.0, 20.0),
           exampleTask(0, time(NULL) + 100000, "Example task") {}
 

@@ -56,8 +56,17 @@ void JobForm::updateView()
     ui->pushButton_viewCustomer->setVisible(ui->comboBox_customer->count() > 0);
     ui->comboBox_customer->blockSignals(false);
 
+    ui->plainTextEdit_description->setPlainText(job.getDescription());
+
     ui->listWidget_partsE->clear();
-    for (unsigned i = 0; i < parts.size(); ++i) ui->listWidget_partsE->addItem(parts[i].getName());
+    char partString[64];
+    for (unsigned i = 0; i < parts.size(); ++i)
+    {
+        strcpy(partString, toString(parts[i].getQuantity()).c_str());
+        strcat(partString, "x ");
+        strcat(partString, parts[i].getName());
+        ui->listWidget_partsE->addItem(partString);
+    }
 
     ui->listWidget_tasksE->clear();
     const unsigned descriptionPreviewLength = 31;
@@ -143,6 +152,9 @@ bool JobForm::setRecordData()
     on_comboBox_customer_currentIndexChanged(ui->comboBox_customer->currentIndex());
     if (ui->comboBox_customer->styleSheet() != "") success = false;
 
+    on_plainTextEdit_description_textChanged();
+    if (ui->plainTextEdit_description->styleSheet() != "") success = false;
+
     on_doubleSpinBox_labourCharge_valueChanged(ui->doubleSpinBox_labourCharge->value());
     if (ui->doubleSpinBox_labourCharge->styleSheet() != "") success = false;
 
@@ -166,7 +178,7 @@ void JobForm::updateCharges()
 double JobForm::getTotalChargeExclVat()
 {
     double totalCharge = ui->doubleSpinBox_labourCharge->value();
-    for (unsigned i = 0; i < parts.size(); ++i) totalCharge += parts[i].getPrice();
+    for (unsigned i = 0; i < parts.size(); ++i) totalCharge += parts[i].getPrice() * parts[i].getQuantity();
     return totalCharge;
 }
 
@@ -176,7 +188,7 @@ double JobForm::getTotalChargeInclVat()
             ui->doubleSpinBox_labourCharge->value() * (1.0 + (Globals::vatRate(Date(job.getDate())) / 100.0));
 
     for (unsigned i = 0; i < parts.size(); ++i)
-        totalCharge += parts[i].getPrice() * (1.0 + (parts[i].getVatRate() / 100.0));
+        totalCharge += parts[i].getPrice() * parts[i].getQuantity() * (1.0 + (parts[i].getVatRate() / 100.0));
 
     return totalCharge;
 }
@@ -216,6 +228,23 @@ void JobForm::on_comboBox_customer_currentIndexChanged(int index)
     {
         ui->comboBox_customer->setStyleSheet("");
         ui->comboBox_customer->setToolTip("");
+    }
+}
+
+void JobForm::on_plainTextEdit_description_textChanged()
+{
+    bool success = true;
+    try { job.setDescription(ui->plainTextEdit_description->toPlainText().toStdString().c_str()); }
+    catch (const std::exception &e)
+    {
+        success = false;
+        ui->plainTextEdit_description->setToolTip(e.what());
+        ui->plainTextEdit_description->setStyleSheet("QPlainTextEdit { background-color: red; }");
+    }
+    if (success)
+    {
+        ui->plainTextEdit_description->setStyleSheet("");
+        ui->plainTextEdit_description->setToolTip("");
     }
 }
 

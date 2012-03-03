@@ -24,7 +24,7 @@ public:
     bool pending; // Used when the part has been created successfully, but hasn't been added to the database yet
 
     Part(const int jobId = -1, const char *name = "", const char *number = "", const double price = 0.0,
-         const double vatRate = -1.0);
+         const double vatRate = -1.0, const int quantity = 1);
     Part(const Part &part);
     ~Part();
 
@@ -55,8 +55,11 @@ public:
     double getVatRate() const;
     void setVatRate(const double newVatRate);
 
+    int getQuantity() const;
+    void setQuantity(const int newQuantity);
+
 private:
-    int jobId;
+    int jobId, quantity;
     char *name, *number;
     double price, vatRate;
 };
