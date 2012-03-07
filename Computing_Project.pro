@@ -14,6 +14,8 @@ LIBS += -lgtest
 DEFINES += COMPILE_TESTS
 }
 
+LIBS += -lhpdf
+
 SOURCES += main.cpp\
         Record.cpp\
         Customer.cpp\
@@ -54,7 +56,8 @@ SOURCES += main.cpp\
     dialogs/expense/ExpenseIndex.cpp \
     dialogs/customer/CustomerForm.cpp \
     dialogs/customer/CustomerShow.cpp \
-    dialogs/customer/CustomerIndex.cpp
+    dialogs/customer/CustomerIndex.cpp \
+    PdfGenerator.cpp
 
 HEADERS  +=\
         Database.h\
@@ -87,7 +90,8 @@ HEADERS  +=\
     dialogs/expense/ExpenseIndex.h \
     dialogs/customer/CustomerForm.h \
     dialogs/customer/CustomerShow.h \
-    dialogs/customer/CustomerIndex.h
+    dialogs/customer/CustomerIndex.h \
+    PdfGenerator.h
 
 FORMS += \
     dialogs/main/MainWindow.ui \
