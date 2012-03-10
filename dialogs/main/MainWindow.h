@@ -16,6 +16,9 @@ public:
     explicit MainWindow(QWidget *parent = NULL);
     ~MainWindow();
 
+protected:
+    void closeEvent(QCloseEvent *event);
+
 private slots:
     void on_pushButton_addNewJob_released();
 

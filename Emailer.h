@@ -9,8 +9,15 @@
 #define EMAILER_H
 
 #include <QObject>
-
+#include <Qxt/QxtMailMessage>
 class QxtSmtp;
+
+struct EmailDetails
+{
+    std::string recipient, subject, body, attachmentFileName;
+    EmailDetails(const char *recipient, const char *subject, const char *body, const char *attachmentFileName = "")
+        : recipient(recipient), subject(subject), body(body), attachmentFileName(attachmentFileName) {}
+};
 
 class Emailer : public QObject
 {
@@ -19,14 +26,17 @@ class Emailer : public QObject
 public:
     static const int waitTimeInMilliseconds;
 
-    Emailer(const char *recipient, const char *subject, const char *body, const char *attachmentFileName = "",
-            QObject *parent = NULL);
+    Emailer(const EmailDetails &emailDetails);
     ~Emailer();
 
-    bool mailSent();
+    void send();
+    bool pending() const;
+    bool sentSuccessfully() const;
+
+    const EmailDetails & emailDetails() const;
 
 public slots:
-    void conncted();
+    void connected();
     void connectionFailed(const QByteArray &message);
 
     void authenticated();
@@ -38,9 +48,14 @@ public slots:
 
     void finished();
 
+signals:
+    void mailSent();
+    void mailFailed();
+
 private:
     QxtSmtp *socket;
-    std::string recipient, subject, body, attachmentFileName;
+    EmailDetails emailDetails_;
+    QxtMailMessage message;
 
     enum
     {

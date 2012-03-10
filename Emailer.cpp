@@ -19,16 +19,26 @@ using namespace std;
 
 const int Emailer::waitTimeInMilliseconds = 5000;
 
-Emailer::Emailer(const char *recipient, const char *subject, const char *body, const char *attachmentFileName,
-                 QObject *parent)
-    : recipient(recipient), subject(subject), body(body), attachmentFileName(attachmentFileName),
-      connectionState(NONE), authenticationState(NONE), mailSendState(NONE)
+Emailer::Emailer(const EmailDetails &emailDetails)
+    : socket(NULL), emailDetails_(emailDetails),
+      connectionState(NONE), authenticationState(NONE), mailSendState(NONE) {}
+
+Emailer::~Emailer()
 {
-    socket = new QxtSmtp(parent);
+    if ((connectionState != NONE) && (socket != NULL)) closeConnection();
+    if (socket != NULL) delete socket;
+}
+
+void Emailer::send()
+{
+    mailSendState = PENDING;
+
+    if (socket != NULL) delete socket;
+    socket = new QxtSmtp;
     socket->setUsername("ianfosterservices");
     socket->setPassword("temppassword");
 
-    connect(socket, SIGNAL(connected()), this, SLOT(conncted()));
+    connect(socket, SIGNAL(connected()), this, SLOT(connected()));
     connect(socket, SIGNAL(connectionFailed(QByteArray)), this, SLOT(connectionFailed(QByteArray)));
     connect(socket, SIGNAL(authenticated()), this, SLOT(authenticated()));
     connect(socket, SIGNAL(authenticationFailed(QByteArray)), this, SLOT(authenticationFailed(QByteArray)));
@@ -39,36 +49,38 @@ Emailer::Emailer(const char *recipient, const char *subject, const char *body, c
 
     connectionState = PENDING;
     socket->connectToSecureHost("smtp.gmail.com");
-    socket->sslSocket()->waitForConnected(waitTimeInMilliseconds);
 }
 
-Emailer::~Emailer()
+bool Emailer::pending() const
 {
-    if (connectionState != NONE) closeConnection();
-    delete socket;
+    return (mailSendState == PENDING);
 }
 
-bool Emailer::mailSent()
+bool Emailer::sentSuccessfully() const
 {
     return (mailSendState == SUCCESS);
 }
 
-void Emailer::conncted()
+const EmailDetails & Emailer::emailDetails() const
+{
+    return emailDetails_;
+}
+
+void Emailer::connected()
 {
     connectionState = SUCCESS;
     cout << "Connection successful" << endl;
 
-    mailSendState = PENDING;
     QxtMailMessage message;
-    message.addRecipient(recipient.c_str());
-    message.setSubject(subject.c_str());
-    message.setBody(body.c_str());
+    message.addRecipient(emailDetails_.recipient.c_str());
+    message.setSubject(emailDetails_.subject.c_str());
+    message.setBody(emailDetails_.body.c_str());
 
-    if (attachmentFileName.size() > 0)
+    if (emailDetails_.attachmentFileName.size() > 0)
     {
-        QFile attachment(attachmentFileName.c_str());
+        QFile attachment(emailDetails_.attachmentFileName.c_str());
         attachment.open(QFile::ReadOnly);
-        message.addAttachment(attachmentFileName.c_str(), QxtMailAttachment(attachment.readAll()));
+        message.addAttachment(emailDetails_.attachmentFileName.c_str(), QxtMailAttachment(attachment.readAll()));
         attachment.close();
     }
 
@@ -77,10 +89,9 @@ void Emailer::conncted()
 
 void Emailer::connectionFailed(const QByteArray &message)
 {
-    connectionState = FAILURE;
+    connectionState = mailSendState = FAILURE;
     cout << "Connection failed" << endl
          << QString(message).toStdString() << endl;
-    closeConnection();
 }
 
 void Emailer::authenticated()
@@ -91,43 +102,51 @@ void Emailer::authenticated()
 
 void Emailer::authenticationFailed(const QByteArray &message)
 {
-    authenticationState = FAILURE;
+    authenticationState = mailSendState = FAILURE;
     cout << "Authentication failed" << endl
          << QString(message).toStdString() << endl;
-    closeConnection();
 }
 
 void Emailer::mailSent(int)
 {
+    mailSendState = SUCCESS;
     cout << "Mail sent successfully" << endl;
-    closeConnection();
 }
 
 void Emailer::mailFailed(int, int, const QByteArray &message)
 {
+    mailSendState = FAILURE;
     cout << "Mail could not be sent" << endl
          << QString(message).toStdString() << endl;
-    closeConnection();
 }
 
 
 void Emailer::senderRejected(int, const QString &address, const QByteArray &message)
 {
+    mailSendState = FAILURE;
     cout << "Sender rejected" << endl
          << address.toStdString() << endl
          << QString(message).toStdString() << endl;
-    closeConnection();
 }
 
 void Emailer::finished()
 {
     cout << "Finished" << endl;
+    closeConnection();
 }
 
 void Emailer::closeConnection()
 {
-    socket->disconnectFromHost();
-    connectionState = NONE;
-    authenticationState = NONE;
+    if (socket != NULL)
+    {
+        socket->disconnectFromHost();
+        delete socket;
+        socket = NULL;
+    }
+
+    connectionState = authenticationState = NONE;
+
     cout << "Connection closed" << endl;
+    if (mailSendState == FAILURE) emit mailFailed();
+    else if (mailSendState == SUCCESS) emit mailSent();
 }

@@ -5,6 +5,8 @@
  *      Author: Max Foster
  */
 
+using namespace std;
+
 #include "JobShow.h"
 #include "ui_JobShow.h"
 
@@ -14,10 +16,16 @@
 #include "Part.h"
 #include "Task.h"
 #include "Customer.h"
+
 #include "JobController.h"
 #include "CustomerController.h"
 #include "PartController.h"
 #include "TaskController.h"
+
+#include "PdfGenerator.h"
+#include "Emailer.h"
+#include "EmailerThread.h"
+
 #include "Utils.h"
 #include "Globals.h"
 
@@ -181,7 +189,26 @@ void JobShow::on_pushButton_markAsDone_released()
 
 void JobShow::on_pushButton_sendInvoice_released()
 {
-    // TODO: make invoice sending system
+    Customer customer = CustomerController::getCustomer(job.getCustomerId());
+    string invoiceFileName, invoiceEmailSubject, invoiceEmailBody;
+    invoiceFileName.reserve(256);
+    invoiceFileName += "invoice_";
+    invoiceFileName += customer.getForename();
+    invoiceFileName += customer.getSurname();
+    invoiceFileName += "_";
+    invoiceFileName += toString(job.getId());
+    invoiceFileName += "_";
+    invoiceFileName += (string)Date(job.getDate());
+    invoiceFileName += ".pdf";
+    replaceChars(invoiceFileName, ' ', '_');
+    replaceChars(invoiceFileName, '/', '-');
+    replaceChars(invoiceFileName, ':', '-');
+
+    PdfGenerator::generateInvoice(invoiceFileName.c_str(), job);
+
+    EmailDetails emailDetails(customer.getEmailAddress(), invoiceEmailSubject.c_str(), invoiceEmailBody.c_str(),
+                              invoiceFileName.c_str());
+    EmailerThread::enqueueEmail(emailDetails);
 }
 
 void JobShow::on_pushButton_markAsPaid_released()

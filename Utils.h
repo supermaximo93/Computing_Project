@@ -31,6 +31,7 @@ struct Date
     Date(time_t seconds);
     Date(unsigned minute, unsigned hour, unsigned day, unsigned month, unsigned year);
 
+    operator std::string();
     operator QString();
     operator QDateTime();
     operator time_t();
@@ -39,12 +40,14 @@ struct Date
 std::ostream & operator <<(std::ostream &stream, const Date &date);
 
 std::string lowerCase(const std::string &str);
+void replaceChars(std::string &str, char searchChar, char newChar);
 
 void showInfoDialog(const char *message);
 void showErrorDialog(const char *message);
 void showErrorDialog(const std::vector<std::string> &errors);
 void showFatalDialog(const char *message);
 bool showYesNoDialog(const char *question);
+void showPendingDialog(const char *message, bool (*percentCompleteCheckFunction)(void));
 
 const char * createFullName(const char *forename, const char *surname);
 

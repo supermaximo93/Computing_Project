@@ -30,6 +30,13 @@ Date::Date(const time_t seconds_)
 Date::Date(unsigned minute, unsigned hour, unsigned day, unsigned month, unsigned year)
     : seconds(0), minute(minute), hour(hour), day(day), month(month), year(year) {}
 
+Date::operator std::string()
+{
+    stringstream stream;
+    stream << *this;
+    return stream.str();
+}
+
 Date::operator QString()
 {
     stringstream stream;
@@ -68,6 +75,12 @@ string lowerCase(const string &str)
     return returnStr;
 }
 
+void replaceChars(std::string &str, const char searchChar, const char newChar)
+{
+    size_t spacePos;
+    while ((spacePos = str.find(searchChar)) != str.npos) str[spacePos] = newChar;
+}
+
 void showInfoDialog(const char *message)
 {
     QMessageBox messageBox(QMessageBox::Information, " ", message);
@@ -103,6 +116,12 @@ bool showYesNoDialog(const char *question)
     case QMessageBox::Yes: return true;
     default: return false;
     }
+}
+
+void showPendingDialog(const char *message, int (*percentCompleteCheckFunction)(void))
+{
+    QMessageBox messageBox(QMessageBox::Information, "Waiting for process to complete", message);
+    messageBox.exec();
 }
 
 const char * createFullName(const char *forename, const char *surname)
