@@ -47,7 +47,7 @@ void showErrorDialog(const char *message);
 void showErrorDialog(const std::vector<std::string> &errors);
 void showFatalDialog(const char *message);
 bool showYesNoDialog(const char *question);
-void showPendingDialog(const char *message, bool (*percentCompleteCheckFunction)(void));
+void showPendingDialog(const char *message, int (*percentCompleteCheckFunction)(void));
 
 const char * createFullName(const char *forename, const char *surname);
 

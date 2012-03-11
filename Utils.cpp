@@ -16,6 +16,8 @@ using namespace std;
 
 #include "Utils.h"
 
+#include "dialogs/utils/PendingDialog.h"
+
 Date::Date(const time_t seconds_)
 {
     tm *time = localtime(&seconds_);
@@ -120,8 +122,8 @@ bool showYesNoDialog(const char *question)
 
 void showPendingDialog(const char *message, int (*percentCompleteCheckFunction)(void))
 {
-    QMessageBox messageBox(QMessageBox::Information, "Waiting for process to complete", message);
-    messageBox.exec();
+    PendingDialog dialog(message, percentCompleteCheckFunction);
+    dialog.exec();
 }
 
 const char * createFullName(const char *forename, const char *surname)

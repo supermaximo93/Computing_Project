@@ -14,9 +14,13 @@ class QxtSmtp;
 
 struct EmailDetails
 {
+    static const int maxEmailTries = 3;
+
     std::string recipient, subject, body, attachmentFileName;
+    int tries;
+
     EmailDetails(const char *recipient, const char *subject, const char *body, const char *attachmentFileName = "")
-        : recipient(recipient), subject(subject), body(body), attachmentFileName(attachmentFileName) {}
+        : recipient(recipient), subject(subject), body(body), attachmentFileName(attachmentFileName), tries(0) {}
 };
 
 class Emailer : public QObject

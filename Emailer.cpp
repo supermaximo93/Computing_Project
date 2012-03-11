@@ -50,6 +50,8 @@ void Emailer::send()
 
     connectionState = PENDING;
     socket->connectToSecureHost("smtp.gmail.com");
+
+    ++emailDetails_.tries;
 }
 
 bool Emailer::pending() const

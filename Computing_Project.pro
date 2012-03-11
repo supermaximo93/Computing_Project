@@ -64,7 +64,9 @@ HEADERS += AssignOncePointer.h \
            dialogs/part/PartForm.h \
            dialogs/part/PartShow.h \
            dialogs/task/TaskForm.h \
-           dialogs/task/TaskShow.h
+           dialogs/task/TaskShow.h \
+    EmailerThread.h \
+    dialogs/utils/PendingDialog.h
 FORMS += dialogs/customer/CustomerForm.ui \
          dialogs/customer/CustomerIndex.ui \
          dialogs/customer/CustomerShow.ui \
@@ -79,7 +81,8 @@ FORMS += dialogs/customer/CustomerForm.ui \
          dialogs/part/PartForm.ui \
          dialogs/part/PartShow.ui \
          dialogs/task/TaskForm.ui \
-         dialogs/task/TaskShow.ui
+         dialogs/task/TaskShow.ui \
+    dialogs/utils/PendingDialog.ui
 SOURCES += Customer.cpp \
            CustomerController.cpp \
            Databases.cpp \
@@ -122,4 +125,6 @@ SOURCES += Customer.cpp \
            testing/unit/Expense_testing.cc \
            testing/unit/Job_testing.cc \
            testing/unit/Part_testing.cc \
-           testing/unit/Task_testing.cc
+           testing/unit/Task_testing.cc \
+    EmailerThread.cpp \
+    dialogs/utils/PendingDialog.cpp

@@ -28,6 +28,8 @@ void EmailerThread::init(QObject *parent)
     emailerThread->start(LowestPriority);
 }
 
+static int emailCountBeforeClose = 0;
+
 bool EmailerThread::finalise()
 {
     if (emailerThread == NULL) return true;
@@ -35,7 +37,7 @@ bool EmailerThread::finalise()
     if (!emailsInQueueMutex->tryLock())
     {
         bool cancelEmails = showYesNoDialog("There are still emails waiting to be sent.\n"
-                                            "Would you line to cancel the sending of these emails?");
+                                            "Would you like to cancel the sending of these emails?");
         if (cancelEmails)
         {
             cancelEmails = showYesNoDialog("Are you sure you want to cancel the sending of these emails?\n"
@@ -55,7 +57,11 @@ bool EmailerThread::finalise()
                     showYesNoDialog("Would you like the program to close after all the emails have been sent?");
             if (closeAutomatically)
             {
-                // show pending dialog
+                while (!emailQueueMutex->tryLock(mutexLockTimeout));
+                emailCountBeforeClose = emailQueue->size();
+                emailQueueMutex->unlock();
+
+                showPendingDialog("Finishing sending of emails", checkEmailQueuePercentDone);
             }
             else return false;
         }
@@ -87,6 +93,14 @@ bool EmailerThread::finalise()
     }
 
     return true;
+}
+
+int EmailerThread::checkEmailQueuePercentDone()
+{
+    while (!emailQueueMutex->tryLock(mutexLockTimeout));
+    const int percentage = ((emailCountBeforeClose - emailQueue->size()) * 100) / emailCountBeforeClose;
+    emailQueueMutex->unlock();
+    return percentage;
 }
 
 void EmailerThread::enqueueEmail(const EmailDetails &email)
@@ -149,7 +163,11 @@ void EmailerThread::mailFailed()
     if (emailer == NULL) return;
 
     while (!emailQueueMutex->tryLock(mutexLockTimeout));
-    emailQueue->push(emailer->emailDetails());
+
+    if (emailer->emailDetails().tries < EmailDetails::maxEmailTries) emailQueue->push(emailer->emailDetails());
+    else cout << "Email to " << emailer->emailDetails().recipient << " could not be sent "
+                 "(attempted to send " << emailer->emailDetails().tries << " times)" << endl;
+
     emailer->kill();
     emailer = NULL;
     emailQueueMutex->unlock();

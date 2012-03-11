@@ -27,6 +27,8 @@ public:
     static void init(QObject *parent = NULL);
     static bool finalise();
 
+    static int checkEmailQueuePercentDone();
+
     static void enqueueEmail(const EmailDetails &email);
 
     static const EmailerThread * instance();
