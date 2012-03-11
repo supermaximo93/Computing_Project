@@ -19,8 +19,8 @@ using namespace std;
 
 const int Emailer::waitTimeInMilliseconds = 5000;
 
-Emailer::Emailer(const EmailDetails &emailDetails)
-    : socket(NULL), emailDetails_(emailDetails),
+Emailer::Emailer(const EmailDetails &emailDetails, QObject *parent)
+    : QObject(parent), socket(NULL), emailDetails_(emailDetails), completed(false), killNow(false),
       connectionState(NONE), authenticationState(NONE), mailSendState(NONE) {}
 
 Emailer::~Emailer()
@@ -34,7 +34,7 @@ void Emailer::send()
     mailSendState = PENDING;
 
     if (socket != NULL) delete socket;
-    socket = new QxtSmtp;
+    socket = new QxtSmtp(this);
     socket->setUsername("ianfosterservices");
     socket->setPassword("temppassword");
 
@@ -46,6 +46,7 @@ void Emailer::send()
     connect(socket, SIGNAL(mailFailed(int,int,QByteArray)), this, SLOT(mailFailed(int,int,QByteArray)));
     connect(socket, SIGNAL(senderRejected(int,QString,QByteArray)), this, SLOT(senderRejected(int,QString,QByteArray)));
     connect(socket, SIGNAL(finished()), this, SLOT(finished()));
+    connect(socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
 
     connectionState = PENDING;
     socket->connectToSecureHost("smtp.gmail.com");
@@ -64,6 +65,12 @@ bool Emailer::sentSuccessfully() const
 const EmailDetails & Emailer::emailDetails() const
 {
     return emailDetails_;
+}
+
+void Emailer::kill()
+{
+    killNow = true;
+    if (completed) delete this;
 }
 
 void Emailer::connected()
@@ -131,22 +138,23 @@ void Emailer::senderRejected(int, const QString &address, const QByteArray &mess
 
 void Emailer::finished()
 {
-    cout << "Finished" << endl;
     closeConnection();
+    cout << "Finished" << endl;
+}
+
+void Emailer::disconnected()
+{
+    connectionState = authenticationState = NONE;
+    completed = true;
+    cout << "Connection closed" << endl;
+
+    if (mailSendState == FAILURE) emit mailFailed();
+    else if (mailSendState == SUCCESS) emit mailSent();
+
+    if (killNow) delete this;
 }
 
 void Emailer::closeConnection()
 {
-    if (socket != NULL)
-    {
-        socket->disconnectFromHost();
-        delete socket;
-        socket = NULL;
-    }
-
-    connectionState = authenticationState = NONE;
-
-    cout << "Connection closed" << endl;
-    if (mailSendState == FAILURE) emit mailFailed();
-    else if (mailSendState == SUCCESS) emit mailSent();
+    if (socket != NULL) socket->disconnectFromHost();
 }

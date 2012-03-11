@@ -26,16 +26,19 @@ class Emailer : public QObject
 public:
     static const int waitTimeInMilliseconds;
 
-    Emailer(const EmailDetails &emailDetails);
+    Emailer(const EmailDetails &emailDetails, QObject *parent = NULL);
     ~Emailer();
 
-    void send();
     bool pending() const;
     bool sentSuccessfully() const;
 
     const EmailDetails & emailDetails() const;
 
+    void kill();
+
 public slots:
+    void send();
+
     void connected();
     void connectionFailed(const QByteArray &message);
 
@@ -47,6 +50,7 @@ public slots:
     void senderRejected(int mailId, const QString &address, const QByteArray &message);
 
     void finished();
+    void disconnected();
 
 signals:
     void mailSent();
@@ -56,6 +60,7 @@ private:
     QxtSmtp *socket;
     EmailDetails emailDetails_;
     QxtMailMessage message;
+    bool completed, killNow;
 
     enum
     {

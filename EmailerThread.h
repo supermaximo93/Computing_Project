@@ -15,6 +15,7 @@
 class EmailDetails;
 class Emailer;
 class QMutex;
+class QTimer;
 
 class EmailerThread : public QThread
 {
@@ -23,21 +24,20 @@ class EmailerThread : public QThread
 public:
     static const int mutexLockTimeout, queueCheckTimePeriod;
 
-    static void init();
+    static void init(QObject *parent = NULL);
     static bool finalise();
 
     static void enqueueEmail(const EmailDetails &email);
 
     static const EmailerThread * instance();
 
-    void checkEmailQueue();
-
 public slots:
+    void checkEmailQueue();
     void mailSent();
     void mailFailed();
-    void waitForNextCheck();
 
 signals:
+    void sendEmail();
     void emailQueueNotEmpty();
     void emailQueueEmpty();
 
@@ -47,9 +47,10 @@ private:
     static std::queue<EmailDetails> *emailQueue;
 
     Emailer *emailer;
+    QTimer *timer;
     bool emailsInQueue;
 
-    EmailerThread();
+    EmailerThread(QObject *parent);
     ~EmailerThread();
 
     void run();

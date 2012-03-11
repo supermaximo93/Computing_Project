@@ -4,7 +4,7 @@
  *  Created on: 10 March 2012
  *      Author: Max Foster
  */
-#include <iostream>
+
 using namespace std;
 
 #include <QMutex>
@@ -19,9 +19,9 @@ EmailerThread *EmailerThread::emailerThread = NULL;
 queue<EmailDetails> *EmailerThread::emailQueue = NULL;
 QMutex *EmailerThread::emailQueueMutex = NULL, *EmailerThread::emailsInQueueMutex = NULL;
 
-void EmailerThread::init()
+void EmailerThread::init(QObject *parent)
 {
-    if (emailerThread == NULL) emailerThread = new EmailerThread;
+    if (emailerThread == NULL) emailerThread = new EmailerThread(parent);
     if (emailQueue == NULL) emailQueue = new queue<EmailDetails>;
     if (emailQueueMutex == NULL) emailQueueMutex = new QMutex;
     if (emailsInQueueMutex == NULL) emailsInQueueMutex = new QMutex;
@@ -126,20 +126,21 @@ void EmailerThread::checkEmailQueue()
     }
     emit emailQueueNotEmpty();
 
-    emailer = new Emailer(emailQueue->front());
+    emailer = new Emailer(emailQueue->front(), this);
     emailQueue->pop();
     emailQueueMutex->unlock();
 
-    connect(emailer, SIGNAL(mailSent()), this, SLOT(mailSent()));
-    connect(emailer, SIGNAL(mailFailed()), this, SLOT(mailFailed()));
-    emailer->send();
+    connect(this, SIGNAL(sendEmail()), emailer, SLOT(send()), Qt::QueuedConnection);
+    connect(emailer, SIGNAL(mailSent()), this, SLOT(mailSent()), Qt::QueuedConnection);
+    connect(emailer, SIGNAL(mailFailed()), this, SLOT(mailFailed()), Qt::QueuedConnection);
+    emit sendEmail();
 }
 
 void EmailerThread::mailSent()
 {
     if (emailer == NULL) return;
 
-    delete emailer;
+    emailer->kill();
     emailer = NULL;
 }
 
@@ -149,26 +150,24 @@ void EmailerThread::mailFailed()
 
     while (!emailQueueMutex->tryLock(mutexLockTimeout));
     emailQueue->push(emailer->emailDetails());
-    delete emailer;
+    emailer->kill();
     emailer = NULL;
     emailQueueMutex->unlock();
 }
 
-void EmailerThread::waitForNextCheck()
-{
-    checkEmailQueue();
-    QTimer::singleShot(queueCheckTimePeriod, this, SLOT(waitForNextCheck()));
-}
-
-EmailerThread::EmailerThread() : emailer(NULL), emailsInQueue(false) {}
+EmailerThread::EmailerThread(QObject *parent) : QThread(parent), emailer(NULL), timer(NULL), emailsInQueue(false) {}
 
 EmailerThread::~EmailerThread()
 {
     if (emailer != NULL) delete emailer;
+    if (timer != NULL) delete timer;
 }
 
 void EmailerThread::run()
 {
-    QTimer::singleShot(queueCheckTimePeriod, this, SLOT(waitForNextCheck()));
+    timer = new QTimer;
+    connect(timer, SIGNAL(timeout()), this, SLOT(checkEmailQueue()), Qt::QueuedConnection);
+    timer->start(queueCheckTimePeriod);
     exec();
+    timer->stop();
 }

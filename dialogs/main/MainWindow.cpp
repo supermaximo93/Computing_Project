@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    EmailerThread::init();
+    EmailerThread::init(this);
 }
 
 MainWindow::~MainWindow()
