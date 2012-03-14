@@ -16,6 +16,7 @@ class EmailDetails;
 class Emailer;
 class QMutex;
 class QTimer;
+class ProcessDialog;
 
 class EmailerThread : public QThread
 {
@@ -28,6 +29,7 @@ public:
     static bool finalise();
 
     static int checkEmailQueuePercentDone();
+    static bool checkEmailQueueEmpty();
 
     static void enqueueEmail(const EmailDetails &email);
 
@@ -47,6 +49,7 @@ private:
     static EmailerThread *emailerThread;
     static QMutex *emailQueueMutex, *emailsInQueueMutex; // if itemsInQueueMutex is locked there are still emails in q
     static std::queue<EmailDetails> *emailQueue;
+    static ProcessDialog *emailProcessDialog;
 
     Emailer *emailer;
     QTimer *timer;

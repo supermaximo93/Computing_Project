@@ -86,12 +86,14 @@ void replaceChars(std::string &str, const char searchChar, const char newChar)
 void showInfoDialog(const char *message)
 {
     QMessageBox messageBox(QMessageBox::Information, " ", message);
+    messageBox.setModal(true);
     messageBox.exec();
 }
 
 void showErrorDialog(const char *message)
 {
     QMessageBox messageBox(QMessageBox::Warning, "Error", message);
+    messageBox.setModal(true);
     messageBox.exec();
 }
 
@@ -106,6 +108,7 @@ void showErrorDialog(const vector<string> &errors)
 void showFatalDialog(const char *message)
 {
     QMessageBox messageBox(QMessageBox::Critical, "Fatal Error", message);
+    messageBox.setModal(true);
     messageBox.exec();
 }
 
@@ -113,6 +116,7 @@ bool showYesNoDialog(const char *question)
 {
     QMessageBox messageBox(QMessageBox::Question, " ", question, QMessageBox::Yes | QMessageBox::No);
     messageBox.setDefaultButton(QMessageBox::No);
+    messageBox.setModal(true);
     switch (messageBox.exec())
     {
     case QMessageBox::Yes: return true;
@@ -123,6 +127,7 @@ bool showYesNoDialog(const char *question)
 void showPendingDialog(const char *message, int (*percentCompleteCheckFunction)(void))
 {
     PendingDialog dialog(message, percentCompleteCheckFunction);
+    dialog.setModal(true);
     dialog.exec();
 }
 

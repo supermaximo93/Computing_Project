@@ -14,10 +14,13 @@ using namespace std;
 #include "Emailer.h"
 #include "Utils.h"
 
+#include "dialogs/utils/ProcessDialog.h"
+
 const int EmailerThread::mutexLockTimeout = 1000, EmailerThread::queueCheckTimePeriod = 500;
 EmailerThread *EmailerThread::emailerThread = NULL;
 queue<EmailDetails> *EmailerThread::emailQueue = NULL;
 QMutex *EmailerThread::emailQueueMutex = NULL, *EmailerThread::emailsInQueueMutex = NULL;
+ProcessDialog *EmailerThread::emailProcessDialog = NULL;
 
 void EmailerThread::init(QObject *parent)
 {
@@ -74,6 +77,8 @@ bool EmailerThread::finalise()
     delete emailerThread;
     emailerThread = NULL;
 
+    if (emailProcessDialog != NULL) emailProcessDialog->accept();
+
     if (emailQueue != NULL)
     {
         delete emailQueue;
@@ -101,6 +106,14 @@ int EmailerThread::checkEmailQueuePercentDone()
     const int percentage = ((emailCountBeforeClose - emailQueue->size()) * 100) / emailCountBeforeClose;
     emailQueueMutex->unlock();
     return percentage;
+}
+
+bool EmailerThread::checkEmailQueueEmpty()
+{
+    while (!emailQueueMutex->tryLock(mutexLockTimeout));
+    const bool emailQueueEmpty = emailQueue->empty();
+    emailQueueMutex->unlock();
+    return emailQueueEmpty && (emailerThread->emailer == NULL);
 }
 
 void EmailerThread::enqueueEmail(const EmailDetails &email)
@@ -137,6 +150,12 @@ void EmailerThread::checkEmailQueue()
     {
         while (!emailsInQueueMutex->tryLock(mutexLockTimeout));
         emailsInQueue = true;
+
+        if (emailProcessDialog == NULL)
+        {
+            emailProcessDialog = new ProcessDialog("Sending emails", checkEmailQueueEmpty, &emailProcessDialog);
+            emailProcessDialog->show();
+        }
     }
     emit emailQueueNotEmpty();
 

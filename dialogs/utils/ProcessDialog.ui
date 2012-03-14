@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>PendingDialog</class>
- <widget class="QDialog" name="PendingDialog">
+ <class>ProcessDialog</class>
+ <widget class="QDialog" name="ProcessDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>312</width>
-    <height>138</height>
+    <width>250</width>
+    <height>101</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,10 +16,10 @@
   <widget class="QLabel" name="label_messageE">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>0</y>
-     <width>261</width>
-     <height>61</height>
+     <x>20</x>
+     <y>10</y>
+     <width>211</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="text">
@@ -29,17 +29,20 @@
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QProgressBar" name="progressBar">
+  <widget class="QLabel" name="label_image">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>80</y>
-     <width>241</width>
-     <height>23</height>
+     <x>50</x>
+     <y>50</y>
+     <width>141</width>
+     <height>41</height>
     </rect>
    </property>
-   <property name="value">
-    <number>0</number>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
  </widget>
