@@ -46,7 +46,7 @@ void errorHandler(HPDF_STATUS errorNumber, HPDF_STATUS detailNumber, void * user
 #define X(value) \
     (value)         //for consistency
 
-bool drawHeader(HPDF_Doc &pdf, HPDF_Page &page, const Customer &customer, ErrorData &errorData)
+bool drawHeader(HPDF_Doc &pdf, HPDF_Page &page, const char *title, const Customer &customer, ErrorData &errorData)
 {
     float pageWidth = HPDF_Page_GetWidth(page), pageHeight = HPDF_Page_GetHeight(page);
 
@@ -55,7 +55,7 @@ bool drawHeader(HPDF_Doc &pdf, HPDF_Page &page, const Customer &customer, ErrorD
     CHECK_FOR_ERROR();
     HPDF_Page_SetFontAndSize(page, font, 24);
     CHECK_FOR_ERROR();
-    HPDF_Page_TextOut(page, X(50), Y(50), "INVOICE");
+    HPDF_Page_TextOut(page, X(50), Y(50), title);
     CHECK_FOR_ERROR();
 
     // draw company details
@@ -171,7 +171,7 @@ bool PdfGenerator::generateInvoice(const char *fileName, const Job &job)
     CHECK_FOR_ERROR();
 
     Customer customer = CustomerController::getCustomer(job.getCustomerId());
-    if (!drawHeader(pdf, page, customer, errorData)) return false;
+    if (!drawHeader(pdf, page, "INVOICE", customer, errorData)) return false;
 
     HPDF_Page_EndText(page);
     CHECK_FOR_ERROR();
@@ -185,7 +185,7 @@ bool PdfGenerator::generateInvoice(const char *fileName, const Job &job)
 
 bool PdfGenerator::generateReciept(const char *fileName, const Job &job)
 {
-    return false;
+    return generateInvoice(fileName, job);
 }
 
 bool PdfGenerator::generateReport(const char *fileName)

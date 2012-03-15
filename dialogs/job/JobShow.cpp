@@ -230,7 +230,26 @@ void JobShow::on_pushButton_markAsPaid_released()
 
 void JobShow::on_pushButton_sendReciept_released()
 {
-    // TODO: make reciept sending system
+    Customer customer = CustomerController::getCustomer(job.getCustomerId());
+    string recieptFileName, recieptEmailSubject, recieptEmailBody;
+    recieptFileName.reserve(256);
+    recieptFileName += "reciept_";
+    recieptFileName += customer.getForename();
+    recieptFileName += customer.getSurname();
+    recieptFileName += "_";
+    recieptFileName += toString(job.getId());
+    recieptFileName += "_";
+    recieptFileName += (string)Date(job.getDate());
+    recieptFileName += ".pdf";
+    replaceChars(recieptFileName, ' ', '_');
+    replaceChars(recieptFileName, '/', '-');
+    replaceChars(recieptFileName, ':', '-');
+
+    PdfGenerator::generateReciept(recieptFileName.c_str(), job);
+
+    EmailDetails emailDetails(customer.getEmailAddress(), recieptEmailSubject.c_str(), recieptEmailBody.c_str(),
+                              recieptFileName.c_str());
+    EmailerThread::enqueueEmail(emailDetails);
 }
 
 bool JobShow::setNewJobCompletionState(const int state)
