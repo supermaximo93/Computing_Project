@@ -10,6 +10,8 @@ using namespace std;
 #include "JobShow.h"
 #include "ui_JobShow.h"
 
+#include <QTimer>
+
 #include "PaymentMethodDialog.h"
 
 #include "Job.h"
@@ -30,14 +32,19 @@ using namespace std;
 #include "Globals.h"
 
 JobShow::JobShow(Job &job, Database<Part>::recordList &parts, Database<Task>::recordList &tasks, QWidget *parent)
-    : QDialog(parent), ui(new Ui::JobShow), job(job), parts(parts), tasks(tasks)
+    : QDialog(parent), ui(new Ui::JobShow), job(job), parts(parts), tasks(tasks), timer(new QTimer(this))
 {
     ui->setupUi(this);
     updateView();
+
+    connect(timer, SIGNAL(timeout()), this, SLOT(checkInternetConnection()));
+    timer->start(EmailerThread::queueCheckTimePeriod);
 }
 
 JobShow::~JobShow()
 {
+    timer->stop();
+    delete timer;
     delete ui;
 }
 
@@ -120,6 +127,13 @@ double JobShow::getTotalChargeInclVat()
         totalCharge += parts[i].getPrice() * parts[i].getQuantity() * (1.0 + (parts[i].getVatRate() / 100.0));
 
     return totalCharge;
+}
+
+void JobShow::checkInternetConnection()
+{
+    const bool connectionAvailable = EmailerThread::connectionAvailable();
+    ui->pushButton_sendInvoice->setEnabled(connectionAvailable);
+    ui->pushButton_sendReciept->setEnabled(connectionAvailable);
 }
 
 void JobShow::on_pushButton_ok_released()

@@ -9,6 +9,7 @@ using namespace std;
 
 #include <QMutex>
 #include <QTimer>
+#include <QTcpSocket>
 
 #include "EmailerThread.h"
 #include "Emailer.h"
@@ -21,6 +22,7 @@ EmailerThread *EmailerThread::emailerThread = NULL;
 queue<EmailDetails> *EmailerThread::emailQueue = NULL;
 QMutex *EmailerThread::emailQueueMutex = NULL, *EmailerThread::emailsInQueueMutex = NULL;
 ProcessDialog *EmailerThread::emailProcessDialog = NULL;
+bool EmailerThread::connectionAvailable_ = false;
 
 void EmailerThread::init(QObject *parent)
 {
@@ -123,13 +125,23 @@ void EmailerThread::enqueueEmail(const EmailDetails &email)
     emailQueueMutex->unlock();
 }
 
-const EmailerThread * EmailerThread::instance()
+bool EmailerThread::connectionAvailable()
 {
-    return emailerThread;
+    return connectionAvailable_;
 }
 
 void EmailerThread::checkEmailQueue()
 {
+    QTcpSocket *connectionChecker = new QTcpSocket;
+    connectionChecker->connectToHost("www.google.co.uk", 80);
+    connectionAvailable_ = connectionChecker->waitForConnected(5000);
+    connectionChecker->disconnectFromHost();
+    delete connectionChecker;
+    if (!connectionAvailable_)
+    {
+        return;
+    }
+
     if (emailer != NULL) return;
     if (!emailQueueMutex->tryLock()) return;
 

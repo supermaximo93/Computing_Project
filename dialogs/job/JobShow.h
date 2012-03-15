@@ -21,6 +21,7 @@ class Job;
 class Part;
 class Task;
 class QModelIndex;
+class QTimer;
 
 class JobShow : public QDialog
 {
@@ -34,6 +35,8 @@ public:
     void updateView();
 
 private slots:
+    void checkInternetConnection();
+
     void on_pushButton_ok_released();
 
     void on_pushButton_edit_released();
@@ -59,6 +62,7 @@ private:
     Job &job;
     Database<Part>::recordList &parts;
     Database<Task>::recordList &tasks;
+    QTimer *timer;
 
     void updateCharges();
     double getTotalChargeExclVat();

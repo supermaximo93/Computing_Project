@@ -33,7 +33,7 @@ public:
 
     static void enqueueEmail(const EmailDetails &email);
 
-    static const EmailerThread * instance();
+    static bool connectionAvailable();
 
 public slots:
     void checkEmailQueue();
@@ -50,6 +50,7 @@ private:
     static QMutex *emailQueueMutex, *emailsInQueueMutex; // if itemsInQueueMutex is locked there are still emails in q
     static std::queue<EmailDetails> *emailQueue;
     static ProcessDialog *emailProcessDialog;
+    static bool connectionAvailable_;
 
     Emailer *emailer;
     QTimer *timer;
