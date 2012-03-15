@@ -12,7 +12,6 @@
 #include "Job.h"
 #include "Part.h"
 #include "Task.h"
-#include "AssignOncePointer.h"
 
 static Database<Customer> *customerDatabasePtr = NULL;
 static Database<Expense> *expenseDatabasePtr = NULL;

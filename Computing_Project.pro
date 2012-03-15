@@ -32,7 +32,7 @@ INCLUDEPATH += . \
                dialogs/task
 
 # Input
-HEADERS += AssignOncePointer.h \
+HEADERS += \
            Customer.h \
            CustomerController.h \
            Database.h \
