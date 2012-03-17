@@ -14,6 +14,8 @@
 #include <time.h>
 using namespace std;
 
+#include "testing/TestingHelpers.hpp"
+
 #include "Task.h"
 
 class TaskUnitTest : public ::testing::Test
@@ -48,6 +50,14 @@ TEST_F(TaskUnitTest, DoesTaskRejectDateBeforeNow)
             << "Exception was not thrown when the date was set to a time before now";
 }
 
+// Does Task Accept Valid Date
+TEST_F(TaskUnitTest, DoesTaskAcceptValidDate)
+{
+    Task task(exampleTask);
+    EXPECT_NO_THROW(task.setDate(time(NULL) + 100000))
+            << "Exception was thrown when the date was set to a valid date";
+}
+
 // Does Task Reject Empty Description
 TEST_F(TaskUnitTest, DoesTaskRejectEmptyDescription)
 {
@@ -61,12 +71,29 @@ TEST_F(TaskUnitTest, DoesTaskRejectDescriptionThatIsTooLong)
 {
     Task task(exampleTask);
 
-    string testDescription;
-    testDescription.reserve(Task::maxDescriptionLength + 1);
-    while (testDescription.size() < Task::maxDescriptionLength + 1) testDescription += 'a';
-
+    string testDescription = createTestStringOfSize(Task::maxDescriptionLength + 1);
     EXPECT_THROW(task.setDescription(testDescription.c_str()), std::runtime_error)
             << "Exception was not thrown when the description was set to a string longer than the maximum length";
+}
+
+// Does Task Accept Valid Description
+TEST_F(TaskUnitTest, DoesTaskAcceptValidDescription)
+{
+    Task task(exampleTask);
+
+    string testDescription = createTestStringOfSize(Task::maxDescriptionLength / 2);
+    EXPECT_NO_THROW(task.setDescription(testDescription.c_str()))
+            << "Exception was thrown when the description was set to a valid description string";
+}
+
+// Does Task Accept Extreme Valid Description (Upper Bound)
+TEST_F(TaskUnitTest, DoesTaskAcceptExtremeValidDescriptionUpperBound)
+{
+    Task task(exampleTask);
+
+    string testDescription = createTestStringOfSize(Task::maxDescriptionLength);
+    EXPECT_NO_THROW(task.setDescription(testDescription.c_str()))
+            << "Exception was thrown when the description was set to a valid description string";
 }
 
 // Does Task FieldCompare Member Function Work Correctly

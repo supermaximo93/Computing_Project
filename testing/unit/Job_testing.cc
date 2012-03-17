@@ -14,6 +14,8 @@
 #include <time.h>
 using namespace std;
 
+#include "testing/TestingHelpers.hpp"
+
 #include "Job.h"
 
 class JobUnitTest : public ::testing::Test
@@ -48,6 +50,14 @@ TEST_F(JobUnitTest, DoesJobRejectDateBeforeNow)
             << "Exception was not thrown when the date was set to a time before now";
 }
 
+// Does Job Accept Valid Date
+TEST_F(JobUnitTest, DoesJobAcceptValidDate)
+{
+    Job job(exampleJob);
+    EXPECT_NO_THROW(job.setDate(time(NULL) + 100000))
+            << "Exception was thrown when the date was set to a valid date";
+}
+
 // Does Job Reject Empty Description
 TEST_F(JobUnitTest, DoesJobRejectEmptyDescription)
 {
@@ -61,20 +71,53 @@ TEST_F(JobUnitTest, DoesJobRejectDescriptionThatIsTooLong)
 {
     Job job(exampleJob);
 
-    std::string testDescription;
-    testDescription.reserve(Job::maxDescriptionLength + 1);
-    while (testDescription.size() < Job::maxDescriptionLength + 1) testDescription += 'a';
-
+    std::string testDescription = createTestStringOfSize(Job::maxDescriptionLength + 1);
     EXPECT_THROW(job.setDescription(testDescription.c_str()), std::runtime_error)
             << "Exception was not thrown when the description was set to a string that is longer than the maximum";
 }
 
+// Does Job Accept Valid Description
+TEST_F(JobUnitTest, DoesJobAcceptValidDescription)
+{
+    Job job(exampleJob);
+
+    string testDescription = createTestStringOfSize(Job::maxDescriptionLength / 2);
+    EXPECT_NO_THROW(job.setDescription(testDescription.c_str()))
+            << "Exception was thrown when the description was set to a valid description string";
+}
+
+// Does Job Accept Extreme Valid Description (Upper Bound)
+TEST_F(JobUnitTest, DoesJobAcceptExtremeValidDescriptionUpperBound)
+{
+    Job job(exampleJob);
+
+    string testDescription = createTestStringOfSize(Job::maxDescriptionLength);
+    EXPECT_NO_THROW(job.setDescription(testDescription.c_str()))
+            << "Exception was thrown when the description was set to a valid description string";
+}
+
 // Does Job Reject Labour Charge Less Than Zero
-TEST_F(JobUnitTest, DoesExpenseRejectLabourChargeLessThanZero)
+TEST_F(JobUnitTest, DoesJobRejectLabourChargeLessThanZero)
 {
     Job job(exampleJob);
     EXPECT_THROW(job.setLabourCharge(-10.0), std::runtime_error)
             << "Exception was not thrown when the labour charge was set to a value less than 0";
+}
+
+// Does Job Accept Valid Labour Charge
+TEST_F(JobUnitTest, DoesJobAcceptValidLabourCharge)
+{
+    Job job(exampleJob);
+    EXPECT_NO_THROW(job.setLabourCharge(50.0))
+            << "Exception was thrown when the labour charge was set to a valid value";
+}
+
+// Does Job Accept Extreme Valid Labour Charge (Lower Bound)
+TEST_F(JobUnitTest, DoesJobAcceptExtremeValidLabourChargeLowerBound)
+{
+    Job job(exampleJob);
+    EXPECT_NO_THROW(job.setLabourCharge(0.0))
+            << "Exception was thrown when the labour charge was set to a valid value";
 }
 
 // Does Job FieldCompare Member Function Work Correctly

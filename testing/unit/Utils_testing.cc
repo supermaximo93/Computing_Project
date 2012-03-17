@@ -15,6 +15,7 @@ using namespace std;
 
 #include "Utils.h"
 
+// Test for lowerCase function
 TEST(UtilsUnitTest, LowerCase)
 {
     // Create a test string with capital letters, and see if the lowerCase function converts the string correctly
@@ -22,6 +23,7 @@ TEST(UtilsUnitTest, LowerCase)
     EXPECT_EQ("this is a test", lowerCase(testString));
 }
 
+// Test for replaceChars function
 TEST(UtilsUnitTest, ReplaceChars)
 {
     // Create a test string, and see if specific characters in the string are replaced by replaceChars correctly
@@ -30,6 +32,7 @@ TEST(UtilsUnitTest, ReplaceChars)
     EXPECT_EQ("This_is_a_test", testString);
 }
 
+// Test for createFullName function
 TEST(UtilsUnitTest, CreateFullName)
 {
     // Create a test forename and surname, and see if the full name is created by createFullName properly
@@ -37,6 +40,7 @@ TEST(UtilsUnitTest, CreateFullName)
     EXPECT_EQ(0, strcmp(fullName, createFullName(forename, surname)));
 }
 
+// Test for addError function
 TEST(UtilsUnitTest, AddError)
 {
     // Create an error list, and add some errors to it
@@ -65,6 +69,7 @@ TEST(UtilsUnitTest, AddError)
     EXPECT_EQ(errors[2], string("Error 3\n"));
 }
 
+// Test for toString function
 TEST(UtilsUnitTest, ToString)
 {
     // Pass various values to the toString function, checking if the output string is correct in each case

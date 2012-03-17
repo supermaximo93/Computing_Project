@@ -13,6 +13,8 @@
 #include <fstream>
 using namespace std;
 
+#include "testing/TestingHelpers.hpp"
+
 #include "Customer.h"
 
 class CustomerUnitTest : public ::testing::Test
@@ -52,10 +54,8 @@ TEST_F(CustomerUnitTest, DoesCustomerRejectForenameThatIsTooShort)
     // minimum length. An exception should be thrown
     Customer customer(exampleCustomer);
 
-    std::string testForename;
-    testForename.reserve(Customer::minNameLength - 1);
-    while (testForename.size() < Customer::minNameLength - 1) testForename += 'a';
-    EXPECT_THROW(customer.setForename(""), std::runtime_error)
+    string testForename = createTestStringOfSize(Customer::minNameLength - 1);
+    EXPECT_THROW(customer.setForename(testForename.c_str()), std::runtime_error)
             << "Exception was not thrown when the forename was set to a string that is shorter than the minimum";
 }
 
@@ -66,12 +66,39 @@ TEST_F(CustomerUnitTest, DoesCustomerRejectForenameThatIsTooLong)
     // than the maximum length allowed. An exception should be thrown
     Customer customer(exampleCustomer);
 
-    std::string testForename;
-    testForename.reserve(Customer::maxNameLength + 1);
-    while (testForename.size() < Customer::maxNameLength + 1) testForename += 'a';
-
+    string testForename = createTestStringOfSize(Customer::maxNameLength + 1);
     EXPECT_THROW(customer.setForename(testForename.c_str()), std::runtime_error)
             << "Exception was not thrown when the forename was set to a string that is longer than the maximum";
+}
+
+// Does Customer Accept Valid Forename
+TEST_F(CustomerUnitTest, DoesCustomerAcceptValidForename)
+{
+    Customer customer(exampleCustomer);
+
+    string testForename = createTestStringOfSize(Customer::maxNameLength / 2);
+    EXPECT_NO_THROW(customer.setForename(testForename.c_str()))
+            << "Exception was thrown when the forename was set to a valid forename string";
+}
+
+//Does Customer Accept Extreme Valid Forename (Lower Bound)
+TEST_F(CustomerUnitTest, DoesCustomerAcceptExtremeValidForenameLowerBound)
+{
+    Customer customer(exampleCustomer);
+
+    string testForename = createTestStringOfSize(Customer::minNameLength);
+    EXPECT_NO_THROW(customer.setForename(testForename.c_str()))
+            << "Exception was thrown when the forename was set to a valid forename string";
+}
+
+//Does Customer Accept Extreme Valid Forename (Upper Bound)
+TEST_F(CustomerUnitTest, DoesCustomerAcceptExtremeValidForenameUpperBound)
+{
+    Customer customer(exampleCustomer);
+
+    string testForename = createTestStringOfSize(Customer::maxNameLength);
+    EXPECT_NO_THROW(customer.setForename(testForename.c_str()))
+            << "Exception was thrown when the forename was set to a valid forename string";
 }
 
 
@@ -88,10 +115,7 @@ TEST_F(CustomerUnitTest, DoesCustomerRejectSurnameThatIsTooShort)
 {
     Customer customer(exampleCustomer);
 
-    std::string testSurname;
-    testSurname.reserve(Customer::minNameLength - 1);
-    while (testSurname.size() < Customer::minNameLength - 1) testSurname += 'a';
-
+    string testSurname = createTestStringOfSize(Customer::minNameLength - 1);
     EXPECT_THROW(customer.setSurname(testSurname.c_str()), std::runtime_error)
             << "Exception was not thrown when the surname was set to a string that is shorter than the minimum";
 }
@@ -101,12 +125,39 @@ TEST_F(CustomerUnitTest, DoesCustomerRejectSurnameThatIsTooLong)
 {
     Customer customer(exampleCustomer);
 
-    std::string testSurname;
-    testSurname.reserve(Customer::maxNameLength + 1);
-    while (testSurname.size() < Customer::maxNameLength + 1) testSurname += 'a';
-
+    string testSurname = createTestStringOfSize(Customer::maxNameLength + 1);
     EXPECT_THROW(customer.setSurname(testSurname.c_str()), std::runtime_error)
             << "Exception was not thrown when the surname was set to a string that is longer than the maximum";
+}
+
+// Does Customer Accept Valid Surname
+TEST_F(CustomerUnitTest, DoesCustomerAcceptValidSurname)
+{
+    Customer customer(exampleCustomer);
+
+    string testSurname = createTestStringOfSize(Customer::maxNameLength / 2);
+    EXPECT_NO_THROW(customer.setSurname(testSurname.c_str()))
+            << "Exception was thrown when the surname was set to a valid surname string";
+}
+
+//Does Customer Accept Extreme Valid Surname (Lower Bound)
+TEST_F(CustomerUnitTest, DoesCustomerAcceptExtremeValidSurnameLowerBound)
+{
+    Customer customer(exampleCustomer);
+
+    string testSurname = createTestStringOfSize(Customer::minNameLength);
+    EXPECT_NO_THROW(customer.setSurname(testSurname.c_str()))
+            << "Exception was thrown when the surname was set to a valid surname string";
+}
+
+//Does Customer Accept Extreme Valid Surname (Upper Bound)
+TEST_F(CustomerUnitTest, DoesCustomerAcceptExtremeValidSurnameUpperBound)
+{
+    Customer customer(exampleCustomer);
+
+    string testSurname = createTestStringOfSize(Customer::maxNameLength);
+    EXPECT_NO_THROW(customer.setSurname(testSurname.c_str()))
+            << "Exception was thrown when the surname was set to a valid surname string";
 }
 
 
@@ -123,10 +174,7 @@ TEST_F(CustomerUnitTest, DoesCustomerRejectAddressLine1ThatIsTooShort)
 {
     Customer customer(exampleCustomer);
 
-    std::string testAddressLine1;
-    testAddressLine1.reserve(Customer::minAddressLineLength - 1);
-    while (testAddressLine1.size() < Customer::minAddressLineLength - 1) testAddressLine1 += 'a';
-
+    string testAddressLine1 = createTestStringOfSize(Customer::minAddressLineLength - 1);
     EXPECT_THROW(customer.setAddressLine1(testAddressLine1.c_str()), std::runtime_error)
             << "Exception was not thrown when the address line 1 was set to a string that is shorter than the maximum";
 }
@@ -136,14 +184,79 @@ TEST_F(CustomerUnitTest, DoesCustomerRejectAddressLine1ThatIsTooLong)
 {
     Customer customer(exampleCustomer);
 
-    std::string testAddressLine1;
-    testAddressLine1.reserve(Customer::maxAddressLineLength + 1);
-    while (testAddressLine1.size() < Customer::maxAddressLineLength + 1) testAddressLine1 += 'a';
-
+    string testAddressLine1 = createTestStringOfSize(Customer::maxAddressLineLength + 1);
     EXPECT_THROW(customer.setAddressLine1(testAddressLine1.c_str()), std::runtime_error)
             << "Exception was not thrown when the address line 1 was set to a string that is longer than the maximum";
 }
 
+// Does Customer Accept Valid Address Line 1
+TEST_F(CustomerUnitTest, DoesCustomerAcceptValidAddressLine1)
+{
+    Customer customer(exampleCustomer);
+
+    string testAddressLine1 = createTestStringOfSize(Customer::maxAddressLineLength / 2);
+    EXPECT_NO_THROW(customer.setAddressLine1(testAddressLine1.c_str()))
+            << "Exception was thrown when the address line 1 was set to a valid address line string";
+}
+
+//Does Customer Accept Extreme Valid Address Line 1 (Lower Bound)
+TEST_F(CustomerUnitTest, DoesCustomerAcceptExtremeValidAddressLine1LowerBound)
+{
+    Customer customer(exampleCustomer);
+
+    string testAddressLine1 = createTestStringOfSize(Customer::minAddressLineLength);
+    EXPECT_NO_THROW(customer.setAddressLine1(testAddressLine1.c_str()))
+            << "Exception was thrown when the address line 1 was set to a valid address line string";
+}
+
+//Does Customer Accept Extreme Valid Address Line 1 (Upper Bound)
+TEST_F(CustomerUnitTest, DoesCustomerAcceptExtremeValidAddressLine1UpperBound)
+{
+    Customer customer(exampleCustomer);
+
+    string testAddressLine1 = createTestStringOfSize(Customer::maxAddressLineLength);
+    EXPECT_NO_THROW(customer.setAddressLine1(testAddressLine1.c_str()))
+            << "Exception was thrown when the address line 1 was set to a valid address line string";
+}
+
+// Does Customer Accept Empty Address Line 2
+// The address line 2 field is optional
+TEST_F(CustomerUnitTest, DoesCustomerAcceptEmptyAddressLine2)
+{
+    Customer customer(exampleCustomer);
+    EXPECT_NO_THROW(customer.setAddressLine2(""))
+            << "Exception was thrown when the address line 2 was set to an empty string";
+}
+
+// Does Customer Reject Address Line 2 That Is Too Long
+TEST_F(CustomerUnitTest, DoesCustomerRejectAddressLine2ThatIsTooLong)
+{
+    Customer customer(exampleCustomer);
+
+    string testAddressLine2 = createTestStringOfSize(Customer::maxAddressLineLength + 1);
+    EXPECT_THROW(customer.setAddressLine2(testAddressLine2.c_str()), std::runtime_error)
+            << "Exception was not thrown when the address line 2 was set to a string that is longer than the maximum";
+}
+
+// Does Customer Accept Valid Address Line 2
+TEST_F(CustomerUnitTest, DoesCustomerAcceptValidAddressLine2)
+{
+    Customer customer(exampleCustomer);
+
+    string testAddressLine2 = createTestStringOfSize(Customer::maxAddressLineLength / 2);
+    EXPECT_NO_THROW(customer.setAddressLine2(testAddressLine2.c_str()))
+            << "Exception was thrown when the address line 2 was set to a valid address line string";
+}
+
+//Does Customer Accept Extreme Valid Address Line 2 (Upper Bound)
+TEST_F(CustomerUnitTest, DoesCustomerAcceptExtremeValidAddressLine2UpperBound)
+{
+    Customer customer(exampleCustomer);
+
+    string testAddressLine2 = createTestStringOfSize(Customer::maxAddressLineLength);
+    EXPECT_NO_THROW(customer.setAddressLine2(testAddressLine2.c_str()))
+            << "Exception was thrown when the address line 2 was set to a valid address line string";
+}
 
 // Does Customer Reject Empty Town
 TEST_F(CustomerUnitTest, DoesCustomerRejectEmptyTown)
@@ -158,10 +271,7 @@ TEST_F(CustomerUnitTest, DoesCustomerRejectTownThatIsTooShort)
 {
     Customer customer(exampleCustomer);
 
-    std::string testTown;
-    testTown.reserve(Customer::minTownLength - 1);
-    while (testTown.size() < Customer::minTownLength - 1) testTown += 'a';
-
+    string testTown = createTestStringOfSize(Customer::minTownLength - 1);
     EXPECT_THROW(customer.setTown(testTown.c_str()), std::runtime_error)
             << "Exception was not thrown when the town was set to a string that is shorter than the minimum";
 }
@@ -171,12 +281,39 @@ TEST_F(CustomerUnitTest, DoesCustomerRejectTownThatIsTooLong)
 {
     Customer customer(exampleCustomer);
 
-    std::string testTown;
-    testTown.reserve(Customer::maxTownLength + 1);
-    while (testTown.size() < Customer::maxTownLength + 1) testTown += 'a';
-
+    string testTown = createTestStringOfSize(Customer::maxTownLength + 1);
     EXPECT_THROW(customer.setTown(testTown.c_str()), std::runtime_error)
             << "Exception was not thrown when the town was set to a string that is longer than the maximum";
+}
+
+// Does Customer Accept Valid Town
+TEST_F(CustomerUnitTest, DoesCustomerAcceptValidTown)
+{
+    Customer customer(exampleCustomer);
+
+    string testTown = createTestStringOfSize(Customer::maxTownLength / 2);
+    EXPECT_NO_THROW(customer.setTown(testTown.c_str()))
+            << "Exception was thrown when the town was set to a valid town string";
+}
+
+//Does Customer Accept Extreme Valid Town (Lower Bound)
+TEST_F(CustomerUnitTest, DoesCustomerAcceptExtremeValidTownLowerBound)
+{
+    Customer customer(exampleCustomer);
+
+    string testTown = createTestStringOfSize(Customer::minTownLength);
+    EXPECT_NO_THROW(customer.setTown(testTown.c_str()))
+            << "Exception was thrown when the town was set to a valid town string";
+}
+
+//Does Customer Accept Extreme Valid Town (Upper Bound)
+TEST_F(CustomerUnitTest, DoesCustomerAcceptExtremeValidTownUpperBound)
+{
+    Customer customer(exampleCustomer);
+
+    string testTown = createTestStringOfSize(Customer::maxTownLength);
+    EXPECT_NO_THROW(customer.setTown(testTown.c_str()))
+            << "Exception was thrown when the town was set to a valid town string";
 }
 
 
@@ -186,32 +323,6 @@ TEST_F(CustomerUnitTest, DoesCustomerRejectEmptyPostcode)
     Customer customer(exampleCustomer);
     EXPECT_THROW(customer.setPostcode(""), std::runtime_error)
             << "Exception was not thrown when the postcode was set to an empty string";
-}
-
-// Does Customer Reject Postcode That Is Too Short
-TEST_F(CustomerUnitTest, DoesCustomerRejectPostcodeThatIsTooShort)
-{
-    Customer customer(exampleCustomer);
-
-    std::string testPostcode;
-    testPostcode.reserve(Customer::minPostcodeLength - 1);
-    while (testPostcode.size() < Customer::minPostcodeLength - 1) testPostcode += 'a';
-
-    EXPECT_THROW(customer.setPostcode(testPostcode.c_str()), std::runtime_error)
-            << "Exception was not thrown when the postcode was set to a string that is shorter than the minimum";
-}
-
-// Does Customer Reject Postcode That Is Too Long
-TEST_F(CustomerUnitTest, DoesCustomerRejectPostcodeThatIsTooLong)
-{
-    Customer customer(exampleCustomer);
-
-    std::string testPostcode;
-    testPostcode.reserve(Customer::maxPostcodeLength + 1);
-    while (testPostcode.size() < Customer::maxPostcodeLength + 1) testPostcode += 'a';
-
-    EXPECT_THROW(customer.setPostcode(testPostcode.c_str()), std::runtime_error)
-            << "Exception was not thrown when the postcode was set to a string that is longer than the maximum";
 }
 
 // Does Customer Accept Postcode That Has Valid Format
@@ -272,7 +383,7 @@ TEST_F(CustomerUnitTest, DoesCustomerRejectHomePhoneNumberThatIsTooShort)
     // shorter than the minimum length allowed. An exception should be thrown
     Customer customer(exampleCustomer);
 
-    std::string testHomePhoneNumber;
+    string testHomePhoneNumber;
     testHomePhoneNumber.reserve(Customer::minPhoneNumberLength - 1);
     while (testHomePhoneNumber.size() < Customer::minPhoneNumberLength - 1) testHomePhoneNumber += '0';
 
@@ -288,7 +399,7 @@ TEST_F(CustomerUnitTest, DoesCustomerRejectHomePhoneNumberThatIsTooLong)
     // longer than the maximum length allowed. An exception should be thrown
     Customer customer(exampleCustomer);
 
-    std::string testHomePhoneNumber;
+    string testHomePhoneNumber;
     testHomePhoneNumber.reserve(Customer::maxPhoneNumberLength + 1);
     while (testHomePhoneNumber.size() < Customer::maxPhoneNumberLength + 1) testHomePhoneNumber += '0';
 
@@ -357,7 +468,7 @@ TEST_F(CustomerUnitTest, DoesCustomerRejectMobilePhoneNumberThatIsTooShort)
     // shorter than the minimum length allowed. An exception should be thrown
     Customer customer(exampleCustomer);
 
-    std::string testMobilePhoneNumber;
+    string testMobilePhoneNumber;
     testMobilePhoneNumber.reserve(Customer::minPhoneNumberLength - 1);
     while (testMobilePhoneNumber.size() < Customer::minPhoneNumberLength - 1) testMobilePhoneNumber += '0';
 
@@ -373,7 +484,7 @@ TEST_F(CustomerUnitTest, DoesCustomerRejectMobilePhoneNumberThatIsTooLong)
     // longer than the maximum length allowed. An exception should be thrown
     Customer customer(exampleCustomer);
 
-    std::string testMobilePhoneNumber;
+    string testMobilePhoneNumber;
     testMobilePhoneNumber.reserve(Customer::maxPhoneNumberLength + 1);
     while (testMobilePhoneNumber.size() < Customer::maxPhoneNumberLength + 1) testMobilePhoneNumber += '0';
 
@@ -442,7 +553,7 @@ TEST_F(CustomerUnitTest, DoesCustomerRejectEmailAddressThatIsTooShort)
     // shorter than the minimum length allowed. An exception should be thrown
     Customer customer(exampleCustomer);
 
-    std::string testEmailAddress = "a@b.";
+    string testEmailAddress = "a@b.";
     testEmailAddress.reserve(Customer::minEmailAddressLength - 1);
     while (testEmailAddress.size() < Customer::minEmailAddressLength - 1) testEmailAddress += 'a';
 
@@ -457,7 +568,7 @@ TEST_F(CustomerUnitTest, DoesCustomerRejectEmailAddressThatIsTooLong)
     // longer than the maximum length allowed. An exception should be thrown
     Customer customer(exampleCustomer);
 
-    std::string testEmailAddress;
+    string testEmailAddress;
     testEmailAddress.reserve(Customer::maxEmailAddressLength + 1);
     while (testEmailAddress.size() < Customer::maxEmailAddressLength / 2) testEmailAddress += 'a';
     testEmailAddress += '@';
