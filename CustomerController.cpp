@@ -8,6 +8,7 @@
 using namespace std;
 
 #include "CustomerController.h"
+#include "JobController.h"
 #include "Databases.h"
 #include "Customer.h"
 #include "Job.h"
@@ -132,17 +133,13 @@ bool CustomerController::Update(const Customer &customer, QWidget *)
     return success;
 }
 
-bool CustomerController::Destroy(const int customerId, QWidget *)
+bool CustomerController::Destroy(const int customerId, QWidget * caller)
 {
     // Delete all associated jobs first, recording any errors
     vector<string> errors;
     Database<Job>::recordListPtr jobs = Databases::jobs().findRecords("customerId", customerId);
     errors.reserve(jobs->size());
-    for (unsigned i = 0; i < jobs->size(); ++i)
-    {
-        try { Databases::jobs().deleteRecord(jobs->at(i).getId()); }
-        catch (const std::exception &e) { addError(errors, e.what()); }
-    }
+    for (unsigned i = 0; i < jobs->size(); ++i) JobController::Destroy(jobs->at(i), caller);
 
     // If there were errors, report them
     if (errors.size() > 0) showErrorDialog(errors);

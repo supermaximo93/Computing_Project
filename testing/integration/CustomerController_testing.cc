@@ -13,17 +13,23 @@
 #include "CustomerController.h"
 #include "Customer.h"
 #include "Job.h"
+#include "Part.h"
+#include "Task.h"
 
 class CustomerControllerIntegrationTest : public ::testing::Test
 {
 protected:
     const Customer exampleCustomer;
     const Job exampleJob;
+    const Part examplePart;
+    const Task exampleTask;
 
     CustomerControllerIntegrationTest()
         : exampleCustomer("John", "Doe", "123 Example Lane", "Example Village", "Exampleville", "AB12 3CD",
               "01234567890", "07012345678", "john.doe@example.com"),
-          exampleJob(0, time(NULL) + 100000, "Replace boiler", 50.0, Job::DONE_UNPAID, Job::NA) {}
+          exampleJob(0, time(NULL) + 100000, "Replace boiler", 50.0, Job::DONE_UNPAID, Job::NA),
+          examplePart(0, "Tap", "12345", 20.0, 20.0),
+          exampleTask(0, time(NULL) + 100000, "Example task") {}
 
     virtual void SetUp()
     {
@@ -108,26 +114,73 @@ TEST_F(CustomerControllerIntegrationTest, DoesUpdateWork)
 // Does Destroy Work
 TEST_F(CustomerControllerIntegrationTest, DoesDestroyWork)
 {
-    unsigned recordCountBefore;
-    try { recordCountBefore = Databases::customers().recordCount(); }
+    unsigned customerRecordCountBefore;
+    try { customerRecordCountBefore = Databases::customers().recordCount(); }
     catch (const std::exception &e) { FAIL() << e.what(); }
 
     Customer customer;
     try { customer = Databases::customers().recordAt(0); }
     catch (const std::exception &e) { FAIL() << e.what(); }
 
+    // Add some associated jobs, with associated tasks and parts to database
+    const unsigned numberOfAssociationsToAdd = 3;
+    unsigned jobRecordCountBefore, partRecordCountBefore, taskRecordCountBefore;
+    try {
+        Job job(exampleJob);
+        Part part(examplePart);
+        Task task(exampleTask);
+
+        unsigned partCount = 0;
+        for (unsigned i = 0; i < numberOfAssociationsToAdd; ++i)
+        {
+            job.setDate(job.getDate() + 86400);
+            job.setCustomerId(customer.getId());
+            Databases::jobs().addRecord(job);
+
+            for (unsigned j = 0; j < numberOfAssociationsToAdd; ++j)
+            {
+                part.setName(("part" + toString(partCount)).c_str());
+                part.setJobId(job.getId());
+                Databases::parts().addRecord(part);
+                ++partCount;
+
+                task.setDate(task.getDate() + 86400);
+                task.setJobId(job.getId());
+                Databases::tasks().addRecord(task);
+            }
+        }
+
+        jobRecordCountBefore = Databases::jobs().recordCount();
+        partRecordCountBefore = Databases::parts().recordCount();
+        taskRecordCountBefore = Databases::tasks().recordCount();
+    }
+    catch (const std::exception &e) { FAIL() << e.what(); }
+
+    // Delete the customer, making sure that the database record counts update correctly
     EXPECT_NO_THROW(CustomerController::Destroy(customer, NULL))
             << "The Customer Controller did not catch an exception";
 
     EXPECT_TRUE(customer.null())
             << "The customer was not removed from the database properly";
 
-    unsigned recordCountAfter;
-    try { recordCountAfter = Databases::customers().recordCount(); }
+    unsigned customerRecordCountAfter, jobRecordCountAfter, partRecordCountAfter, taskRecordCountAfter;
+    try {
+        customerRecordCountAfter = Databases::customers().recordCount();
+        jobRecordCountAfter = Databases::jobs().recordCount();
+        partRecordCountAfter = Databases::parts().recordCount();
+        taskRecordCountAfter = Databases::tasks().recordCount();
+    }
     catch (const std::exception &e) { FAIL() << e.what(); }
 
-    EXPECT_EQ(recordCountBefore - 1, recordCountAfter)
+    EXPECT_EQ(customerRecordCountBefore - 1, customerRecordCountAfter)
             << "The customer was not removed from the database properly";
+
+    EXPECT_EQ(jobRecordCountBefore - numberOfAssociationsToAdd, jobRecordCountAfter)
+            << "The associated jobs were not removed from the database properly";
+    EXPECT_EQ(partRecordCountBefore - (numberOfAssociationsToAdd * numberOfAssociationsToAdd), partRecordCountAfter)
+            << "The associated parts were not removed from the database properly";
+    EXPECT_EQ(taskRecordCountBefore - (numberOfAssociationsToAdd * numberOfAssociationsToAdd), taskRecordCountAfter)
+            << "The associated tasks were not removed from the database properly";
 }
 
 // Does getCustomerJobs Work

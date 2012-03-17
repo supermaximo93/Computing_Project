@@ -8,6 +8,8 @@
 using namespace std;
 
 #include "JobController.h"
+#include "PartController.h"
+#include "TaskController.h"
 #include "Databases.h"
 #include "Database.h"
 #include "Job.h"
@@ -166,23 +168,15 @@ bool JobController::Update(const Job &job, QWidget *)
     return success;
 }
 
-bool JobController::Destroy(const int jobId, QWidget *)
+bool JobController::Destroy(const int jobId, QWidget * caller)
 {
     // Delete all associated parts and tasks first, recording any errors
     vector<string> errors;
     Database<Part>::recordListPtr parts = Databases::parts().findRecords("jobId", jobId);
     Database<Task>::recordListPtr tasks = Databases::tasks().findRecords("jobId", jobId);
     errors.reserve(parts->size() + tasks->size());
-    for (unsigned i = 0; i < parts->size(); ++i)
-    {
-        try { Databases::parts().deleteRecord(parts->at(i).getId()); }
-        catch (const std::exception &e) { addError(errors, e.what()); }
-    }
-    for (unsigned i = 0; i < tasks->size(); ++i)
-    {
-        try { Databases::tasks().deleteRecord(tasks->at(i).getId()); }
-        catch (const std::exception &e) { addError(errors, e.what()); }
-    }
+    for (unsigned i = 0; i < parts->size(); ++i) PartController::Destroy(parts->at(i), caller);
+    for (unsigned i = 0; i < tasks->size(); ++i) TaskController::Destroy(tasks->at(i), caller);
 
     // If there were errors, report them
     if (errors.size() > 0) showErrorDialog(errors);

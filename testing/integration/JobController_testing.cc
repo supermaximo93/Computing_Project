@@ -108,24 +108,57 @@ TEST_F(JobControllerIntegrationTest, DoesUpdateWork)
 // Does Destroy Work
 TEST_F(JobControllerIntegrationTest, DoesDestroyWork)
 {
-    unsigned recordCountBefore;
-    try { recordCountBefore = Databases::jobs().recordCount(); }
+    unsigned jobRecordCountBefore;
+    try { jobRecordCountBefore = Databases::jobs().recordCount(); }
     catch (const std::exception &e) { FAIL() << e.what(); }
 
     Job job;
     try { job = Databases::jobs().recordAt(0); } catch (const std::exception &e) { FAIL() << e.what(); }
 
+    // Add some associated tasks and parts to database
+    const unsigned numberOfAssociationsToAdd = 3;
+    unsigned partRecordCountBefore, taskRecordCountBefore;
+    try {
+        Part part(examplePart);
+        Task task(exampleTask);
+        for (unsigned i = 0; i < numberOfAssociationsToAdd; ++i)
+        {
+            part.setName(("part" + toString(i)).c_str());
+            part.setJobId(job.getId());
+            Databases::parts().addRecord(part);
+
+            task.setDate(task.getDate() + 86400);
+            task.setJobId(job.getId());
+            Databases::tasks().addRecord(task);
+        }
+
+        partRecordCountBefore = Databases::parts().recordCount();
+        taskRecordCountBefore = Databases::tasks().recordCount();
+    }
+    catch (const std::exception &e) { FAIL() << e.what(); }
+
+    // Delete the job, making sure that the database record counts update correctly
     EXPECT_NO_THROW(JobController::Destroy(job, NULL))
             << "The Job Controller did not catch an exception";
 
     EXPECT_TRUE(job.null())
             << "The job was not removed from the database properly";
 
-    unsigned recordCountAfter;
-    try { recordCountAfter = Databases::jobs().recordCount(); } catch (const std::exception &e) { FAIL() << e.what(); }
+    unsigned jobRecordCountAfter, partRecordCountAfter, taskRecordCountAfter;
+    try {
+        jobRecordCountAfter = Databases::jobs().recordCount();
+        partRecordCountAfter = Databases::parts().recordCount();
+        taskRecordCountAfter = Databases::tasks().recordCount();
+    }
+    catch (const std::exception &e) { FAIL() << e.what(); }
 
-    EXPECT_EQ(recordCountBefore - 1, recordCountAfter)
+    EXPECT_EQ(jobRecordCountBefore - 1, jobRecordCountAfter)
             << "The job was not removed from the database properly";
+
+    EXPECT_EQ(partRecordCountBefore - numberOfAssociationsToAdd, partRecordCountAfter)
+            << "The associated parts were not removed from the database properly";
+    EXPECT_EQ(taskRecordCountBefore - numberOfAssociationsToAdd, taskRecordCountAfter)
+            << "The associated tasks were not removed from the database properly";
 }
 
 // Does getJobParts Work
