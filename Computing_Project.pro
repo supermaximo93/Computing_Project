@@ -130,6 +130,7 @@ SOURCES += Customer.cpp \
            testing/unit/Task_testing.cc \
     EmailerThread.cpp \
     dialogs/utils/PendingDialog.cpp \
-    dialogs/utils/ProcessDialog.cpp
+    dialogs/utils/ProcessDialog.cpp \
+    testing/unit/Utils_testing.cc
 
 OTHER_FILES +=

@@ -12,15 +12,6 @@
 #include <sstream>
 #include <vector>
 
-struct Message
-{
-    std::string message;
-    int data;
-
-    Message() {}
-    Message(const std::string &newMessage, const int newData) : message(newMessage), data(newData) {}
-};
-
 class QString;
 class QDateTime;
 
@@ -51,7 +42,7 @@ void showPendingDialog(const char *message, int (*percentCompleteCheckFunction)(
 
 const char * createFullName(const char *forename, const char *surname);
 
-void addError(std::vector<std::string> &errors, const char *error);
+void addError(std::vector<std::string> &errors, std::string error);
 
 template <typename type>
 std::string toString(const type &variable)

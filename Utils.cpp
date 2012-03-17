@@ -142,8 +142,9 @@ const char * createFullName(const char *forename, const char *surname)
     return name;
 }
 
-void addError(vector<string> &errors, const char *error)
+void addError(vector<string> &errors, string error)
 {
+    error += '\n';
     // Add the error to the list if it isn't already found in the list
     bool alreadyAdded = false;
     for (unsigned i = 0; i < errors.size(); ++i)
@@ -154,5 +155,5 @@ void addError(vector<string> &errors, const char *error)
             break;
         }
     }
-    if (!alreadyAdded) errors.push_back(error + '\n');
+    if (!alreadyAdded) errors.push_back(error);
 }
