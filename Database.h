@@ -79,10 +79,22 @@ public:
     void keepRecords(recordList &records, const std::string &fieldName, const type &searchTerm);
 
     /*
+     * Removes all the records from the recordList given that when passed to the given function, make the function
+     * return false
+     */
+    void keepRecords(recordList &records, bool (*keepRecordFunction)(const recordType &, void *), void *data);
+
+    /*
      * Removes all the records from the recordList given whose field specified matches the search term given
      */
     template<typename type>
     void removeRecords(recordList &records, const std::string &fieldName, const type &searchTerm);
+
+    /*
+     * Removes all the records from the recordList given that when passed to the given function, make the function
+     * return true
+     */
+    void removeRecords(recordList &records, bool (*keepRecordFunction)(const recordType &, void *), void *data);
 
     /*
      * Returns all of the records in the database. Throws an exception if the database file could not be opened
@@ -99,6 +111,12 @@ public:
      * Returns the number of records in the database. Throws an exception if the database file could not be opened
      */
     unsigned recordCount();
+
+    /*
+     * Sorts the given records according to the given comparison function
+     */
+    void sortRecords(recordList &records, unsigned startIndex, unsigned endIndex,
+                     int (*comparisonFunction)(const recordType &, const recordType &));
 
     const std::string & filename();
 
@@ -348,6 +366,20 @@ void Database<recordType>::keepRecords(std::vector<recordType> &records, const s
     }
 }
 
+template<typename recordType>
+void Database<recordType>::keepRecords(recordList &records, bool (*keepRecordFunction)(const recordType &, void *),
+                                       void *data)
+{
+    for (unsigned i = 0; i < records.size(); ++i)
+    {
+        if (!keepRecordFunction(records[i], data))
+        {
+            records.erase(records.begin() + i);
+            --i;
+        }
+    }
+}
+
 template <class recordType> template<typename type>
 void Database<recordType>::removeRecords(std::vector<recordType> &records, const std::string &fieldName,
                                          const type &searchTerm)
@@ -357,6 +389,20 @@ void Database<recordType>::removeRecords(std::vector<recordType> &records, const
     for (unsigned i = 0; i < records.size(); ++i)
     {
         if (records[i].hasMatchingField(lowercaseFieldName, searchTerm))
+        {
+            records.erase(records.begin() + i);
+            --i;
+        }
+    }
+}
+
+template<typename recordType>
+void Database<recordType>::removeRecords(recordList &records, bool (*removeRecordFunction)(const recordType &, void *),
+                                         void *data)
+{
+    for (unsigned i = 0; i < records.size(); ++i)
+    {
+        if (removeRecordFunction(records[i], data))
         {
             records.erase(records.begin() + i);
             --i;
@@ -443,6 +489,13 @@ unsigned Database<recordType>::recordCount()
     else throw(std::runtime_error("Could not open file " + filename_));
 
     return 0;
+}
+
+template<class recordType>
+void Database<recordType>::sortRecords(recordList &records, unsigned startIndex, unsigned endIndex,
+                                       int (*comparisonFunction)(const recordType &, const recordType &))
+{
+
 }
 
 template<class recordType>

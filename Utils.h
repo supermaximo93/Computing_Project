@@ -22,16 +22,19 @@ struct Date
     Date(time_t seconds);
     Date(unsigned minute, unsigned hour, unsigned day, unsigned month, unsigned year);
 
-    operator std::string();
-    operator QString();
-    operator QDateTime();
-    operator time_t();
+    operator std::string() const;
+    operator QString() const;
+    operator QDateTime() const;
+    operator time_t() const;
+
+    QString toQStringWithoutTime() const;
 };
 
 std::ostream & operator <<(std::ostream &stream, const Date &date);
 
 std::string lowerCase(const std::string &str);
 void replaceChars(std::string &str, char searchChar, char newChar);
+const char * limitLength(const char *str, unsigned maxLength);
 
 void showInfoDialog(const char *message);
 void showErrorDialog(const char *message);

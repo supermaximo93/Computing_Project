@@ -32,26 +32,26 @@ Date::Date(const time_t seconds_)
 Date::Date(unsigned minute, unsigned hour, unsigned day, unsigned month, unsigned year)
     : seconds(0), minute(minute), hour(hour), day(day), month(month), year(year) {}
 
-Date::operator std::string()
+Date::operator std::string() const
 {
     stringstream stream;
     stream << *this;
     return stream.str();
 }
 
-Date::operator QString()
+Date::operator QString() const
 {
     stringstream stream;
     stream << *this;
-    return QString(stream.str().c_str());
+    return stream.str().c_str();
 }
 
-Date::operator QDateTime()
+Date::operator QDateTime() const
 {
     return QDateTime(QDate(year, month, day), QTime(hour, minute));
 }
 
-Date::operator time_t()
+Date::operator time_t() const
 {
     time_t t = 0;
     tm *time = localtime(&t);
@@ -64,7 +64,14 @@ Date::operator time_t()
     return mktime(time);
 }
 
-std::ostream & operator <<(std::ostream &stream, const Date &date)
+QString Date::toQStringWithoutTime() const
+{
+    stringstream stream;
+    stream << day << "/" << month << "/" << year;
+    return stream.str().c_str();
+}
+
+ostream & operator <<(ostream &stream, const Date &date)
 {
     stream << date.day << "/" << date.month << "/" << date.year << " - " << date.hour << ":" << date.minute;
     return stream;
@@ -77,10 +84,22 @@ string lowerCase(const string &str)
     return returnStr;
 }
 
-void replaceChars(std::string &str, const char searchChar, const char newChar)
+void replaceChars(string &str, const char searchChar, const char newChar)
 {
     size_t spacePos;
     while ((spacePos = str.find(searchChar)) != str.npos) str[spacePos] = newChar;
+}
+
+const char * limitLength(const char *str, unsigned maxLength)
+{
+    static const short stringSize = 1024, elipsisLength = 3;
+    static char string[stringSize + 1];
+
+    if (maxLength > stringSize) maxLength = stringSize;
+    strncpy(string, str, maxLength - elipsisLength);
+    if (strlen(str) > maxLength - elipsisLength) strcat(string, "...");
+    string[maxLength] = '\0';
+    return string;
 }
 
 void showInfoDialog(const char *message)

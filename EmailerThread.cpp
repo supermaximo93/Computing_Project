@@ -17,7 +17,7 @@ using namespace std;
 
 #include "dialogs/utils/ProcessDialog.h"
 
-const int EmailerThread::mutexLockTimeout = 1000, EmailerThread::queueCheckTimePeriod = 500;
+const int EmailerThread::mutexLockTimeout = 1000, EmailerThread::queueCheckTimePeriod = 5000;
 EmailerThread *EmailerThread::emailerThread = NULL;
 queue<EmailDetails> *EmailerThread::emailQueue = NULL;
 QMutex *EmailerThread::emailQueueMutex = NULL, *EmailerThread::emailsInQueueMutex = NULL;
@@ -134,7 +134,7 @@ void EmailerThread::checkEmailQueue()
 {
     QTcpSocket *connectionChecker = new QTcpSocket;
     connectionChecker->connectToHost("www.google.co.uk", 80);
-    connectionAvailable_ = connectionChecker->waitForConnected(5000);
+    connectionAvailable_ = connectionChecker->waitForConnected(1000);
     connectionChecker->disconnectFromHost();
     delete connectionChecker;
     if (!connectionAvailable_)

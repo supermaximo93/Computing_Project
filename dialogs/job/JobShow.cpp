@@ -68,14 +68,8 @@ void JobShow::updateView()
     }
 
     ui->listWidget_tasksE->clear();
-    const unsigned descriptionPreviewLength = 31;
-    char descriptionPreview[descriptionPreviewLength + 4];
     for (unsigned i = 0; i < tasks.size(); ++i)
-    {
-        strncpy(descriptionPreview, tasks[i].getDescription(), descriptionPreviewLength);
-        if (strlen(tasks[i].getDescription()) > descriptionPreviewLength) strcat(descriptionPreview, "...");
-        ui->listWidget_tasksE->addItem(descriptionPreview);
-    }
+        ui->listWidget_tasksE->addItem(limitLength(tasks[i].getDescription(), 40));
 
     updateCharges();
 
