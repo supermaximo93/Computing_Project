@@ -156,6 +156,14 @@ TEST_F(ExpenseUnitTest, DoesExpenseAcceptValidVAT)
             << "Exception was thrown when the VAT was set to a valid value";
 }
 
+// Does Expense Accept Extreme Valid VAT (Lower Bound)
+TEST_F(ExpenseUnitTest, DoesExpenseAcceptExtremeValidVATLowerBound)
+{
+    Expense expense(exampleExpense);
+    EXPECT_NO_THROW(expense.setVat(0.0))
+            << "Exception was thrown when the VAT was set to a valid value";
+}
+
 // Does Expense Reject Type Less Than Zero
 TEST_F(ExpenseUnitTest, DoesExpenseRejectTypeLessThanZero)
 {
@@ -171,6 +179,14 @@ TEST_F(ExpenseUnitTest, DoesExpenseAcceptValidType)
 {
     Expense expense(exampleExpense);
     EXPECT_NO_THROW(expense.setType(1))
+            << "Exception was thrown when the type was set to a valid value";
+}
+
+// Does Expense Accept Extreme Valid Type (Lower Bound)
+TEST_F(ExpenseUnitTest, DoesExpenseAcceptExtremeValidTypeLowerBound)
+{
+    Expense expense(exampleExpense);
+    EXPECT_NO_THROW(expense.setType(0))
             << "Exception was thrown when the type was set to a valid value";
 }
 

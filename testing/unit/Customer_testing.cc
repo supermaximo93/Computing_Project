@@ -587,8 +587,8 @@ TEST_F(CustomerUnitTest, DoesCustomerAcceptEmailAddressThatHasValidFormat)
     // An array of valid email addresses to test
     const char *emailAddresses[] = {
         "example@example.com", "example@example.uk", "example@example.co.uk", "example@example.net", "a@b.uk",
-        "Loremipsumdolorsitametconsecteturadipiscingelitposuere.radipiscin@" // one large 128 character email
-        "Loremipsumdolorsitametconsecteturadipiscingelp.radipiscina.com",    // (i.e. extreme data)
+        "loremipsumdolorsitametconsecteturadipiscingelitposuere.radipiscin@" // one large 128 character email
+        "loremipsumdolorsitametconsecteturadipiscingelp.radipiscina.com",    // (i.e. extreme data)
         "END"
     };
 

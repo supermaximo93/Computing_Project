@@ -272,6 +272,7 @@ recordType Database<recordType>::findRecord(const std::string &fieldName, const 
         {
             tempRecord.readFromFile(file);
             if (file.eof()) break;
+            if (tempRecord.null()) continue;
             if (tempRecord.hasMatchingField(lowercaseFieldName, searchTerm))
             {
                 file.close();
@@ -304,6 +305,7 @@ Database<recordType>::findRecords(const std::string &fieldName, const type &sear
         {
             tempRecord.readFromFile(file);
             if (file.eof()) break;
+            if (tempRecord.null()) continue;
             if (tempRecord.hasMatchingField(lowercaseFieldName, searchTerm)) returnList->push_back(tempRecord);
         }
         file.close();
