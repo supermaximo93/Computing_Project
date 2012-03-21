@@ -13,6 +13,7 @@
 #include "Job.h"
 #include "Customer.h"
 #include "Task.h"
+#include "Part.h"
 #include "Expense.h"
 
 #include "JobController.h"
@@ -179,10 +180,17 @@ void MainWindow::calculateIncome()
     double income = 0.0, vat = 0.0;
     for (unsigned i = 0; i < thisYearsJobs->size(); ++i)
     {
-        Job & job = thisYearsJobs->at(i);
+        Job &job = thisYearsJobs->at(i);
         if (job.getCompletionState() == Job::DONE_PAID)
         {
-            //TODO: add parts
+            Database<Part>::recordListPtr parts = JobController::getJobParts(job.getId());
+            for (unsigned j = 0; j < parts->size(); ++j)
+            {
+                Part &part = parts->at(j);
+                income += part.getPrice();
+                vat += part.getPrice() * (part.getVatRate() / 100.0);
+            }
+
             income += job.getLabourCharge();
             vat += job.getVat();
         }
