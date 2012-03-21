@@ -176,3 +176,22 @@ void addError(vector<string> &errors, string error)
     }
     if (!alreadyAdded) errors.push_back(error);
 }
+
+bool validateLengthOf(const char *value, const int min, const int max, const std::string &valueName,
+                      std::string &errorMessage)
+{
+    const size_t length = strlen(value);
+    const bool isValid = (length >= min) && (length <= max);
+    if (!isValid)
+        errorMessage = valueName + " must be between " + toString(min) + " and " + toString(max) + " characters";
+
+    return isValid;
+}
+
+bool validateLengthOf(const char *value, const int max, const std::string &valueName, std::string &errorMessage)
+{
+    const size_t length = strlen(value);
+    const bool isValid = (length <= max);
+    if (!isValid) errorMessage = valueName + " cannot be longer than " + toString(max) + " characters";
+    return isValid;
+}

@@ -47,6 +47,9 @@ const char * createFullName(const char *forename, const char *surname);
 
 void addError(std::vector<std::string> &errors, std::string error);
 
+bool validateLengthOf(const char *value, int min, int max, const std::string &valueName, std::string &errorMessage);
+bool validateLengthOf(const char *value, int max, const std::string &valueName, std::string &errorMessage);
+
 template <typename type>
 std::string toString(const type &variable)
 {

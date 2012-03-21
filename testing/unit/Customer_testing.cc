@@ -352,7 +352,7 @@ TEST_F(CustomerUnitTest, DoesCustomerRejectPostcodeThatHasInvalidFormat)
 
     // An array of invalid postcodes to test
     const char *postcodes[] = {
-        "SA659RL", "B439 4DJ", "976 232", "T17 4LL", "CV8 3", "S13 72G", "CO13 075", "2546783", "WS3 ", "WV7321",
+        "SA659RL", "B439 4DJ", "976 232", "CV8 3", "S13 72G", "CO13 075", "2546783", "WS3 ", "WV7321",
         "IV14 9B3", "CF99-1NA", "0014 6PD", "3A21 8ER", "HP84PD", " 6EL", "IV16/9YX", "!R9 8BH", "B-6 1NS",
         "END"
     };
