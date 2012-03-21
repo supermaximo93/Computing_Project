@@ -41,12 +41,17 @@ public:
 
     int getJobId() const;
     void setJobId(const int newJobId);
+    static bool isValidJobId(const int value, std::string &errorMessage);
 
     time_t getDate() const;
     void setDate(const time_t newDate);
+    static bool isValidDate(const time_t value, std::string &errorMessage);
 
     const char * getDescription() const;
     void setDescription(const char *newDescription);
+    static bool isValidDescription(const char *value, std::string &errorMessage);
+
+    void validate();
 
 private:
     int jobId;

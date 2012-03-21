@@ -6,11 +6,13 @@
  */
 
 #include <fstream>
+#include <stdexcept>
 #include <ctime>
-#include <string.h>
+#include <cstring>
 using namespace std;
 
 #include "Task.h"
+#include "Utils.h"
 
 const std::string Task::databaseFilename = "tasks.dat";
 
@@ -101,7 +103,17 @@ int Task::getJobId() const
 
 void Task::setJobId(const int newJobId)
 {
-    jobId = newJobId;
+    string errorMessage;
+    if (isValidJobId(newJobId, errorMessage)) jobId = newJobId;
+    else throw std::runtime_error(errorMessage);
+}
+
+bool Task::isValidJobId(const int value, std::string &errorMessage)
+{
+    if (value >= 0) return true;
+
+    errorMessage = "Job ID must be at least 0";
+    return false;
 }
 
 time_t Task::getDate() const
@@ -111,7 +123,14 @@ time_t Task::getDate() const
 
 void Task::setDate(const time_t newDate)
 {
-    date = newDate;
+    string errorMessage;
+    if (isValidDate(newDate, errorMessage)) date = newDate;
+    else throw std::runtime_error(errorMessage);
+}
+
+bool Task::isValidDate(const time_t, std::string &)
+{
+    return true;
 }
 
 const char * Task::getDescription() const
@@ -121,5 +140,26 @@ const char * Task::getDescription() const
 
 void Task::setDescription(const char *newDescription)
 {
-    strcpy(description, newDescription);
+    string errorMessage;
+    if (isValidDescription(newDescription, errorMessage)) strcpy(description, newDescription);
+    else throw std::runtime_error(errorMessage);
+}
+
+bool Task::isValidDescription(const char *value, std::string &errorMessage)
+{
+    if ((value == NULL) || (value[0] == '\0'))
+    {
+        errorMessage = "Description must be present";
+        return false;
+    }
+
+    return validateLengthOf(value, maxDescriptionLength, "Description", errorMessage);
+}
+
+void Task::validate()
+{
+    string errorMessage;
+    if (!isValidJobId(jobId, errorMessage)) throw std::runtime_error(errorMessage);
+    if (!isValidDate(date, errorMessage)) throw std::runtime_error(errorMessage);
+    if (!isValidDescription(description, errorMessage)) throw std::runtime_error(errorMessage);
 }
