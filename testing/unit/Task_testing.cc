@@ -42,12 +42,23 @@ TEST_F(TaskUnitTest, DoesTaskRejectJobIdLessThanZero)
             << "Exception was not thrown when the job ID was set to a value less than 0";
 }
 
-// Does Task Reject Date Before Now
-TEST_F(TaskUnitTest, DoesTaskRejectDateBeforeNow)
+// Does Part Accept Valid Job ID
+TEST_F(TaskUnitTest, DoesTaskAcceptValidJobId)
 {
     Task task(exampleTask);
-    EXPECT_THROW(task.setDate(time(NULL) - 100000), std::runtime_error)
-            << "Exception was not thrown when the date was set to a time before now";
+    for (int i = 1; i <= 10; ++i)
+    {
+        EXPECT_NO_THROW(task.setJobId(0))
+                << "Exception was thrown when the job ID was set to a valid value";
+    }
+}
+
+// Does Task Accept Extreme Valid Job ID (Lower Bound)
+TEST_F(TaskUnitTest, DoesTaskAcceptExtremeValidJobIdLowerBound)
+{
+    Task task(exampleTask);
+    EXPECT_NO_THROW(task.setJobId(0))
+            << "Exception was thrown when the job ID was set to a valid value";
 }
 
 // Does Task Accept Valid Date

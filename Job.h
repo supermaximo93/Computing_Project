@@ -59,23 +59,31 @@ public:
 
     int getCustomerId() const;
     void setCustomerId(const int newCustomerId);
+    static bool isValidCustomerId(const int value, std::string &errorMessage);
 
     time_t getDate() const;
     void setDate(const time_t newDate);
+    static bool isValidDate(const time_t value, std::string &errorMessage);
 
     const char * getDescription() const;
     void setDescription(const char *newDescription);
+    static bool isValidDescription(const char *value, std::string &errorMessage);
 
     double getLabourCharge() const;
     void setLabourCharge(const double newLabourCharge); // Recalculates VAT
+    static bool isValidLabourCharge(const double value, std::string &errorMessage);
 
     double getVat() const; // No setter because VAT is automatically calculated
 
     int getCompletionState() const;
     void setCompletionState(const int newCompletionState);
+    static bool isValidCompletionState(const int value, std::string &errorMessage);
 
     int getPaymentMethod() const;
     void setPaymentMethod(const int newPaymentMethod);
+    static bool isValidPaymentMethod(const int value, std::string &errorMessage);
+
+    void validate();
 
 private:
     int customerId, completionState, paymentMethod;

@@ -42,6 +42,25 @@ TEST_F(PartUnitTest, DoesPartRejectJobIdLessThanZero)
             << "Exception was not thrown when the job ID was set to a value less than 0";
 }
 
+// Does Part Accept Valid Job ID
+TEST_F(PartUnitTest, DoesPartAcceptValidJobId)
+{
+    Part part(examplePart);
+    for (int i = 1; i <= 10; ++i)
+    {
+        EXPECT_NO_THROW(part.setJobId(0))
+                << "Exception was thrown when the job ID was set to a valid value";
+    }
+}
+
+// Does Part Accept Extreme Valid Job ID (Lower Bound)
+TEST_F(PartUnitTest, DoesPartAcceptExtremeValidJobIdLowerBound)
+{
+    Part part(examplePart);
+    EXPECT_NO_THROW(part.setJobId(0))
+            << "Exception was thrown when the job ID was set to a valid value";
+}
+
 // Does Part Reject Empty Name
 TEST_F(PartUnitTest, DoesPartRejectEmptyName)
 {

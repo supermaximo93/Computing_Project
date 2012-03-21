@@ -6,6 +6,7 @@
  */
 
 #include <fstream>
+#include <stdexcept>
 #include <cmath>
 #include <ctime>
 #include <cstring>
@@ -13,6 +14,7 @@ using namespace std;
 
 #include "Globals.h"
 #include "Job.h"
+#include "Utils.h"
 
 int Job::size() {
     return Record::size() + (sizeof(int) * 3) + sizeof(time_t) + maxDescriptionLength + 1 + (sizeof(double) * 2);
@@ -129,7 +131,17 @@ int Job::getCustomerId() const
 
 void Job::setCustomerId(const int newCustomerId)
 {
-    customerId = newCustomerId;
+    string errorMessage;
+    if (isValidCustomerId(newCustomerId, errorMessage)) customerId = newCustomerId;
+    else throw std::runtime_error(errorMessage);
+}
+
+bool Job::isValidCustomerId(const int value, std::string &errorMessage)
+{
+    if (value >= 0) return true;
+
+    errorMessage = "Customer ID must be at least 0";
+    return false;
 }
 
 time_t Job::getDate() const
@@ -139,7 +151,14 @@ time_t Job::getDate() const
 
 void Job::setDate(const time_t newDate)
 {
-    date = newDate;
+    string errorMessage;
+    if (isValidDate(newDate, errorMessage)) date = newDate;
+    else throw std::runtime_error(errorMessage);
+}
+
+bool Job::isValidDate(const time_t, std::string &)
+{
+    return true;
 }
 
 const char * Job::getDescription() const
@@ -149,7 +168,20 @@ const char * Job::getDescription() const
 
 void Job::setDescription(const char *newDescription)
 {
-    strcpy(description, newDescription);
+    string errorMessage;
+    if (isValidDescription(newDescription, errorMessage)) strcpy(description, newDescription);
+    else throw std::runtime_error(errorMessage);
+}
+
+bool Job::isValidDescription(const char *value, std::string &errorMessage)
+{
+    if ((value == NULL) || (value[0] == '\0'))
+    {
+        errorMessage = "Description must be present";
+        return false;
+    }
+
+    return validateLengthOf(value, maxDescriptionLength, "Description", errorMessage);
 }
 
 double Job::getLabourCharge() const
@@ -159,8 +191,18 @@ double Job::getLabourCharge() const
 
 void Job::setLabourCharge(const double newLabourCharge)
 {
-    labourCharge = newLabourCharge;
+    string errorMessage;
+    if (isValidLabourCharge(newLabourCharge, errorMessage)) labourCharge = newLabourCharge;
+    else throw std::runtime_error(errorMessage);
     vat = labourCharge * (Globals::vatRate(date) / 100.0);
+}
+
+bool Job::isValidLabourCharge(const double value, std::string &errorMessage)
+{
+    if (value >= 0.0) return true;
+
+    errorMessage = "Labour charge must be at least 0.00";
+    return false;
 }
 
 double Job::getVat() const
@@ -175,7 +217,17 @@ int Job::getCompletionState() const
 
 void Job::setCompletionState(const int newCompletionState)
 {
-    completionState = newCompletionState;
+    string errorMessage;
+    if (isValidCompletionState(newCompletionState, errorMessage)) completionState = newCompletionState;
+    else throw std::runtime_error(errorMessage);
+}
+
+bool Job::isValidCompletionState(const int value, std::string &errorMessage)
+{
+    if (value >= 0) return true;
+
+    errorMessage = "Completion state must be at least 0";
+    return false;
 }
 
 int Job::getPaymentMethod() const
@@ -185,5 +237,26 @@ int Job::getPaymentMethod() const
 
 void Job::setPaymentMethod(const int newPaymentMethod)
 {
-    paymentMethod = newPaymentMethod;
+    string errorMessage;
+    if (isValidPaymentMethod(newPaymentMethod, errorMessage)) paymentMethod = newPaymentMethod;
+    else throw std::runtime_error(errorMessage);
+}
+
+bool Job::isValidPaymentMethod(const int value, std::string &errorMessage)
+{
+    if (value >= 0) return true;
+
+    errorMessage = "Payment method must be at least 0";
+    return false;
+}
+
+void Job::validate()
+{
+    string errorMessage;
+    if (!isValidCustomerId(customerId, errorMessage)) throw std::runtime_error(errorMessage);
+    if (!isValidDate(date, errorMessage)) throw std::runtime_error(errorMessage);
+    if (!isValidDescription(description, errorMessage)) throw std::runtime_error(errorMessage);
+    if (!isValidLabourCharge(labourCharge, errorMessage)) throw std::runtime_error(errorMessage);
+    if (!isValidCompletionState(completionState, errorMessage)) throw std::runtime_error(errorMessage);
+    if (!isValidPaymentMethod(paymentMethod, errorMessage)) throw std::runtime_error(errorMessage);
 }

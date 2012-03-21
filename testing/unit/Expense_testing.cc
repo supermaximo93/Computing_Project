@@ -156,8 +156,6 @@ TEST_F(ExpenseUnitTest, DoesExpenseAcceptExtremeValidVATLowerBound)
 // Does Expense Reject Type Less Than Zero
 TEST_F(ExpenseUnitTest, DoesExpenseRejectTypeLessThanZero)
 {
-    // Create a expense based on the example data, and then attempt to set the price to a value less than 0.
-    // An exception should be thrown
     Expense expense(exampleExpense);
     EXPECT_THROW(expense.setType(-1), std::runtime_error)
             << "Exception was not thrown when the type was set to a value less than 0";

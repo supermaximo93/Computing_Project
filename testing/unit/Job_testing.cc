@@ -42,12 +42,23 @@ TEST_F(JobUnitTest, DoesJobRejectCustomerIdLessThanZero)
             << "Exception was not thrown when the customer ID was set to a value less than 0";
 }
 
-// Does Job Reject Date Before Now
-TEST_F(JobUnitTest, DoesJobRejectDateBeforeNow)
+// Does Job Accept Valid Customer ID
+TEST_F(JobUnitTest, DoesJobAcceptValidCustomerId)
 {
     Job job(exampleJob);
-    EXPECT_THROW(job.setDate(time(NULL) - 100000), std::runtime_error)
-            << "Exception was not thrown when the date was set to a time before now";
+    for (int i = 1; i <= 10; ++i)
+    {
+        EXPECT_NO_THROW(job.setCustomerId(i))
+                << "Exception was thrown when the customer ID was set to a valid value";
+    }
+}
+
+// Does Job Accept Extreme Valid Customer ID (Lower Bound)
+TEST_F(JobUnitTest, DoesJobAcceptExtremeValidCustomerIdLowerBound)
+{
+    Job job(exampleJob);
+    EXPECT_NO_THROW(job.setCustomerId(0))
+            << "Exception was thrown when the customer ID was set to a valid value";
 }
 
 // Does Job Accept Valid Date
@@ -118,6 +129,54 @@ TEST_F(JobUnitTest, DoesJobAcceptExtremeValidLabourChargeLowerBound)
     Job job(exampleJob);
     EXPECT_NO_THROW(job.setLabourCharge(0.0))
             << "Exception was thrown when the labour charge was set to a valid value";
+}
+
+// Does Job Reject Completion State Less Than Zero
+TEST_F(JobUnitTest, DoesJobRejectCompletionStateLessThanZero)
+{
+    Job job(exampleJob);
+    EXPECT_THROW(job.setCompletionState(-1), std::runtime_error)
+            << "Exception was not thrown when the completion state was set to a value less than 0";
+}
+
+// Does Job Accept Valid Completion State
+TEST_F(JobUnitTest, DoesJobAcceptValidCompletionState)
+{
+    Job job(exampleJob);
+    EXPECT_NO_THROW(job.setCompletionState(1))
+            << "Exception was thrown when the completion state was set to a valid value";
+}
+
+// Does Job Accept Extreme Valid Completion State (Lower Bound)
+TEST_F(JobUnitTest, DoesJobAcceptExtremeValidCompletionStateLowerBound)
+{
+    Job job(exampleJob);
+    EXPECT_NO_THROW(job.setCompletionState(0))
+            << "Exception was thrown when the completion state was set to a valid value";
+}
+
+// Does Job Reject Payment Method Less Than Zero
+TEST_F(JobUnitTest, DoesJobRejectPaymentMethodLessThanZero)
+{
+    Job job(exampleJob);
+    EXPECT_THROW(job.setPaymentMethod(-1), std::runtime_error)
+            << "Exception was not thrown when the payment method was set to a value less than 0";
+}
+
+// Does Job Accept Valid Payment Method
+TEST_F(JobUnitTest, DoesJobAcceptValidPaymentMethod)
+{
+    Job job(exampleJob);
+    EXPECT_NO_THROW(job.setPaymentMethod(1))
+            << "Exception was thrown when the payment method was set to a valid value";
+}
+
+// Does Job Accept Extreme Valid Payment Method (Lower Bound)
+TEST_F(JobUnitTest, DoesJobAcceptExtremeValidPaymentMethodLowerBound)
+{
+    Job job(exampleJob);
+    EXPECT_NO_THROW(job.setPaymentMethod(0))
+            << "Exception was thrown when the payment method was set to a valid value";
 }
 
 // Does Job FieldCompare Member Function Work Correctly
