@@ -42,21 +42,29 @@ public:
 
     int getJobId() const;
     void setJobId(const int newJobId);
+    static bool isValidJobId(const int value, std::string &errorMessage);
 
     const char * getName() const;
     void setName(const char *newName);
+    static bool isValidName(const char *value, std::string &errorMessage);
 
     const char * getNumber() const;
     void setNumber(const char *newNumber);
+    static bool isValidNumber(const char *value, std::string &errorMessage);
 
     double getPrice() const;
     void setPrice(const double newPrice);
+    static bool isValidPrice(const double value, std::string &errorMessage);
 
     double getVatRate() const;
     void setVatRate(const double newVatRate);
+    static bool isValidVatRate(const double value, std::string &errorMessage);
 
     int getQuantity() const;
     void setQuantity(const int newQuantity);
+    static bool isValidQuantity(const int value, std::string &errorMessage);
+
+    void validate();
 
 private:
     int jobId, quantity;

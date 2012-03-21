@@ -6,12 +6,14 @@
  */
 
 #include <fstream>
+#include <stdexcept>
 #include <cmath>
-#include <string.h>
+#include <cstring>
 using namespace std;
 
 #include "Globals.h"
 #include "Part.h"
+#include "Utils.h"
 
 int Part::size()
 {
@@ -124,7 +126,17 @@ int Part::getJobId() const
 
 void Part::setJobId(const int newJobId)
 {
-    jobId = newJobId;
+    string errorMessage;
+    if (isValidJobId(newJobId, errorMessage)) jobId = newJobId;
+    else throw std::runtime_error(errorMessage);
+}
+
+bool Part::isValidJobId(const int value, std::string &errorMessage)
+{
+    if (value >= 0) return true;
+
+    errorMessage = "Job ID must be at least 0";
+    return false;
 }
 
 const char * Part::getName() const
@@ -134,7 +146,14 @@ const char * Part::getName() const
 
 void Part::setName(const char *newName)
 {
-    strcpy(name, newName);
+    string errorMessage;
+    if (isValidName(newName, errorMessage)) strcpy(name, newName);
+    else throw std::runtime_error(errorMessage);
+}
+
+bool Part::isValidName(const char *value, std::string &errorMessage)
+{
+    return validateLengthOf(value, minNameLength, maxNameLength, "Part name", errorMessage);
 }
 
 const char * Part::getNumber() const
@@ -144,7 +163,14 @@ const char * Part::getNumber() const
 
 void Part::setNumber(const char *newNumber)
 {
-    strcpy(number, newNumber);
+    string errorMessage;
+    if (isValidNumber(newNumber, errorMessage)) strcpy(number, newNumber);
+    else throw std::runtime_error(errorMessage);
+}
+
+bool Part::isValidNumber(const char *value, std::string &errorMessage)
+{
+    return validateLengthOf(value, maxNumberLength, "Part number", errorMessage);
 }
 
 double Part::getPrice() const
@@ -154,7 +180,17 @@ double Part::getPrice() const
 
 void Part::setPrice(const double newPrice)
 {
-    price = newPrice;
+    string errorMessage;
+    if (isValidPrice(newPrice, errorMessage)) price = newPrice;
+    else throw std::runtime_error(errorMessage);
+}
+
+bool Part::isValidPrice(const double value, std::string &errorMessage)
+{
+    if (value >= 0.01) return true;
+
+    errorMessage = "Price must be greater than 0.00";
+    return false;
 }
 
 double Part::getVatRate() const
@@ -164,7 +200,17 @@ double Part::getVatRate() const
 
 void Part::setVatRate(const double newVatRate)
 {
-    vatRate = newVatRate;
+    string errorMessage;
+    if (isValidVatRate(newVatRate, errorMessage)) vatRate = newVatRate;
+    else throw std::runtime_error(errorMessage);
+}
+
+bool Part::isValidVatRate(const double value, std::string &errorMessage)
+{
+    if (value >= 0.0) return true;
+
+    errorMessage = "VAT rate must be at least 0.0";
+    return false;
 }
 
 int Part::getQuantity() const
@@ -174,5 +220,26 @@ int Part::getQuantity() const
 
 void Part::setQuantity(const int newQuantity)
 {
-    quantity = newQuantity;
+    string errorMessage;
+    if (isValidQuantity(newQuantity, errorMessage)) quantity = newQuantity;
+    else throw std::runtime_error(errorMessage);
+}
+
+bool Part::isValidQuantity(const int value, std::string &errorMessage)
+{
+    if (value > 0) return true;
+
+    errorMessage = "Quantity must be greater than 0";
+    return false;
+}
+
+void Part::validate()
+{
+    string errorMessage;
+    if (!isValidJobId(jobId, errorMessage)) throw std::runtime_error(errorMessage);
+    if (!isValidName(name, errorMessage)) throw std::runtime_error(errorMessage);
+    if (!isValidNumber(number, errorMessage)) throw std::runtime_error(errorMessage);
+    if (!isValidPrice(price, errorMessage)) throw std::runtime_error(errorMessage);
+    if (!isValidVatRate(vatRate, errorMessage)) throw std::runtime_error(errorMessage);
+    if (!isValidQuantity(quantity, errorMessage)) throw std::runtime_error(errorMessage);
 }
