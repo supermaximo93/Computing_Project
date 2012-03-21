@@ -6,12 +6,14 @@
  */
 
 #include <fstream>
+#include <stdexcept>
 #include <cmath>
 #include <ctime>
-#include <string.h>
+#include <cstring>
 using namespace std;
 
 #include "Expense.h"
+#include "Utils.h"
 
 int Expense::size()
 {
@@ -116,7 +118,14 @@ time_t Expense::getDate() const
 
 void Expense::setDate(const time_t newDate)
 {
-    date = newDate;
+    string errorMessage;
+    if (isValidDate(newDate, errorMessage)) date = newDate;
+    else throw std::runtime_error(errorMessage);
+}
+
+bool Expense::isValidDate(const time_t, std::string &)
+{
+    return true;
 }
 
 const char * Expense::getDescription() const
@@ -126,7 +135,20 @@ const char * Expense::getDescription() const
 
 void Expense::setDescription(const char *newDescription)
 {
-    strcpy(description, newDescription);
+    string errorMessage;
+    if (isValidDescription(newDescription, errorMessage)) strcpy(description, newDescription);
+    else throw std::runtime_error(errorMessage);
+}
+
+bool Expense::isValidDescription(const char *value, std::string &errorMessage)
+{
+    if ((value == NULL) || (value[0] == '\0'))
+    {
+        errorMessage = "Description must be present";
+        return false;
+    }
+
+    return validateLengthOf(value, maxDescriptionLength, "Description", errorMessage);
 }
 
 double Expense::getPrice() const
@@ -136,7 +158,17 @@ double Expense::getPrice() const
 
 void Expense::setPrice(const double newPrice)
 {
-    price = newPrice;
+    string errorMessage;
+    if (isValidPrice(newPrice, errorMessage)) price = newPrice;
+    else throw std::runtime_error(errorMessage);
+}
+
+bool Expense::isValidPrice(const double value, std::string &errorMessage)
+{
+    if (value >= 0.01) return true;
+
+    errorMessage = "Price must be greater than 0.00";
+    return false;
 }
 
 double Expense::getVat() const
@@ -146,7 +178,17 @@ double Expense::getVat() const
 
 void Expense::setVat(const double newVat)
 {
-    vat = newVat;
+    string errorMessage;
+    if (isValidVat(newVat, errorMessage)) vat = newVat;
+    else throw std::runtime_error(errorMessage);
+}
+
+bool Expense::isValidVat(const double value, std::string &errorMessage)
+{
+    if (value >= 0.0) return true;
+
+    errorMessage = "VAT cost must be greater than 0.00";
+    return false;
 }
 
 int Expense::getType() const
@@ -156,10 +198,30 @@ int Expense::getType() const
 
 void Expense::setType(const int newType)
 {
-    type = newType;
+    string errorMessage;
+    if (isValidType(newType, errorMessage)) type = newType;
+    else throw std::runtime_error(errorMessage);
+}
+
+bool Expense::isValidType(const double value, std::string &errorMessage)
+{
+    if (value >= 0) return true;
+
+    errorMessage = "Type heading must be at least 0";
+    return false;
 }
 
 int Expense::getTotalPrice() const
 {
     return price + vat;
+}
+
+void Expense::validate()
+{
+    string errorMessage;
+    if (!isValidDate(date, errorMessage)) throw std::runtime_error(errorMessage);
+    if (!isValidDescription(description, errorMessage)) throw std::runtime_error(errorMessage);
+    if (!isValidPrice(price, errorMessage)) throw std::runtime_error(errorMessage);
+    if (!isValidVat(vat, errorMessage)) throw std::runtime_error(errorMessage);
+    if (!isValidType(type, errorMessage)) throw std::runtime_error(errorMessage);
 }

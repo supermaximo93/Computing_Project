@@ -35,17 +35,6 @@ TEST_F(ExpenseUnitTest, IsExpenseIdMinusOne)
     EXPECT_EQ(-1, expense.getId()) << "Expense record that has not been added to the database must have an ID of -1";
 }
 
-// Does Expense Reject Date Before Now
-// Records should automatically validate data passed to a setter method, and throw an exception if the data is invalid
-TEST_F(ExpenseUnitTest, DoesExpenseRejectDateBeforeNow)
-{
-    // Create a expense based on the example data, and then attempt to set the date to a time before now.
-    // An exception should be thrown
-    Expense expense(exampleExpense);
-    EXPECT_THROW(expense.setDate(time(NULL) - 100000), std::runtime_error)
-            << "Exception was not thrown when the date was set to a time before now";
-}
-
 //Does Expense Accept Valid Date
 TEST_F(ExpenseUnitTest, DoesExpenseAcceptValidDate)
 {

@@ -41,18 +41,25 @@ public:
 
     time_t getDate() const;
     void setDate(const time_t newDate);
+    static bool isValidDate(const time_t value, std::string &errorMessage);
 
     const char * getDescription() const;
     void setDescription(const char *newDescription);
+    static bool isValidDescription(const char *value, std::string &errorMessage);
 
     double getPrice() const;
     void setPrice(const double newPrice);
+    static bool isValidPrice(const double value, std::string &errorMessage);
 
     double getVat() const;
     void setVat(const double newVat);
+    static bool isValidVat(const double value, std::string &errorMessage);
 
     int getType() const;
     void setType(const int newType);
+    static bool isValidType(const double value, std::string &errorMessage);
+
+    void validate();
 
     int getTotalPrice() const;
 
