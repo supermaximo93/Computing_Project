@@ -54,6 +54,8 @@ public:
     int getType() const;
     void setType(const int newType);
 
+    int getTotalPrice() const;
+
 private:
     time_t date;
     char *description;

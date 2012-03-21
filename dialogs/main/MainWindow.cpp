@@ -13,6 +13,7 @@
 #include "Job.h"
 #include "Customer.h"
 #include "Task.h"
+#include "Expense.h"
 
 #include "JobController.h"
 #include "TaskController.h"
@@ -33,6 +34,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     getJobsAndTasksForCurrentDate();
     updateListWidgets();
+
+    calculateIncome();
+    calculateExpenses();
+    calculateGrandTotal();
 }
 
 MainWindow::~MainWindow()
@@ -57,16 +62,22 @@ void MainWindow::on_pushButton_addNewJob_released()
     JobController::Index(this);
     getJobsAndTasksForCurrentDate();
     updateListWidgets();
+    calculateIncome();
+    calculateGrandTotal();
 }
 
 void MainWindow::on_pushButton_viewAllExpenses_released()
 {
     ExpenseController::Index(this);
+    calculateExpenses();
+    calculateGrandTotal();
 }
 
 void MainWindow::on_pushButton_released()
 {
     CustomerController::Index(this);
+    calculateIncome();
+    calculateGrandTotal();
 }
 
 void MainWindow::on_calendar_selectionChanged()
@@ -137,6 +148,9 @@ void MainWindow::on_listWidget_jobs_doubleClicked(const QModelIndex &index)
     JobController::Show(job, this);
     if (job.null()) jobs->erase(jobs->begin() + index.row());
     updateListWidgets();
+
+    calculateIncome();
+    calculateGrandTotal();
 }
 
 void MainWindow::on_listWidget_tasks_doubleClicked(const QModelIndex &index)
@@ -152,4 +166,49 @@ void MainWindow::on_listWidget_tasks_doubleClicked(const QModelIndex &index)
         else tasks->at(index.row()) = possiblyUpdatedTask;
         updateListWidgets();
     }
+}
+
+void MainWindow::calculateIncome()
+{
+    Database<Job>::recordListPtr thisYearsJobs = JobController::getAllJobs();
+    Date now(time(NULL));
+    const Date thisYearLowerBound(0, 0, 0, 0, now.year), thisYearUpperBound(time_t(Date(0, 0, 0, 0, now.year + 1)) - 1);
+    DateBounds dateBounds(thisYearLowerBound, thisYearUpperBound);
+    Databases::jobs().keepRecords(*thisYearsJobs, isRecordWithinDateBounds, &dateBounds);
+
+    double income = 0.0, vat = 0.0;
+    for (unsigned i = 0; i < thisYearsJobs->size(); ++i)
+    {
+        Job & job = thisYearsJobs->at(i);
+        if (job.getCompletionState() == Job::DONE_PAID)
+        {
+            //TODO: add parts
+            income += job.getLabourCharge();
+            vat += job.getLabourCharge() * (job.getVat() / 100.0);
+        }
+    }
+
+    ui->doubleSpinBox_income->setValue(income);
+    ui->doubleSpinBox_vat->setValue(vat);
+    ui->doubleSpinBox_totalIncome->setValue(income + vat);
+}
+
+void MainWindow::calculateExpenses()
+{
+    Database<Expense>::recordListPtr expenses = ExpenseController::getAllExpenses();
+    Date now(time(NULL));
+    const Date thisYearLowerBound(0, 0, 0, 0, now.year), thisYearUpperBound(time_t(Date(0, 0, 0, 0, now.year + 1)) - 1);
+    DateBounds dateBounds(thisYearLowerBound, thisYearUpperBound);
+    Databases::expenses().keepRecords(*expenses, isRecordWithinDateBounds, &dateBounds);
+
+    double expenseTotal = 0.0;
+    for (unsigned i = 0; i < expenses->size(); ++i) expenseTotal += expenses->at(i).getTotalPrice();
+
+    ui->doubleSpinBox_expenses->setValue(expenseTotal);
+}
+
+void MainWindow::calculateGrandTotal()
+{
+    ui->doubleSpinBox_grandTotal->setValue(
+                ui->doubleSpinBox_totalIncome->value() - ui->doubleSpinBox_expenses->value());
 }

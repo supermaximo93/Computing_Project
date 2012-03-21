@@ -111,6 +111,8 @@ void ExpenseForm::on_doubleSpinBox_priceExclVat_valueChanged(const double value)
         ui->doubleSpinBox_priceExclVat->setStyleSheet("");
         ui->doubleSpinBox_priceExclVat->setToolTip("");
     }
+
+    updateView();
 }
 
 void ExpenseForm::on_doubleSpinBox_vat_valueChanged(const double value)
@@ -128,6 +130,8 @@ void ExpenseForm::on_doubleSpinBox_vat_valueChanged(const double value)
         ui->doubleSpinBox_vat->setStyleSheet("");
         ui->doubleSpinBox_vat->setToolTip("");
     }
+
+    updateView();
 }
 
 void ExpenseForm::on_comboBox_typeHeading_currentIndexChanged(const int index)

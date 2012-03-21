@@ -52,6 +52,10 @@ private:
 
     void getJobsAndTasksForCurrentDate();
     void updateListWidgets();
+
+    void calculateIncome();
+    void calculateExpenses();
+    void calculateGrandTotal();
 };
 
 #endif // MAINWINDOW_H

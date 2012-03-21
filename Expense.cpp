@@ -158,3 +158,8 @@ void Expense::setType(const int newType)
 {
     type = newType;
 }
+
+int Expense::getTotalPrice() const
+{
+    return price + vat;
+}
