@@ -59,7 +59,7 @@ public:
     void setType(const int newType);
     static bool isValidType(const double value, std::string &errorMessage);
 
-    void validate();
+    void validate() const;
 
     int getTotalPrice() const;
 

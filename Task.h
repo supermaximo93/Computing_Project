@@ -51,7 +51,7 @@ public:
     void setDescription(const char *newDescription);
     static bool isValidDescription(const char *value, std::string &errorMessage);
 
-    void validate();
+    void validate() const;
 
 private:
     int jobId;

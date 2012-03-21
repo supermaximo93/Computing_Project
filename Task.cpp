@@ -156,7 +156,7 @@ bool Task::isValidDescription(const char *value, std::string &errorMessage)
     return validateLengthOf(value, maxDescriptionLength, "Description", errorMessage);
 }
 
-void Task::validate()
+void Task::validate() const
 {
     string errorMessage;
     if (!isValidJobId(jobId, errorMessage)) throw std::runtime_error(errorMessage);

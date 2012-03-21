@@ -202,6 +202,8 @@ Database<recordType>::~Database()
 template<class recordType>
 void Database<recordType>::addRecord(recordType &record)
 {
+    record.validate();
+
     std::fstream file;
     file.open(filename_.c_str(), std::ios::in | std::ios::out | std::ios::binary);
     if (file.is_open())
@@ -218,6 +220,7 @@ template<class recordType>
 bool Database<recordType>::updateRecord(const recordType &record)
 {
     if (record.null()) throw(std::runtime_error("Record ID must be initialised"));
+    record.validate();
 
     recordType tempRecord;
     std::fstream file;

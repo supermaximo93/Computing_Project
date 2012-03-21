@@ -64,7 +64,7 @@ public:
     void setQuantity(const int newQuantity);
     static bool isValidQuantity(const int value, std::string &errorMessage);
 
-    void validate();
+    void validate() const;
 
 private:
     int jobId, quantity;

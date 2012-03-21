@@ -233,7 +233,7 @@ bool Part::isValidQuantity(const int value, std::string &errorMessage)
     return false;
 }
 
-void Part::validate()
+void Part::validate() const
 {
     string errorMessage;
     if (!isValidJobId(jobId, errorMessage)) throw std::runtime_error(errorMessage);

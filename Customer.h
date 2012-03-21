@@ -81,7 +81,7 @@ public:
     void setEmailAddress(const char *newEmailAddress);
     static bool isValidEmailAddress(const char *value, std::string &errorMessage);
 
-    void validate();
+    void validate() const;
 
 private:
     char *forename, *surname, *addressLine1, *addressLine2, *town, *postcode, *homePhoneNumber, *mobilePhoneNumber,

@@ -216,7 +216,7 @@ int Expense::getTotalPrice() const
     return price + vat;
 }
 
-void Expense::validate()
+void Expense::validate() const
 {
     string errorMessage;
     if (!isValidDate(date, errorMessage)) throw std::runtime_error(errorMessage);

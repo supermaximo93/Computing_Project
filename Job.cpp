@@ -250,7 +250,7 @@ bool Job::isValidPaymentMethod(const int value, std::string &errorMessage)
     return false;
 }
 
-void Job::validate()
+void Job::validate() const
 {
     string errorMessage;
     if (!isValidCustomerId(customerId, errorMessage)) throw std::runtime_error(errorMessage);

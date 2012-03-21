@@ -351,7 +351,7 @@ bool Customer::isValidEmailAddress(const char *value, std::string &errorMessage)
     return isValid;
 }
 
-void Customer::validate()
+void Customer::validate() const
 {
     string errorMessage;
     if (!isValidForename(forename, errorMessage)) throw std::runtime_error(errorMessage);

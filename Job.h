@@ -83,7 +83,7 @@ public:
     void setPaymentMethod(const int newPaymentMethod);
     static bool isValidPaymentMethod(const int value, std::string &errorMessage);
 
-    void validate();
+    void validate() const;
 
 private:
     int customerId, completionState, paymentMethod;
