@@ -184,7 +184,7 @@ void MainWindow::calculateIncome()
         {
             //TODO: add parts
             income += job.getLabourCharge();
-            vat += job.getLabourCharge() * (job.getVat() / 100.0);
+            vat += job.getVat();
         }
     }
 

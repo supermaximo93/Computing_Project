@@ -160,7 +160,7 @@ double Job::getLabourCharge() const
 void Job::setLabourCharge(const double newLabourCharge)
 {
     labourCharge = newLabourCharge;
-    vat = labourCharge * Globals::vatRate(date);
+    vat = labourCharge * (Globals::vatRate(date) / 100.0);
 }
 
 double Job::getVat() const
