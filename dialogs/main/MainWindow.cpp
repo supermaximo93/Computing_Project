@@ -9,6 +9,7 @@
 #include "Databases.h"
 
 #include "EmailerThread.h"
+#include "EmailDetails.h"
 
 #include "Job.h"
 #include "Customer.h"
@@ -24,7 +25,7 @@
 const char *MainWindow::windowTitle = "Ian Foster Services";
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow), timer(new QTimer(this))
+    : QMainWindow(parent), ui(new Ui::MainWindow), timer(new QTimer(this)), unpaidJobsReminderClicked(false)
 {
     ui->setupUi(this);
     setWindowTitle(windowTitle);
@@ -39,6 +40,8 @@ MainWindow::MainWindow(QWidget *parent)
     calculateIncome();
     calculateExpenses();
     calculateGrandTotal();
+
+    checkForUnpaidJobs();
 }
 
 MainWindow::~MainWindow()
@@ -58,27 +61,23 @@ void MainWindow::checkInternetConnection()
     setWindowTitle(EmailerThread::connectionAvailable() ? windowTitle : "Internet connection unavailable");
 }
 
-void MainWindow::on_pushButton_addNewJob_released()
+void MainWindow::on_pushButton_allJobs_released()
 {
     JobController::Index(this);
-    getJobsAndTasksForCurrentDate();
-    updateListWidgets();
-    calculateIncome();
-    calculateGrandTotal();
+    updateEverythingOtherThanExpenses();
 }
 
-void MainWindow::on_pushButton_viewAllExpenses_released()
+void MainWindow::on_pushButton_allExpenses_released()
 {
     ExpenseController::Index(this);
     calculateExpenses();
     calculateGrandTotal();
 }
 
-void MainWindow::on_pushButton_released()
+void MainWindow::on_pushButton_allCustomers_released()
 {
     CustomerController::Index(this);
-    calculateIncome();
-    calculateGrandTotal();
+    updateEverythingOtherThanExpenses();
 }
 
 void MainWindow::on_calendar_selectionChanged()
@@ -87,12 +86,6 @@ void MainWindow::on_calendar_selectionChanged()
     updateListWidgets();
 }
 
-template<typename T>
-int compareRecordDates(const T &record1, const T &record2)
-{
-    const time_t date1 = record1.getDate(), date2 = record2.getDate();
-    return date1 < date2 ? -1 : (date1 > date2 ? 1 : 0);
-}
 
 struct DateBounds
 {
@@ -105,6 +98,13 @@ bool isRecordWithinDateBounds(const T &record, void *data)
 {
     DateBounds *dateBounds = static_cast<DateBounds *>(data);
     return (record.getDate() >= dateBounds->lowerBound) && (record.getDate() <= dateBounds->upperBound);
+}
+
+template<typename T>
+int compareRecordDates(const T &record1, const T &record2)
+{
+    const time_t date1 = record1.getDate(), date2 = record2.getDate();
+    return date1 < date2 ? -1 : (date1 > date2 ? 1 : 0);
 }
 
 void MainWindow::getJobsAndTasksForCurrentDate()
@@ -121,6 +121,7 @@ void MainWindow::getJobsAndTasksForCurrentDate()
     Databases::tasks().keepRecords(*tasks, isRecordWithinDateBounds, &dateBounds);
     if (tasks->size() > 1) Databases::tasks().sortRecords(*tasks, 0, tasks->size() - 1, compareRecordDates);
 }
+
 
 void MainWindow::updateListWidgets()
 {
@@ -143,15 +144,22 @@ void MainWindow::updateListWidgets()
         ui->listWidget_tasks->addItem(limitLength(tasks->at(i).getDescription(), 30));
 }
 
+void MainWindow::updateEverythingOtherThanExpenses()
+{
+    getJobsAndTasksForCurrentDate();
+    updateListWidgets();
+    calculateIncome();
+    calculateGrandTotal();
+    checkForUnpaidJobs();
+}
+
 void MainWindow::on_listWidget_jobs_doubleClicked(const QModelIndex &index)
 {
     Job & job = jobs->at(index.row());
     JobController::Show(job, this);
     if (job.null()) jobs->erase(jobs->begin() + index.row());
-    updateListWidgets();
 
-    calculateIncome();
-    calculateGrandTotal();
+    updateEverythingOtherThanExpenses();
 }
 
 void MainWindow::on_listWidget_tasks_doubleClicked(const QModelIndex &index)
@@ -165,7 +173,24 @@ void MainWindow::on_listWidget_tasks_doubleClicked(const QModelIndex &index)
     {
         if (possiblyUpdatedTask.null()) tasks->erase(tasks->begin() + index.row());
         else tasks->at(index.row()) = possiblyUpdatedTask;
-        updateListWidgets();
+    }
+
+    updateEverythingOtherThanExpenses();
+}
+
+void MainWindow::on_label_remindCustomers_linkActivated(const QString &)
+{
+    static const char *emailSubject = "", *emailBody = "";
+
+    unpaidJobsReminderClicked = true;
+    ui->label_remindCustomers->setHidden(true);
+
+    for (unsigned i = 0; i < unpaidJobs->size(); ++i)
+    {
+        Customer customer = CustomerController::getCustomer(unpaidJobs->at(i).getCustomerId());
+
+        EmailDetails email(customer.getEmailAddress(), emailSubject, emailBody);
+        EmailerThread::enqueueEmail(email);
     }
 }
 
@@ -219,4 +244,32 @@ void MainWindow::calculateGrandTotal()
 {
     ui->doubleSpinBox_grandTotal->setValue(
                 ui->doubleSpinBox_totalIncome->value() - ui->doubleSpinBox_expenses->value());
+}
+
+void MainWindow::checkForUnpaidJobs()
+{
+    static const int numberOfDaysBeforeReminder = 7;
+
+    if (unpaidJobsReminderClicked) {
+        ui->label_remindCustomers->setHidden(true);
+        return;
+    }
+
+    // Can't do nested functions in C++, but can have class definitions inside function
+    struct NestedFunctions
+    {
+        static bool isJobDoneButUnpaid(const Job &job, void *)
+        {
+            return (job.getCompletionState() == Job::DONE_UNPAID);
+        }
+    };
+
+    unpaidJobs = JobController::getAllJobs();
+    DateBounds dateBounds(0, time(NULL) - (numberOfDaysBeforeReminder * 24 * 60 * 60));
+
+    Databases::jobs().keepRecords(*unpaidJobs, isRecordWithinDateBounds, &dateBounds);
+    Databases::jobs().keepRecords(*unpaidJobs, NestedFunctions::isJobDoneButUnpaid, NULL);
+
+    ui->label_remindCustomers->setHidden(unpaidJobs->empty());
+
 }

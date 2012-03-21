@@ -68,7 +68,8 @@ HEADERS += \
     EmailerThread.h \
     dialogs/utils/PendingDialog.h \
     dialogs/utils/ProcessDialog.h \
-    testing/TestingHelpers.hpp
+    testing/TestingHelpers.hpp \
+    EmailDetails.h
 FORMS += dialogs/customer/CustomerForm.ui \
          dialogs/customer/CustomerIndex.ui \
          dialogs/customer/CustomerShow.ui \

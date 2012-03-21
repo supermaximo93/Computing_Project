@@ -29,11 +29,11 @@ protected:
 private slots:
     void checkInternetConnection();
 
-    void on_pushButton_addNewJob_released();
+    void on_pushButton_allJobs_released();
 
-    void on_pushButton_viewAllExpenses_released();
+    void on_pushButton_allExpenses_released();
 
-    void on_pushButton_released();
+    void on_pushButton_allCustomers_released();
 
     void on_calendar_selectionChanged();
 
@@ -41,21 +41,28 @@ private slots:
 
     void on_listWidget_tasks_doubleClicked(const QModelIndex &index);
 
+    void on_label_remindCustomers_linkActivated(const QString &link);
+
 private:
     static const char *windowTitle;
 
     Ui::MainWindow *ui;
     QTimer *timer;
 
-    Database<Job>::recordListPtr jobs;
+    Database<Job>::recordListPtr jobs, unpaidJobs;
     Database<Task>::recordListPtr tasks;
+
+    bool unpaidJobsReminderClicked;
 
     void getJobsAndTasksForCurrentDate();
     void updateListWidgets();
+    void updateEverythingOtherThanExpenses();
 
     void calculateIncome();
     void calculateExpenses();
     void calculateGrandTotal();
+
+    void checkForUnpaidJobs();
 };
 
 #endif // MAINWINDOW_H

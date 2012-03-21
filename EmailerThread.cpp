@@ -12,6 +12,7 @@ using namespace std;
 #include <QTcpSocket>
 
 #include "EmailerThread.h"
+#include "EmailDetails.h"
 #include "Emailer.h"
 #include "Utils.h"
 
