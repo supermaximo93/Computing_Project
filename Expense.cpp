@@ -15,12 +15,13 @@ using namespace std;
 #include "Expense.h"
 #include "Utils.h"
 
+const string Expense::databaseFilename = "expenses.dat";
+const int Expense::minDescriptionLength = 0, Expense::maxDescriptionLength = 256;
+
 int Expense::size()
 {
     return Record::size() + sizeof(time_t) + maxDescriptionLength + 1 + (sizeof(double) * 2) + sizeof(int);
 }
-
-const string Expense::databaseFilename = "expenses.dat";
 
 Expense::Expense(const time_t date, const char *newDescription, const double price, const double vat, const int type)
     : date(date == 0 ? time(NULL) : date), price(price), vat(vat), type(type)

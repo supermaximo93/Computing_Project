@@ -17,7 +17,9 @@ class Task : public Record
 {
 public:
     static const std::string databaseFilename;
-    static const int minDescriptionLength = 0, maxDescriptionLength = 256;
+    static const int minDescriptionLength, maxDescriptionLength;
+
+    static int size();
 
     bool pending;
 
@@ -29,8 +31,6 @@ public:
 
     void writeToFile(std::fstream &file) const;
     void readFromFile(std::fstream &file);
-
-    static int size();
 
     bool hasMatchingField(const std::string &fieldName, const int searchTerm) const;
     bool hasMatchingField(const std::string &fieldName, const time_t searchTerm) const;

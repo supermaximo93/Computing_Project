@@ -14,12 +14,12 @@
 
 class Part : public Record {
 public:
-    static int size();
-
     static const std::string databaseFilename;
     static const int
-    minNameLength   = 3, maxNameLength   = 24,
-    minNumberLength = 0, maxNumberLength = 32;
+    minNameLength, maxNameLength,
+    minNumberLength, maxNumberLength;
+
+    static int size();
 
     bool pending; // Used when the part has been created successfully, but hasn't been added to the database yet
 

@@ -15,8 +15,6 @@
 class Customer : public Record
 {
 public:
-    static int size();
-
     static const std::string databaseFilename;
     static const int
     minNameLength,  maxNameLength,
@@ -25,6 +23,8 @@ public:
     minPostcodeLength,  maxPostcodeLength,
     minPhoneNumberLength, maxPhoneNumberLength,
     minEmailAddressLength,  maxEmailAddressLength;
+
+    static int size();
 
     Customer(const char *forename = "", const char *surname = "", const char *addressLine1 = "",
              const char *addressLine2 = "", const char *town = "", const char *postcode = "",

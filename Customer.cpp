@@ -15,6 +15,7 @@ using namespace std;
 #include "Customer.h"
 #include "Utils.h"
 
+const string Customer::databaseFilename = "customers.dat";
 const int
 Customer::minNameLength         = 2,  Customer::maxNameLength         = 16,
 Customer::minAddressLineLength  = 8,  Customer::maxAddressLineLength  = 32,
@@ -29,8 +30,6 @@ int Customer::size()
         ((maxNameLength + maxAddressLineLength + maxPhoneNumberLength) * 2) + maxTownLength + maxPostcodeLength +
             maxEmailAddressLength + 9;
 }
-
-const string Customer::databaseFilename = "customers.dat";
 
 Customer::Customer(const char *newForename, const char *newSurname, const char *newAddressLine1,
                    const char *newAddressLine2, const char *newTown, const char *newPostcode,

@@ -15,6 +15,12 @@ using namespace std;
 #include "Utils.h"
 
 const std::string Task::databaseFilename = "tasks.dat";
+const int Task::minDescriptionLength = 0, Task::maxDescriptionLength = 256;
+
+int Task::size()
+{
+    return Record::size() + sizeof(int) + sizeof(time_t) + maxDescriptionLength + 1;
+}
 
 Task::Task(const int jobId, const time_t date, const char *newDescription)
     : pending(false), jobId(jobId), date(date == 0 ? time(NULL) : date)
@@ -57,11 +63,6 @@ void Task::readFromFile(fstream &file)
     file.read(reinterpret_cast<char *>(&jobId), sizeof(jobId));
     file.read(reinterpret_cast<char *>(&date), sizeof(date));
     file.read(description, maxDescriptionLength + 1);
-}
-
-int Task::size()
-{
-    return Record::size() + sizeof(int) + sizeof(time_t) + maxDescriptionLength + 1;
 }
 
 bool Task::hasMatchingField(const string &fieldName, const int searchTerm) const

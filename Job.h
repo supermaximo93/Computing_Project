@@ -33,10 +33,10 @@ public:
         BANK_TRANSFER
     };
 
-    static int size();
-
     static const std::string databaseFilename;
-    static const int minDescriptionLength = 0, maxDescriptionLength = 256;
+    static const int minDescriptionLength, maxDescriptionLength;
+
+    static int size();
 
     Job(const int customerId = -1, const time_t date = 0, const char *description = "", const double labourCharge = 0.0,
         const int completionState = 0, const int paymentMethod = 0);

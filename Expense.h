@@ -16,10 +16,10 @@
 class Expense : public Record
 {
 public:
-    static int size();
-
     static const std::string databaseFilename;
-    static const int minDescriptionLength = 0, maxDescriptionLength = 256;
+    static const int minDescriptionLength, maxDescriptionLength;
+
+    static int size();
 
     Expense(const time_t date = 0, const char *description = "", const double price = 0.0,
             const double vat = 0.0, const int type = 0);

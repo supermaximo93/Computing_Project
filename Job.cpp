@@ -16,11 +16,12 @@ using namespace std;
 #include "Job.h"
 #include "Utils.h"
 
+const string Job::databaseFilename = "jobs.dat";
+const int Job::minDescriptionLength = 0, Job::maxDescriptionLength = 256;
+
 int Job::size() {
     return Record::size() + (sizeof(int) * 3) + sizeof(time_t) + maxDescriptionLength + 1 + (sizeof(double) * 2);
 }
-
-const string Job::databaseFilename = "jobs.dat";
 
 Job::Job(const int customerId, const time_t date, const char *newDescription, const double labourCharge,
          const int completionState, const int paymentMethod) :

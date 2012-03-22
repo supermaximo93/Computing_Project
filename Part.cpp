@@ -15,12 +15,15 @@ using namespace std;
 #include "Part.h"
 #include "Utils.h"
 
+const string Part::databaseFilename = "parts.dat";
+const int
+Part::minNameLength   = 3, Part::maxNameLength   = 24,
+Part::minNumberLength = 0, Part::maxNumberLength = 32;
+
 int Part::size()
 {
     return Record::size() + (sizeof(int) * 2) + maxNameLength + maxNumberLength + 2 + (sizeof(double) * 2);
 }
-
-const string Part::databaseFilename = "parts.dat";
 
 Part::Part(const int jobId, const char *newName, const char *newNumber, const double price, const double vatRate,
            const int quantity)
