@@ -495,10 +495,48 @@ unsigned Database<recordType>::recordCount()
 }
 
 template<class recordType>
-void Database<recordType>::sortRecords(recordList &records, unsigned startIndex, unsigned endIndex,
+void Database<recordType>::sortRecords(recordList &records, const unsigned startIndex, const unsigned endIndex,
                                        int (*comparisonFunction)(const recordType &, const recordType &))
 {
+    if (endIndex - (startIndex - 1) < 2) return;
 
+    unsigned pivotPointer = startIndex, moveablePointer = endIndex;
+
+    recordType temp;
+    while (pivotPointer != moveablePointer)
+    {
+        if (comparisonFunction(records[pivotPointer], records[moveablePointer]) > -1)
+        {
+            if (pivotPointer < moveablePointer)
+            {
+                temp = records[pivotPointer];
+                records[pivotPointer] = records[moveablePointer];
+                records[moveablePointer] = temp;
+
+                int tempPointer = pivotPointer;
+                pivotPointer = moveablePointer;
+                moveablePointer = tempPointer;
+            }
+            else ++moveablePointer;
+        }
+        else
+        {
+            if (pivotPointer > moveablePointer)
+            {
+                temp = records[pivotPointer];
+                records[pivotPointer] = records[moveablePointer];
+                records[moveablePointer] = temp;
+
+                int tempPointer = pivotPointer;
+                pivotPointer = moveablePointer;
+                moveablePointer = tempPointer;
+            }
+            else --moveablePointer;
+        }
+    }
+
+    if (pivotPointer > 0) sortRecords(records, startIndex, pivotPointer - 1, comparisonFunction);
+    if (pivotPointer < records.size() - 1) sortRecords(records, pivotPointer + 1, endIndex, comparisonFunction);
 }
 
 template<class recordType>

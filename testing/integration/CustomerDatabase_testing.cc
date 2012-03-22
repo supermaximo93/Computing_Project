@@ -357,4 +357,51 @@ TEST_F(CustomerDatabaseIntegrationTest, DoesDatabaseFailUpdatingRecordThatNoLong
     catch (const std::exception &e) { FAIL() << e.what(); }
 }
 
+// Does Database Sort Records Correctly
+TEST_F(CustomerDatabaseIntegrationTest, DoesDatabaseSortRecordsCorrectly)
+{
+    struct NestedFunctions
+    {
+        static int forenameCompare(const Customer &customer1, const Customer &customer2)
+        {
+            const char *forename1 = customer1.getForename(), *forename2 = customer2.getForename();
+            const size_t length1 = strlen(forename1), length2 = strlen(forename2);
+
+            for (unsigned i = 0; (i < length1) && (i < length2); ++i)
+            {
+                if (forename1[i] < forename2[i]) return -1;
+                if (forename1[i] > forename2[i]) return 1;
+            }
+
+            if (length1 < length2) return -1;
+            if (length1 > length2) return 1;
+            return 0;
+        }
+    };
+
+    const unsigned arraySize = 10;
+    const char *sortedForenames[] = {
+        "Alex", "Bert", "Chris", "Dianna", "Ellie", "Fred", "George", "Harry", "Isabelle", "Jack"
+    };
+    const char *unsortedForenames[] = {
+        "Fred", "Bert", "Jack", "Chris", "Dianna", "Alex", "George", "Harry", "Ellie", "Isabelle"
+    };
+
+    Database<Customer>::recordList sortedCustomers(arraySize), unsortedCustomers(arraySize);
+    for (unsigned i = 0; i < arraySize; ++i)
+    {
+        sortedCustomers[i] = exampleCustomer;
+        sortedCustomers[i].setForename(sortedForenames[i]);
+        unsortedCustomers[i] = exampleCustomer;
+        unsortedCustomers[i].setForename(unsortedForenames[i]);
+    }
+
+    database->sortRecords(unsortedCustomers, 0, unsortedCustomers.size() - 1, NestedFunctions::forenameCompare);
+
+    for (unsigned i = 0; i < arraySize; ++i)
+    {
+        EXPECT_TRUE(sortedCustomers[i].completeCompare(unsortedCustomers[i]));
+    }
+}
+
 #endif // COMPILE_TESTS
