@@ -69,7 +69,8 @@ HEADERS += \
     dialogs/utils/PendingDialog.h \
     dialogs/utils/ProcessDialog.h \
     testing/TestingHelpers.hpp \
-    EmailDetails.h
+    EmailDetails.h \
+    Setting.h
 FORMS += dialogs/customer/CustomerForm.ui \
          dialogs/customer/CustomerIndex.ui \
          dialogs/customer/CustomerShow.ui \
@@ -134,6 +135,7 @@ SOURCES += Customer.cpp \
     dialogs/utils/PendingDialog.cpp \
     dialogs/utils/ProcessDialog.cpp \
     testing/unit/Utils_testing.cc \
-    testing/TestingHelpers.cc
+    testing/TestingHelpers.cc \
+    Setting.cpp
 
 OTHER_FILES +=
