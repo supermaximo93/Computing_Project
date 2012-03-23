@@ -43,6 +43,12 @@ private slots:
 
     void on_label_remindCustomers_linkActivated(const QString &link);
 
+    void action_settings_triggered();
+
+    void action_help_triggered();
+
+    void action_exit_triggered();
+
 private:
     static const char *windowTitle;
 

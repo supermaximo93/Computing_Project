@@ -22,12 +22,17 @@
 #include "ExpenseController.h"
 #include "CustomerController.h"
 
+#include "dialogs/setting/SettingForm.h"
+
 const char *MainWindow::windowTitle = "Ian Foster Services";
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), timer(new QTimer(this)), unpaidJobsReminderClicked(false)
 {
     ui->setupUi(this);
+    connect(ui->actionSettings, SIGNAL(triggered()), this, SLOT(action_settings_triggered()));
+    connect(ui->actionHelp, SIGNAL(triggered()), this, SLOT(action_help_triggered()));
+    connect(ui->actionExit, SIGNAL(triggered()), this, SLOT(action_exit_triggered()));
     setWindowTitle(windowTitle);
     EmailerThread::init(this);
 
@@ -84,6 +89,22 @@ void MainWindow::on_calendar_selectionChanged()
 {
     getJobsAndTasksForCurrentDate();
     updateListWidgets();
+}
+
+void MainWindow::action_settings_triggered()
+{
+    SettingForm settingForm(this);
+    settingForm.exec();
+}
+
+void MainWindow::action_help_triggered()
+{
+
+}
+
+void MainWindow::action_exit_triggered()
+{
+    close();
 }
 
 

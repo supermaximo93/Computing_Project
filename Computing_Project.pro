@@ -71,7 +71,8 @@ HEADERS += \
     testing/TestingHelpers.hpp \
     EmailDetails.h \
     Setting.h \
-    SettingController.h
+    SettingController.h \
+    dialogs/setting/SettingForm.h
 FORMS += dialogs/customer/CustomerForm.ui \
          dialogs/customer/CustomerIndex.ui \
          dialogs/customer/CustomerShow.ui \
@@ -88,7 +89,8 @@ FORMS += dialogs/customer/CustomerForm.ui \
          dialogs/task/TaskForm.ui \
          dialogs/task/TaskShow.ui \
     dialogs/utils/PendingDialog.ui \
-    dialogs/utils/ProcessDialog.ui
+    dialogs/utils/ProcessDialog.ui \
+    dialogs/setting/SettingForm.ui
 SOURCES += Customer.cpp \
            CustomerController.cpp \
            Databases.cpp \
@@ -139,6 +141,7 @@ SOURCES += Customer.cpp \
     testing/TestingHelpers.cc \
     Setting.cpp \
     SettingController.cpp \
-    testing/integration/SettingController_testing.cc
+    testing/integration/SettingController_testing.cc \
+    dialogs/setting/SettingForm.cpp
 
 OTHER_FILES +=
