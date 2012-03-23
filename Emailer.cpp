@@ -17,6 +17,10 @@ using namespace std;
 
 #include "Emailer.h"
 
+#include "Setting.h"
+#include "SettingController.h"
+#include "dialogs/setting/SettingForm.h"
+
 const int Emailer::waitTimeInMilliseconds = 5000;
 
 Emailer::Emailer(const EmailDetails &emailDetails, QObject *parent)
@@ -35,8 +39,14 @@ void Emailer::send()
 
     if (socket != NULL) delete socket;
     socket = new QxtSmtp(this);
-    socket->setUsername("ianfosterservices");
-    socket->setPassword("temppassword");
+
+    Setting usernameSetting = SettingController::getSetting(SettingForm::keyEmailUsername),
+            passwordSetting = SettingController::getSetting(SettingForm::keyEmailPassword),
+            hostSetting = SettingController::getSetting(SettingForm::keyEmailHost),
+            portSetting = SettingController::getSetting(SettingForm::keyEmailPort);
+
+    socket->setUsername(usernameSetting.getValue());
+    socket->setPassword(passwordSetting.getValue());
 
     connect(socket, SIGNAL(connected()), this, SLOT(connected()));
     connect(socket, SIGNAL(connectionFailed(QByteArray)), this, SLOT(connectionFailed(QByteArray)));
@@ -49,7 +59,7 @@ void Emailer::send()
     connect(socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
 
     connectionState = PENDING;
-    socket->connectToSecureHost("smtp.gmail.com");
+    socket->connectToSecureHost(hostSetting.getValue(), atoi(portSetting.getValue()));
 
     ++emailDetails_.tries;
 }

@@ -78,6 +78,18 @@ Setting SettingController::getSetting(int settingId)
     return setting;
 }
 
+Setting SettingController::getSetting(const char *key)
+{
+    Setting setting;
+    try { setting = Databases::settings().findRecord("key", key); }
+    catch (const std::exception &e)
+    {
+        showErrorDialog(e.what());
+        return Setting();
+    }
+    return setting;
+}
+
 Database<Setting>::recordListPtr SettingController::getAllSettings()
 {
     Database<Setting>::recordListPtr settings;

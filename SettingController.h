@@ -24,6 +24,7 @@ bool Destroy(int settingId, QWidget *caller);
 bool Destroy(Setting &setting, QWidget *caller);
 
 Setting getSetting(int settingId);
+Setting getSetting(const char *key);
 Database<Setting>::recordListPtr getAllSettings();
 
 }

@@ -15,7 +15,7 @@ using namespace std;
 const string Setting::databaseFilename = "settings.dat";
 const int
 Setting::minKeyLength   = 2, Setting::maxKeyLength   =   32,
-Setting::minValueLength = 1, Setting::maxValueLength = 2048;
+Setting::minValueLength = 0, Setting::maxValueLength = 2048;
 
 int Setting::size()
 {

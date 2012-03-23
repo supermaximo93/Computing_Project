@@ -22,6 +22,8 @@
 #include "ExpenseController.h"
 #include "CustomerController.h"
 
+#include "Setting.h"
+#include "SettingController.h"
 #include "dialogs/setting/SettingForm.h"
 
 const char *MainWindow::windowTitle = "Ian Foster Services";
@@ -201,8 +203,6 @@ void MainWindow::on_listWidget_tasks_doubleClicked(const QModelIndex &index)
 
 void MainWindow::on_label_remindCustomers_linkActivated(const QString &)
 {
-    static const char *emailSubject = "", *emailBody = "";
-
     unpaidJobsReminderClicked = true;
     ui->label_remindCustomers->setHidden(true);
 
@@ -210,7 +210,10 @@ void MainWindow::on_label_remindCustomers_linkActivated(const QString &)
     {
         Customer customer = CustomerController::getCustomer(unpaidJobs->at(i).getCustomerId());
 
-        EmailDetails email(customer.getEmailAddress(), emailSubject, emailBody);
+        EmailDetails email(customer.getEmailAddress(),
+                           SettingController::getSetting(SettingForm::keyReminderSubject).getValue(),
+                           SettingController::getSetting(SettingForm::keyReceiptBody).getValue());
+
         EmailerThread::enqueueEmail(email);
     }
 }

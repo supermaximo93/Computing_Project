@@ -15,6 +15,8 @@
 #include <tr1/memory>
 #include <tr1/shared_ptr.h>
 
+#include <QMutex>
+
 #include "Utils.h"
 
 template<class recordType>
@@ -123,6 +125,7 @@ public:
 private:
     std::string filename_;
     int idCounter;
+    QMutex fileMutex;
 };
 
 template<class recordType>
@@ -137,6 +140,8 @@ Database<recordType>::Database()
 #ifdef COMPILE_TESTS
     if (testing) filename_ += ".test";
 #endif
+
+    while (!fileMutex.tryLock(1000));
 
     std::ifstream file;
     file.open(filename_.c_str(), std::ios::binary);
@@ -158,11 +163,15 @@ Database<recordType>::Database()
         }
         else std::cout << "Could not create " + filename_ << std::endl;
     }
+
+    fileMutex.unlock();
 }
 
 template<class recordType>
 Database<recordType>::~Database()
 {
+    while (!fileMutex.tryLock(1000));
+
     std::fstream newFile;
     newFile.open(("temp_" + filename_).c_str(), std::ios::out | std::ios::binary);
     if (newFile.is_open())
@@ -197,12 +206,16 @@ Database<recordType>::~Database()
         else remove(("temp_" + filename_).c_str());
     }
     else std::cout << "Could not create temporary file temp_" + filename_ << std::endl;
+
+    fileMutex.unlock();
 }
 
 template<class recordType>
 void Database<recordType>::addRecord(recordType &record)
 {
     record.validate();
+
+    while (!fileMutex.tryLock(1000));
 
     std::fstream file;
     file.open(filename_.c_str(), std::ios::in | std::ios::out | std::ios::binary);
@@ -212,8 +225,13 @@ void Database<recordType>::addRecord(recordType &record)
         record.id = idCounter++;
         record.writeToFile(file);
         file.close();
+        fileMutex.unlock();
     }
-    else throw(std::runtime_error("Could not open file " + filename_));
+    else
+    {
+        fileMutex.unlock();
+        throw(std::runtime_error("Could not open file " + filename_));
+    }
 }
 
 template<class recordType>
@@ -221,6 +239,8 @@ bool Database<recordType>::updateRecord(const recordType &record)
 {
     if (record.null()) throw(std::runtime_error("Record ID must be initialised"));
     record.validate();
+
+    while (!fileMutex.tryLock(1000));
 
     recordType tempRecord;
     std::fstream file;
@@ -238,18 +258,26 @@ bool Database<recordType>::updateRecord(const recordType &record)
                 file.seekp(-recordType::size(), std::ios::cur);
                 record.writeToFile(file);
                 file.close();
+                fileMutex.unlock();
                 return true;
             }
         }
         file.close();
+        fileMutex.unlock();
         return false;
     }
-    else throw(std::runtime_error("Could not open file " + filename_));
+    else
+    {
+        fileMutex.unlock();
+        throw(std::runtime_error("Could not open file " + filename_));
+    }
 }
 
 template<class recordType>
 bool Database<recordType>::deleteRecord(const int id)
 {
+    while (!fileMutex.tryLock(1000));
+
     recordType tempRecord;
     std::fstream file;
     file.open(filename_.c_str(), std::ios::in | std::ios::out | std::ios::binary);
@@ -266,12 +294,18 @@ bool Database<recordType>::deleteRecord(const int id)
                 file.seekp(-recordType::size(), std::ios::cur);
                 recordType().writeToFile(file);
                 file.close();
+                fileMutex.unlock();
                 return true;
             }
         }
         file.close();
+        fileMutex.unlock();
     }
-    else throw(std::runtime_error("Could not open file " + filename_));
+    else
+    {
+        fileMutex.unlock();
+        throw(std::runtime_error("Could not open file " + filename_));
+    }
 
     std::cout << "Record could not be found. No records were deleted" << std::endl;
     return false;
@@ -280,6 +314,8 @@ bool Database<recordType>::deleteRecord(const int id)
 template<class recordType> template<typename type>
 recordType Database<recordType>::findRecord(const std::string &fieldName, const type &searchTerm)
 {
+    while (!fileMutex.tryLock(1000));
+
     std::fstream file;
     file.open(filename_.c_str(), std::ios::in | std::ios::binary);
     if (file.is_open())
@@ -297,12 +333,18 @@ recordType Database<recordType>::findRecord(const std::string &fieldName, const 
             if (tempRecord.hasMatchingField(lowercaseFieldName, searchTerm))
             {
                 file.close();
+                fileMutex.unlock();
                 return tempRecord;
             }
         }
         file.close();
+        fileMutex.unlock();
     }
-    else throw(std::runtime_error("Could not open file " + filename_));
+    else
+    {
+        fileMutex.unlock();
+        throw(std::runtime_error("Could not open file " + filename_));
+    }
 
     return recordType();
 }
@@ -312,6 +354,8 @@ std::tr1::shared_ptr< std::vector<recordType> >
 Database<recordType>::findRecords(const std::string &fieldName, const type &searchTerm)
 {
     recordListPtr returnList(new recordList);
+
+    while (!fileMutex.tryLock(1000));
 
     std::fstream file;
     file.open(filename_.c_str(), std::ios::in | std::ios::binary);
@@ -330,8 +374,13 @@ Database<recordType>::findRecords(const std::string &fieldName, const type &sear
             if (tempRecord.hasMatchingField(lowercaseFieldName, searchTerm)) returnList->push_back(tempRecord);
         }
         file.close();
+        fileMutex.unlock();
     }
-    else throw(std::runtime_error("Could not open file " + filename_));
+    else
+    {
+        fileMutex.unlock();
+        throw(std::runtime_error("Could not open file " + filename_));
+    }
 
     return returnList;
 }
@@ -418,6 +467,8 @@ std::tr1::shared_ptr< std::vector<recordType> > Database<recordType>::allRecords
 {
     recordListPtr returnList(new recordList);
 
+    while (!fileMutex.tryLock(1000));
+
     std::fstream file;
     file.open(filename_.c_str(), std::ios::in | std::ios::binary);
     if (file.is_open())
@@ -433,8 +484,13 @@ std::tr1::shared_ptr< std::vector<recordType> > Database<recordType>::allRecords
             if (!tempRecord.null()) returnList->push_back(tempRecord);
         }
         file.close();
+        fileMutex.unlock();
     }
-    else throw(std::runtime_error("Could not open file " + filename_));
+    else
+    {
+        fileMutex.unlock();
+        throw(std::runtime_error("Could not open file " + filename_));
+    }
 
     return returnList;
 }
@@ -442,6 +498,8 @@ std::tr1::shared_ptr< std::vector<recordType> > Database<recordType>::allRecords
 template<class recordType>
 recordType Database<recordType>::recordAt(const int index)
 {
+    while (!fileMutex.tryLock(1000));
+
     std::fstream file;
     file.open(filename_.c_str(), std::ios::in | std::ios::binary);
     if (file.is_open())
@@ -454,6 +512,7 @@ recordType Database<recordType>::recordAt(const int index)
         if (sizeof(idCounter) + (recordType::size() * (index + 1)) > size) // index + 1 because index starts from 0
         {
             file.close();
+            fileMutex.unlock();
             return recordType();
         }
 
@@ -461,9 +520,14 @@ recordType Database<recordType>::recordAt(const int index)
         tempRecord.readFromFile(file);
 
         file.close();
+        fileMutex.unlock();
         return tempRecord;
     }
-    else throw(std::runtime_error("Could not open file " + filename_));
+    else
+    {
+        fileMutex.unlock();
+        throw(std::runtime_error("Could not open file " + filename_));
+    }
 
     return recordType();
 }
@@ -471,6 +535,8 @@ recordType Database<recordType>::recordAt(const int index)
 template<class recordType>
 unsigned Database<recordType>::recordCount()
 {
+    while (!fileMutex.tryLock(1000));
+
     std::fstream file;
     file.open(filename_.c_str(), std::ios::in | std::ios::binary);
     if (file.is_open())
@@ -485,11 +551,16 @@ unsigned Database<recordType>::recordCount()
             if (file.eof()) break;
             if (!tempRecord.null()) ++count;
         }
+        fileMutex.unlock();
         file.close();
 
         return count;
     }
-    else throw(std::runtime_error("Could not open file " + filename_));
+    else
+    {
+        fileMutex.unlock();
+        throw(std::runtime_error("Could not open file " + filename_));
+    }
 
     return 0;
 }

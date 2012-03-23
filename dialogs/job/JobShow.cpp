@@ -28,6 +28,10 @@ using namespace std;
 #include "Emailer.h"
 #include "EmailerThread.h"
 
+#include "Setting.h"
+#include "SettingController.h"
+#include "dialogs/setting/SettingForm.h"
+
 #include "Utils.h"
 #include "Globals.h"
 
@@ -198,7 +202,7 @@ void JobShow::on_pushButton_markAsDone_released()
 void JobShow::on_pushButton_sendInvoice_released()
 {
     Customer customer = CustomerController::getCustomer(job.getCustomerId());
-    string invoiceFileName, invoiceEmailSubject, invoiceEmailBody;
+    string invoiceFileName;
     invoiceFileName.reserve(256);
     invoiceFileName += "invoice_";
     invoiceFileName += customer.getForename();
@@ -214,8 +218,11 @@ void JobShow::on_pushButton_sendInvoice_released()
 
     PdfGenerator::generateInvoice(invoiceFileName.c_str(), job);
 
-    EmailDetails emailDetails(customer.getEmailAddress(), invoiceEmailSubject.c_str(), invoiceEmailBody.c_str(),
+    EmailDetails emailDetails(customer.getEmailAddress(),
+                              SettingController::getSetting(SettingForm::keyInvoiceSubject).getValue(),
+                              SettingController::getSetting(SettingForm::keyInvoiceBody).getValue(),
                               invoiceFileName.c_str());
+
     EmailerThread::enqueueEmail(emailDetails);
 }
 
@@ -239,7 +246,7 @@ void JobShow::on_pushButton_markAsPaid_released()
 void JobShow::on_pushButton_sendReciept_released()
 {
     Customer customer = CustomerController::getCustomer(job.getCustomerId());
-    string recieptFileName, recieptEmailSubject, recieptEmailBody;
+    string recieptFileName;
     recieptFileName.reserve(256);
     recieptFileName += "reciept_";
     recieptFileName += customer.getForename();
@@ -255,8 +262,11 @@ void JobShow::on_pushButton_sendReciept_released()
 
     PdfGenerator::generateReciept(recieptFileName.c_str(), job);
 
-    EmailDetails emailDetails(customer.getEmailAddress(), recieptEmailSubject.c_str(), recieptEmailBody.c_str(),
+    EmailDetails emailDetails(customer.getEmailAddress(),
+                              SettingController::getSetting(SettingForm::keyReceiptSubject).getValue(),
+                              SettingController::getSetting(SettingForm::keyReceiptBody).getValue(),
                               recieptFileName.c_str());
+
     EmailerThread::enqueueEmail(emailDetails);
 }
 

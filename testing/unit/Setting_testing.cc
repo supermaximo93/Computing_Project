@@ -93,22 +93,12 @@ TEST_F(SettingUnitTest, DoesSettingAcceptExtremeValidKeyUpperBound)
             << "Exception was thrown when the key was set to a valid key string";
 }
 
-// Does Setting Reject Empty Value
-TEST_F(SettingUnitTest, DoesSettingRejectEmptyValue)
+// Does Setting Accept Empty Value
+TEST_F(SettingUnitTest, DoesSettingAcceptEmptyValue)
 {
     Setting setting(exampleSetting);
-    EXPECT_THROW(setting.setValue(""), std::runtime_error)
-            << "Exception was not thrown when the value was set to an empty string";
-}
-
-// Does Setting Reject Value That Is Too Short
-TEST_F(SettingUnitTest, DoesSettingRejectValueThatIsTooShort)
-{
-    Setting setting(exampleSetting);
-
-    std::string testValue = createTestStringOfSize(Setting::minValueLength - 1);
-    EXPECT_THROW(setting.setValue(testValue.c_str()), std::runtime_error)
-            << "Exception was not thrown when the value was set to a string that is shorter than the minimum";
+    EXPECT_NO_THROW(setting.setValue(""))
+            << "Exception was thrown when the value was set to an empty string";
 }
 
 // Does Setting Reject Value That Is Too Long
@@ -127,16 +117,6 @@ TEST_F(SettingUnitTest, DoesSettingAcceptValidValue)
     Setting setting(exampleSetting);
 
     string testValue = createTestStringOfSize(Setting::maxValueLength / 2);
-    EXPECT_NO_THROW(setting.setValue(testValue.c_str()))
-            << "Exception was thrown when the value was set to a valid value string";
-}
-
-// Does Setting Accept Extreme Valid Value (Lower Bound)
-TEST_F(SettingUnitTest, DoesSettingAcceptExtremeValidValueLowerBound)
-{
-    Setting setting(exampleSetting);
-
-    string testValue = createTestStringOfSize(Setting::minValueLength);
     EXPECT_NO_THROW(setting.setValue(testValue.c_str()))
             << "Exception was thrown when the value was set to a valid value string";
 }
