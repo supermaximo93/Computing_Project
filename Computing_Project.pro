@@ -70,7 +70,8 @@ HEADERS += \
     dialogs/utils/ProcessDialog.h \
     testing/TestingHelpers.hpp \
     EmailDetails.h \
-    Setting.h
+    Setting.h \
+    SettingController.h
 FORMS += dialogs/customer/CustomerForm.ui \
          dialogs/customer/CustomerIndex.ui \
          dialogs/customer/CustomerShow.ui \
@@ -136,6 +137,8 @@ SOURCES += Customer.cpp \
     dialogs/utils/ProcessDialog.cpp \
     testing/unit/Utils_testing.cc \
     testing/TestingHelpers.cc \
-    Setting.cpp
+    Setting.cpp \
+    SettingController.cpp \
+    testing/integration/SettingController_testing.cc
 
 OTHER_FILES +=

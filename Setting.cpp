@@ -12,7 +12,7 @@ using namespace std;
 #include "Setting.h"
 #include "Utils.h"
 
-const string databaseFilename = "settings.dat";
+const string Setting::databaseFilename = "settings.dat";
 const int
 Setting::minKeyLength   = 2, Setting::maxKeyLength   =   32,
 Setting::minValueLength = 1, Setting::maxValueLength = 2048;

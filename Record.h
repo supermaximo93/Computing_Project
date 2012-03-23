@@ -17,6 +17,7 @@ class Job;
 class Part;
 class Task;
 class Expense;
+class Setting;
 
 class Record
 {
@@ -37,6 +38,7 @@ public:
     friend class Database<Part>;
     friend class Database<Task>;
     friend class Database<Expense>;
+    friend class Database<Setting>;
 
 protected:
     static int size();

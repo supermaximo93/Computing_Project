@@ -15,6 +15,7 @@ class Job;
 class Part;
 class Task;
 class Expense;
+class Setting;
 
 namespace Databases
 {
@@ -28,10 +29,11 @@ void init();
 void finalise();
 
 Database<Customer> & customers();
-Database<Expense> & expenses();
 Database<Job> & jobs();
 Database<Part> & parts();
 Database<Task> & tasks();
+Database<Expense> & expenses();
+Database<Setting> & settings();
 
 }
 
