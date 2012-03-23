@@ -9,32 +9,83 @@
 #include "Databases.h"
 #include "Setting.h"
 
-bool SettingController::Create(Setting &settingAttributes, QWidget *caller)
+bool SettingController::Create(Setting &settingAttributes, QWidget *)
 {
-    return false;
+    try { Databases::settings().addRecord(settingAttributes); }
+    catch (const std::exception &e)
+    {
+        showErrorDialog(e.what());
+        return false;
+    }
+
+    if (settingAttributes.null())
+    {
+        showErrorDialog("There was an error with adding the setting to the database");
+        return false;
+    }
+
+    return true;
 }
 
-bool SettingController::Update(const Setting &setting, QWidget *caller)
+bool SettingController::Update(const Setting &setting, QWidget *)
 {
-    return false;
+    bool success = false;
+    try { success = Databases::settings().updateRecord(setting); }
+    catch (const std::exception &e)
+    {
+        showErrorDialog(e.what());
+        return false;
+    }
+
+    if (!success) showErrorDialog("There was an error with updating the setting in the database");
+    return success;
 }
 
-bool SettingController::Destroy(int settingId, QWidget *caller)
+bool SettingController::Destroy(int settingId, QWidget *)
 {
-    return false;
+    bool success = false;
+    try { success = Databases::settings().deleteRecord(settingId); }
+    catch (const std::exception &e)
+    {
+        showErrorDialog(e.what());
+        return false;
+    }
+
+    if (!success) showErrorDialog("There was an error with removing the setting from the database");
+    return success;
 }
 
 bool SettingController::Destroy(Setting &setting, QWidget *caller)
 {
+    if (Destroy(setting.getId(), caller))
+    {
+        setting = Setting();
+        return true;
+    }
+
     return false;
 }
 
 Setting SettingController::getSetting(int settingId)
 {
-    return Setting();
+    Setting setting;
+    try { setting = Databases::settings().findRecord("id", settingId); }
+    catch (const std::exception &e)
+    {
+        showErrorDialog(e.what());
+        return Setting();
+    }
+    return setting;
 }
 
 Database<Setting>::recordListPtr SettingController::getAllSettings()
 {
-    return Database<Setting>::recordListPtr(new Database<Setting>::recordList);
+    Database<Setting>::recordListPtr settings;
+    try { settings = Databases::settings().allRecords(); }
+    catch (const std::exception &e)
+    {
+        showErrorDialog(e.what());
+        return Database<Setting>::recordListPtr(new Database<Setting>::recordList);
+    }
+    return settings;
 }

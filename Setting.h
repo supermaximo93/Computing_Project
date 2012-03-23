@@ -45,7 +45,7 @@ public:
     void setValue(const char *newValue);
     static bool isValidValue(const char *value, std::string &errorMessage);
 
-    void validate();
+    void validate() const;
 
 private:
     char *key, *value;

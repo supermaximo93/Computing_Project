@@ -125,7 +125,7 @@ bool Setting::isValidValue(const char *value, string &errorMessage)
     return validateLengthOf(value, minValueLength, maxValueLength, "Value", errorMessage);
 }
 
-void Setting::validate()
+void Setting::validate() const
 {
     string errorMessage;
     if (!isValidKey(key, errorMessage)) throw std::runtime_error(errorMessage);
