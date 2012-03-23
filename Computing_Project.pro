@@ -142,6 +142,7 @@ SOURCES += Customer.cpp \
     Setting.cpp \
     SettingController.cpp \
     testing/integration/SettingController_testing.cc \
-    dialogs/setting/SettingForm.cpp
+    dialogs/setting/SettingForm.cpp \
+    testing/unit/Setting_testing.cc
 
 OTHER_FILES +=
