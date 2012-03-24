@@ -40,7 +40,7 @@ bool EmailerThread::finalise()
 {
     if (emailerThread == NULL) return true;
 
-    if (!emailsInQueueMutex->tryLock())
+    if (!emailsInQueueMutex->tryLock() || !checkEmailQueueEmpty())
     {
         bool cancelEmails = showYesNoDialog("There are still emails waiting to be sent.\n"
                                             "Would you like to cancel the sending of these emails?");
@@ -106,7 +106,16 @@ bool EmailerThread::finalise()
 int EmailerThread::checkEmailQueuePercentDone()
 {
     while (!emailQueueMutex->tryLock(mutexLockTimeout));
-    const int percentage = ((emailCountBeforeClose - emailQueue->size()) * 100) / emailCountBeforeClose;
+
+    int percentage;
+    if (emailCountBeforeClose == 0)
+    {
+        bool canLock = emailsInQueueMutex->tryLock();
+        percentage = canLock ? 100 : 0;
+        if (canLock) emailsInQueueMutex->unlock();
+    }
+    else percentage = ((emailCountBeforeClose - emailQueue->size()) * 100) / emailCountBeforeClose;
+
     emailQueueMutex->unlock();
     return percentage;
 }
