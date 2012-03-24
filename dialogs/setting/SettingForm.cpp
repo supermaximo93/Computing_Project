@@ -36,11 +36,22 @@ SettingForm::SettingForm(QWidget *parent)
 {
     ui->setupUi(this);
     populateInputs();
+
+    // Hide the cancel button if there are no settings (i.e. if it's a first time run). The user needs to save some
+    // settings so don't allow them to cancel out of it
+    ui->pushButton_cancel->setHidden(SettingController::getAllSettings()->empty());
 }
 
 SettingForm::~SettingForm()
 {
     delete ui;
+}
+
+void SettingForm::closeEvent(QCloseEvent *event)
+{
+    // If cancel button is hidden then it means that there are no settings (i.e. it's a first time run) so don't let
+    // the user quit
+    if (ui->pushButton_cancel->isHidden()) event->ignore();
 }
 
 void SettingForm::on_pushButton_save_clicked()
@@ -104,7 +115,7 @@ void SettingForm::on_pushButton_saveNewPassword_clicked()
             newPasswordLength = ui->lineEdit_newPassword->text().length();
 
     Setting passwordSetting = SettingController::getSetting(keyProgramPassword);
-    if (ui->lineEdit_oldPassword->text() == passwordSetting.getValue())
+    if ((ui->lineEdit_oldPassword->text() == passwordSetting.getValue()) || passwordSetting.null())
     {
         ui->lineEdit_oldPassword->setStyleSheet("");
         ui->lineEdit_oldPassword->setToolTip("");
@@ -113,7 +124,7 @@ void SettingForm::on_pushButton_saveNewPassword_clicked()
         {
             ui->lineEdit_newPassword->setStyleSheet("QLineEdit { background-color: red; }");
             ui->lineEdit_newPassword->setToolTip(("Password must be between " + toString(minPasswordLength) + " and "
-                                                  + toString(maxPasswordLength) + "characters").c_str());
+                                                  + toString(maxPasswordLength) + " characters").c_str());
             return;
         }
         else
@@ -134,6 +145,8 @@ void SettingForm::on_pushButton_saveNewPassword_clicked()
                 SettingController::Create(passwordSetting, this);
             }
             else SettingController::Update(passwordSetting, this);
+
+            ui->lineEdit_oldPassword->setPlaceholderText("");
         }
         else
         {
@@ -168,7 +181,12 @@ void SettingForm::populateInputs()
         else if (strcmp(key, keyEmailPassword) == 0) ui->lineEdit_emailPassword->setText(setting.getValue());
         else if (strcmp(key, keyEmailHost) == 0) ui->lineEdit_emailHostAddress->setText(setting.getValue());
         else if (strcmp(key, keyEmailPort) == 0) ui->spinBox_emailHostPort->setValue(atoi(setting.getValue()));
+        else if ((strcmp(key, keyProgramPassword) == 0) && (strlen(setting.getValue()) == 0))
+            ui->lineEdit_oldPassword->setPlaceholderText("No password set");
     }
+
+    if (SettingController::getSetting(keyProgramPassword).null())
+        ui->lineEdit_oldPassword->setPlaceholderText("No password set");
 }
 
 bool SettingForm::inputsAreValid()

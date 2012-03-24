@@ -72,7 +72,8 @@ HEADERS += \
     EmailDetails.h \
     Setting.h \
     SettingController.h \
-    dialogs/setting/SettingForm.h
+    dialogs/setting/SettingForm.h \
+    dialogs/utils/PasswordDialog.h
 FORMS += dialogs/customer/CustomerForm.ui \
          dialogs/customer/CustomerIndex.ui \
          dialogs/customer/CustomerShow.ui \
@@ -90,7 +91,8 @@ FORMS += dialogs/customer/CustomerForm.ui \
          dialogs/task/TaskShow.ui \
     dialogs/utils/PendingDialog.ui \
     dialogs/utils/ProcessDialog.ui \
-    dialogs/setting/SettingForm.ui
+    dialogs/setting/SettingForm.ui \
+    dialogs/utils/PasswordDialog.ui
 SOURCES += Customer.cpp \
            CustomerController.cpp \
            Databases.cpp \
@@ -143,6 +145,7 @@ SOURCES += Customer.cpp \
     SettingController.cpp \
     testing/integration/SettingController_testing.cc \
     dialogs/setting/SettingForm.cpp \
-    testing/unit/Setting_testing.cc
+    testing/unit/Setting_testing.cc \
+    dialogs/utils/PasswordDialog.cpp
 
 OTHER_FILES +=

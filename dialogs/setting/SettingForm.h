@@ -38,6 +38,9 @@ public:
     explicit SettingForm(QWidget *parent = NULL);
     ~SettingForm();
 
+protected:
+    void closeEvent(QCloseEvent *event);
+
 private slots:
     void on_pushButton_save_clicked();
 

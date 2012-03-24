@@ -139,8 +139,14 @@
       </item>
       <item row="1" column="1">
        <widget class="QLineEdit" name="lineEdit_oldPassword">
+        <property name="text">
+         <string/>
+        </property>
         <property name="echoMode">
          <enum>QLineEdit::Password</enum>
+        </property>
+        <property name="placeholderText">
+         <string/>
         </property>
        </widget>
       </item>

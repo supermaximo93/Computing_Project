@@ -11,6 +11,8 @@ using namespace std;
 #include "Databases.h"
 #include "Utils.h"
 
+#include "dialogs/utils/PasswordDialog.h"
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -30,12 +32,15 @@ int main(int argc, char *argv[])
 #endif
 
     Databases::init();
-
-    MainWindow w;
-    w.show();
-
     int exitCode = 1;
-    try { exitCode = a.exec(); } catch(const std::exception &e) { showFatalDialog(e.what()); }
+
+    if (PasswordDialog().exec() == PasswordDialog::Accepted)
+    {
+        MainWindow w;
+        w.show();
+
+        try { exitCode = a.exec(); } catch(const std::exception &e) { showFatalDialog(e.what()); }
+    }
 
     Databases::finalise();
     return exitCode;
