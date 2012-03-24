@@ -18,6 +18,7 @@
 #include <QMutex>
 #include <QDir>
 
+#include "Encrypter.h"
 #include "Record.h"
 #include "Setting.h"
 #include "dialogs/setting/SettingForm.h"
@@ -153,6 +154,7 @@ Database<recordType>::Database()
     reloadFilename(false, testing);
 
     while (!fileMutex.tryLock(1000));
+    Encrypter::decryptFile(filename_.c_str(), false);
 
     std::ifstream file;
     file.open(filename_.c_str(), std::ios::binary);
@@ -175,6 +177,7 @@ Database<recordType>::Database()
         else std::cout << "Could not create " + filename_ << std::endl;
     }
 
+    Encrypter::encryptFile(filename_.c_str());
     fileMutex.unlock();
 }
 
@@ -182,6 +185,7 @@ template<class recordType>
 Database<recordType>::~Database()
 {
     while (!fileMutex.tryLock(1000));
+    Encrypter::decryptFile(filename_.c_str());
 
     std::fstream newFile;
     newFile.open((filename_ + ".temp").c_str(), std::ios::out | std::ios::binary);
@@ -218,6 +222,7 @@ Database<recordType>::~Database()
     }
     else std::cout << "Could not create temporary file " + filename_ + ".temp" << std::endl;
 
+    Encrypter::encryptFile(filename_.c_str());
     fileMutex.unlock();
 }
 
@@ -227,6 +232,7 @@ void Database<recordType>::addRecord(recordType &record)
     record.validate();
 
     while (!fileMutex.tryLock(1000));
+    Encrypter::decryptFile(filename_.c_str());
 
     std::fstream file;
     file.open(filename_.c_str(), std::ios::in | std::ios::out | std::ios::binary);
@@ -236,10 +242,12 @@ void Database<recordType>::addRecord(recordType &record)
         record.id = idCounter++;
         record.writeToFile(file);
         file.close();
+        Encrypter::encryptFile(filename_.c_str());
         fileMutex.unlock();
     }
     else
     {
+        Encrypter::encryptFile(filename_.c_str());
         fileMutex.unlock();
         throw(std::runtime_error("Could not open file " + filename_));
     }
@@ -252,6 +260,7 @@ bool Database<recordType>::updateRecord(const recordType &record)
     record.validate();
 
     while (!fileMutex.tryLock(1000));
+    Encrypter::decryptFile(filename_.c_str());
 
     recordType tempRecord;
     std::fstream file;
@@ -269,16 +278,19 @@ bool Database<recordType>::updateRecord(const recordType &record)
                 file.seekp(-recordType::size(), std::ios::cur);
                 record.writeToFile(file);
                 file.close();
+                Encrypter::encryptFile(filename_.c_str());
                 fileMutex.unlock();
                 return true;
             }
         }
         file.close();
+        Encrypter::encryptFile(filename_.c_str());
         fileMutex.unlock();
         return false;
     }
     else
     {
+        Encrypter::encryptFile(filename_.c_str());
         fileMutex.unlock();
         throw(std::runtime_error("Could not open file " + filename_));
     }
@@ -288,6 +300,7 @@ template<class recordType>
 bool Database<recordType>::deleteRecord(const int id)
 {
     while (!fileMutex.tryLock(1000));
+    Encrypter::decryptFile(filename_.c_str());
 
     recordType tempRecord;
     std::fstream file;
@@ -305,15 +318,18 @@ bool Database<recordType>::deleteRecord(const int id)
                 file.seekp(-recordType::size(), std::ios::cur);
                 recordType().writeToFile(file);
                 file.close();
+                Encrypter::encryptFile(filename_.c_str());
                 fileMutex.unlock();
                 return true;
             }
         }
         file.close();
+        Encrypter::encryptFile(filename_.c_str());
         fileMutex.unlock();
     }
     else
     {
+        Encrypter::encryptFile(filename_.c_str());
         fileMutex.unlock();
         throw(std::runtime_error("Could not open file " + filename_));
     }
@@ -326,6 +342,7 @@ template<class recordType> template<typename type>
 recordType Database<recordType>::findRecord(const std::string &fieldName, const type &searchTerm)
 {
     while (!fileMutex.tryLock(1000));
+    Encrypter::decryptFile(filename_.c_str());
 
     std::fstream file;
     file.open(filename_.c_str(), std::ios::in | std::ios::binary);
@@ -344,15 +361,18 @@ recordType Database<recordType>::findRecord(const std::string &fieldName, const 
             if (tempRecord.hasMatchingField(lowercaseFieldName, searchTerm))
             {
                 file.close();
+                Encrypter::encryptFile(filename_.c_str());
                 fileMutex.unlock();
                 return tempRecord;
             }
         }
         file.close();
+        Encrypter::encryptFile(filename_.c_str());
         fileMutex.unlock();
     }
     else
     {
+        Encrypter::encryptFile(filename_.c_str());
         fileMutex.unlock();
         throw(std::runtime_error("Could not open file " + filename_));
     }
@@ -367,6 +387,7 @@ Database<recordType>::findRecords(const std::string &fieldName, const type &sear
     recordListPtr returnList(new recordList);
 
     while (!fileMutex.tryLock(1000));
+    Encrypter::decryptFile(filename_.c_str());
 
     std::fstream file;
     file.open(filename_.c_str(), std::ios::in | std::ios::binary);
@@ -385,10 +406,12 @@ Database<recordType>::findRecords(const std::string &fieldName, const type &sear
             if (tempRecord.hasMatchingField(lowercaseFieldName, searchTerm)) returnList->push_back(tempRecord);
         }
         file.close();
+        Encrypter::encryptFile(filename_.c_str());
         fileMutex.unlock();
     }
     else
     {
+        Encrypter::encryptFile(filename_.c_str());
         fileMutex.unlock();
         throw(std::runtime_error("Could not open file " + filename_));
     }
@@ -479,6 +502,7 @@ std::tr1::shared_ptr< std::vector<recordType> > Database<recordType>::allRecords
     recordListPtr returnList(new recordList);
 
     while (!fileMutex.tryLock(1000));
+    Encrypter::decryptFile(filename_.c_str());
 
     std::fstream file;
     file.open(filename_.c_str(), std::ios::in | std::ios::binary);
@@ -495,11 +519,13 @@ std::tr1::shared_ptr< std::vector<recordType> > Database<recordType>::allRecords
             if (!tempRecord.null()) returnList->push_back(tempRecord);
         }
         file.close();
+        Encrypter::encryptFile(filename_.c_str());
         fileMutex.unlock();
     }
     else
     {
         fileMutex.unlock();
+        Encrypter::encryptFile(filename_.c_str());
         throw(std::runtime_error("Could not open file " + filename_));
     }
 
@@ -510,6 +536,7 @@ template<class recordType>
 recordType Database<recordType>::recordAt(const int index)
 {
     while (!fileMutex.tryLock(1000));
+    Encrypter::decryptFile(filename_.c_str());
 
     std::fstream file;
     file.open(filename_.c_str(), std::ios::in | std::ios::binary);
@@ -523,6 +550,7 @@ recordType Database<recordType>::recordAt(const int index)
         if (sizeof(idCounter) + (recordType::size() * (index + 1)) > size) // index + 1 because index starts from 0
         {
             file.close();
+            Encrypter::encryptFile(filename_.c_str());
             fileMutex.unlock();
             return recordType();
         }
@@ -531,11 +559,13 @@ recordType Database<recordType>::recordAt(const int index)
         tempRecord.readFromFile(file);
 
         file.close();
+        Encrypter::encryptFile(filename_.c_str());
         fileMutex.unlock();
         return tempRecord;
     }
     else
     {
+        Encrypter::encryptFile(filename_.c_str());
         fileMutex.unlock();
         throw(std::runtime_error("Could not open file " + filename_));
     }
@@ -547,6 +577,7 @@ template<class recordType>
 unsigned Database<recordType>::recordCount()
 {
     while (!fileMutex.tryLock(1000));
+    Encrypter::decryptFile(filename_.c_str());
 
     std::fstream file;
     file.open(filename_.c_str(), std::ios::in | std::ios::binary);
@@ -562,6 +593,7 @@ unsigned Database<recordType>::recordCount()
             if (file.eof()) break;
             if (!tempRecord.null()) ++count;
         }
+        Encrypter::encryptFile(filename_.c_str());
         fileMutex.unlock();
         file.close();
 
@@ -569,6 +601,7 @@ unsigned Database<recordType>::recordCount()
     }
     else
     {
+        Encrypter::encryptFile(filename_.c_str());
         fileMutex.unlock();
         throw(std::runtime_error("Could not open file " + filename_));
     }

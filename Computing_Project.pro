@@ -73,7 +73,8 @@ HEADERS += \
     Setting.h \
     SettingController.h \
     dialogs/setting/SettingForm.h \
-    dialogs/utils/PasswordDialog.h
+    dialogs/utils/PasswordDialog.h \
+    Encrypter.h
 FORMS += dialogs/customer/CustomerForm.ui \
          dialogs/customer/CustomerIndex.ui \
          dialogs/customer/CustomerShow.ui \
@@ -146,6 +147,7 @@ SOURCES += Customer.cpp \
     testing/integration/SettingController_testing.cc \
     dialogs/setting/SettingForm.cpp \
     testing/unit/Setting_testing.cc \
-    dialogs/utils/PasswordDialog.cpp
+    dialogs/utils/PasswordDialog.cpp \
+    Encrypter.cpp
 
 OTHER_FILES +=
