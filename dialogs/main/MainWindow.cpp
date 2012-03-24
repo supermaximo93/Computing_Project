@@ -49,6 +49,8 @@ MainWindow::MainWindow(QWidget *parent)
     calculateGrandTotal();
 
     checkForUnpaidJobs();
+
+    if (SettingController::getAllSettings()->empty()) SettingForm(this).exec();
 }
 
 MainWindow::~MainWindow()
@@ -95,8 +97,7 @@ void MainWindow::on_calendar_selectionChanged()
 
 void MainWindow::action_settings_triggered()
 {
-    SettingForm settingForm(this);
-    settingForm.exec();
+    SettingForm(this).exec();
 }
 
 void MainWindow::action_help_triggered()

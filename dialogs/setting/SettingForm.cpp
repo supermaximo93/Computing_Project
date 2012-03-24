@@ -151,10 +151,30 @@ bool SettingForm::updateSettings()
     catch (const std::exception &e) { return false; }
 
     Database<Setting>::recordListPtr settings = SettingController::getAllSettings();
-    for (unsigned i = 0; i < settings->size(); ++i) SettingController::Destroy(settings->at(i), this);
+
+    // Update existing settings
+    for (unsigned i = 0; i < settings->size(); ++i)
+    {
+        // Try to find two matching settings so that the one in the database can be updated
+        Setting &setting = settings->at(i);
+        Setting *matchingSetting = NULL;
+        for (unsigned j = 0; j < settingCount; ++j)
+        {
+            if (strcmp(setting.getKey(), newSettings[j].getKey()) == 0) matchingSetting = &newSettings[j];
+        }
+
+        if (matchingSetting == NULL) continue;
+        setting.setValue(matchingSetting->getValue());
+        SettingController::Update(setting, this);
+
+        // Copy ID over to indicate to the next loop that the setting already exists
+        *static_cast<Record *>(matchingSetting) = *static_cast<Record *>(&setting);
+    }
+
+    // Create new settings for settings that do not exist already
     for (unsigned i = 0; i < settingCount; ++i)
     {
-        if (!SettingController::Create(newSettings[i], this)) return false;
+        if (newSettings[i].null()) SettingController::Create(newSettings[i], this);
     }
 
     return true;
