@@ -16,6 +16,7 @@
 #include <tr1/shared_ptr.h>
 
 #include <QMutex>
+#include <QDir>
 
 #include "Record.h"
 #include "Setting.h"
@@ -148,6 +149,7 @@ Database<recordType>::Database(bool testing)
 Database<recordType>::Database()
 #endif
 {
+    filename_ = databaseDirectory_ = backupDirectory_ = "";
     reloadFilename(false, testing);
 
     while (!fileMutex.tryLock(1000));
@@ -643,7 +645,24 @@ void Database<recordType>::reloadFilename(const bool moveFiles, bool testing)
 #else
 void Database<recordType>::reloadFilename(const bool moveFiles)
 #endif
+
 {
+
+#ifdef _WIN32
+        const char slashChar = '\\';
+#else
+        const char slashChar = '/';
+#endif
+
+    if (databaseDirectory_.empty()) databaseDirectory_ = QDir::currentPath().toStdString();
+    if (backupDirectory_.empty()) backupDirectory_ = QDir::currentPath().toStdString();
+
+    if (!databaseDirectory_.empty() && (databaseDirectory_[databaseDirectory_.length() - 1] != slashChar))
+        databaseDirectory_ += slashChar;
+    if (!backupDirectory_.empty() && (backupDirectory_[backupDirectory_.length() - 1] != slashChar))
+        backupDirectory_ += slashChar;
+
+
     std::string previousDatabaseDirectory = databaseDirectory_,
             previousBackupDirectory = backupDirectory_,
             previousFilename = filename_;
@@ -666,12 +685,6 @@ void Database<recordType>::reloadFilename(const bool moveFiles)
 
         databaseDirectory_ = databaseDirectorySetting.getValue();
         backupDirectory_ = backupDirectorySetting.getValue();
-
-#ifdef _WIN32
-        const char slashChar = '\\';
-#else
-        const char slashChar = '/';
-#endif
 
         if (!databaseDirectory_.empty() && (databaseDirectory_[databaseDirectory_.length() - 1] != slashChar))
             databaseDirectory_ += slashChar;
