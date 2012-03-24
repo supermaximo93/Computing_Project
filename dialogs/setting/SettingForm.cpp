@@ -28,7 +28,8 @@ const char
 *SettingForm::keyEmailUsername = "email username",
 *SettingForm::keyEmailPassword = "email password",
 *SettingForm::keyEmailHost = "email host",
-*SettingForm::keyEmailPort = "email port";
+*SettingForm::keyEmailPort = "email port",
+*SettingForm::keyProgramPassword = "program password";
 
 SettingForm::SettingForm(QWidget *parent)
     : QDialog(parent), ui(new Ui::SettingForm)
@@ -94,6 +95,57 @@ void SettingForm::on_pushButton_browseBackupDirectory_clicked()
     QString directoryName = QFileDialog::getExistingDirectory(this, "Directory to save backups in");
     ui->lineEdit_backupDirectory->setText(directoryName);
     on_lineEdit_backupDirectory_textEdited(ui->lineEdit_backupDirectory->text());
+}
+
+void SettingForm::on_pushButton_saveNewPassword_clicked()
+{
+    const int minPasswordLength = 4,
+            maxPasswordLength = Setting::maxValueLength,
+            newPasswordLength = ui->lineEdit_newPassword->text().length();
+
+    Setting passwordSetting = SettingController::getSetting(keyProgramPassword);
+    if (ui->lineEdit_oldPassword->text() == passwordSetting.getValue())
+    {
+        ui->lineEdit_oldPassword->setStyleSheet("");
+        ui->lineEdit_oldPassword->setToolTip("");
+
+        if ((newPasswordLength < minPasswordLength) || (newPasswordLength > maxPasswordLength))
+        {
+            ui->lineEdit_newPassword->setStyleSheet("QLineEdit { background-color: red; }");
+            ui->lineEdit_newPassword->setToolTip(("Password must be between " + toString(minPasswordLength) + " and "
+                                                  + toString(maxPasswordLength) + "characters").c_str());
+            return;
+        }
+        else
+        {
+            ui->lineEdit_newPassword->setStyleSheet("");
+            ui->lineEdit_newPassword->setToolTip("");
+        }
+
+        if (ui->lineEdit_newPassword->text() == ui->lineEdit_confirmNewPassword->text())
+        {
+            ui->lineEdit_confirmNewPassword->setStyleSheet("");
+            ui->lineEdit_confirmNewPassword->setToolTip("");
+
+            passwordSetting.setValue(ui->lineEdit_newPassword->text().toStdString().c_str());
+            if (passwordSetting.null())
+            {
+                passwordSetting.setKey(keyProgramPassword);
+                SettingController::Create(passwordSetting, this);
+            }
+            else SettingController::Update(passwordSetting, this);
+        }
+        else
+        {
+            ui->lineEdit_confirmNewPassword->setStyleSheet("QLineEdit { background-color: red; }");
+            ui->lineEdit_confirmNewPassword->setToolTip("New password and confirmation do not match");
+        }
+    }
+    else
+    {
+        ui->lineEdit_oldPassword->setStyleSheet("QLineEdit { background-color: red; }");
+        ui->lineEdit_oldPassword->setToolTip("Password is incorrect");
+    }
 }
 
 void SettingForm::populateInputs()
@@ -198,3 +250,4 @@ bool SettingForm::updateSettings()
 
     return true;
 }
+
