@@ -6,6 +6,8 @@
  */
 
 #include <iostream>
+#include <fstream>
+#include <stdexcept>
 #include <algorithm>
 #include <ctime>
 using namespace std;
@@ -13,6 +15,8 @@ using namespace std;
 #include <QString>
 #include <QDateTime>
 #include <QMessageBox>
+#include <QFile>
+#include <QDir>
 
 #include "Utils.h"
 
@@ -92,7 +96,7 @@ void replaceChars(string &str, const char searchChar, const char newChar)
 
 const char * limitLength(const char *str, unsigned maxLength)
 {
-    static const short stringSize = 1024, elipsisLength = 3;
+    static const unsigned stringSize = 1024, elipsisLength = 3;
     static char string[stringSize + 1];
 
     if (maxLength > stringSize) maxLength = stringSize;
@@ -177,10 +181,9 @@ void addError(vector<string> &errors, string error)
     if (!alreadyAdded) errors.push_back(error);
 }
 
-bool validateLengthOf(const char *value, const int min, const int max, const std::string &valueName,
-                      std::string &errorMessage)
+bool validateLengthOf(const char *value, const int min, const int max, const string &valueName, string &errorMessage)
 {
-    const size_t length = strlen(value);
+    const int length = strlen(value);
     const bool isValid = (length >= min) && (length <= max);
     if (!isValid)
         errorMessage = valueName + " must be between " + toString(min) + " and " + toString(max) + " characters";
@@ -188,10 +191,49 @@ bool validateLengthOf(const char *value, const int min, const int max, const std
     return isValid;
 }
 
-bool validateLengthOf(const char *value, const int max, const std::string &valueName, std::string &errorMessage)
+bool validateLengthOf(const char *value, const int max, const string &valueName, string &errorMessage)
 {
-    const size_t length = strlen(value);
+    const int length = strlen(value);
     const bool isValid = (length <= max);
     if (!isValid) errorMessage = valueName + " cannot be longer than " + toString(max) + " characters";
     return isValid;
+}
+
+void copyFile(const char *sourceFilename, const char *destinationFilename)
+{
+    if (QFile::exists(destinationFilename)) QFile::remove(destinationFilename);
+    QFile::copy(sourceFilename, destinationFilename);
+}
+
+void moveDirectory(const char *sourceDirectoryPath, const char *destinationDirectoryPath)
+{
+#ifdef _WIN32
+    const char slashChar = '\\';
+#else
+    const char slashChar = '/';
+#endif
+
+    QDir dir, sourceDirectory(sourceDirectoryPath);
+    if (!sourceDirectory.exists()) return;
+
+    dir.mkpath(destinationDirectoryPath);
+
+    QStringList entryList = sourceDirectory.entryList();
+    for (int i = 0; i < entryList.size(); ++i)
+    {
+        QString &entry = entryList[i];
+        if ((entry.length() == 0) || (entry[0] == QChar('.'))) continue;
+
+        string source = string(sourceDirectoryPath) + slashChar + entry.toStdString(),
+                destination = string(destinationDirectoryPath) + slashChar + entry.toStdString();
+
+        if (QDir(source.c_str()).exists()) moveDirectory(source.c_str(), destination.c_str());
+        else
+        {
+            copyFile(source.c_str(), destination.c_str());
+            remove(source.c_str());
+        }
+    }
+
+    dir.rmdir(sourceDirectoryPath);
 }

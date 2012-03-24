@@ -53,18 +53,18 @@ void Databases::init()
 void Databases::finalise()
 {
     if (!initialised) return;
-    delete settingDatabasePtr;
     delete customerDatabasePtr;
     delete jobDatabasePtr;
     delete partDatabasePtr;
     delete taskDatabasePtr;
     delete expenseDatabasePtr;
-    settingDatabasePtr = NULL;
+    delete settingDatabasePtr;
     customerDatabasePtr = NULL;
     jobDatabasePtr = NULL;
     partDatabasePtr = NULL;
     taskDatabasePtr = NULL;
     expenseDatabasePtr = NULL;
+    settingDatabasePtr = NULL;
     initialised = false;
 }
 

@@ -17,6 +17,7 @@
 
 #include <QMutex>
 #include <QDir>
+#include <QDate>
 
 #include "Encrypter.h"
 #include "Record.h"
@@ -137,7 +138,16 @@ public:
     void reloadFilename(bool moveFiles);
 #endif
 
+    /*
+     * Backs up the database file to the location specified in the settings
+     */
+    void backupFile();
+
 private:
+#ifdef COMPILE_TESTS
+    const bool testing;
+#endif
+
     std::string filename_, databaseDirectory_, backupDirectory_;
     int idCounter;
     QMutex fileMutex;
@@ -145,7 +155,7 @@ private:
 
 template<class recordType>
 #ifdef COMPILE_TESTS
-Database<recordType>::Database(bool testing)
+Database<recordType>::Database(const bool testing) : testing(testing)
 #else
 Database<recordType>::Database()
 #endif
@@ -224,6 +234,8 @@ Database<recordType>::~Database()
 
     Encrypter::encryptFile(filename_.c_str());
     fileMutex.unlock();
+
+    backupFile();
 }
 
 template<class recordType>
@@ -678,7 +690,6 @@ void Database<recordType>::reloadFilename(const bool moveFiles, bool testing)
 #else
 void Database<recordType>::reloadFilename(const bool moveFiles)
 #endif
-
 {
 
 #ifdef _WIN32
@@ -732,36 +743,62 @@ void Database<recordType>::reloadFilename(const bool moveFiles)
     if (testing) filename_ += ".test";
 #endif
 
-    if (moveFiles && (databaseDirectory_ != previousDatabaseDirectory))
+    if (!moveFiles) return;
+
+    if (databaseDirectory_ != previousDatabaseDirectory)
     {
         while (!fileMutex.tryLock(1000));
 
-        std::ifstream originalFile;
-        std::ofstream newFile;
-        originalFile.open(previousFilename.c_str(), std::ios::binary);
-        newFile.open(filename_.c_str(), std::ios::binary);
-
-        if (originalFile.is_open() && newFile.is_open())
-        {
-            char data[] = { '\0', '\0' };
-            while (true)
-            {
-                originalFile.read(data, 1);
-                if (originalFile.eof()) break;
-                newFile.write(data, 1);
-            }
-
-            newFile.close();
-            originalFile.close();
-            remove(previousFilename.c_str());
-            fileMutex.unlock();
-        }
-        else
+        try { copyFile(previousFilename.c_str(), filename_.c_str()); }
+        catch (const std::exception &e)
         {
             fileMutex.unlock();
-            throw std::runtime_error("Unable to move database files");
+            throw std::runtime_error(e.what());
         }
+
+        remove(previousFilename.c_str());
+        fileMutex.unlock();
     }
+
+    if (backupDirectory_ != previousBackupDirectory)
+    {
+        while (!fileMutex.tryLock(1000));
+
+        try { moveDirectory((previousBackupDirectory + "backups").c_str(), (backupDirectory_ + "backups").c_str()); }
+        catch (const std::exception &e)
+        {
+            fileMutex.unlock();
+            throw std::runtime_error(e.what());
+        }
+
+        fileMutex.unlock();
+    }
+}
+
+template<class recordType>
+void Database<recordType>::backupFile()
+{
+#ifdef COMPILE_TESTS
+    if (testing) return;
+#endif
+
+#ifdef _WIN32
+        const char slashChar = '\\';
+#else
+        const char slashChar = '/';
+#endif
+
+    if (typeid(recordType()) == typeid(Setting())) return;
+
+    std::string backupFolderName =
+            backupDirectory_ + "backups" + slashChar + "backup_" + toString(Date(time(NULL)).year) + "_"
+            + toString(QDate::currentDate().weekNumber());
+
+    QDir backupDirectory(backupFolderName.c_str());
+    if (!backupDirectory.exists()) backupDirectory.mkpath(backupFolderName.c_str());
+
+    try { copyFile(filename_.c_str(), (backupFolderName + slashChar + recordType::databaseFilename).c_str()); }
+    catch (const std::exception &e) { std::cout << e.what() << std::endl; }
 }
 
 #endif /* DATABASE_H_ */

@@ -50,6 +50,9 @@ void addError(std::vector<std::string> &errors, std::string error);
 bool validateLengthOf(const char *value, int min, int max, const std::string &valueName, std::string &errorMessage);
 bool validateLengthOf(const char *value, int max, const std::string &valueName, std::string &errorMessage);
 
+void copyFile(const char *sourceFilename, const char *destinationFilename);
+void moveDirectory(const char *sourceDirectoryPath, const char *destinationDirectoryPath);
+
 template <typename type>
 std::string toString(const type &variable)
 {
