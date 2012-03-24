@@ -36,8 +36,20 @@ protected:
 
     virtual void TearDown()
     {
-        std::string settingsFilename = Databases::settings().filename();
+        std::string customersFilename = Databases::customers().filename(),
+                jobsFilename = Databases::jobs().filename(),
+                partsFilename = Databases::parts().filename(),
+                tasksFilename = Databases::tasks().filename(),
+                expensesFilename = Databases::expenses().filename(),
+                settingsFilename = Databases::settings().filename();
+
         Databases::finalise();
+
+        remove(customersFilename.c_str());
+        remove(jobsFilename.c_str());
+        remove(partsFilename.c_str());
+        remove(tasksFilename.c_str());
+        remove(expensesFilename.c_str());
         remove(settingsFilename.c_str());
     }
 };
