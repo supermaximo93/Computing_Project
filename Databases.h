@@ -10,12 +10,12 @@
 
 template<class recordType> class Database;
 
+class Setting;
 class Customer;
 class Job;
 class Part;
 class Task;
 class Expense;
-class Setting;
 
 namespace Databases
 {
@@ -28,12 +28,14 @@ void init();
 
 void finalise();
 
+Database<Setting> & settings();
 Database<Customer> & customers();
 Database<Job> & jobs();
 Database<Part> & parts();
 Database<Task> & tasks();
 Database<Expense> & expenses();
-Database<Setting> & settings();
+
+void reloadDatabaseFilenames();
 
 }
 

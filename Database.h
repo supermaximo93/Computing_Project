@@ -17,6 +17,9 @@
 
 #include <QMutex>
 
+#include "Record.h"
+#include "Setting.h"
+#include "dialogs/setting/SettingForm.h"
 #include "Utils.h"
 
 template<class recordType>
@@ -120,10 +123,20 @@ public:
     void sortRecords(recordList &records, unsigned startIndex, unsigned endIndex,
                      int (*comparisonFunction)(const recordType &, const recordType &));
 
-    const std::string & filename();
+    const std::string & filename(), & databaseDirectory(), & backupDirectory();
+
+    /*
+     * Reloads the database file path from the settings database, moving the database files if the directory has
+     * changed and the moveFiles parameter is true
+     */
+#ifdef COMPILE_TESTS
+    void reloadFilename(bool moveFiles, bool testing);
+#else
+    void reloadFilename(bool moveFiles);
+#endif
 
 private:
-    std::string filename_;
+    std::string filename_, databaseDirectory_, backupDirectory_;
     int idCounter;
     QMutex fileMutex;
 };
@@ -135,11 +148,7 @@ Database<recordType>::Database(bool testing)
 Database<recordType>::Database()
 #endif
 {
-    filename_ = recordType::databaseFilename;
-
-#ifdef COMPILE_TESTS
-    if (testing) filename_ += ".test";
-#endif
+    reloadFilename(false, testing);
 
     while (!fileMutex.tryLock(1000));
 
@@ -173,7 +182,7 @@ Database<recordType>::~Database()
     while (!fileMutex.tryLock(1000));
 
     std::fstream newFile;
-    newFile.open(("temp_" + filename_).c_str(), std::ios::out | std::ios::binary);
+    newFile.open((filename_ + ".temp").c_str(), std::ios::out | std::ios::binary);
     if (newFile.is_open())
     {
         newFile.write(reinterpret_cast<const char *>(&idCounter), sizeof(idCounter));
@@ -201,11 +210,11 @@ Database<recordType>::~Database()
         if (fileCopied)
         {
             remove(filename_.c_str());
-            rename(("temp_" + filename_).c_str(), filename_.c_str());
+            rename((filename_ + ".temp").c_str(), filename_.c_str());
         }
-        else remove(("temp_" + filename_).c_str());
+        else remove((filename_ + ".temp").c_str());
     }
-    else std::cout << "Could not create temporary file temp_" + filename_ << std::endl;
+    else std::cout << "Could not create temporary file " + filename_ + ".temp" << std::endl;
 
     fileMutex.unlock();
 }
@@ -614,6 +623,99 @@ template<class recordType>
 const std::string & Database<recordType>::filename()
 {
     return filename_;
+}
+
+template<class recordType>
+const std::string & Database<recordType>::databaseDirectory()
+{
+    return databaseDirectory_;
+}
+
+template<class recordType>
+const std::string & Database<recordType>::backupDirectory()
+{
+    return backupDirectory_;
+}
+
+template<class recordType>
+#ifdef COMPILE_TESTS
+void Database<recordType>::reloadFilename(const bool moveFiles, bool testing)
+#else
+void Database<recordType>::reloadFilename(const bool moveFiles)
+#endif
+{
+    std::string previousDatabaseDirectory = databaseDirectory_,
+            previousBackupDirectory = backupDirectory_,
+            previousFilename = filename_;
+
+    filename_ = recordType::databaseFilename;
+
+    if (typeid(recordType()) != typeid(Setting())) // If it isn't the settings database
+    {
+        extern Database<Setting> *settingDatabasePtr;
+        Setting databaseDirectorySetting, backupDirectorySetting;
+
+        if (settingDatabasePtr != NULL)
+        {
+            try { databaseDirectorySetting = settingDatabasePtr->findRecord("key", SettingForm::keyDatabaseDirectory); }
+            catch (const std::exception &e) { databaseDirectorySetting = Setting(); }
+
+            try { backupDirectorySetting = settingDatabasePtr->findRecord("key", SettingForm::keyBackupDirectory); }
+            catch (const std::exception &e) { backupDirectorySetting = Setting(); }
+        }
+
+        databaseDirectory_ = databaseDirectorySetting.getValue();
+        backupDirectory_ = backupDirectorySetting.getValue();
+
+#ifdef _WIN32
+        const char slashChar = '\\';
+#else
+        const char slashChar = '/';
+#endif
+
+        if (!databaseDirectory_.empty() && (databaseDirectory_[databaseDirectory_.length() - 1] != slashChar))
+            databaseDirectory_ += slashChar;
+        if (!backupDirectory_.empty() && (backupDirectory_[backupDirectory_.length() - 1] != slashChar))
+            backupDirectory_ += slashChar;
+
+        filename_ = databaseDirectory_ + filename_;
+    }
+    else databaseDirectory_ = backupDirectory_ = "";
+
+#ifdef COMPILE_TESTS
+    if (testing) filename_ += ".test";
+#endif
+
+    if (moveFiles && (databaseDirectory_ != previousDatabaseDirectory))
+    {
+        while (!fileMutex.tryLock(1000));
+
+        std::ifstream originalFile;
+        std::ofstream newFile;
+        originalFile.open(previousFilename.c_str(), std::ios::binary);
+        newFile.open(filename_.c_str(), std::ios::binary);
+
+        if (originalFile.is_open() && newFile.is_open())
+        {
+            char data[] = { '\0', '\0' };
+            while (true)
+            {
+                originalFile.read(data, 1);
+                if (originalFile.eof()) break;
+                newFile.write(data, 1);
+            }
+
+            newFile.close();
+            originalFile.close();
+            remove(previousFilename.c_str());
+            fileMutex.unlock();
+        }
+        else
+        {
+            fileMutex.unlock();
+            throw std::runtime_error("Unable to move database files");
+        }
+    }
 }
 
 #endif /* DATABASE_H_ */

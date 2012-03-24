@@ -14,6 +14,7 @@
 #include "Setting.h"
 #include "SettingController.h"
 #include "Utils.h"
+#include "Databases.h"
 
 const char
 *SettingForm::keyDatabaseDirectory = "database directory",
@@ -131,6 +132,9 @@ bool SettingForm::inputsAreValid()
 
 bool SettingForm::updateSettings()
 {
+    std::string previousDatabaseDirectory = Databases::customers().databaseDirectory(),
+            previousBackupDirectory = Databases::customers().backupDirectory();
+
     const unsigned settingCount = 12;
     Setting newSettings[] = {
         Setting(keyDatabaseDirectory, ui->lineEdit_databaseDirectory->text().toStdString().c_str()),
@@ -175,6 +179,21 @@ bool SettingForm::updateSettings()
     for (unsigned i = 0; i < settingCount; ++i)
     {
         if (newSettings[i].null()) SettingController::Create(newSettings[i], this);
+    }
+
+    try { Databases::reloadDatabaseFilenames(); }
+    catch (const std::exception &e)
+    {
+        Setting databaseDirectorySetting = SettingController::getSetting(keyDatabaseDirectory),
+                backupDirectorySetting = SettingController::getSetting(keyBackupDirectory);
+
+        databaseDirectorySetting.setValue(previousDatabaseDirectory.c_str());
+        backupDirectorySetting.setValue(previousBackupDirectory.c_str());
+
+        SettingController::Update(databaseDirectorySetting, this);
+        SettingController::Update(backupDirectorySetting, this);
+
+        Databases::reloadDatabaseFilenames();
     }
 
     return true;

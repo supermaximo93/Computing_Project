@@ -7,44 +7,45 @@
 
 #include "Databases.h"
 #include "Database.h"
+#include "Setting.h"
 #include "Customer.h"
 #include "Job.h"
 #include "Part.h"
 #include "Task.h"
 #include "Expense.h"
-#include "Setting.h"
 
+Database<Setting> *settingDatabasePtr = NULL; // Not static so it can be accessed by Database with extern
 static Database<Customer> *customerDatabasePtr = NULL;
 static Database<Job> *jobDatabasePtr = NULL;
 static Database<Part> *partDatabasePtr = NULL;
 static Database<Task> *taskDatabasePtr = NULL;
 static Database<Expense> *expenseDatabasePtr = NULL;
-static Database<Setting> *settingDatabasePtr = NULL;
 
-static bool initialised = false;
+static bool initialised = false, testing;
 
 #ifdef COMPILE_TESTS
 void Databases::init(bool testing)
 {
     if (initialised) return;
+    settingDatabasePtr = new Database<Setting>(testing);
     customerDatabasePtr = new Database<Customer>(testing);
     jobDatabasePtr = new Database<Job>(testing);
     partDatabasePtr = new Database<Part>(testing);
     taskDatabasePtr = new Database<Task>(testing);
     expenseDatabasePtr = new Database<Expense>(testing);
-    settingDatabasePtr = new Database<Setting>(testing);
     initialised = true;
+    ::testing = testing;
 }
 #else
 void Databases::init()
 {
     if (initialised) return;
+    settingDatabasePtr = new Database<Setting>;
     customerDatabasePtr = new Database<Customer>;
     jobDatabasePtr = new Database<Job>;
     partDatabasePtr = new Database<Part>;
     taskDatabasePtr = new Database<Task>;
     expenseDatabasePtr = new Database<Expense>;
-    settingDatabasePtr = new Database<Setting>
     initialised = true;
 }
 #endif
@@ -52,19 +53,25 @@ void Databases::init()
 void Databases::finalise()
 {
     if (!initialised) return;
+    delete settingDatabasePtr;
     delete customerDatabasePtr;
     delete jobDatabasePtr;
     delete partDatabasePtr;
     delete taskDatabasePtr;
     delete expenseDatabasePtr;
-    delete settingDatabasePtr;
+    settingDatabasePtr = NULL;
     customerDatabasePtr = NULL;
     jobDatabasePtr = NULL;
     partDatabasePtr = NULL;
     taskDatabasePtr = NULL;
     expenseDatabasePtr = NULL;
-    settingDatabasePtr = NULL;
     initialised = false;
+}
+
+Database<Setting> & Databases::settings()
+{
+    if (settingDatabasePtr == NULL) throw(std::runtime_error("Setting database not initialised"));
+    return *settingDatabasePtr;
 }
 
 Database<Customer> & Databases::customers()
@@ -97,8 +104,15 @@ Database<Expense> & Databases::expenses()
     return *expenseDatabasePtr;
 }
 
-Database<Setting> & Databases::settings()
+void Databases::reloadDatabaseFilenames()
 {
-    if (settingDatabasePtr == NULL) throw(std::runtime_error("Setting database not initialised"));
-    return *settingDatabasePtr;
+    if (!initialised) throw(std::runtime_error("Databases not initialised"));
+
+    // No need to reload settings database filename because it will stay the same anyway
+    // (settings are saved in the program directory)
+    customerDatabasePtr->reloadFilename(true, testing);
+    jobDatabasePtr->reloadFilename(true, testing);
+    partDatabasePtr->reloadFilename(true, testing);
+    taskDatabasePtr->reloadFilename(true, testing);
+    expenseDatabasePtr->reloadFilename(true, testing);
 }
