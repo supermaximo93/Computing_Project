@@ -153,6 +153,7 @@ SOURCES += Customer.cpp \
     dialogs/utils/PasswordDialog.cpp \
     Encrypter.cpp \
     dialogs/utils/MoveFileExistsDialog.cpp \
-    VatRate.cpp
+    VatRate.cpp \
+    testing/unit/VatRate_testing.cc
 
 OTHER_FILES +=
