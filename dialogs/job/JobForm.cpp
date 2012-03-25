@@ -205,6 +205,7 @@ void JobForm::on_dateTimeEdit_date_dateTimeChanged(const QDateTime &date)
     {
         ui->dateTimeEdit_date->setStyleSheet("");
         ui->dateTimeEdit_date->setToolTip("");
+        updateCharges();
     }
 }
 

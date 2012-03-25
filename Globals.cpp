@@ -8,12 +8,29 @@
 #include "Globals.h"
 #include "Utils.h"
 
-double Globals::vatRate(const Date &time) // TODO: make it get VAT rate from different periods of time
+#include "VatRate.h"
+#include "VatRateController.h"
+
+const double Globals::defaultVatRate = 20.0;
+
+double Globals::vatRate(const Date &time)
 {
-    return 20.0;
+    return vatRate((time_t)time);
 }
 
 double Globals::vatRate(const time_t time)
 {
-    return vatRate(Date(time));
+    Database<VatRate>::recordListPtr vatRates = VatRateController::getAllVatRates();
+    VatRateController::sortVatRatesByStartDate(*vatRates);
+
+    VatRate foundVatRate;
+    for (unsigned i = 0; i < vatRates->size(); ++i)
+    {
+        VatRate &vatRate = vatRates->at(i);
+
+        if (vatRate.getStartDate() <= time) foundVatRate = vatRate;
+        else break;
+    }
+
+    return foundVatRate.getValue();
 }

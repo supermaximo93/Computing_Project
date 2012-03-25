@@ -15,6 +15,8 @@ class Date;
 namespace Globals
 {
 
+extern const double defaultVatRate;
+
 double vatRate(const Date &time); // Get the VAT rate at a particular time in history
 double vatRate(time_t time);
 

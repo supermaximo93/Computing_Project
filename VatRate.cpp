@@ -10,6 +10,7 @@
 using namespace std;
 
 #include "VatRate.h"
+#include "Globals.h"
 
 const string VatRate::databaseFilename = "vatrates.dat";
 
@@ -18,7 +19,8 @@ int VatRate::size()
     return Record::size() + sizeof(double) + sizeof(time_t);
 }
 
-VatRate::VatRate(double value, time_t startDate) : value(value), startDate(startDate == 0 ? time(NULL) : startDate) {}
+VatRate::VatRate(double value, time_t startDate)
+    : value(value < 0.0 ? Globals::defaultVatRate : value), startDate(startDate == 0 ? time(NULL) : startDate) {}
 
 VatRate::VatRate(const VatRate &vatRate)
 {

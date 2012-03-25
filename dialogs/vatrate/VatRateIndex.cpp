@@ -25,6 +25,8 @@ VatRateIndex::~VatRateIndex()
 
 void VatRateIndex::updateView()
 {
+    VatRateController::sortVatRatesByStartDate(vatRates);
+
     ui->tableWidget->clear();
 
     QStringList headings;

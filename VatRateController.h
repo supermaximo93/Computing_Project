@@ -36,6 +36,8 @@ bool Destroy(VatRate &vatRate, QWidget *caller);
 VatRate getVatRate(int vatRateId);
 Database<VatRate>::recordListPtr getAllVatRates();
 
+void sortVatRatesByStartDate(Database<VatRate>::recordList &vatRates, bool ascending = true);
+
 }
 
 #endif // VATRATECONTROLLER_H

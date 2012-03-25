@@ -23,6 +23,8 @@ void VatRateController::Index(QWidget *caller)
         return;
     }
 
+    sortVatRatesByStartDate(*vatRates);
+
     VatRateIndex(*vatRates, caller).exec();
 }
 
@@ -162,4 +164,29 @@ Database<VatRate>::recordListPtr VatRateController::getAllVatRates()
         return Database<VatRate>::recordListPtr(new Database<VatRate>::recordList);
     }
     return vatRates;
+}
+
+void VatRateController::sortVatRatesByStartDate(Database<VatRate>::recordList &vatRates, const bool ascending)
+{
+    struct NestedFunctions
+    {
+        static int startDateCompareAsc(const VatRate &vatRate1, const VatRate &vatRate2)
+        {
+            const time_t date1 = vatRate1.getStartDate(), date2 = vatRate2.getStartDate();
+            if (date1 < date2) return -1;
+            if (date1 > date2) return 1;
+            return 0;
+        }
+
+        static int startDateCompareDec(const VatRate &vatRate1, const VatRate &vatRate2)
+        {
+            const time_t date1 = vatRate1.getStartDate(), date2 = vatRate2.getStartDate();
+            if (date1 < date2) return 1;
+            if (date1 > date2) return -1;
+            return 0;
+        }
+    };
+
+    Databases::vatRates().sortRecords(vatRates, 0, vatRates.size() - 1, ascending ?
+                                          NestedFunctions::startDateCompareAsc : NestedFunctions::startDateCompareDec);
 }
