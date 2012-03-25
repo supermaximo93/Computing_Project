@@ -31,6 +31,11 @@ const char
 *SettingForm::keyEmailPort = "email port",
 *SettingForm::keyProgramPassword = "program password";
 
+Setting SettingForm::getDatabaseDirectory()
+{
+    return SettingController::getSetting(keyDatabaseDirectory);
+}
+
 SettingForm::SettingForm(QWidget *parent)
     : QDialog(parent), ui(new Ui::SettingForm)
 {

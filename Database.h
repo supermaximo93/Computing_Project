@@ -711,33 +711,27 @@ void Database<recordType>::reloadFilename(const bool moveFiles)
             previousBackupDirectory = backupDirectory_,
             previousFilename = filename_;
 
-    filename_ = recordType::databaseFilename;
+    extern Database<Setting> *settingDatabasePtr;
+    Setting databaseDirectorySetting, backupDirectorySetting;
 
-    if (typeid(recordType()) != typeid(Setting())) // If it isn't the settings database
+    try { databaseDirectorySetting = SettingForm::getDatabaseDirectory(); }
+    catch (const std::exception &e) { databaseDirectorySetting = Setting(); }
+
+    if (settingDatabasePtr != NULL)
     {
-        extern Database<Setting> *settingDatabasePtr;
-        Setting databaseDirectorySetting, backupDirectorySetting;
-
-        if (settingDatabasePtr != NULL)
-        {
-            try { databaseDirectorySetting = settingDatabasePtr->findRecord("key", SettingForm::keyDatabaseDirectory); }
-            catch (const std::exception &e) { databaseDirectorySetting = Setting(); }
-
-            try { backupDirectorySetting = settingDatabasePtr->findRecord("key", SettingForm::keyBackupDirectory); }
-            catch (const std::exception &e) { backupDirectorySetting = Setting(); }
-        }
-
-        databaseDirectory_ = databaseDirectorySetting.getValue();
-        backupDirectory_ = backupDirectorySetting.getValue();
-
-        if (!databaseDirectory_.empty() && (databaseDirectory_[databaseDirectory_.length() - 1] != slashChar))
-            databaseDirectory_ += slashChar;
-        if (!backupDirectory_.empty() && (backupDirectory_[backupDirectory_.length() - 1] != slashChar))
-            backupDirectory_ += slashChar;
-
-        filename_ = databaseDirectory_ + filename_;
+        try { backupDirectorySetting = settingDatabasePtr->findRecord("key", SettingForm::keyBackupDirectory); }
+        catch (const std::exception &e) { backupDirectorySetting = Setting(); }
     }
-    else databaseDirectory_ = backupDirectory_ = "";
+
+    databaseDirectory_ = databaseDirectorySetting.getValue();
+    backupDirectory_ = backupDirectorySetting.getValue();
+
+    if (!databaseDirectory_.empty() && (databaseDirectory_[databaseDirectory_.length() - 1] != slashChar))
+        databaseDirectory_ += slashChar;
+    if (!backupDirectory_.empty() && (backupDirectory_[backupDirectory_.length() - 1] != slashChar))
+        backupDirectory_ += slashChar;
+
+    filename_ = databaseDirectory_ + recordType::databaseFilename;
 
 #ifdef COMPILE_TESTS
     if (testing) filename_ += ".test";
@@ -787,8 +781,6 @@ void Database<recordType>::backupFile()
 #else
         const char slashChar = '/';
 #endif
-
-    if (typeid(recordType()) == typeid(Setting())) return;
 
     std::string backupFolderName =
             backupDirectory_ + "backups" + slashChar + "backup_" + toString(Date(time(NULL)).year) + "_"

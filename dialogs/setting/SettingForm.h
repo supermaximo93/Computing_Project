@@ -15,6 +15,8 @@ namespace Ui
     class SettingForm;
 }
 
+class Setting;
+
 class SettingForm : public QDialog
 {
     Q_OBJECT
@@ -34,6 +36,8 @@ public:
     *keyEmailHost,
     *keyEmailPort,
     *keyProgramPassword;
+
+    static Setting getDatabaseDirectory();
 
     explicit SettingForm(QWidget *parent = NULL);
     ~SettingForm();

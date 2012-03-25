@@ -21,9 +21,11 @@ static Database<Part> *partDatabasePtr = NULL;
 static Database<Task> *taskDatabasePtr = NULL;
 static Database<Expense> *expenseDatabasePtr = NULL;
 
-static bool initialised = false, testing;
+static bool initialised = false;
 
 #ifdef COMPILE_TESTS
+static bool testing;
+
 void Databases::init(bool testing)
 {
     if (initialised) return;
@@ -108,11 +110,19 @@ void Databases::reloadDatabaseFilenames()
 {
     if (!initialised) throw(std::runtime_error("Databases not initialised"));
 
-    // No need to reload settings database filename because it will stay the same anyway
-    // (settings are saved in the program directory)
+#ifdef COMPILE_TESTS
+    settingDatabasePtr->reloadFilename(true, testing);
     customerDatabasePtr->reloadFilename(true, testing);
     jobDatabasePtr->reloadFilename(true, testing);
     partDatabasePtr->reloadFilename(true, testing);
     taskDatabasePtr->reloadFilename(true, testing);
     expenseDatabasePtr->reloadFilename(true, testing);
+#else
+    settingDatabasePtr->reloadFilename(true);
+    customerDatabasePtr->reloadFilename(true);
+    jobDatabasePtr->reloadFilename(true);
+    partDatabasePtr->reloadFilename(true);
+    taskDatabasePtr->reloadFilename(true);
+    expenseDatabasePtr->reloadFilename(true);
+#endif
 }

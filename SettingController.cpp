@@ -5,12 +5,40 @@
  *      Author: Max Foster
  */
 
+#include <fstream>
+using namespace std;
+
 #include "SettingController.h"
 #include "Databases.h"
 #include "Setting.h"
+#include "Encrypter.h"
+#include "dialogs/setting/SettingForm.h"
+
+static const char *databaseDirectoryStoreFilename = "databaseDirSav.dat";
 
 bool SettingController::Create(Setting &settingAttributes, QWidget *)
 {
+    if (strcmp(settingAttributes.getKey(), SettingForm::keyDatabaseDirectory) == 0)
+    {
+        Encrypter::decryptFile(databaseDirectoryStoreFilename, false);
+
+        {
+            ofstream file;
+            file.open(databaseDirectoryStoreFilename, ios::binary);
+            file.close();
+        }
+
+        fstream file;
+        file.open(databaseDirectoryStoreFilename, ios::in | ios::out | ios::binary);
+        if (file.is_open())
+        {
+            settingAttributes.writeToFile(file);
+            file.close();
+        }
+
+        Encrypter::encryptFile(databaseDirectoryStoreFilename, false);
+    }
+
     try { Databases::settings().addRecord(settingAttributes); }
     catch (const std::exception &e)
     {
@@ -29,6 +57,21 @@ bool SettingController::Create(Setting &settingAttributes, QWidget *)
 
 bool SettingController::Update(const Setting &setting, QWidget *)
 {
+    if (strcmp(setting.getKey(), SettingForm::keyDatabaseDirectory) == 0)
+    {
+        Encrypter::decryptFile(databaseDirectoryStoreFilename, false);
+
+        fstream file;
+        file.open(databaseDirectoryStoreFilename, ios::in | ios::out | ios::binary);
+        if (file.is_open())
+        {
+            setting.writeToFile(file);
+            file.close();
+        }
+
+        Encrypter::encryptFile(databaseDirectoryStoreFilename, false);
+    }
+
     bool success = false;
     try { success = Databases::settings().updateRecord(setting); }
     catch (const std::exception &e)
@@ -81,6 +124,24 @@ Setting SettingController::getSetting(int settingId)
 Setting SettingController::getSetting(const char *key)
 {
     Setting setting;
+
+    if (strcmp(key, SettingForm::keyDatabaseDirectory) == 0)
+    {
+        Encrypter::decryptFile(databaseDirectoryStoreFilename, false);
+
+        fstream file;
+        file.open(databaseDirectoryStoreFilename, ios::in | ios::binary);
+        if (file.is_open())
+        {
+            setting.readFromFile(file);
+            file.close();
+        }
+
+        Encrypter::encryptFile(databaseDirectoryStoreFilename, false);
+
+        return setting;
+    }
+
     try { setting = Databases::settings().findRecord("key", key); }
     catch (const std::exception &e)
     {
