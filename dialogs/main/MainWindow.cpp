@@ -1,6 +1,9 @@
 #include <QCloseEvent>
 #include <QTimer>
 #include <QDate>
+#include <QFileDialog>
+#include <QDesktopServices>
+#include <QUrl>
 
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
@@ -10,6 +13,8 @@
 
 #include "EmailerThread.h"
 #include "EmailDetails.h"
+
+#include "PdfGenerator.h"
 
 #include "Job.h"
 #include "Customer.h"
@@ -223,6 +228,19 @@ void MainWindow::on_label_remindCustomers_linkActivated(const QString &)
 void MainWindow::on_pushButton_allVatRates_clicked()
 {
     VatRateController::Index(this);
+}
+
+void MainWindow::on_pushButton_generateReport_clicked()
+{
+    QString filename = QFileDialog::getSaveFileName(this, "Save Report As", "", "PDF (*.pdf)");
+    if (filename.isEmpty()) return;
+    if (!filename.endsWith(".pdf", Qt::CaseInsensitive)) filename += ".pdf";
+    if (PdfGenerator::generateReport(filename.toStdString().c_str()))
+    {
+        showInfoDialog("Report generated successfully");
+        QDesktopServices::openUrl(QUrl("file:///" + filename));
+    }
+    else showErrorDialog("Report could not be generated");
 }
 
 void MainWindow::calculateIncome()

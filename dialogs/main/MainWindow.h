@@ -51,6 +51,8 @@ private slots:
 
     void on_pushButton_allVatRates_clicked();
 
+    void on_pushButton_generateReport_clicked();
+
 private:
     static const char *windowTitle;
 
