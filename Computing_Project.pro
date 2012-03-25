@@ -165,6 +165,7 @@ SOURCES += Customer.cpp \
     VatRateController.cpp \
     dialogs/vatrate/VatRateIndex.cpp \
     dialogs/vatrate/VatRateShow.cpp \
-    dialogs/vatrate/VatRateForm.cpp
+    dialogs/vatrate/VatRateForm.cpp \
+    testing/integration/VatRateController_testing.cc
 
 OTHER_FILES +=

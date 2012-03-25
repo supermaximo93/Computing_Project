@@ -51,7 +51,8 @@ protected:
                 partsFilename = Databases::parts().filename(),
                 tasksFilename = Databases::tasks().filename(),
                 expensesFilename = Databases::expenses().filename(),
-                settingsFilename = Databases::settings().filename();
+                settingsFilename = Databases::settings().filename(),
+                vatRateFilename = Databases::vatRates().filename();
 
         Databases::finalise();
 
@@ -61,6 +62,7 @@ protected:
         remove(tasksFilename.c_str());
         remove(expensesFilename.c_str());
         remove(settingsFilename.c_str());
+        remove(vatRateFilename.c_str());
     }
 };
 
