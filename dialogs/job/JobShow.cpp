@@ -260,7 +260,7 @@ void JobShow::on_pushButton_sendReciept_released()
     replaceChars(recieptFileName, '/', '-');
     replaceChars(recieptFileName, ':', '-');
 
-    PdfGenerator::generateReciept(recieptFileName.c_str(), job);
+    PdfGenerator::generateReceipt(recieptFileName.c_str(), job);
 
     EmailDetails emailDetails(customer.getEmailAddress(),
                               SettingController::getSetting(SettingForm::keyReceiptSubject).getValue(),

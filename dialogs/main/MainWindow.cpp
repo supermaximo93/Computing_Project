@@ -234,7 +234,6 @@ void MainWindow::on_pushButton_generateReport_clicked()
 {
     QString filename = QFileDialog::getSaveFileName(this, "Save Report As", "", "PDF (*.pdf)");
     if (filename.isEmpty()) return;
-    if (!filename.endsWith(".pdf", Qt::CaseInsensitive)) filename += ".pdf";
     if (PdfGenerator::generateReport(filename.toStdString().c_str()))
     {
         showInfoDialog("Report generated successfully");

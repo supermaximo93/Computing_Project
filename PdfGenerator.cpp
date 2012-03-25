@@ -5,190 +5,84 @@
  *      Author: Max Foster
  */
 
-#include <cstring>
+#include <map>
 using namespace std;
 
-#include <hpdf.h>
+#include <QWebView>
+#include <QUrl>
+#include <QPrinter>
+#include <QFile>
 
 #include "PdfGenerator.h"
-
-#include "Databases.h"
-#include "Database.h"
 #include "Job.h"
-#include "Customer.h"
-#include "CustomerController.h"
+#include "Utils.h"
 
-struct ErrorData
+QString toValidFileName(const char *fileName_)
 {
-    static const short callerLength = 127;
-    char caller[callerLength + 1];
-    bool errorOccured;
-    unsigned stage;
-    ErrorData(const char * caller_) : errorOccured(false), stage(0) { strncpy(caller, caller_, callerLength); }
-};
-
-void errorHandler(HPDF_STATUS errorNumber, HPDF_STATUS detailNumber, void * userData)
-{
-    cout << "Error with generating PDF in function PdfGenerator::" << reinterpret_cast<const char *>(userData) << endl
-         << "Stage number:  " << static_cast<ErrorData*>(userData)->stage << endl
-         << "Error number:  " << (unsigned int)errorNumber << endl
-         << "Detail number: " << (int)detailNumber << endl;
-
-    static_cast<ErrorData*>(userData)->errorOccured = true;
+    QString fileName(fileName_);
+    if (!fileName.endsWith(".pdf", Qt::CaseInsensitive)) fileName += ".pdf";
+    return fileName;
 }
 
-#define CHECK_FOR_ERROR() \
-    if (errorData.errorOccured) { HPDF_Free(pdf); return false; } ++errorData.stage;
-
-#define Y(value) \
-    pageHeight - (value)
-
-#define X(value) \
-    (value)         //for consistency
-
-bool drawHeader(HPDF_Doc &pdf, HPDF_Page &page, const char *title, const Customer &customer, ErrorData &errorData)
+QString getHtml(const QString &filename)
 {
-    float pageWidth = HPDF_Page_GetWidth(page), pageHeight = HPDF_Page_GetHeight(page);
-
-    // draw heading
-    HPDF_Font font = HPDF_GetFont(pdf, "Helvetica-Bold", NULL);
-    CHECK_FOR_ERROR();
-    HPDF_Page_SetFontAndSize(page, font, 24);
-    CHECK_FOR_ERROR();
-    HPDF_Page_TextOut(page, X(50), Y(50), title);
-    CHECK_FOR_ERROR();
-
-    // draw company details
+    QString returnString;
+    QFile file(filename);
+    if (file.exists())
     {
-        HPDF_Page_SetFontAndSize(page, font, 10);
-        HPDF_Page_TextOut(page, X(50), Y(90), "Company details");
-        CHECK_FOR_ERROR();
-
-        font = HPDF_GetFont(pdf, "Courier", NULL);
-        CHECK_FOR_ERROR();
-        HPDF_Page_SetFontAndSize(page, font, 8);
-        CHECK_FOR_ERROR();
-
-        const char *column1Data[] = {
-            "           Name:",
-            "Registration No:",
-            "         VAT No:",
-            "        Address:",
-            "",
-            "",
-            "       Postcode:",
-            "      Telephone:"
-        };
-        const char *column2Data[] = {
-            "Ian Foster Services",
-            "305566",
-            "918 2496 02",
-            "96 Bradshaw Road",
-            "Watford",
-            "Herts",
-            "WD24 4DF",
-            "01923 238 172 / 07828 679 589"
-        };
-
-        const unsigned arrayLength = sizeof(column1Data) / sizeof(const char *);
-        for (unsigned i = 0; i < arrayLength; ++i)
+        file.open(QFile::ReadOnly);
+        if (file.isOpen())
         {
-            HPDF_Page_TextOut(page, X(30), Y(110 + i * 12), column1Data[i]);
-            CHECK_FOR_ERROR();
-            HPDF_Page_TextOut(page, X(120), Y(110 + i * 12), column2Data[i]);
-            CHECK_FOR_ERROR();
-        }
-
-    }
-
-    const unsigned CUSTOMER_DETAIL_PADDING_X = 250;
-    // draw customer details
-    {
-        font = HPDF_GetFont(pdf, "Helvetica-Bold", NULL);
-        HPDF_Page_SetFontAndSize(page, font, 10);
-        HPDF_Page_TextOut(page, X(CUSTOMER_DETAIL_PADDING_X + 50), Y(90), "Customer details");
-        CHECK_FOR_ERROR();
-
-        font = HPDF_GetFont(pdf, "Courier", NULL);
-        CHECK_FOR_ERROR();
-        HPDF_Page_SetFontAndSize(page, font, 8);
-        CHECK_FOR_ERROR();
-
-        const char *column1Data[] = {
-            "           Name:",
-            "        Address:",
-            "",
-            "",
-            "       Postcode:",
-            "      Telephone:",
-            "  Email Address:"
-        };
-
-        char telephoneString[32];
-        strcpy(telephoneString, customer.getHomePhoneNumber());
-        if (strcmp(customer.getMobilePhoneNumber(), "") != 0)
-        {
-            strcat(telephoneString, " / ");
-            strcat(telephoneString, customer.getMobilePhoneNumber());
-        }
-
-        const char *column2Data[] = {
-            createFullName(customer.getForename(), customer.getSurname()),
-            customer.getAddressLine1(),
-            customer.getAddressLine2(),
-            customer.getTown(),
-            customer.getPostcode(),
-            telephoneString,
-            customer.getEmailAddress()
-        };
-
-        const unsigned arrayLength = sizeof(column1Data) / sizeof(const char *);
-        for (unsigned i = 0; i < arrayLength; ++i)
-        {
-            HPDF_Page_TextOut(page, X(CUSTOMER_DETAIL_PADDING_X + 30), Y(110 + i * 12), column1Data[i]);
-            CHECK_FOR_ERROR();
-            HPDF_Page_TextOut(page, X(CUSTOMER_DETAIL_PADDING_X + 120), Y(110 + i * 12), column2Data[i]);
-            CHECK_FOR_ERROR();
+            returnString = file.readAll();
+            file.close();
         }
     }
-
-    return true;
+    return returnString;
 }
 
-bool PdfGenerator::generateInvoice(const char *fileName, const Job &job)
-{
-    ErrorData errorData("generateInvoice");
-
-    HPDF_Doc pdf;
-    pdf = HPDF_New(errorHandler, &errorData);
-    if (pdf == NULL) return false; // Error handler should already have been called to output an error
-
-    ++errorData.stage;
-    HPDF_Page page = HPDF_AddPage(pdf);
-    CHECK_FOR_ERROR();
-
-    HPDF_Page_BeginText(page);
-    CHECK_FOR_ERROR();
-
-    Customer customer = CustomerController::getCustomer(job.getCustomerId());
-    if (!drawHeader(pdf, page, "INVOICE", customer, errorData)) return false;
-
-    HPDF_Page_EndText(page);
-    CHECK_FOR_ERROR();
-
-    HPDF_SaveToFile(pdf, fileName);
-    CHECK_FOR_ERROR();
-
-    HPDF_Free(pdf);
-    return true;
+#define GET_WEBVIEW_AND_HTML() \
+QWebView view;\
+QString html = getHtml(templateFileName);\
+if (html.isEmpty())\
+{\
+    showErrorDialog(("Could not open file " + templateFileName).toStdString().c_str());\
+    return false;\
 }
 
-bool PdfGenerator::generateReciept(const char *fileName, const Job &job)
-{
-    return generateInvoice(fileName, job);
-}
+#define PRINT_TO_PDF() \
+QPrinter printer;\
+printer.setOutputFormat(QPrinter::PdfFormat);\
+printer.setOutputFileName(fileName);\
+view.print(&printer)
 
-bool PdfGenerator::generateReport(const char *fileName)
+bool PdfGenerator::generateInvoice(const char *fileName_, const Job &job)
 {
+    QString fileName = toValidFileName(fileName_), templateFileName = "invoice_template.html";
+
+
+    GET_WEBVIEW_AND_HTML();
+    view.setHtml(html);
+    PRINT_TO_PDF();
+
     return false;
+}
+
+bool PdfGenerator::generateReceipt(const char *fileName_, const Job &job)
+{
+    QString fileName = toValidFileName(fileName_), templateFileName = "receipt_template.html";
+
+    GET_WEBVIEW_AND_HTML();
+    PRINT_TO_PDF();
+
+    return false;
+}
+
+bool PdfGenerator::generateReport(const char *fileName_)
+{
+    QString fileName = toValidFileName(fileName_), templateFileName = "report_template.html";
+
+    GET_WEBVIEW_AND_HTML();
+    PRINT_TO_PDF();
+
+    return true;
 }
