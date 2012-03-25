@@ -75,7 +75,8 @@ HEADERS += \
     dialogs/setting/SettingForm.h \
     dialogs/utils/PasswordDialog.h \
     Encrypter.h \
-    dialogs/utils/MoveFileExistsDialog.h
+    dialogs/utils/MoveFileExistsDialog.h \
+    VatRate.h
 FORMS += dialogs/customer/CustomerForm.ui \
          dialogs/customer/CustomerIndex.ui \
          dialogs/customer/CustomerShow.ui \
@@ -151,6 +152,7 @@ SOURCES += Customer.cpp \
     testing/unit/Setting_testing.cc \
     dialogs/utils/PasswordDialog.cpp \
     Encrypter.cpp \
-    dialogs/utils/MoveFileExistsDialog.cpp
+    dialogs/utils/MoveFileExistsDialog.cpp \
+    VatRate.cpp
 
 OTHER_FILES +=
