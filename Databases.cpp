@@ -13,6 +13,7 @@
 #include "Part.h"
 #include "Task.h"
 #include "Expense.h"
+#include "VatRate.h"
 
 Database<Setting> *settingDatabasePtr = NULL; // Not static so it can be accessed by Database with extern
 static Database<Customer> *customerDatabasePtr = NULL;
@@ -20,6 +21,7 @@ static Database<Job> *jobDatabasePtr = NULL;
 static Database<Part> *partDatabasePtr = NULL;
 static Database<Task> *taskDatabasePtr = NULL;
 static Database<Expense> *expenseDatabasePtr = NULL;
+static Database<VatRate> *vatRateDatabasePtr = NULL;
 
 static bool initialised = false;
 
@@ -35,6 +37,7 @@ void Databases::init(bool testing)
     partDatabasePtr = new Database<Part>(testing);
     taskDatabasePtr = new Database<Task>(testing);
     expenseDatabasePtr = new Database<Expense>(testing);
+    vatRateDatabasePtr = new Database<VatRate>(testing);
     initialised = true;
     ::testing = testing;
 }
@@ -48,6 +51,7 @@ void Databases::init()
     partDatabasePtr = new Database<Part>;
     taskDatabasePtr = new Database<Task>;
     expenseDatabasePtr = new Database<Expense>;
+    vatRateDatabasePtr = new Database<VatRate>;
     initialised = true;
 }
 #endif
@@ -60,12 +64,14 @@ void Databases::finalise()
     delete partDatabasePtr;
     delete taskDatabasePtr;
     delete expenseDatabasePtr;
+    delete vatRateDatabasePtr;
     delete settingDatabasePtr;
     customerDatabasePtr = NULL;
     jobDatabasePtr = NULL;
     partDatabasePtr = NULL;
     taskDatabasePtr = NULL;
     expenseDatabasePtr = NULL;
+    vatRateDatabasePtr = NULL;
     settingDatabasePtr = NULL;
     initialised = false;
 }
@@ -106,6 +112,12 @@ Database<Expense> & Databases::expenses()
     return *expenseDatabasePtr;
 }
 
+Database<VatRate> & Databases::vatRates()
+{
+    if (vatRateDatabasePtr == NULL) throw(std::runtime_error("VAT rate database not initialised"));
+    return *vatRateDatabasePtr;
+}
+
 void Databases::reloadDatabaseFilenames()
 {
     if (!initialised) throw(std::runtime_error("Databases not initialised"));
@@ -117,6 +129,7 @@ void Databases::reloadDatabaseFilenames()
     partDatabasePtr->reloadFilename(true, testing);
     taskDatabasePtr->reloadFilename(true, testing);
     expenseDatabasePtr->reloadFilename(true, testing);
+    vatRateDatabasePtr->reloadFilename(true, testing);
 #else
     settingDatabasePtr->reloadFilename(true);
     customerDatabasePtr->reloadFilename(true);
@@ -124,5 +137,6 @@ void Databases::reloadDatabaseFilenames()
     partDatabasePtr->reloadFilename(true);
     taskDatabasePtr->reloadFilename(true);
     expenseDatabasePtr->reloadFilename(true);
+    vatRateDatabasePtr->reloadFilename(true);
 #endif
 }

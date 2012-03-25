@@ -16,6 +16,7 @@ class Job;
 class Part;
 class Task;
 class Expense;
+class VatRate;
 
 namespace Databases
 {
@@ -34,6 +35,7 @@ Database<Job> & jobs();
 Database<Part> & parts();
 Database<Task> & tasks();
 Database<Expense> & expenses();
+Database<VatRate> & vatRates();
 
 void reloadDatabaseFilenames();
 

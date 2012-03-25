@@ -18,6 +18,7 @@ class Part;
 class Task;
 class Expense;
 class Setting;
+class VatRate;
 
 class Record
 {
@@ -39,6 +40,7 @@ public:
     friend class Database<Task>;
     friend class Database<Expense>;
     friend class Database<Setting>;
+    friend class Database<VatRate>;
 
 protected:
     static int size();

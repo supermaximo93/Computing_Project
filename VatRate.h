@@ -19,7 +19,7 @@ public:
 
     static int size();
 
-    VatRate(double value = 0.0, time_t startDate = 0);
+    VatRate(double value = 20.0, time_t startDate = 0);
     VatRate(const VatRate &vatRate);
     ~VatRate();
 

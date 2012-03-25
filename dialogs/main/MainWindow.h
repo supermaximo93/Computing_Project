@@ -49,6 +49,8 @@ private slots:
 
     void action_exit_triggered();
 
+    void on_pushButton_allVatRates_clicked();
+
 private:
     static const char *windowTitle;
 

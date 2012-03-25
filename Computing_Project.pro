@@ -76,7 +76,11 @@ HEADERS += \
     dialogs/utils/PasswordDialog.h \
     Encrypter.h \
     dialogs/utils/MoveFileExistsDialog.h \
-    VatRate.h
+    VatRate.h \
+    VatRateController.h \
+    dialogs/vatrate/VatRateIndex.h \
+    dialogs/vatrate/VatRateShow.h \
+    dialogs/vatrate/VatRateForm.h
 FORMS += dialogs/customer/CustomerForm.ui \
          dialogs/customer/CustomerIndex.ui \
          dialogs/customer/CustomerShow.ui \
@@ -96,7 +100,10 @@ FORMS += dialogs/customer/CustomerForm.ui \
     dialogs/utils/ProcessDialog.ui \
     dialogs/setting/SettingForm.ui \
     dialogs/utils/PasswordDialog.ui \
-    dialogs/utils/MoveFileExistsDialog.ui
+    dialogs/utils/MoveFileExistsDialog.ui \
+    dialogs/vatrate/VatRateIndex.ui \
+    dialogs/vatrate/VatRateShow.ui \
+    dialogs/vatrate/VatRateForm.ui
 SOURCES += Customer.cpp \
            CustomerController.cpp \
            Databases.cpp \
@@ -154,6 +161,10 @@ SOURCES += Customer.cpp \
     Encrypter.cpp \
     dialogs/utils/MoveFileExistsDialog.cpp \
     VatRate.cpp \
-    testing/unit/VatRate_testing.cc
+    testing/unit/VatRate_testing.cc \
+    VatRateController.cpp \
+    dialogs/vatrate/VatRateIndex.cpp \
+    dialogs/vatrate/VatRateShow.cpp \
+    dialogs/vatrate/VatRateForm.cpp
 
 OTHER_FILES +=

@@ -6,6 +6,7 @@
  */
 
 #include <stdexcept>
+#include <ctime>
 using namespace std;
 
 #include "VatRate.h"
@@ -17,7 +18,7 @@ int VatRate::size()
     return Record::size() + sizeof(double) + sizeof(time_t);
 }
 
-VatRate::VatRate(double value, time_t startDate) : value(value), startDate(startDate) {}
+VatRate::VatRate(double value, time_t startDate) : value(value), startDate(startDate == 0 ? time(NULL) : startDate) {}
 
 VatRate::VatRate(const VatRate &vatRate)
 {

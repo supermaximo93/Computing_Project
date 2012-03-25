@@ -21,6 +21,7 @@
 #include "TaskController.h"
 #include "ExpenseController.h"
 #include "CustomerController.h"
+#include "VatRateController.h"
 
 #include "Setting.h"
 #include "SettingController.h"
@@ -217,6 +218,11 @@ void MainWindow::on_label_remindCustomers_linkActivated(const QString &)
 
         EmailerThread::enqueueEmail(email);
     }
+}
+
+void MainWindow::on_pushButton_allVatRates_clicked()
+{
+    VatRateController::Index(this);
 }
 
 void MainWindow::calculateIncome()

@@ -56,6 +56,11 @@ Date::operator QDateTime() const
     return QDateTime(QDate(year, month, day), QTime(hour, minute));
 }
 
+Date::operator QDate() const
+{
+    return QDate(year, month, day);
+}
+
 Date::operator time_t() const
 {
     time_t t = 0;

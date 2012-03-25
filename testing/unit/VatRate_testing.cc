@@ -14,8 +14,6 @@
 #include <time.h>
 using namespace std;
 
-#include "testing/TestingHelpers.hpp"
-
 #include "VatRate.h"
 
 class VatRateUnitTest : public ::testing::Test

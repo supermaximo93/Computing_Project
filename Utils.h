@@ -14,6 +14,7 @@
 
 class QString;
 class QDateTime;
+class QDate;
 
 struct Date
 {
@@ -25,6 +26,7 @@ struct Date
     operator std::string() const;
     operator QString() const;
     operator QDateTime() const;
+    operator QDate() const;
     operator time_t() const;
 
     QString toQStringWithoutTime() const;
