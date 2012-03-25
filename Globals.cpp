@@ -7,6 +7,7 @@
 
 #include "Globals.h"
 #include "Utils.h"
+#include "Databases.h"
 
 #include "VatRate.h"
 #include "VatRateController.h"
@@ -20,6 +21,9 @@ double Globals::vatRate(const Date &time)
 
 double Globals::vatRate(const time_t time)
 {
+    // Make sure that VatRate database has been initialised. If not then return default VAT rate value
+    try { Databases::vatRates(); } catch (const std::exception &e) { return defaultVatRate; }
+
     Database<VatRate>::recordListPtr vatRates = VatRateController::getAllVatRates();
     VatRateController::sortVatRatesByStartDate(*vatRates);
 
