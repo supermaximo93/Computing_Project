@@ -210,9 +210,8 @@ bool SettingForm::updateSettings()
     std::string previousDatabaseDirectory = Databases::customers().databaseDirectory(),
             previousBackupDirectory = Databases::customers().backupDirectory();
 
-    const unsigned settingCount = 12;
+    const unsigned settingCount = 11;
     Setting newSettings[] = {
-        Setting(keyDatabaseDirectory, ui->lineEdit_databaseDirectory->text().toStdString().c_str()),
         Setting(keyBackupDirectory, ui->lineEdit_backupDirectory->text().toStdString().c_str()),
         Setting(keyInvoiceSubject, ui->lineEdit_invoiceSubject->text().toStdString().c_str()),
         Setting(keyInvoiceBody, ui->plainTextEdit_invoiceBody->toPlainText().toStdString().c_str()),
@@ -256,11 +255,14 @@ bool SettingForm::updateSettings()
         if (newSettings[i].null()) SettingController::Create(newSettings[i], this);
     }
 
+    Setting databaseDirectorySetting(keyDatabaseDirectory,
+                                     ui->lineEdit_databaseDirectory->text().toStdString().c_str());
+    SettingController::Create(databaseDirectorySetting, this);
+
     try { Databases::reloadDatabaseFilenames(); }
     catch (const std::exception &e)
     {
-        Setting databaseDirectorySetting = SettingController::getSetting(keyDatabaseDirectory),
-                backupDirectorySetting = SettingController::getSetting(keyBackupDirectory);
+        Setting backupDirectorySetting = SettingController::getSetting(keyBackupDirectory);
 
         databaseDirectorySetting.setValue(previousDatabaseDirectory.c_str());
         backupDirectorySetting.setValue(previousBackupDirectory.c_str());

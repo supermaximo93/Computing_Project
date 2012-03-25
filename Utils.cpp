@@ -21,6 +21,7 @@ using namespace std;
 #include "Utils.h"
 
 #include "dialogs/utils/PendingDialog.h"
+#include "dialogs/utils/MoveFileExistsDialog.h"
 
 Date::Date(const time_t seconds_)
 {
@@ -203,6 +204,32 @@ void copyFile(const char *sourceFilename, const char *destinationFilename)
 {
     if (QFile::exists(destinationFilename)) QFile::remove(destinationFilename);
     QFile::copy(sourceFilename, destinationFilename);
+}
+
+void moveFile(const char *sourceFilename, const char *destinationFilename)
+{
+    if (QFile::exists(destinationFilename))
+    {
+        switch (MoveFileExistsDialog(sourceFilename, destinationFilename).exec())
+        {
+        case MoveFileExistsDialog::MOVE_AND_REPLACE:
+            QFile::remove(destinationFilename);
+            QFile::copy(sourceFilename, destinationFilename);
+            remove(sourceFilename);
+            break;
+
+        case MoveFileExistsDialog::DELETE_AND_KEEP:
+            remove(sourceFilename);
+            break;
+
+        default: break;
+        }
+    }
+    else
+    {
+        QFile::copy(sourceFilename, destinationFilename);
+        remove(sourceFilename);
+    }
 }
 
 void moveDirectory(const char *sourceDirectoryPath, const char *destinationDirectoryPath)

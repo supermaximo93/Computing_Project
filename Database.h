@@ -743,14 +743,13 @@ void Database<recordType>::reloadFilename(const bool moveFiles)
     {
         while (!fileMutex.tryLock(1000));
 
-        try { copyFile(previousFilename.c_str(), filename_.c_str()); }
+        try { moveFile(previousFilename.c_str(), filename_.c_str()); }
         catch (const std::exception &e)
         {
             fileMutex.unlock();
             throw std::runtime_error(e.what());
         }
 
-        remove(previousFilename.c_str());
         fileMutex.unlock();
     }
 

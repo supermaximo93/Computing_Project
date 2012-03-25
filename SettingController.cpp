@@ -8,6 +8,8 @@
 #include <fstream>
 using namespace std;
 
+#include <QFile>
+
 #include "SettingController.h"
 #include "Databases.h"
 #include "Setting.h"
@@ -20,7 +22,7 @@ bool SettingController::Create(Setting &settingAttributes, QWidget *)
 {
     if (strcmp(settingAttributes.getKey(), SettingForm::keyDatabaseDirectory) == 0)
     {
-        Encrypter::decryptFile(databaseDirectoryStoreFilename, false);
+        if (QFile::exists(databaseDirectoryStoreFilename)) remove(databaseDirectoryStoreFilename);
 
         {
             ofstream file;
@@ -37,6 +39,8 @@ bool SettingController::Create(Setting &settingAttributes, QWidget *)
         }
 
         Encrypter::encryptFile(databaseDirectoryStoreFilename, false);
+
+        return true;
     }
 
     try { Databases::settings().addRecord(settingAttributes); }
@@ -70,6 +74,7 @@ bool SettingController::Update(const Setting &setting, QWidget *)
         }
 
         Encrypter::encryptFile(databaseDirectoryStoreFilename, false);
+        return true;
     }
 
     bool success = false;
@@ -100,6 +105,17 @@ bool SettingController::Destroy(int settingId, QWidget *)
 
 bool SettingController::Destroy(Setting &setting, QWidget *caller)
 {
+    if (strcmp(setting.getKey(), SettingForm::keyDatabaseDirectory) == 0)
+    {
+        if (QFile::exists(databaseDirectoryStoreFilename))
+        {
+            remove(databaseDirectoryStoreFilename);
+            setting = Setting();
+            return true;
+        }
+        return false;
+    }
+
     if (Destroy(setting.getId(), caller))
     {
         setting = Setting();
@@ -160,5 +176,9 @@ Database<Setting>::recordListPtr SettingController::getAllSettings()
         showErrorDialog(e.what());
         return Database<Setting>::recordListPtr(new Database<Setting>::recordList);
     }
+
+    if (QFile::exists(databaseDirectoryStoreFilename))
+        settings->push_back(getSetting(SettingForm::keyDatabaseDirectory));
+
     return settings;
 }

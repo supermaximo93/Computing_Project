@@ -74,7 +74,8 @@ HEADERS += \
     SettingController.h \
     dialogs/setting/SettingForm.h \
     dialogs/utils/PasswordDialog.h \
-    Encrypter.h
+    Encrypter.h \
+    dialogs/utils/MoveFileExistsDialog.h
 FORMS += dialogs/customer/CustomerForm.ui \
          dialogs/customer/CustomerIndex.ui \
          dialogs/customer/CustomerShow.ui \
@@ -93,7 +94,8 @@ FORMS += dialogs/customer/CustomerForm.ui \
     dialogs/utils/PendingDialog.ui \
     dialogs/utils/ProcessDialog.ui \
     dialogs/setting/SettingForm.ui \
-    dialogs/utils/PasswordDialog.ui
+    dialogs/utils/PasswordDialog.ui \
+    dialogs/utils/MoveFileExistsDialog.ui
 SOURCES += Customer.cpp \
            CustomerController.cpp \
            Databases.cpp \
@@ -148,6 +150,7 @@ SOURCES += Customer.cpp \
     dialogs/setting/SettingForm.cpp \
     testing/unit/Setting_testing.cc \
     dialogs/utils/PasswordDialog.cpp \
-    Encrypter.cpp
+    Encrypter.cpp \
+    dialogs/utils/MoveFileExistsDialog.cpp
 
 OTHER_FILES +=
