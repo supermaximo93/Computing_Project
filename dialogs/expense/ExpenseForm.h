@@ -43,6 +43,8 @@ private slots:
 
     void on_comboBox_typeHeading_currentIndexChanged(int index);
 
+    void on_pushButton_datePicker_clicked();
+
 private:
     enum
     {

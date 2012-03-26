@@ -168,3 +168,9 @@ bool ExpenseForm::setRecordData()
 
     return success;
 }
+
+void ExpenseForm::on_pushButton_datePicker_clicked()
+{
+    QDate date;
+    if (showDatePickerDialog(date)) ui->dateTimeEdit_date->setDate(date);
+}

@@ -346,3 +346,9 @@ void JobForm::on_pushButton_addTask_released()
         updateView();
     }
 }
+
+void JobForm::on_pushButton_datePicker_clicked()
+{
+    QDate date;
+    if (showDatePickerDialog(date)) ui->dateTimeEdit_date->setDate(date);
+}

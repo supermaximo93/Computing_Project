@@ -95,3 +95,9 @@ bool VatRateForm::setRecordData()
 
     return success;
 }
+
+void VatRateForm::on_pushButton_datePicker_clicked()
+{
+    QDate date;
+    if (showDatePickerDialog(date)) ui->dateEdit_startDate->setDate(date);
+}

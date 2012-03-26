@@ -37,6 +37,8 @@ private slots:
 
     void on_pushButton_cancel_clicked();
 
+    void on_pushButton_datePicker_clicked();
+
 private:
     enum
     {

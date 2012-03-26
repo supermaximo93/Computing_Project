@@ -94,3 +94,9 @@ bool TaskForm::setRecordData()
 
     return success;
 }
+
+void TaskForm::on_pushButton_datePicker_clicked()
+{
+    QDate date;
+    if (showDatePickerDialog(date)) ui->dateTimeEdit_date->setDate(date);
+}
