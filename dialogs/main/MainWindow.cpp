@@ -108,7 +108,9 @@ void MainWindow::action_settings_triggered()
 
 void MainWindow::action_help_triggered()
 {
-
+    const QString helpFileName = QDir::currentPath() + "/help.html";
+    if (QFile::exists(helpFileName)) QDesktopServices::openUrl(QUrl("file:///" + helpFileName));
+    else showErrorDialog(("File '" + helpFileName + "' could not be opened").toStdString().c_str());
 }
 
 void MainWindow::action_exit_triggered()
