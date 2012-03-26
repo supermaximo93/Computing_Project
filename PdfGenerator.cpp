@@ -220,12 +220,17 @@ namespace DateFunctions
     }
 }
 
-bool PdfGenerator::generateReport(const char *fileName_, const int month, const int year)
+bool PdfGenerator::generateReport(const char *fileName, const int month, const int year)
+{
+    return generateReport(fileName, Date(0, 0, 0, month, year), Date(time_t(Date(0, 0, 0, month + 1, year)) - 1));
+}
+
+bool PdfGenerator::generateReport(const char *fileName_, const Date &startDate, const Date &endDate)
 {
     QString fileName = toValidFileName(fileName_), templateFileName = "report_template.html";
 
-    DateFunctions::dateLowerBound = Date(0, 0, 0, month, year);
-    DateFunctions::dateUpperBound = time_t(Date(0, 0, 0, month + 1, year)) - 1;
+    DateFunctions::dateLowerBound = startDate;
+    DateFunctions::dateUpperBound = endDate;
 
     Database<Job>::recordListPtr jobs = JobController::getAllJobs();
     Databases::jobs().keepRecords(*jobs, DateFunctions::isRecordDateWithinBounds, NULL);
@@ -304,7 +309,30 @@ bool PdfGenerator::generateReport(const char *fileName_, const int month, const 
             vatOwed = incomeVat - expensesVat;
 
     Attributes attributes;
-    attributes["title"] = QString("Report for ") + QDate::longMonthName(month) + ' ' + toString(year).c_str();
+
+    attributes["title"] = "Report for ";
+    if ((startDate.day == 1) && (endDate.day == (unsigned)QDate(endDate).daysInMonth()))
+    {
+        if ((startDate.month == endDate.month) && (startDate.year == endDate.year))
+        {
+            attributes["title"]
+                    += QDate::longMonthName(startDate.month) + ' ' + toString(startDate.year).c_str();
+        }
+        else if (startDate.year == endDate.year)
+        {
+            attributes["title"]
+                    += QDate::longMonthName(startDate.month) + " - " + QDate::longMonthName(endDate.month) + ' '
+                    + toString(startDate.year).c_str();
+        }
+        else
+        {
+            attributes["title"]
+                    += QDate::longMonthName(startDate.month) + ' ' + toString(startDate.year).c_str() + " - "
+                    + QDate::longMonthName(endDate.month) + ' ' + toString(endDate.year).c_str();
+        }
+    }
+    else attributes["title"] += startDate.toQStringWithoutTime() + " to " + endDate.toQStringWithoutTime();
+
     attributes["income-exclvat"] = to2Dp(toString(incomeExclVat).c_str());
     attributes["income-vat"] = to2Dp(toString(incomeVat).c_str());
     attributes["income-total"] = to2Dp(toString(incomeTotal).c_str());

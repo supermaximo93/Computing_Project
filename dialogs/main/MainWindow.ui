@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>896</width>
-    <height>429</height>
+    <height>448</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -401,6 +401,19 @@ p, li { white-space: pre-wrap; }
     </property>
     <property name="text">
      <string>month</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_reportWizard">
+    <property name="geometry">
+     <rect>
+      <x>250</x>
+      <y>360</y>
+      <width>131</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Report Wizard</string>
     </property>
    </widget>
   </widget>

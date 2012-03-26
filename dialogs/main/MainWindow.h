@@ -55,6 +55,8 @@ private slots:
 
     void on_pushButton_generateReport_clicked();
 
+    void on_pushButton_reportWizard_clicked();
+
 private:
     static const char *windowTitle;
 

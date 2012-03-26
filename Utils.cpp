@@ -22,6 +22,7 @@ using namespace std;
 
 #include "dialogs/utils/PendingDialog.h"
 #include "dialogs/utils/MoveFileExistsDialog.h"
+#include "dialogs/utils/DatePickerDialog.h"
 
 Date::Date(const time_t seconds_)
 {
@@ -36,6 +37,13 @@ Date::Date(const time_t seconds_)
 
 Date::Date(unsigned minute, unsigned hour, unsigned day, unsigned month, unsigned year)
     : seconds(0), minute(minute), hour(hour), day(day), month(month), year(year) {}
+
+Date::Date(const QDateTime &qDateTime)
+    : seconds(0), minute(qDateTime.time().minute()), hour(qDateTime.time().hour()),
+      day(qDateTime.date().day()), month(qDateTime.date().month()), year(qDateTime.date().year()) {}
+
+Date::Date(const QDate &qDate)
+    : seconds(0), minute(0), hour(0), day(qDate.day()), month(qDate.month()), year(qDate.year()) {}
 
 Date::operator std::string() const
 {
@@ -114,16 +122,12 @@ const char * limitLength(const char *str, unsigned maxLength)
 
 void showInfoDialog(const char *message)
 {
-    QMessageBox messageBox(QMessageBox::Information, " ", message);
-    messageBox.setModal(true);
-    messageBox.exec();
+    QMessageBox(QMessageBox::Information, " ", message).exec();
 }
 
 void showErrorDialog(const char *message)
 {
-    QMessageBox messageBox(QMessageBox::Warning, "Error", message);
-    messageBox.setModal(true);
-    messageBox.exec();
+    QMessageBox(QMessageBox::Warning, "Error", message).exec();
 }
 
 void showErrorDialog(const vector<string> &errors)
@@ -136,16 +140,13 @@ void showErrorDialog(const vector<string> &errors)
 
 void showFatalDialog(const char *message)
 {
-    QMessageBox messageBox(QMessageBox::Critical, "Fatal Error", message);
-    messageBox.setModal(true);
-    messageBox.exec();
+    QMessageBox(QMessageBox::Critical, "Fatal Error", message).exec();
 }
 
 bool showYesNoDialog(const char *question)
 {
     QMessageBox messageBox(QMessageBox::Question, " ", question, QMessageBox::Yes | QMessageBox::No);
     messageBox.setDefaultButton(QMessageBox::No);
-    messageBox.setModal(true);
     switch (messageBox.exec())
     {
     case QMessageBox::Yes: return true;
@@ -155,9 +156,13 @@ bool showYesNoDialog(const char *question)
 
 void showPendingDialog(const char *message, int (*percentCompleteCheckFunction)(void))
 {
-    PendingDialog dialog(message, percentCompleteCheckFunction);
-    dialog.setModal(true);
-    dialog.exec();
+    PendingDialog(message, percentCompleteCheckFunction).exec();
+}
+
+bool showDatePickerDialog(QDate &dateToModify)
+{
+    if (DatePickerDialog(dateToModify).exec() == DatePickerDialog::Accepted) return true;
+    return false;
 }
 
 const char * createFullName(const char *forename, const char *surname)

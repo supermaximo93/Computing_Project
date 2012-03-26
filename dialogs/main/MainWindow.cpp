@@ -31,6 +31,8 @@
 #include "SettingController.h"
 #include "dialogs/setting/SettingForm.h"
 
+#include "dialogs/main/ReportWizard.h"
+
 const char *MainWindow::windowTitle = "Ian Foster Services";
 
 MainWindow::MainWindow(QWidget *parent)
@@ -345,4 +347,9 @@ void MainWindow::updateFinancialMonthText()
 {
     QDate date = ui->calendar->selectedDate();
     ui->label_financeMonthE->setText(QDate::longMonthName(date.month()) + ' ' + toString(date.year()).c_str());
+}
+
+void MainWindow::on_pushButton_reportWizard_clicked()
+{
+    ReportWizard(this).exec();
 }

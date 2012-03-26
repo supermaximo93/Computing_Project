@@ -80,7 +80,9 @@ HEADERS += \
     VatRateController.h \
     dialogs/vatrate/VatRateIndex.h \
     dialogs/vatrate/VatRateShow.h \
-    dialogs/vatrate/VatRateForm.h
+    dialogs/vatrate/VatRateForm.h \
+    dialogs/main/ReportWizard.h \
+    dialogs/utils/DatePickerDialog.h
 FORMS += dialogs/customer/CustomerForm.ui \
          dialogs/customer/CustomerIndex.ui \
          dialogs/customer/CustomerShow.ui \
@@ -103,7 +105,9 @@ FORMS += dialogs/customer/CustomerForm.ui \
     dialogs/utils/MoveFileExistsDialog.ui \
     dialogs/vatrate/VatRateIndex.ui \
     dialogs/vatrate/VatRateShow.ui \
-    dialogs/vatrate/VatRateForm.ui
+    dialogs/vatrate/VatRateForm.ui \
+    dialogs/main/ReportWizard.ui \
+    dialogs/utils/DatePickerDialog.ui
 SOURCES += Customer.cpp \
            CustomerController.cpp \
            Databases.cpp \
@@ -166,6 +170,8 @@ SOURCES += Customer.cpp \
     dialogs/vatrate/VatRateIndex.cpp \
     dialogs/vatrate/VatRateShow.cpp \
     dialogs/vatrate/VatRateForm.cpp \
-    testing/integration/VatRateController_testing.cc
+    testing/integration/VatRateController_testing.cc \
+    dialogs/main/ReportWizard.cpp \
+    dialogs/utils/DatePickerDialog.cpp
 
 OTHER_FILES +=

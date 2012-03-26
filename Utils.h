@@ -22,6 +22,8 @@ struct Date
 
     Date(time_t seconds);
     Date(unsigned minute, unsigned hour, unsigned day, unsigned month, unsigned year);
+    Date(const QDateTime &qDateTime);
+    Date(const QDate &qDate);
 
     operator std::string() const;
     operator QString() const;
@@ -44,6 +46,7 @@ void showErrorDialog(const std::vector<std::string> &errors);
 void showFatalDialog(const char *message);
 bool showYesNoDialog(const char *question);
 void showPendingDialog(const char *message, int (*percentCompleteCheckFunction)(void));
+bool showDatePickerDialog(QDate &dateToModify);
 
 const char * createFullName(const char *forename, const char *surname);
 
