@@ -235,7 +235,7 @@ bool PdfGenerator::generateReport(const char *fileName_, const int month, const 
     Databases::expenses().keepRecords(*expenses, DateFunctions::isRecordDateWithinBounds, NULL);
     Databases::expenses().sortRecords(*expenses, 0, expenses->size() - 1, DateFunctions::compareRecordDates);
 
-    double income = 0.0, vat = 0.0;
+    double incomeExclVat = 0.0, incomeVat = 0.0;
     QString jobHtml = "";
     for (unsigned i = 0; i < jobs->size(); ++i)
     {
@@ -252,8 +252,8 @@ bool PdfGenerator::generateReport(const char *fileName_, const int month, const 
                 jobVat += part.getPrice() * (part.getVatRate() / 100.0);
             }
 
-            income += jobChargeExclVat;
-            vat += jobVat;
+            incomeExclVat += jobChargeExclVat;
+            incomeVat += jobVat;
 
             Customer customer = CustomerController::getCustomer(job.getCustomerId());
 
@@ -275,13 +275,15 @@ bool PdfGenerator::generateReport(const char *fileName_, const int month, const 
             jobHtml += "</td></tr>";
         }
     }
+    const double incomeTotal = incomeExclVat + incomeVat;
 
-    double expenseTotal = 0.0;
+    double expensesExclVat = 0.0, expensesVat = 0.0;
     QString expenseHtml = "";
     for (unsigned i = 0; i < expenses->size(); ++i)
     {
         Expense &expense = expenses->at(i);
-        expenseTotal += expense.getTotalPrice();
+        expensesExclVat += expense.getPrice();
+        expensesVat += expense.getVat();
 
         expenseHtml += "<tr><td class='text-mid'>";
         expenseHtml += Date(expense.getDate()).toQStringWithoutTime();
@@ -298,14 +300,20 @@ bool PdfGenerator::generateReport(const char *fileName_, const int month, const 
         expenseHtml += to2Dp(toString(expense.getTotalPrice()).c_str());
         expenseHtml += "</td></tr>";
     }
+    const double expenseTotal = expensesExclVat + expensesVat,
+            vatOwed = incomeVat - expensesVat;
 
     Attributes attributes;
     attributes["title"] = QString("Report for ") + QDate::longMonthName(month) + ' ' + toString(year).c_str();
-    attributes["income"] = to2Dp(toString(income).c_str());
-    attributes["vat"] = to2Dp(toString(vat).c_str());
-    attributes["totalincome"] = to2Dp(toString(income + vat).c_str());
-    attributes["expenses"] = to2Dp(toString(expenseTotal).c_str());
-    attributes["grandtotal"] = to2Dp(toString(income + vat - expenseTotal).c_str());
+    attributes["income-exclvat"] = to2Dp(toString(incomeExclVat).c_str());
+    attributes["income-vat"] = to2Dp(toString(incomeVat).c_str());
+    attributes["income-total"] = to2Dp(toString(incomeTotal).c_str());
+    attributes["expenses-exclvat"] = to2Dp(toString(expensesExclVat).c_str());
+    attributes["expenses-vat"] = to2Dp(toString(expensesVat).c_str());
+    attributes["expenses-total"] = to2Dp(toString(expenseTotal).c_str());
+    attributes["profit-exclvat"] = to2Dp(toString(incomeExclVat - expensesExclVat).c_str());
+    attributes["profit-inclvat"] = to2Dp(toString(incomeTotal - expenseTotal).c_str());
+    attributes["vatowed"] = to2Dp(toString(vatOwed).c_str());
     attributes["jobs-rows"] = jobHtml;
     attributes["expenses-rows"] = expenseHtml;
 
