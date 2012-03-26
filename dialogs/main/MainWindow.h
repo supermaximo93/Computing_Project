@@ -37,6 +37,8 @@ private slots:
 
     void on_calendar_selectionChanged();
 
+    void on_calendar_currentPageChanged(int year, int month);
+
     void on_listWidget_jobs_doubleClicked(const QModelIndex &index);
 
     void on_listWidget_tasks_doubleClicked(const QModelIndex &index);
@@ -73,6 +75,8 @@ private:
     void calculateGrandTotal();
 
     void checkForUnpaidJobs();
+
+    void updateFinancialMonthText();
 };
 
 #endif // MAINWINDOW_H

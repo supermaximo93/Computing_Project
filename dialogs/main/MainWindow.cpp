@@ -57,6 +57,8 @@ MainWindow::MainWindow(QWidget *parent)
     checkForUnpaidJobs();
 
     if (SettingController::getAllSettings()->empty()) SettingForm(this).exec();
+
+    updateFinancialMonthText();
 }
 
 MainWindow::~MainWindow()
@@ -97,8 +99,15 @@ void MainWindow::on_pushButton_allCustomers_released()
 
 void MainWindow::on_calendar_selectionChanged()
 {
-    getJobsAndTasksForCurrentDate();
-    updateListWidgets();
+    updateFinancialMonthText();
+    calculateExpenses();
+    updateEverythingOtherThanExpenses();
+}
+
+void MainWindow::on_calendar_currentPageChanged(int year, int month)
+{
+    ui->calendar->setSelectedDate(QDate(year, month, ui->calendar->selectedDate().day()));
+    on_calendar_selectionChanged();
 }
 
 void MainWindow::action_settings_triggered()
@@ -234,12 +243,17 @@ void MainWindow::on_pushButton_allVatRates_clicked()
 
 void MainWindow::on_pushButton_generateReport_clicked()
 {
-    QString filename = QFileDialog::getSaveFileName(this, "Save Report As", "", "PDF (*.pdf)");
+    QDate date = ui->calendar->selectedDate();
+    QString suggestedFilename
+            = "report_" + QDate::longMonthName(date.month()) + "_" + toString(date.year()).c_str() + ".pdf";
+
+    QString filename = QFileDialog::getSaveFileName(this, "Save Report As", suggestedFilename, "PDF (*.pdf)");
     if (filename.isEmpty()) return;
-    if (PdfGenerator::generateReport(filename.toStdString().c_str()))
+
+    if (PdfGenerator::generateReport(filename.toStdString().c_str(), date.month(), date.year()))
     {
         showInfoDialog("Report generated successfully");
-        QDesktopServices::openUrl(QUrl("file:///" + filename));
+        QDesktopServices::openUrl(QUrl("file:///" + filename + (filename.endsWith(".pdf") ? "" : ".pdf")));
     }
     else showErrorDialog("Report could not be generated");
 }
@@ -247,9 +261,10 @@ void MainWindow::on_pushButton_generateReport_clicked()
 void MainWindow::calculateIncome()
 {
     Database<Job>::recordListPtr thisYearsJobs = JobController::getAllJobs();
-    Date now(time(NULL));
-    const Date thisYearLowerBound(0, 0, 0, 0, now.year), thisYearUpperBound(time_t(Date(0, 0, 0, 0, now.year + 1)) - 1);
-    DateBounds dateBounds(thisYearLowerBound, thisYearUpperBound);
+    QDate date = ui->calendar->selectedDate();
+    const Date thisMonthLowerBound(0, 0, 0, date.month(), date.year()),
+            thisMonthUpperBound(time_t(Date(0, 0, 0, date.month() + 1, date.year())) - 1);
+    DateBounds dateBounds(thisMonthLowerBound, thisMonthUpperBound);
     Databases::jobs().keepRecords(*thisYearsJobs, isRecordWithinDateBounds, &dateBounds);
 
     double income = 0.0, vat = 0.0;
@@ -279,9 +294,10 @@ void MainWindow::calculateIncome()
 void MainWindow::calculateExpenses()
 {
     Database<Expense>::recordListPtr expenses = ExpenseController::getAllExpenses();
-    Date now(time(NULL));
-    const Date thisYearLowerBound(0, 0, 0, 0, now.year), thisYearUpperBound(time_t(Date(0, 0, 0, 0, now.year + 1)) - 1);
-    DateBounds dateBounds(thisYearLowerBound, thisYearUpperBound);
+    QDate date = ui->calendar->selectedDate();
+    const Date thisMonthLowerBound(0, 0, 0, date.month(), date.year()),
+            thisMonthUpperBound(time_t(Date(0, 0, 0, date.month() + 1, date.year())) - 1);
+    DateBounds dateBounds(thisMonthLowerBound, thisMonthUpperBound);
     Databases::expenses().keepRecords(*expenses, isRecordWithinDateBounds, &dateBounds);
 
     double expenseTotal = 0.0;
@@ -322,4 +338,10 @@ void MainWindow::checkForUnpaidJobs()
 
     ui->label_remindCustomers->setHidden(unpaidJobs->empty());
 
+}
+
+void MainWindow::updateFinancialMonthText()
+{
+    QDate date = ui->calendar->selectedDate();
+    ui->label_financeMonthE->setText(QDate::longMonthName(date.month()) + ' ' + toString(date.year()).c_str());
 }

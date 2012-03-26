@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>896</width>
-    <height>415</height>
+    <height>429</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -48,7 +48,7 @@
     <property name="geometry">
      <rect>
       <x>60</x>
-      <y>240</y>
+      <y>260</y>
       <width>67</width>
       <height>17</height>
      </rect>
@@ -61,7 +61,7 @@
     <property name="geometry">
      <rect>
       <x>80</x>
-      <y>260</y>
+      <y>280</y>
       <width>31</width>
       <height>17</height>
      </rect>
@@ -74,7 +74,7 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>280</y>
+      <y>300</y>
       <width>91</width>
       <height>17</height>
      </rect>
@@ -87,7 +87,7 @@
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>300</y>
+      <y>320</y>
       <width>71</width>
       <height>17</height>
      </rect>
@@ -100,7 +100,7 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>320</y>
+      <y>340</y>
       <width>81</width>
       <height>17</height>
      </rect>
@@ -113,7 +113,7 @@
     <property name="geometry">
      <rect>
       <x>250</x>
-      <y>300</y>
+      <y>320</y>
       <width>131</width>
       <height>21</height>
      </rect>
@@ -242,7 +242,7 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>120</x>
-      <y>240</y>
+      <y>260</y>
       <width>121</width>
       <height>21</height>
      </rect>
@@ -261,7 +261,7 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>120</x>
-      <y>260</y>
+      <y>280</y>
       <width>121</width>
       <height>21</height>
      </rect>
@@ -280,7 +280,7 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>120</x>
-      <y>280</y>
+      <y>300</y>
       <width>121</width>
       <height>21</height>
      </rect>
@@ -299,7 +299,7 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>120</x>
-      <y>300</y>
+      <y>320</y>
       <width>121</width>
       <height>21</height>
      </rect>
@@ -318,7 +318,7 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>120</x>
-      <y>320</y>
+      <y>340</y>
       <width>121</width>
       <height>21</height>
      </rect>
@@ -343,7 +343,7 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>250</x>
-      <y>260</y>
+      <y>280</y>
       <width>131</width>
       <height>21</height>
      </rect>
@@ -356,13 +356,51 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>250</x>
-      <y>320</y>
+      <y>340</y>
       <width>131</width>
       <height>21</height>
      </rect>
     </property>
     <property name="text">
      <string>Generate report</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_generateReportFor">
+    <property name="geometry">
+     <rect>
+      <x>26</x>
+      <y>230</y>
+      <width>81</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Finance for</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_financeMonthE">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>230</y>
+      <width>111</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>month</string>
     </property>
    </widget>
   </widget>

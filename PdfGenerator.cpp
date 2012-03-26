@@ -17,11 +17,14 @@ using namespace std;
 #include "Globals.h"
 #include "Utils.h"
 
+#include "Databases.h"
 #include "Job.h"
 #include "Part.h"
 #include "Customer.h"
+#include "Expense.h"
 #include "JobController.h"
 #include "CustomerController.h"
+#include "ExpenseController.h"
 
 typedef map<QString, QString> Attributes;
 
@@ -104,7 +107,6 @@ void getInvoiceReceiptAttributes(Attributes &attributes, const Job &job)
     Customer customer = CustomerController::getCustomer(job.getCustomerId());
     Database<Part>::recordListPtr parts = JobController::getJobParts(job.getId());
 
-    attributes["poundsign"] = L'£';
     attributes["date"] = Date(job.getDate()).toQStringWithoutTime();
     attributes["customer-name"] = createFullName(customer.getForename(), customer.getSurname());
     attributes["customer-addressline1"] = customer.getAddressLine1();
@@ -199,11 +201,117 @@ bool PdfGenerator::generateReceipt(const char *fileName_, const Job &job)
     return true;
 }
 
-bool PdfGenerator::generateReport(const char *fileName_)
+
+namespace DateFunctions
+{
+    static time_t dateLowerBound, dateUpperBound;
+
+    template<typename T>
+    static bool isRecordDateWithinBounds(const T &record, void *)
+    {
+        return (record.getDate() >= dateLowerBound) && (record.getDate() <= dateUpperBound);
+    }
+
+    template<typename T>
+    static int compareRecordDates(const T &record1, const T &record2)
+    {
+        const time_t date1 = record1.getDate(), date2 = record2.getDate();
+        return date1 < date2 ? -1 : (date1 > date2 ? 1 : 0);
+    }
+}
+
+bool PdfGenerator::generateReport(const char *fileName_, const int month, const int year)
 {
     QString fileName = toValidFileName(fileName_), templateFileName = "report_template.html";
 
+    DateFunctions::dateLowerBound = Date(0, 0, 0, month, year);
+    DateFunctions::dateUpperBound = time_t(Date(0, 0, 0, month + 1, year)) - 1;
+
+    Database<Job>::recordListPtr jobs = JobController::getAllJobs();
+    Databases::jobs().keepRecords(*jobs, DateFunctions::isRecordDateWithinBounds, NULL);
+    Databases::jobs().sortRecords(*jobs, 0, jobs->size() - 1, DateFunctions::compareRecordDates);
+
+    Database<Expense>::recordListPtr expenses = ExpenseController::getAllExpenses();
+    Databases::expenses().keepRecords(*expenses, DateFunctions::isRecordDateWithinBounds, NULL);
+    Databases::expenses().sortRecords(*expenses, 0, expenses->size() - 1, DateFunctions::compareRecordDates);
+
+    double income = 0.0, vat = 0.0;
+    QString jobHtml = "";
+    for (unsigned i = 0; i < jobs->size(); ++i)
+    {
+        Job &job = jobs->at(i);
+        if (job.getCompletionState() == Job::DONE_PAID)
+        {
+            double jobChargeExclVat = job.getLabourCharge(), jobVat = job.getVat();
+
+            Database<Part>::recordListPtr parts = JobController::getJobParts(job.getId());
+            for (unsigned j = 0; j < parts->size(); ++j)
+            {
+                Part &part = parts->at(j);
+                jobChargeExclVat += part.getPrice();
+                jobVat += part.getPrice() * (part.getVatRate() / 100.0);
+            }
+
+            income += jobChargeExclVat;
+            vat += jobVat;
+
+            Customer customer = CustomerController::getCustomer(job.getCustomerId());
+
+            jobHtml += "<tr><td class='text-mid'>";
+            jobHtml += Date(job.getDate()).toQStringWithoutTime();
+            jobHtml += "</td><td class='text-mid'>";
+            jobHtml += createFullName(customer.getForename(), customer.getSurname());
+            jobHtml += "</td><td class='text-mid'>";
+            jobHtml += job.getPaymentMethodString().c_str();
+            jobHtml += "</td><td class='text-mid'>";
+            jobHtml += L'£';
+            jobHtml += to2Dp(toString(jobChargeExclVat).c_str());
+            jobHtml += "</td><td class='text-mid'>";
+            jobHtml += L'£';
+            jobHtml += to2Dp(toString(jobVat).c_str());
+            jobHtml += "</td><td class='text-mid'>";
+            jobHtml += L'£';
+            jobHtml += to2Dp(toString(jobChargeExclVat + jobVat).c_str());
+            jobHtml += "</td></tr>";
+        }
+    }
+
+    double expenseTotal = 0.0;
+    QString expenseHtml = "";
+    for (unsigned i = 0; i < expenses->size(); ++i)
+    {
+        Expense &expense = expenses->at(i);
+        expenseTotal += expense.getTotalPrice();
+
+        expenseHtml += "<tr><td class='text-mid'>";
+        expenseHtml += Date(expense.getDate()).toQStringWithoutTime();
+        expenseHtml += "</td><td class='text-mid'>";
+        expenseHtml += expense.getTypeString().c_str();
+        expenseHtml += "</td><td class='text-mid'>";
+        expenseHtml += L'£';
+        expenseHtml += to2Dp(toString(expense.getPrice()).c_str());
+        expenseHtml += "</td><td class='text-mid'>";
+        expenseHtml += L'£';
+        expenseHtml += to2Dp(toString(expense.getVat()).c_str());
+        expenseHtml += "</td><td class='text-mid'>";
+        expenseHtml += L'£';
+        expenseHtml += to2Dp(toString(expense.getTotalPrice()).c_str());
+        expenseHtml += "</td></tr>";
+    }
+
+    Attributes attributes;
+    attributes["title"] = QString("Report for ") + QDate::longMonthName(month) + ' ' + toString(year).c_str();
+    attributes["income"] = to2Dp(toString(income).c_str());
+    attributes["vat"] = to2Dp(toString(vat).c_str());
+    attributes["totalincome"] = to2Dp(toString(income + vat).c_str());
+    attributes["expenses"] = to2Dp(toString(expenseTotal).c_str());
+    attributes["grandtotal"] = to2Dp(toString(income + vat - expenseTotal).c_str());
+    attributes["jobs-rows"] = jobHtml;
+    attributes["expenses-rows"] = expenseHtml;
+
     GET_WEBVIEW_AND_HTML();
+    parseHtml(html, attributes);
+    view.setHtml(html);
     PRINT_TO_PDF();
 
     return true;
