@@ -236,6 +236,19 @@ int Job::getPaymentMethod() const
     return paymentMethod;
 }
 
+string Job::getPaymentMethodString() const
+{
+    switch (paymentMethod)
+    {
+    case CASH: return "Cash";
+    case CHEQUE: return "Cheque";
+    case CREDIT: return "Credit";
+    case DEBIT: return "Debit";
+    case BANK_TRANSFER: return "Bank Transfer";
+    default: return "N/A";
+    }
+}
+
 void Job::setPaymentMethod(const int newPaymentMethod)
 {
     string errorMessage;

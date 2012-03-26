@@ -99,14 +99,11 @@ printer.setOutputFormat(QPrinter::PdfFormat);\
 printer.setOutputFileName(fileName);\
 view.print(&printer)
 
-bool PdfGenerator::generateInvoice(const char *fileName_, const Job &job)
+void getInvoiceReceiptAttributes(Attributes &attributes, const Job &job)
 {
-    QString fileName = toValidFileName(fileName_), templateFileName = "invoice_template.html";
-
     Customer customer = CustomerController::getCustomer(job.getCustomerId());
     Database<Part>::recordListPtr parts = JobController::getJobParts(job.getId());
 
-    Attributes attributes;
     attributes["poundsign"] = L'£';
     attributes["date"] = Date(job.getDate()).toQStringWithoutTime();
     attributes["customer-name"] = createFullName(customer.getForename(), customer.getSurname());
@@ -162,24 +159,44 @@ bool PdfGenerator::generateInvoice(const char *fileName_, const Job &job)
     attributes["vatrate"] = toString(Globals::vatRate(job.getDate())).c_str();
     attributes["job-vat"] = to2Dp(toString(job.getVat()).c_str());
     attributes["totalprice"] = to2Dp(toString(job.getLabourCharge() + job.getVat() + totalPartPriceInclVat).c_str());
+}
+
+bool PdfGenerator::generateInvoice(const char *fileName_, const Job &job)
+{
+    QString fileName = toValidFileName(fileName_), templateFileName = "invoice_receipt_template.html";
+
+    Attributes attributes;
+    getInvoiceReceiptAttributes(attributes, job);
+    attributes["title"] = "INVOICE";
 
     GET_WEBVIEW_AND_HTML();
     parseHtml(html, attributes);
-
     view.setHtml(html);
     PRINT_TO_PDF();
 
-    return false;
+    return true;
 }
 
 bool PdfGenerator::generateReceipt(const char *fileName_, const Job &job)
 {
-    QString fileName = toValidFileName(fileName_), templateFileName = "receipt_template.html";
+    QString fileName = toValidFileName(fileName_), templateFileName = "invoice_receipt_template.html";
+
+    Attributes attributes;
+    getInvoiceReceiptAttributes(attributes, job);
+    attributes["title"] = "RECEIPT";
+    attributes["date"] = Date(time(NULL)).toQStringWithoutTime();
+
+    QString extraTotalRow = "<td class='tbl-l'><strong>Payment Method:</strong></td><td class='tbl-r'>";
+    extraTotalRow += job.getPaymentMethodString().c_str();
+    extraTotalRow += "</td>";
+    attributes["extratotalrows"] = extraTotalRow;
 
     GET_WEBVIEW_AND_HTML();
+    parseHtml(html, attributes);
+    view.setHtml(html);
     PRINT_TO_PDF();
 
-    return false;
+    return true;
 }
 
 bool PdfGenerator::generateReport(const char *fileName_)

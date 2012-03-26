@@ -80,6 +80,7 @@ public:
     static bool isValidCompletionState(const int value, std::string &errorMessage);
 
     int getPaymentMethod() const;
+    std::string getPaymentMethodString() const;
     void setPaymentMethod(const int newPaymentMethod);
     static bool isValidPaymentMethod(const int value, std::string &errorMessage);
 
