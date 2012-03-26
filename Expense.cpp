@@ -197,6 +197,21 @@ int Expense::getType() const
     return type;
 }
 
+string Expense::getTypeString() const
+{
+    switch (type)
+    {
+    case STOCK_MATERIALS: return "Stock/Materials";
+    case PREMISES: return "Premises";
+    case REPAIRS: return "Repairs";
+    case ADMIN: return "Admin";
+    case MOTOR: return "Motor";
+    case ADVERTISING: return "Avertising";
+    case DEBT: return "Debt";
+    default: return "Other";
+    }
+}
+
 void Expense::setType(const int newType)
 {
     string errorMessage;
@@ -212,7 +227,7 @@ bool Expense::isValidType(const double value, std::string &errorMessage)
     return false;
 }
 
-int Expense::getTotalPrice() const
+double Expense::getTotalPrice() const
 {
     return price + vat;
 }

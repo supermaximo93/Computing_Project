@@ -16,6 +16,18 @@
 class Expense : public Record
 {
 public:
+    enum Type
+    {
+        STOCK_MATERIALS = 0,
+        PREMISES,
+        REPAIRS,
+        ADMIN,
+        MOTOR,
+        ADVERTISING,
+        DEBT,
+        OTHER
+    };
+
     static const std::string databaseFilename;
     static const int minDescriptionLength, maxDescriptionLength;
 
@@ -56,12 +68,13 @@ public:
     static bool isValidVat(const double value, std::string &errorMessage);
 
     int getType() const;
+    std::string getTypeString() const;
     void setType(const int newType);
     static bool isValidType(const double value, std::string &errorMessage);
 
     void validate() const;
 
-    int getTotalPrice() const;
+    double getTotalPrice() const;
 
 private:
     time_t date;
