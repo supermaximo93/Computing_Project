@@ -19,6 +19,7 @@ public:
     enum Type
     {
         STOCK_MATERIALS = 0,
+        SUBCONTRACTOR,
         PREMISES,
         REPAIRS,
         ADMIN,

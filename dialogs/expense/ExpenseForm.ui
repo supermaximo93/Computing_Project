@@ -103,6 +103,11 @@
       </item>
       <item>
        <property name="text">
+        <string>Subcontractor</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
         <string>Premises</string>
        </property>
       </item>
@@ -128,7 +133,7 @@
       </item>
       <item>
        <property name="text">
-        <string>Debt</string>
+        <string>Bad Debt</string>
        </property>
       </item>
       <item>

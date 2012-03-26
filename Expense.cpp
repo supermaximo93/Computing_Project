@@ -202,6 +202,7 @@ string Expense::getTypeString() const
     switch (type)
     {
     case STOCK_MATERIALS: return "Stock/Materials";
+    case SUBCONTRACTOR: return "Subcontractor";
     case PREMISES: return "Premises";
     case REPAIRS: return "Repairs";
     case ADMIN: return "Admin";
