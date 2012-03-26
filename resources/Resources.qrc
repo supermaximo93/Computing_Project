@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/gifs">
+        <file alias="loading.gif">gifs/loading.gif</file>
+    </qresource>
+    <qresource prefix="/html">
+        <file alias="help.html">html/help.html</file>
+        <file alias="invoice_receipt_template.html">html/invoice_receipt_template.html</file>
+        <file alias="report_template.html">html/report_template.html</file>
+    </qresource>
+</RCC>

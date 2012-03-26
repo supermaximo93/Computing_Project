@@ -23,7 +23,7 @@ ProcessDialog::ProcessDialog(const char *message, bool (*processCompleteCheckFun
     setWindowTitle(message);
     ui->label_messageE->setText(message);
 
-    loadingAnimation = new QMovie("loading.gif");
+    loadingAnimation = new QMovie(":/gifs/loading.gif");
     ui->label_image->setMovie(loadingAnimation);
     loadingAnimation->start();
 

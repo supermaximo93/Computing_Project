@@ -1,0 +1,157 @@
+<style type="text/css">
+  .tbl-l {
+    color: #444;
+    text-align: right;
+  }
+
+  .box {
+    margin: 10px;
+    padding: 0px 10px 20px 10px;
+    background-color: #FFFFCC;
+    border: 1px solid #BBB;
+  }
+
+  .half {
+    width: 400px;
+  }
+
+  .full {
+    width: 846px;
+  }
+
+  .twothirds {
+    width: 564px;
+  }
+
+  th {
+    font-weight: bold;
+  }
+
+  .text-mid {
+    text-align: center;
+  }
+
+  #totals, #company-details {
+    display: inline-block;
+    height: 330px;
+  }
+</style>
+
+<h1 style="text-align: center"><$ title $></h1>
+
+<div>
+  <div id="totals" class="box half">
+    <h3>Financial Totals</h3>
+    <table>
+      <tr>
+        <td class="tbl-l">Income excl. VAT:</td>
+        <td class="tbl-r">&#163;<$ income-exclvat $></td>
+      </tr>
+      <tr>
+        <td class="tbl-l">Income VAT:</td>
+        <td class="tbl-r">&#163;<$ income-vat $></td>
+      </tr>
+      <tr>
+        <td class="tbl-l">Total Income:</td>
+        <td class="tbl-r">&#163;<$ income-total $></td>
+      </tr>
+      <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+      <tr>
+        <td class="tbl-l">Expenses excl. VAT:</td>
+        <td class="tbl-r">&#163;<$ expenses-exclvat $></td>
+      </tr>
+      <tr>
+        <td class="tbl-l">Expense VAT:</td>
+        <td class="tbl-r">&#163;<$ expenses-vat $></td>
+      </tr>
+      <tr>
+        <td class="tbl-l">Total Expenses:</td>
+        <td class="tbl-r">&#163;<$ expenses-total $></td>
+      </tr>
+      <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+      <tr>
+        <td class="tbl-l">Profit excl. VAT:</td>
+        <td class="tbl-r">&#163;<$ profit-exclvat $></td>
+      </tr>
+      <tr>
+        <td class="tbl-l">Profit incl. VAT:</td>
+        <td class="tbl-r">&#163;<$ profit-inclvat $></td>
+      </tr>
+      <tr>
+        <td class="tbl-l">Vat Owed:</td>
+        <td class="tbl-r">&#163;<$ vatowed $></td>
+      </tr>
+    </table>
+  </div>
+
+  <div id="company-details" class="box half">
+    <h3>Company Details</h3>
+    <table>
+      <tr>
+        <td class="tbl-l">VAT registration No.:</td>
+        <td class="tbl-r">918 2496 02</td>
+      </tr>
+      <tr>
+        <td class="tbl-l">Gas Safe registration No.:</td>
+        <td class="tbl-r">305566</td>
+      </tr>
+      <tr>
+        <td class="tbl-l">Name:</td>
+        <td class="tbl-r">Ian Foster Services</td>
+      </tr>
+      <tr>
+        <td class="tbl-l">Address:</td>
+        <td class="tbl-r">96 Bradshaw Road</td>
+      </tr>
+      <tr>
+        <td class="tbl-l">&nbsp;</td>
+        <td class="tbl-r">Watford</td>
+      </tr>
+      <tr>
+        <td class="tbl-l">&nbsp;</td>
+        <td class="tbl-r">Hertfordshire</td>
+      </tr>
+      <tr>
+        <td class="tbl-l">Postcode:</td>
+        <td class="tbl-r">WD24 4DF</td>
+      </tr>
+      <tr>
+        <td class="tbl-l">Telephone:</td>
+        <td class="tbl-r">01923 238172 / 07828 679589</td>
+      </tr>
+      <tr>
+        <td class="tbl-l">Email address:</td>
+        <td class="tbl-r">ian@ianfosterservices.co.uk</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div class="box full">
+  <h3>Jobs</h3>
+  <table>
+    <tr>
+      <th style="width: 130px">Date</th>
+      <th style="width: 130px">Payer</th>
+      <th style="width: 130px">Payment Method</th>
+      <th style="width: 130px">Net amount</th>
+      <th style="width: 130px">VAT</th>
+      <th style="width: 130px">Total</th>
+    </tr>
+    <$ jobs-rows $>
+  </table>
+</div>
+
+<div class="box full">
+  <h3>Expenses</h3>
+  <table>
+    <tr>
+      <th style="width: 160px">Date</th>
+      <th style="width: 160px">Type</th>
+      <th style="width: 160px">Price</th>
+      <th style="width: 160px">VAT</th>
+      <th style="width: 160px">Total</th>
+    </tr>
+    <$ expenses-rows $>
+  </table>
+</div>

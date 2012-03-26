@@ -1,0 +1,163 @@
+<style type="text/css">
+  .tbl-l {
+    color: #444;
+    text-align: right;
+  }
+
+  .box {
+    margin: 10px;
+    padding: 0px 10px 20px 10px;
+    background-color: #FFFFCC;
+    border: 1px solid #BBB;
+  }
+
+  .half {
+    width: 400px;
+  }
+
+  .full {
+    width: 846px;
+  }
+
+  .twothirds {
+    width: 564px;
+  }
+
+  th {
+    font-weight: bold;
+  }
+
+  .text-mid {
+    text-align: center;
+  }
+</style>
+
+<img src="GasSafeRegisterLogo.png" width="80" style="float: right" />
+<h3 style="float: left"><$ date $></h3>
+<h1 style="text-align: center"><$ title $></h1>
+<table>
+  <tr>
+    <td class="tbl-l">VAT REGISTRATION NO.:</td>
+    <td><strong>918 2496 02</strong></td>
+  </tr>
+  <tr>
+    <td class="tbl-l">GAS SAFE REGISTRATION NO.:</td>
+    <td><strong>305566</strong></td>
+  </tr>
+</table>
+
+<div>
+  <div id="company-details" class="box half" style="display: inline-block">
+    <h3>Company Details</h3>
+    <table>
+      <tr>
+        <td class="tbl-l">Name:</td>
+        <td class="tbl-r">Ian Foster Services</td>
+      </tr>
+      <tr>
+        <td class="tbl-l">Address:</td>
+        <td class="tbl-r">96 Bradshaw Road</td>
+      </tr>
+      <tr>
+        <td class="tbl-l">&nbsp;</td>
+        <td class="tbl-r">Watford</td>
+      </tr>
+      <tr>
+        <td class="tbl-l">&nbsp;</td>
+        <td class="tbl-r">Hertfordshire</td>
+      </tr>
+      <tr>
+        <td class="tbl-l">Postcode:</td>
+        <td class="tbl-r">WD24 4DF</td>
+      </tr>
+      <tr>
+        <td class="tbl-l">Telephone:</td>
+        <td class="tbl-r">01923 238172 / 07828 679589</td>
+      </tr>
+      <tr>
+        <td class="tbl-l">Email address:</td>
+        <td class="tbl-r">ian@ianfosterservices.co.uk</td>
+      </tr>
+    </table>
+  </div>
+  <div id="customer-details" class="box half" style="display: inline-block">
+    <h3>Customer Details</h3>
+        <table>
+      <tr>
+        <td class="tbl-l">Name:</td>
+        <td class="tbl-r"><$ customer-name $></td>
+      </tr>
+      <tr>
+        <td class="tbl-l">Address:</td>
+        <td class="tbl-r"><$ customer-addressline1 $></td>
+      </tr>
+      <tr>
+        <td class="tbl-l">&nbsp;</td>
+        <td class="tbl-r"><$ customer-addressline2 $></td>
+      </tr>
+      <tr>
+        <td class="tbl-l">&nbsp;</td>
+        <td class="tbl-r"><$ customer-town $></td>
+      </tr>
+      <tr>
+        <td class="tbl-l">Postcode:</td>
+        <td class="tbl-r"><$ customer-postcode $></td>
+      </tr>
+      <tr>
+        <td class="tbl-l">Telephone:</td>
+        <td class="tbl-r"><$ customer-telephone $></td>
+      </tr>
+      <tr>
+        <td class="tbl-l">Email address:</td>
+        <td class="tbl-r"><$ customer-emailaddress $></td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div class="box full">
+  <h3>Description of Works</h3>
+  <div><$ job-description $></div>
+</div>
+
+<div class="box full">
+  <h3>Description of Parts</h3>
+  <table>
+    <tr>
+      <th width="100px">Quantity</td>
+      <th width="500px" style="text-align: left">Description</td>
+      <th width="100px">Price exc. VAT</td>
+      <th width="100px">Price inc. VAT</td>
+    </tr>
+    <$ parts-rows $>
+    <tr>
+      <td>&nbsp;</td>
+      <td style="text-align: right"><strong>Total</strong></td>
+      <td class="text-mid">&#163;<$ parts-totalpriceexclvat $></td>
+      <td class="text-mid">&#163;<$ parts-totalpriceinclvat $></td>
+    </tr>
+  </table>
+</div>
+
+<div class="box twothirds">
+  <h3>Totals</h3>
+  <table>
+    <tr>
+      <td class="tbl-l">Parts total:</td>
+      <td class="tbl-r">&#163;<$ parts-totalpriceinclvat $></td>
+    </tr>
+    <tr>
+      <td class="tbl-l">Labour charge excl VAT:</td>
+      <td class="tbl-r">&#163;<$ job-labourcharge $></td>
+    </tr>
+    <tr>
+      <td class="tbl-l">Labour charge VAT (<$ vatrate $>%):</td>
+      <td class="tbl-r">&#163;<$ job-vat $></td>
+    </tr>
+    <tr>
+      <td class="tbl-l"><strong>Total:</strong></td>
+      <td class="tbl-r">&#163;<$ totalprice $></td>
+    </tr>
+    <$ extratotalrows $>
+  </table>
+</div>

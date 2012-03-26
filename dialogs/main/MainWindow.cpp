@@ -118,6 +118,8 @@ void MainWindow::action_settings_triggered()
 
 void MainWindow::action_help_triggered()
 {
+    QFile::copy(":html/help.html", QDir::currentPath() + "/help.html");
+
     const QString helpFileName = QDir::currentPath() + "/help.html";
     if (QFile::exists(helpFileName)) QDesktopServices::openUrl(QUrl("file:///" + helpFileName));
     else showErrorDialog(("File '" + helpFileName + "' could not be opened").toStdString().c_str());
@@ -263,8 +265,8 @@ void MainWindow::calculateIncome()
 {
     Database<Job>::recordListPtr thisYearsJobs = JobController::getAllJobs();
     QDate date = ui->calendar->selectedDate();
-    const Date thisMonthLowerBound(0, 0, 0, date.month(), date.year()),
-            thisMonthUpperBound(time_t(Date(0, 0, 0, date.month() + 1, date.year())) - 1);
+    const Date thisMonthLowerBound(0, 0, 1, date.month(), date.year()),
+            thisMonthUpperBound(time_t(Date(0, 0, 1, date.month() + 1, date.year())) - 1);
     DateBounds dateBounds(thisMonthLowerBound, thisMonthUpperBound);
     Databases::jobs().keepRecords(*thisYearsJobs, isRecordWithinDateBounds, &dateBounds);
 
@@ -296,8 +298,8 @@ void MainWindow::calculateExpenses()
 {
     Database<Expense>::recordListPtr expenses = ExpenseController::getAllExpenses();
     QDate date = ui->calendar->selectedDate();
-    const Date thisMonthLowerBound(0, 0, 0, date.month(), date.year()),
-            thisMonthUpperBound(time_t(Date(0, 0, 0, date.month() + 1, date.year())) - 1);
+    const Date thisMonthLowerBound(0, 0, 1, date.month(), date.year()),
+            thisMonthUpperBound(time_t(Date(0, 0, 1, date.month() + 1, date.year())) - 1);
     DateBounds dateBounds(thisMonthLowerBound, thisMonthUpperBound);
     Databases::expenses().keepRecords(*expenses, isRecordWithinDateBounds, &dateBounds);
 

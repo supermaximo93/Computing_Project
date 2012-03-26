@@ -35,10 +35,10 @@ QString toValidFileName(const char *fileName_)
     return fileName;
 }
 
-QString getHtml(const QString &filename)
+QString getHtml(const QString &resourceName)
 {
     QString returnString;
-    QFile file(filename);
+    QFile file(":html/" + resourceName);
     if (file.exists())
     {
         file.open(QFile::ReadOnly);
@@ -89,10 +89,10 @@ QString to2Dp(const QString &str)
 
 #define GET_WEBVIEW_AND_HTML() \
 QWebView view;\
-QString html = getHtml(templateFileName);\
+QString html = getHtml(templateResourceName);\
 if (html.isEmpty())\
 {\
-    showErrorDialog(("Could not open file " + templateFileName).toStdString().c_str());\
+    showErrorDialog(("Could not open file " + templateResourceName).toStdString().c_str());\
     return false;\
 }
 
@@ -165,7 +165,7 @@ void getInvoiceReceiptAttributes(Attributes &attributes, const Job &job)
 
 bool PdfGenerator::generateInvoice(const char *fileName_, const Job &job)
 {
-    QString fileName = toValidFileName(fileName_), templateFileName = "invoice_receipt_template.html";
+    QString fileName = toValidFileName(fileName_), templateResourceName = "invoice_receipt_template.html";
 
     Attributes attributes;
     getInvoiceReceiptAttributes(attributes, job);
@@ -181,7 +181,7 @@ bool PdfGenerator::generateInvoice(const char *fileName_, const Job &job)
 
 bool PdfGenerator::generateReceipt(const char *fileName_, const Job &job)
 {
-    QString fileName = toValidFileName(fileName_), templateFileName = "invoice_receipt_template.html";
+    QString fileName = toValidFileName(fileName_), templateResourceName = "invoice_receipt_template.html";
 
     Attributes attributes;
     getInvoiceReceiptAttributes(attributes, job);
@@ -222,12 +222,12 @@ namespace DateFunctions
 
 bool PdfGenerator::generateReport(const char *fileName, const int month, const int year)
 {
-    return generateReport(fileName, Date(0, 0, 0, month, year), Date(time_t(Date(0, 0, 0, month + 1, year)) - 1));
+    return generateReport(fileName, Date(0, 0, 1, month, year), Date(time_t(Date(0, 0, 0, month + 1, year)) - 1));
 }
 
 bool PdfGenerator::generateReport(const char *fileName_, const Date &startDate, const Date &endDate)
 {
-    QString fileName = toValidFileName(fileName_), templateFileName = "report_template.html";
+    QString fileName = toValidFileName(fileName_), templateResourceName = "report_template.html";
 
     DateFunctions::dateLowerBound = startDate;
     DateFunctions::dateUpperBound = endDate;

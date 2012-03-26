@@ -175,3 +175,6 @@ SOURCES += Customer.cpp \
     dialogs/utils/DatePickerDialog.cpp
 
 OTHER_FILES +=
+
+RESOURCES += \
+    resources/Resources.qrc
