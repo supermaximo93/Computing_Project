@@ -1,7 +1,6 @@
 #include <QCloseEvent>
 #include <QTimer>
 #include <QDate>
-#include <QFileDialog>
 #include <QDesktopServices>
 #include <QUrl>
 
@@ -244,16 +243,18 @@ void MainWindow::on_pushButton_allVatRates_clicked()
 void MainWindow::on_pushButton_generateReport_clicked()
 {
     QDate date = ui->calendar->selectedDate();
-    QString suggestedFilename
-            = "report_" + QDate::longMonthName(date.month()) + "_" + toString(date.year()).c_str() + ".pdf";
 
-    QString filename = QFileDialog::getSaveFileName(this, "Save Report As", suggestedFilename, "PDF (*.pdf)");
-    if (filename.isEmpty()) return;
+    QString saveFolder = QDir::currentPath() + "/reports/" + toString(date.year()).c_str();
+    QString filename
+            = saveFolder + "/report_" + QDate::longMonthName(date.month()) + "_" + toString(date.year()).c_str()
+            + ".pdf";
 
-    if (PdfGenerator::generateReport(filename.toStdString().c_str(), date.month(), date.year()))
+    if (!QDir(saveFolder).exists()) QDir().mkpath(saveFolder);
+
+    if (PdfGenerator::generateReport((filename).toStdString().c_str(), date.month(), date.year()))
     {
         showInfoDialog("Report generated successfully");
-        QDesktopServices::openUrl(QUrl("file:///" + filename + (filename.endsWith(".pdf") ? "" : ".pdf")));
+        QDesktopServices::openUrl(QUrl("file:///" + filename));
     }
     else showErrorDialog("Report could not be generated");
 }
