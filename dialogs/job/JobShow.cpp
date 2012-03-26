@@ -11,6 +11,7 @@ using namespace std;
 #include "ui_JobShow.h"
 
 #include <QTimer>
+#include <QDir>
 
 #include "PaymentMethodDialog.h"
 
@@ -131,7 +132,7 @@ void JobShow::checkInternetConnection()
 {
     const bool connectionAvailable = EmailerThread::connectionAvailable();
     ui->pushButton_sendInvoice->setEnabled(connectionAvailable);
-    ui->pushButton_sendReciept->setEnabled(connectionAvailable);
+    ui->pushButton_sendReceipt->setEnabled(connectionAvailable);
 }
 
 void JobShow::on_pushButton_ok_released()
@@ -201,6 +202,13 @@ void JobShow::on_pushButton_markAsDone_released()
 
 void JobShow::on_pushButton_sendInvoice_released()
 {
+    Date jobDate(job.getDate());
+    QString saveFolder
+            = QDir::currentPath() + "/invoices/" + QDate::longMonthName(Date(job.getDate()).month) + '_'
+            + toString(jobDate.year).c_str();
+
+    if (!QDir(saveFolder).exists()) QDir().mkpath(saveFolder);
+
     Customer customer = CustomerController::getCustomer(job.getCustomerId());
     string invoiceFileName;
     invoiceFileName.reserve(256);
@@ -210,11 +218,13 @@ void JobShow::on_pushButton_sendInvoice_released()
     invoiceFileName += "_";
     invoiceFileName += toString(job.getId());
     invoiceFileName += "_";
-    invoiceFileName += (string)Date(job.getDate());
+    invoiceFileName += (string)jobDate;
     invoiceFileName += ".pdf";
     replaceChars(invoiceFileName, ' ', '_');
     replaceChars(invoiceFileName, '/', '-');
     replaceChars(invoiceFileName, ':', '-');
+
+    invoiceFileName = saveFolder.toStdString() + '/' + invoiceFileName;
 
     PdfGenerator::generateInvoice(invoiceFileName.c_str(), job);
 
@@ -243,29 +253,38 @@ void JobShow::on_pushButton_markAsPaid_released()
     }
 }
 
-void JobShow::on_pushButton_sendReciept_released()
+void JobShow::on_pushButton_sendReceipt_released()
 {
-    Customer customer = CustomerController::getCustomer(job.getCustomerId());
-    string recieptFileName;
-    recieptFileName.reserve(256);
-    recieptFileName += "reciept_";
-    recieptFileName += customer.getForename();
-    recieptFileName += customer.getSurname();
-    recieptFileName += "_";
-    recieptFileName += toString(job.getId());
-    recieptFileName += "_";
-    recieptFileName += (string)Date(job.getDate());
-    recieptFileName += ".pdf";
-    replaceChars(recieptFileName, ' ', '_');
-    replaceChars(recieptFileName, '/', '-');
-    replaceChars(recieptFileName, ':', '-');
+    Date jobDate(job.getDate());
+    QString saveFolder
+            = QDir::currentPath() + "/receipts/" + QDate::longMonthName(Date(job.getDate()).month) + '_'
+            + toString(jobDate.year).c_str();
 
-    PdfGenerator::generateReceipt(recieptFileName.c_str(), job);
+    if (!QDir(saveFolder).exists()) QDir().mkpath(saveFolder);
+
+    Customer customer = CustomerController::getCustomer(job.getCustomerId());
+    string receiptFileName;
+    receiptFileName.reserve(256);
+    receiptFileName += "receipt_";
+    receiptFileName += customer.getForename();
+    receiptFileName += customer.getSurname();
+    receiptFileName += "_";
+    receiptFileName += toString(job.getId());
+    receiptFileName += "_";
+    receiptFileName += (string)Date(job.getDate());
+    receiptFileName += ".pdf";
+    replaceChars(receiptFileName, ' ', '_');
+    replaceChars(receiptFileName, '/', '-');
+    replaceChars(receiptFileName, ':', '-');
+
+    receiptFileName = saveFolder.toStdString() + '/' + receiptFileName;
+
+    PdfGenerator::generateReceipt(receiptFileName.c_str(), job);
 
     EmailDetails emailDetails(customer.getEmailAddress(),
                               SettingController::getSetting(SettingForm::keyReceiptSubject).getValue(),
                               SettingController::getSetting(SettingForm::keyReceiptBody).getValue(),
-                              recieptFileName.c_str());
+                              receiptFileName.c_str());
 
     EmailerThread::enqueueEmail(emailDetails);
 }

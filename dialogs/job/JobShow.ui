@@ -213,9 +213,9 @@
      </widget>
     </item>
     <item>
-     <widget class="QPushButton" name="pushButton_sendReciept">
+     <widget class="QPushButton" name="pushButton_sendReceipt">
       <property name="text">
-       <string>Send reciept</string>
+       <string>Send receipt</string>
       </property>
      </widget>
     </item>

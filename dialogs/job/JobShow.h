@@ -55,7 +55,7 @@ private slots:
 
     void on_pushButton_markAsPaid_released();
 
-    void on_pushButton_sendReciept_released();
+    void on_pushButton_sendReceipt_released();
 
 private:
     Ui::JobShow *ui;
