@@ -35,11 +35,7 @@ void TaskForm::updateView()
 void TaskForm::on_dateTimeEdit_date_dateTimeChanged(const QDateTime &date)
 {
     bool success = true;
-    try
-    {
-        task.setDate(Date(date.time().minute(), date.time().hour(), date.date().day(), date.date().month(),
-                          date.date().year()));
-    }
+    try { task.setDate(Date(date)); }
     catch (const std::exception &e)
     {
         success = false;

@@ -151,8 +151,7 @@ int compareRecordDates(const T &record1, const T &record2)
 
 void MainWindow::getJobsAndTasksForCurrentDate()
 {
-    const QDate qdate = ui->calendar->selectedDate();
-    const Date date(0, 0, qdate.day(), qdate.month(), qdate.year());
+    const Date date(ui->calendar->selectedDate());
     DateBounds dateBounds(date, date + 86400);
 
     jobs = JobController::getAllJobs();
@@ -167,8 +166,7 @@ void MainWindow::getJobsAndTasksForCurrentDate()
 
 void MainWindow::updateListWidgets()
 {
-    const QDate qdate = ui->calendar->selectedDate();
-    const Date date(0, 0, qdate.day(), qdate.month(), qdate.year());
+    const Date date(ui->calendar->selectedDate());
     ui->label_selectedDate1->setText(date.toQStringWithoutTime());
     ui->label_selectedDate2->setText(date.toQStringWithoutTime());
 

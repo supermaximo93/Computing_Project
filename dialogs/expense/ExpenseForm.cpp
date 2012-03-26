@@ -61,11 +61,7 @@ void ExpenseForm::on_pushButton_cancel_released()
 void ExpenseForm::on_dateTimeEdit_date_dateTimeChanged(const QDateTime &date)
 {
     bool success = true;
-    try
-    {
-        expense.setDate(Date(date.time().minute(), date.time().hour(), date.date().day(), date.date().month(),
-                             date.date().year()));
-    }
+    try { expense.setDate(Date(date)); }
     catch (const std::exception &e)
     {
         success = false;

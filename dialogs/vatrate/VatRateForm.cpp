@@ -50,7 +50,7 @@ void VatRateForm::on_doubleSpinBox_vatRate_valueChanged(const double value)
 void VatRateForm::on_dateEdit_startDate_dateChanged(const QDate &date)
 {
     bool success = true;
-    try { vatRate.setStartDate(Date(0, 0, date.day(), date.month(), date.year())); }
+    try { vatRate.setStartDate(Date(date)); }
     catch (const std::exception &e)
     {
         success = false;
