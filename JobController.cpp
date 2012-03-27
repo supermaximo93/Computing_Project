@@ -21,7 +21,17 @@ using namespace std;
 #include "dialogs/job/JobShow.h"
 #include "dialogs/job/JobForm.h"
 
-void JobController::Index(QWidget *caller)
+namespace DateFunctions
+{
+    static time_t dateLowerBound, dateUpperBound;
+
+    static bool isJobDateWithinBounds(const Job &job, void *)
+    {
+        return (job.getDate() >= dateLowerBound) && (job.getDate() <= dateUpperBound);
+    }
+}
+
+void JobController::Index(const QDate &date, QWidget *caller)
 {
     Database<Job>::recordListPtr jobs;
     try { jobs = Databases::jobs().allRecords(); }
@@ -31,9 +41,12 @@ void JobController::Index(QWidget *caller)
         return;
     }
 
-    JobIndex view(*jobs, caller);
-    view.setModal(true);
-    view.exec();
+    DateFunctions::dateLowerBound = Date(0, 0, 1, date.month(), date.year());
+    DateFunctions::dateUpperBound = time_t(Date(0, 0, 1, date.month() + 1, date.year())) - 1;
+    Databases::jobs().keepRecords(*jobs, DateFunctions::isJobDateWithinBounds, NULL);
+
+    const QString title = "Jobs for " + QDate::longMonthName(date.month()) + ' ' + toString(date.year()).c_str();
+    JobIndex(*jobs, title, caller).exec();
 }
 
 void JobController::Show(const int jobId, QWidget *caller)
@@ -70,9 +83,7 @@ void JobController::Show(Job &job, QWidget *caller)
         return;
     }
 
-    JobShow view(job, *parts, *tasks, caller);
-    view.setModal(true);
-    view.exec();
+    JobShow(job, *parts, *tasks, caller).exec();
 }
 
 Job JobController::New(QWidget *caller)
@@ -90,7 +101,6 @@ Job JobController::New(QWidget *caller)
     }
 
     JobForm view(job, *customers, parts, tasks, caller);
-    view.setModal(true);
     return (view.exec() == QDialog::Rejected ? Job() : job);
 }
 
@@ -132,7 +142,6 @@ void JobController::Edit(Job &job, QWidget *caller)
 
     Job tempJob = job;
     JobForm view(tempJob, *customers, *parts, *tasks, caller);
-    view.setModal(true);
     if (view.exec() == JobForm::Accepted) job = tempJob;
 }
 

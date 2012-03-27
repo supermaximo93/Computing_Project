@@ -11,11 +11,15 @@
 #include "Expense.h"
 #include "ExpenseController.h"
 
-ExpenseIndex::ExpenseIndex(Database<Expense>::recordList &expenses, QWidget * parent)
+ExpenseIndex::ExpenseIndex(Database<Expense>::recordList &expenses, const QString &title, QWidget * parent)
     : QDialog(parent), ui(new Ui::ExpenseIndex), expenses(expenses)
 {
     ui->setupUi(this);
-
+    if (!title.isEmpty())
+    {
+        setWindowTitle(title);
+        ui->label_expensesTitle->setText(title);
+    }
     updateView();
 }
 

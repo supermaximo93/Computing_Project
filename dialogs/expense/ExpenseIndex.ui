@@ -98,18 +98,18 @@
     <string>Add new expense</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_expenses">
+  <widget class="QLabel" name="label_expensesTitle">
    <property name="geometry">
     <rect>
      <x>20</x>
      <y>10</y>
-     <width>191</width>
+     <width>371</width>
      <height>31</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>22</pointsize>
+     <pointsize>18</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>

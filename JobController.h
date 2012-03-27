@@ -18,7 +18,7 @@ class Task;
 namespace JobController
 {
 
-void Index(QWidget *caller);
+void Index(const QDate &date, QWidget *caller);
 
 void Show(int jobId, QWidget *caller);
 void Show(Job &job, QWidget *caller);

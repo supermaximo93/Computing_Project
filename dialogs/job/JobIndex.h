@@ -25,7 +25,7 @@ class JobIndex : public QDialog
     Q_OBJECT
 
 public:
-    explicit JobIndex(Database<Job>::recordList &jobs, QWidget *parent = NULL);
+    explicit JobIndex(Database<Job>::recordList &jobs, const QString &title = "", QWidget *parent = NULL);
     ~JobIndex();
 
     void updateView();

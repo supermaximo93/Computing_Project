@@ -13,18 +13,18 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QLabel" name="label_job">
+  <widget class="QLabel" name="label_jobsTitle">
    <property name="geometry">
     <rect>
      <x>20</x>
      <y>10</y>
-     <width>121</width>
+     <width>371</width>
      <height>31</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>22</pointsize>
+     <pointsize>18</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>

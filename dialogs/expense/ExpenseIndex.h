@@ -25,7 +25,7 @@ class ExpenseIndex : public QDialog
     Q_OBJECT
 
 public:
-    explicit ExpenseIndex(Database<Expense>::recordList &expenses, QWidget *parent = NULL);
+    explicit ExpenseIndex(Database<Expense>::recordList &expenses, const QString &title = "", QWidget *parent = NULL);
     ~ExpenseIndex();
 
     void updateView();

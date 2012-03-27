@@ -17,10 +17,15 @@ using namespace std;
 #include "CustomerController.h"
 #include "Utils.h"
 
-JobIndex::JobIndex(Database<Job>::recordList &jobs, QWidget *parent)
+JobIndex::JobIndex(Database<Job>::recordList &jobs, const QString &title, QWidget *parent)
     : QDialog(parent), ui(new Ui::JobIndex), jobs(jobs)
 {
     ui->setupUi(this);
+    if (!title.isEmpty())
+    {
+        setWindowTitle(title);
+        ui->label_jobsTitle->setText(title);
+    }
     updateView();
 }
 

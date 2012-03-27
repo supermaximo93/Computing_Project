@@ -16,7 +16,7 @@ class Expense;
 namespace ExpenseController
 {
 
-void Index(QWidget *caller);
+void Index(const QDate &date, QWidget *caller);
 
 void Show(int expenseId, QWidget *caller);
 void Show(Expense &expense, QWidget *caller);

@@ -81,13 +81,13 @@ void MainWindow::checkInternetConnection()
 
 void MainWindow::on_pushButton_allJobs_released()
 {
-    JobController::Index(this);
+    JobController::Index(ui->calendar->selectedDate(), this);
     updateEverythingOtherThanExpenses();
 }
 
 void MainWindow::on_pushButton_allExpenses_released()
 {
-    ExpenseController::Index(this);
+    ExpenseController::Index(ui->calendar->selectedDate(), this);
     calculateExpenses();
     calculateGrandTotal();
 }

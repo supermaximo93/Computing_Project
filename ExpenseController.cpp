@@ -13,7 +13,17 @@
 #include "dialogs/expense/ExpenseShow.h"
 #include "dialogs/expense/ExpenseForm.h"
 
-void ExpenseController::Index(QWidget *caller)
+namespace DateFunctions
+{
+    static time_t dateLowerBound, dateUpperBound;
+
+    static bool isExpenseDateWithinBounds(const Expense &expense, void *)
+    {
+        return (expense.getDate() >= dateLowerBound) && (expense.getDate() <= dateUpperBound);
+    }
+}
+
+void ExpenseController::Index(const QDate &date, QWidget *caller)
 {
     Database<Expense>::recordListPtr expenses;
     try { expenses = Databases::expenses().allRecords(); }
@@ -23,9 +33,12 @@ void ExpenseController::Index(QWidget *caller)
         return;
     }
 
-    ExpenseIndex view(*expenses, caller);
-    view.setModal(true);
-    view.exec();
+    DateFunctions::dateLowerBound = Date(0, 0, 1, date.month(), date.year());
+    DateFunctions::dateUpperBound = time_t(Date(0, 0, 1, date.month() + 1, date.year())) - 1;
+    Databases::expenses().keepRecords(*expenses, DateFunctions::isExpenseDateWithinBounds, NULL);
+
+    const QString title = "Expenses for " + QDate::longMonthName(date.month()) + ' ' + toString(date.year()).c_str();
+    ExpenseIndex(*expenses, title, caller).exec();
 }
 
 void ExpenseController::Show(const int expenseId, QWidget *caller)
@@ -49,16 +62,13 @@ void ExpenseController::Show(const int expenseId, QWidget *caller)
 
 void ExpenseController::Show(Expense &expense, QWidget *caller)
 {
-    ExpenseShow view(expense, caller);
-    view.setModal(true);
-    view.exec();
+    ExpenseShow(expense, caller).exec();
 }
 
 Expense ExpenseController::New(QWidget *caller)
 {
     Expense expense;
     ExpenseForm view(expense, caller);
-    view.setModal(true);
     return (view.exec() == QDialog::Rejected ? Expense() : expense);
 }
 
@@ -85,7 +95,6 @@ void ExpenseController::Edit(Expense &expense, QWidget *caller)
 {
     Expense tempExpense = expense;
     ExpenseForm view(tempExpense, caller);
-    view.setModal(true);
     if (view.exec() == ExpenseForm::Accepted) expense = tempExpense;
 }
 
