@@ -89,7 +89,7 @@ void JobShow::updateView()
 
     ui->verticalWidget_sendInvoiceMarkAsPaid->setHidden(job.getCompletionState() != Job::DONE_UNPAID);
     ui->pushButton_markAsDone->setHidden(job.getCompletionState() != Job::NOT_DONE);
-    ui->horizontalWidget_paidBy->setHidden(job.getCompletionState() != Job::DONE_PAID);
+    ui->gridWidget_paidBy->setHidden(job.getCompletionState() != Job::DONE_PAID);
 
     switch (job.getPaymentMethod())
     {
@@ -101,6 +101,7 @@ void JobShow::updateView()
     case Job::BANK_TRANSFER: str = "Bank transfer"; break;
     }
     ui->label_paymentTypeE->setText(str);
+    ui->label_paymentDateE->setText(Date(job.getPaymentDate()));
 }
 
 void JobShow::updateCharges()
@@ -239,10 +240,15 @@ void JobShow::on_pushButton_sendInvoice_released()
 void JobShow::on_pushButton_markAsPaid_released()
 {
     int paymentMethod;
-    PaymentMethodDialog dialog(paymentMethod);
+    QDateTime paymentDate;
+    PaymentMethodDialog dialog(paymentMethod, paymentDate, Date(job.getDate()));
     if (dialog.exec() == Accepted)
     {
-        try { job.setPaymentMethod(paymentMethod); }
+        try
+        {
+            job.setPaymentMethod(paymentMethod);
+            job.setPaymentDate(Date(paymentDate));
+        }
         catch (const std::exception &e) { showErrorDialog(e.what()); return; }
 
         if (!setNewJobCompletionState(Job::DONE_PAID)) // This'll update the record in the database automatically

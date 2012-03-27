@@ -1,7 +1,7 @@
 /*
  * PaymentMethodDialog.h
  *
- *  Created on: 15 2 2012
+ *  Created on: 15 Feb 2012
  *      Author: Max Foster
  */
 
@@ -10,16 +10,20 @@
 
 #include <QDialog>
 
-namespace Ui {
+namespace Ui
+{
     class PaymentMethodDialog;
 }
+
+class QDateTime;
 
 class PaymentMethodDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit PaymentMethodDialog(int &paymentMethodToSet, QWidget *parent = NULL);
+    explicit PaymentMethodDialog(int &paymentMethodToSet, QDateTime &dateTimeToSet, const QDateTime &minimumDateTime,
+                                 QWidget *parent = NULL);
     ~PaymentMethodDialog();
 
 private slots:
@@ -27,9 +31,13 @@ private slots:
 
     void on_buttonBox_rejected();
 
+    void on_pushButton_datePicker_clicked();
+
 private:
     Ui::PaymentMethodDialog *ui;
     int &paymentMethodToSet;
+    QDateTime &dateTimeToSet;
+    const QDateTime &minimumDateTime;
 };
 
 #endif // PAYMENTMETHODDIALOG_H

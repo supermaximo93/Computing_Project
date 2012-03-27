@@ -188,39 +188,6 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="horizontalWidget_paidBy" native="true">
-   <property name="geometry">
-    <rect>
-     <x>60</x>
-     <y>530</y>
-     <width>361</width>
-     <height>51</height>
-    </rect>
-   </property>
-   <layout class="QHBoxLayout" name="horizontalLayout_paidBy">
-    <item>
-     <widget class="QLabel" name="label_paidBy">
-      <property name="text">
-       <string>Paid by</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QLabel" name="label_paymentTypeE">
-      <property name="text">
-       <string>payment type</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="pushButton_sendReceipt">
-      <property name="text">
-       <string>Send receipt</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
   <widget class="QLabel" name="label_job">
    <property name="geometry">
     <rect>
@@ -371,6 +338,53 @@
    <property name="text">
     <string>Description</string>
    </property>
+  </widget>
+  <widget class="QWidget" name="gridWidget_paidBy" native="true">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>520</y>
+     <width>304</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_paidBy">
+    <item row="0" column="1">
+     <widget class="QLabel" name="label_paymentTypeE">
+      <property name="text">
+       <string>payment type</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_paidBy">
+      <property name="text">
+       <string>Paid by</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QPushButton" name="pushButton_sendReceipt">
+      <property name="text">
+       <string>Send receipt</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_paymentDate">
+      <property name="text">
+       <string>Payment date</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1" colspan="2">
+     <widget class="QLabel" name="label_paymentDateE">
+      <property name="text">
+       <string>payment date</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>

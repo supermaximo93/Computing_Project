@@ -280,7 +280,8 @@ void Job::setPaymentDate(const time_t newPaymentDate)
     string errorMessage;
     if (isValidPaymentDate(newPaymentDate, errorMessage))
     {
-        if (newPaymentDate < date) throw std::runtime_error("Payment time/date must be after the job time/date");
+        if ((completionState == DONE_PAID) && (newPaymentDate < date))
+            throw std::runtime_error("Payment time/date must be after the job time/date");
         paymentDate = newPaymentDate;
     }
     else throw std::runtime_error(errorMessage);

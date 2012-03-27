@@ -76,6 +76,7 @@ void JobForm::updateView()
 
     ui->comboBox_completionState->setCurrentIndex(job.getCompletionState());
     ui->comboBox_paidBy->setCurrentIndex(job.getPaymentMethod());
+    ui->dateTimeEdit_paymentDate->setDateTime(Date(job.getPaymentDate()));
 }
 
 void JobForm::on_pushButton_cancel_released()
@@ -157,6 +158,9 @@ bool JobForm::setRecordData()
 
     on_comboBox_paidBy_currentIndexChanged(ui->comboBox_paidBy->currentIndex());
     if (ui->comboBox_paidBy->styleSheet() != "") success = false;
+
+    on_dateTimeEdit_paymentDate_dateTimeChanged(ui->dateTimeEdit_paymentDate->dateTime());
+    if (ui->dateTimeEdit_paymentDate->styleSheet() != "") success = false;
 
     return success;
 }
@@ -347,8 +351,31 @@ void JobForm::on_pushButton_addTask_released()
     }
 }
 
-void JobForm::on_pushButton_datePicker_clicked()
+void JobForm::on_pushButton_datePickerDate_clicked()
 {
     QDate date;
     if (showDatePickerDialog(date)) ui->dateTimeEdit_date->setDate(date);
+}
+
+void JobForm::on_dateTimeEdit_paymentDate_dateTimeChanged(const QDateTime &date)
+{
+    bool success = true;
+    try { job.setPaymentDate(Date(date)); }
+    catch (const std::exception &e)
+    {
+        success = false;
+        ui->dateTimeEdit_paymentDate->setToolTip(e.what());
+        ui->dateTimeEdit_paymentDate->setStyleSheet("QDateTimeEdit { background-color: red; }");
+    }
+    if (success)
+    {
+        ui->dateTimeEdit_paymentDate->setStyleSheet("");
+        ui->dateTimeEdit_paymentDate->setToolTip("");
+    }
+}
+
+void JobForm::on_pushButton_datePickerPaymentDate_clicked()
+{
+    QDate date;
+    if (showDatePickerDialog(date)) ui->dateTimeEdit_paymentDate->setDate(date);
 }

@@ -63,7 +63,11 @@ private slots:
 
     void on_pushButton_addTask_released();
 
-    void on_pushButton_datePicker_clicked();
+    void on_pushButton_datePickerDate_clicked();
+
+    void on_dateTimeEdit_paymentDate_dateTimeChanged(const QDateTime &date);
+
+    void on_pushButton_datePickerPaymentDate_clicked();
 
 private:
     enum
