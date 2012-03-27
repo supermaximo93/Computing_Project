@@ -27,9 +27,18 @@ CustomerIndex::~CustomerIndex()
 
 void CustomerIndex::updateView()
 {
+    CustomerController::sortCustomersBySurname(customers);
+
     ui->listWidget->clear();
+
+    char firstPart[64] = { 0 };
     for (unsigned i = 0; i < customers.size(); ++i)
-        ui->listWidget->addItem(createFullName(customers[i].getForename(), customers[i].getSurname()));
+    {
+        // Display customer names with the format <surname>, <forename>
+        strcpy(firstPart, customers[i].getSurname());
+        strcat(firstPart, ", ");
+        ui->listWidget->addItem(createFullName(firstPart, customers[i].getForename()));
+    }
 }
 
 void CustomerIndex::on_pushButton_ok_released()

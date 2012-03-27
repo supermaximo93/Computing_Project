@@ -38,6 +38,8 @@ Customer getCustomer(int customerId);
 Database<Customer>::recordListPtr getAllCustomers();
 Database<Job>::recordListPtr getCustomerJobs(int customerId);
 
+void sortCustomersBySurname(Database<Customer>::recordList &customers, bool ascending = true);
+
 }
 
 #endif // CUSTOMERCONTROLLER_H
