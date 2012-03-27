@@ -228,7 +228,7 @@ namespace DateFunctions
 
 bool PdfGenerator::generateReport(const char *fileName, const int month, const int year)
 {
-    return generateReport(fileName, Date(0, 0, 1, month, year), Date(time_t(Date(0, 0, 0, month + 1, year)) - 1));
+    return generateReport(fileName, Date(0, 0, 1, month, year), Date(time_t(Date(0, 0, 1, month + 1, year)) - 1));
 }
 
 bool PdfGenerator::generateReport(const char *fileName_, const Date &startDate, const Date &endDate)
