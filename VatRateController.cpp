@@ -23,8 +23,6 @@ void VatRateController::Index(QWidget *caller)
         return;
     }
 
-    sortVatRatesByStartDate(*vatRates);
-
     VatRateIndex(*vatRates, caller).exec();
 }
 

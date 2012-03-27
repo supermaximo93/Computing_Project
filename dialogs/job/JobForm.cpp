@@ -39,6 +39,8 @@ JobForm::~JobForm()
 
 void JobForm::updateView()
 {
+    TaskController::sortTasksByDate(tasks);
+
     ui->dateTimeEdit_date->setDateTime(Date(job.getDate()));
 
     ui->comboBox_customer->blockSignals(true); // Need to block signals as when addItem is called, a callback is called

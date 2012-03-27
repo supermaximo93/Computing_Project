@@ -26,6 +26,8 @@ ExpenseIndex::~ExpenseIndex()
 
 void ExpenseIndex::updateView()
 {
+    ExpenseController::sortExpensesByDate(expenses, false);
+
     ui->tableWidget->clear();
 
     QStringList headings;

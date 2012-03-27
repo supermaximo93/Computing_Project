@@ -170,3 +170,27 @@ Database<Expense>::recordListPtr ExpenseController::getAllExpenses()
     return expenses;
 }
 
+void ExpenseController::sortExpensesByDate(Database<Expense>::recordList &expenses, bool ascending)
+{
+    struct NestedFunctions
+    {
+        static int dateCompareAsc(const Expense &expense1, const Expense &expense2)
+        {
+            const time_t date1 = expense1.getDate(), date2 = expense2.getDate();
+            if (date1 < date2) return -1;
+            if (date1 > date2) return 1;
+            return 0;
+        }
+
+        static int dateCompareDec(const Expense &expense1, const Expense &expense2)
+        {
+            const time_t date1 = expense1.getDate(), date2 = expense2.getDate();
+            if (date1 < date2) return 1;
+            if (date1 > date2) return -1;
+            return 0;
+        }
+    };
+
+    Databases::expenses().sortRecords(expenses, 0, expenses.size() - 1, ascending ?
+                                          NestedFunctions::dateCompareAsc : NestedFunctions::dateCompareDec);
+}

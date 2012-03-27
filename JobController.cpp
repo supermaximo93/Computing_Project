@@ -255,3 +255,28 @@ Database<Task>::recordListPtr JobController::getJobTasks(const int jobId)
     }
     return tasks;
 }
+
+void JobController::sortJobsByDate(Database<Job>::recordList &jobs, bool ascending)
+{
+    struct NestedFunctions
+    {
+        static int dateCompareAsc(const Job &job1, const Job &job2)
+        {
+            const time_t date1 = job1.getDate(), date2 = job2.getDate();
+            if (date1 < date2) return -1;
+            if (date1 > date2) return 1;
+            return 0;
+        }
+
+        static int dateCompareDec(const Job &job1, const Job &job2)
+        {
+            const time_t date1 = job1.getDate(), date2 = job2.getDate();
+            if (date1 < date2) return 1;
+            if (date1 > date2) return -1;
+            return 0;
+        }
+    };
+
+    Databases::jobs().sortRecords(jobs, 0, jobs.size() - 1, ascending ?
+                                      NestedFunctions::dateCompareAsc : NestedFunctions::dateCompareDec);
+}

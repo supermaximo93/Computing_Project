@@ -55,6 +55,8 @@ JobShow::~JobShow()
 
 void JobShow::updateView()
 {
+    TaskController::sortTasksByDate(tasks);
+
     ui->label_dateE->setText(Date(job.getDate()));
 
     Customer customer = CustomerController::getCustomer(job.getCustomerId());

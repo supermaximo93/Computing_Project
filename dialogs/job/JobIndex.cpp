@@ -31,6 +31,8 @@ JobIndex::~JobIndex()
 
 void JobIndex::updateView()
 {
+    JobController::sortJobsByDate(jobs, false);
+
     ui->tableWidget->clear();
 
     QStringList headings;

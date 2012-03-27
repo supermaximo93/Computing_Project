@@ -155,3 +155,28 @@ Database<Task>::recordListPtr TaskController::getAllTasks()
     }
     return tasks;
 }
+
+void TaskController::sortTasksByDate(Database<Task>::recordList &tasks, bool ascending)
+{
+    struct NestedFunctions
+    {
+        static int dateCompareAsc(const Task &task1, const Task &task2)
+        {
+            const time_t date1 = task1.getDate(), date2 = task2.getDate();
+            if (date1 < date2) return -1;
+            if (date1 > date2) return 1;
+            return 0;
+        }
+
+        static int dateCompareDec(const Task &task1, const Task &task2)
+        {
+            const time_t date1 = task1.getDate(), date2 = task2.getDate();
+            if (date1 < date2) return 1;
+            if (date1 > date2) return -1;
+            return 0;
+        }
+    };
+
+    Databases::tasks().sortRecords(tasks, 0, tasks.size() - 1, ascending ?
+                                       NestedFunctions::dateCompareAsc : NestedFunctions::dateCompareDec);
+}

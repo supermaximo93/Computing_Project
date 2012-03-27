@@ -40,6 +40,8 @@ Database<Job>::recordListPtr getAllJobs();
 Database<Part>::recordListPtr getJobParts(int jobId);
 Database<Task>::recordListPtr getJobTasks(int jobId);
 
+void sortJobsByDate(Database<Job>::recordList &jobs, bool ascending = true);
+
 }
 
 #endif // JOBCONTROLLER_H

@@ -36,6 +36,8 @@ bool Destroy(Expense &expense, QWidget *caller);
 Expense getExpense(int expenseId);
 Database<Expense>::recordListPtr getAllExpenses();
 
+void sortExpensesByDate(Database<Expense>::recordList &expenses, bool ascending = true);
+
 }
 
 #endif // EXPENSECONTROLLER_H

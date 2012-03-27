@@ -36,6 +36,8 @@ bool Destroy(Task &task, QWidget *caller);
 Task getTask(int taskId);
 Database<Task>::recordListPtr getAllTasks();
 
+void sortTasksByDate(Database<Task>::recordList &tasks, bool ascending = true);
+
 }
 
 #endif // TASKCONTROLLER_H
