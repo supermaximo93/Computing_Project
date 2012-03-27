@@ -145,6 +145,13 @@ bool isRecordWithinDateBounds(const T &record, void *data)
 }
 
 template<typename T>
+bool isRecordWithinPaymentDateBounds(const T &record, void *data)
+{
+    DateBounds *dateBounds = static_cast<DateBounds *>(data);
+    return (record.getPaymentDate() >= dateBounds->lowerBound) && (record.getPaymentDate() <= dateBounds->upperBound);
+}
+
+template<typename T>
 int compareRecordDates(const T &record1, const T &record2)
 {
     const time_t date1 = record1.getDate(), date2 = record2.getDate();
@@ -263,17 +270,17 @@ void MainWindow::on_pushButton_generateReport_clicked()
 
 void MainWindow::calculateIncome()
 {
-    Database<Job>::recordListPtr thisYearsJobs = JobController::getAllJobs();
+    Database<Job>::recordListPtr thisMonthsJobs = JobController::getAllJobs();
     QDate date = ui->calendar->selectedDate();
     const Date thisMonthLowerBound(0, 0, 1, date.month(), date.year()),
             thisMonthUpperBound(time_t(Date(0, 0, 1, date.month() + 1, date.year())) - 1);
     DateBounds dateBounds(thisMonthLowerBound, thisMonthUpperBound);
-    Databases::jobs().keepRecords(*thisYearsJobs, isRecordWithinDateBounds, &dateBounds);
+    Databases::jobs().keepRecords(*thisMonthsJobs, isRecordWithinPaymentDateBounds, &dateBounds);
 
     double income = 0.0, vat = 0.0;
-    for (unsigned i = 0; i < thisYearsJobs->size(); ++i)
+    for (unsigned i = 0; i < thisMonthsJobs->size(); ++i)
     {
-        Job &job = thisYearsJobs->at(i);
+        Job &job = thisMonthsJobs->at(i);
         if (job.getCompletionState() == Job::DONE_PAID)
         {
             Database<Part>::recordListPtr parts = JobController::getJobParts(job.getId());

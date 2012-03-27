@@ -213,6 +213,12 @@ namespace DateFunctions
     }
 
     template<typename T>
+    static bool isRecordPaymentDateWithinBounds(const T &record, void *)
+    {
+        return (record.getPaymentDate() >= dateLowerBound) && (record.getPaymentDate() <= dateUpperBound);
+    }
+
+    template<typename T>
     static int compareRecordDates(const T &record1, const T &record2)
     {
         const time_t date1 = record1.getDate(), date2 = record2.getDate();
@@ -233,7 +239,7 @@ bool PdfGenerator::generateReport(const char *fileName_, const Date &startDate, 
     DateFunctions::dateUpperBound = endDate;
 
     Database<Job>::recordListPtr jobs = JobController::getAllJobs();
-    Databases::jobs().keepRecords(*jobs, DateFunctions::isRecordDateWithinBounds, NULL);
+    Databases::jobs().keepRecords(*jobs, DateFunctions::isRecordPaymentDateWithinBounds, NULL);
     Databases::jobs().sortRecords(*jobs, 0, jobs->size() - 1, DateFunctions::compareRecordDates);
 
     Database<Expense>::recordListPtr expenses = ExpenseController::getAllExpenses();
@@ -263,7 +269,7 @@ bool PdfGenerator::generateReport(const char *fileName_, const Date &startDate, 
             Customer customer = CustomerController::getCustomer(job.getCustomerId());
 
             jobHtml += "<tr><td class='text-mid'>";
-            jobHtml += Date(job.getDate()).toQStringWithoutTime();
+            jobHtml += Date(job.getPaymentDate()).toQStringWithoutTime();
             jobHtml += "</td><td class='text-mid'>";
             jobHtml += createFullName(customer.getForename(), customer.getSurname());
             jobHtml += "</td><td class='text-mid'>";
