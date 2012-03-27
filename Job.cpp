@@ -26,8 +26,8 @@ int Job::size() {
 Job::Job(const int customerId, const time_t date, const char *newDescription, const double labourCharge,
          const int completionState, const int paymentMethod, const time_t paymentDate) :
     customerId(customerId), completionState(completionState), paymentMethod(paymentMethod),
-    date(date == 0 ? time(NULL) : date), paymentDate(paymentDate), labourCharge(labourCharge),
-    vat(labourCharge * Globals::vatRate(this->date))
+    date(date == 0 ? time(NULL) : date), paymentDate(paymentDate == 0 ? this->date : paymentDate),
+    labourCharge(labourCharge), vat(labourCharge * Globals::vatRate(this->date))
 {
     description = new char[maxDescriptionLength + 1];
     strcpy(description, newDescription);

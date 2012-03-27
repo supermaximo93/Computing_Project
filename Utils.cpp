@@ -26,7 +26,7 @@ using namespace std;
 
 Date::Date(const time_t seconds_)
 {
-    tm *time = localtime(&seconds_);
+    tm *time = gmtime(&seconds_);
     seconds = time->tm_sec;
     minute = time->tm_min;
     hour = time->tm_hour;
@@ -61,7 +61,7 @@ Date::operator QString() const
 
 Date::operator QDateTime() const
 {
-    return QDateTime(QDate(year, month, day), QTime(hour, minute));
+    return QDateTime(QDate(year, month, day), QTime(hour, minute), Qt::UTC);
 }
 
 Date::operator QDate() const
@@ -72,7 +72,7 @@ Date::operator QDate() const
 Date::operator time_t() const
 {
     time_t t = 0;
-    tm *time = localtime(&t);
+    tm *time = gmtime(&t);
     time->tm_sec = seconds;
     time->tm_min = minute;
     time->tm_hour = hour;
@@ -89,9 +89,16 @@ QString Date::toQStringWithoutTime() const
     return stream.str().c_str();
 }
 
+string to2Digits(const unsigned num)
+{
+    if (num < 10) return '0' + toString(num);
+    return toString(num);
+}
+
 ostream & operator <<(ostream &stream, const Date &date)
 {
-    stream << date.day << "/" << date.month << "/" << date.year << " - " << date.hour << ":" << date.minute;
+    stream << date.day << "/" << date.month << "/" << date.year
+           << " - " << to2Digits(date.hour) << ":" << to2Digits(date.minute);
     return stream;
 }
 
