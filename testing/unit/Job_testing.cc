@@ -24,7 +24,7 @@ protected:
     const Job exampleJob;
 
     JobUnitTest()
-        : exampleJob(0, time(NULL) + 100000, "Replaced boiler", 50.0, Job::DONE_PAID, Job::CASH) {}
+        : exampleJob(0, time(NULL) + 86400, "Replaced boiler", 50.0, Job::DONE_PAID, Job::CASH, time(NULL) + 96400) {}
 };
 
 // Is Job ID Minus One
@@ -177,6 +177,30 @@ TEST_F(JobUnitTest, DoesJobAcceptExtremeValidPaymentMethodLowerBound)
     Job job(exampleJob);
     EXPECT_NO_THROW(job.setPaymentMethod(0))
             << "Exception was thrown when the payment method was set to a valid value";
+}
+
+// Does Job Accept Valid Payment Date
+TEST_F(JobUnitTest, DoesJobAcceptValidPaymentDate)
+{
+    Job job(exampleJob);
+    EXPECT_NO_THROW(job.setPaymentDate(job.getDate() + 86400))
+            << "Exception was thrown when the payment date was set to a valid value (i.e. value > job.date)";
+}
+
+// Does Job Accept Extreme Valid Payment Date (Lower Bound)
+TEST_F(JobUnitTest, DoesJobAcceptExtremeValidPaymentDateLowerBound)
+{
+    Job job(exampleJob);
+    EXPECT_NO_THROW(job.setPaymentDate(job.getDate()))
+            << "Exception was thrown when the payment date was set to a valid value (i.e. value == job.date)";
+}
+
+// Does Job Reject Invalid Payment Date
+TEST_F(JobUnitTest, DoesJobRejectInvalidPaymentDate)
+{
+    Job job(exampleJob);
+    EXPECT_THROW(job.setPaymentDate(job.getDate() - 1), std::runtime_error)
+            << "Exception was not thrown when the payment date was set to an invalid value (i.e. value < job.date)";
 }
 
 // Does Job FieldCompare Member Function Work Correctly

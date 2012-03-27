@@ -20,13 +20,14 @@ const string Job::databaseFilename = "jobs.dat";
 const int Job::minDescriptionLength = 0, Job::maxDescriptionLength = 256;
 
 int Job::size() {
-    return Record::size() + (sizeof(int) * 3) + sizeof(time_t) + maxDescriptionLength + 1 + (sizeof(double) * 2);
+    return Record::size() + (sizeof(int) * 3) + (sizeof(time_t) * 2) + maxDescriptionLength + 1 + (sizeof(double) * 2);
 }
 
 Job::Job(const int customerId, const time_t date, const char *newDescription, const double labourCharge,
-         const int completionState, const int paymentMethod) :
+         const int completionState, const int paymentMethod, const time_t paymentDate) :
     customerId(customerId), completionState(completionState), paymentMethod(paymentMethod),
-    date(date == 0 ? time(NULL) : date), labourCharge(labourCharge), vat(labourCharge * Globals::vatRate(this->date))
+    date(date == 0 ? time(NULL) : date), paymentDate(paymentDate), labourCharge(labourCharge),
+    vat(labourCharge * Globals::vatRate(this->date))
 {
     description = new char[maxDescriptionLength + 1];
     strcpy(description, newDescription);
@@ -54,6 +55,7 @@ void Job::operator =(const Job &job)
     date = job.date;
     labourCharge = job.labourCharge;
     vat = job.vat;
+    paymentDate = job.paymentDate;
 }
 
 void Job::writeToFile(fstream &file) const
@@ -66,6 +68,7 @@ void Job::writeToFile(fstream &file) const
     file.write(reinterpret_cast<const char *>(&vat), sizeof(vat));
     file.write(reinterpret_cast<const char *>(&completionState), sizeof(completionState));
     file.write(reinterpret_cast<const char *>(&paymentMethod), sizeof(paymentMethod));
+    file.write(reinterpret_cast<const char *>(&paymentDate), sizeof(paymentDate));
 }
 
 void Job::readFromFile(fstream &file)
@@ -78,19 +81,21 @@ void Job::readFromFile(fstream &file)
     file.read(reinterpret_cast<char *>(&vat), sizeof(vat));
     file.read(reinterpret_cast<char *>(&completionState), sizeof(completionState));
     file.read(reinterpret_cast<char *>(&paymentMethod), sizeof(paymentMethod));
+    file.read(reinterpret_cast<char *>(&paymentDate), sizeof(paymentDate));
 }
 
 bool Job::hasMatchingField(const string &fieldName, const int searchTerm) const
 {
     if (fieldName == "customerid") return (customerId == searchTerm);
-    else if (fieldName == "completionstate") return (completionState == searchTerm);
-    else if (fieldName == "paymentmethod") return (paymentMethod == searchTerm);
+    if (fieldName == "completionstate") return (completionState == searchTerm);
+    if (fieldName == "paymentmethod") return (paymentMethod == searchTerm);
     return Record::hasMatchingField(fieldName, searchTerm);
 }
 
 bool Job::hasMatchingField(const string &fieldName, const time_t searchTerm) const
 {
     if (fieldName == "date") return (date == searchTerm);
+    if (fieldName == "paymentdate") return (paymentDate == searchTerm);
     return false;
 }
 
@@ -103,7 +108,7 @@ bool Job::hasMatchingField(const string &fieldName, const char * searchTerm) con
 bool Job::hasMatchingField(const string &fieldName, const double searchTerm) const
 {
     if (fieldName == "labourcharge") return (labourCharge == searchTerm);
-    else if (fieldName == "vat") return (vat == searchTerm);
+    if (fieldName == "vat") return (vat == searchTerm);
     return false;
 }
 
@@ -116,6 +121,7 @@ bool Job::fieldCompare(const Job &rhs) const
     if (completionState != rhs.completionState) return false;
     if (paymentMethod != rhs.paymentMethod) return false;
     if (strcmp(description, rhs.description) != 0) return false;
+    if (paymentDate != rhs.paymentDate) return false;
     return true;
 }
 
@@ -264,6 +270,27 @@ bool Job::isValidPaymentMethod(const int value, std::string &errorMessage)
     return false;
 }
 
+time_t Job::getPaymentDate() const
+{
+    return paymentDate;
+}
+
+void Job::setPaymentDate(const time_t newPaymentDate)
+{
+    string errorMessage;
+    if (isValidPaymentDate(newPaymentDate, errorMessage))
+    {
+        if (newPaymentDate < date) throw std::runtime_error("Payment time/date must be after the job time/date");
+        paymentDate = newPaymentDate;
+    }
+    else throw std::runtime_error(errorMessage);
+}
+
+bool Job::isValidPaymentDate(const time_t, std::string &)
+{
+    return true;
+}
+
 void Job::validate() const
 {
     string errorMessage;
@@ -273,4 +300,5 @@ void Job::validate() const
     if (!isValidLabourCharge(labourCharge, errorMessage)) throw std::runtime_error(errorMessage);
     if (!isValidCompletionState(completionState, errorMessage)) throw std::runtime_error(errorMessage);
     if (!isValidPaymentMethod(paymentMethod, errorMessage)) throw std::runtime_error(errorMessage);
+    if (!isValidPaymentDate(paymentDate, errorMessage)) throw std::runtime_error(errorMessage);
 }

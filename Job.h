@@ -39,7 +39,7 @@ public:
     static int size();
 
     Job(const int customerId = -1, const time_t date = 0, const char *description = "", const double labourCharge = 0.0,
-        const int completionState = 0, const int paymentMethod = 0);
+        const int completionState = 0, const int paymentMethod = 0, const time_t paymentDate = 0);
 
     Job(const Job &job);
     ~Job();
@@ -84,11 +84,15 @@ public:
     void setPaymentMethod(const int newPaymentMethod);
     static bool isValidPaymentMethod(const int value, std::string &errorMessage);
 
+    time_t getPaymentDate() const;
+    void setPaymentDate(const time_t newPaymentDate);
+    static bool isValidPaymentDate(const time_t value, std::string &errorMessage);
+
     void validate() const;
 
 private:
     int customerId, completionState, paymentMethod;
-    time_t date;
+    time_t date, paymentDate;
     char *description;
     double labourCharge, vat;
 };
