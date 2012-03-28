@@ -10,8 +10,13 @@
     <height>545</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>Sans Serif</family>
+   </font>
+  </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Customer Index</string>
   </property>
   <widget class="QPushButton" name="pushButton_ok">
    <property name="geometry">
@@ -22,6 +27,11 @@
      <height>27</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Sans Serif</family>
+    </font>
+   </property>
    <property name="text">
     <string>OK</string>
    </property>
@@ -29,11 +39,16 @@
   <widget class="QPushButton" name="pushButton_addNewCustomer">
    <property name="geometry">
     <rect>
-     <x>206</x>
+     <x>196</x>
      <y>500</y>
-     <width>141</width>
+     <width>151</width>
      <height>27</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Sans Serif</family>
+    </font>
    </property>
    <property name="text">
     <string>Add new customer</string>
@@ -44,12 +59,13 @@
     <rect>
      <x>20</x>
      <y>10</y>
-     <width>201</width>
+     <width>341</width>
      <height>31</height>
     </rect>
    </property>
    <property name="font">
     <font>
+     <family>Sans Serif</family>
      <pointsize>22</pointsize>
      <weight>75</weight>
      <bold>true</bold>

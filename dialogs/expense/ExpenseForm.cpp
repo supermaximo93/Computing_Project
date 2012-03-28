@@ -29,7 +29,11 @@ ExpenseForm::~ExpenseForm()
 void ExpenseForm::updateView()
 {
     ui->dateTimeEdit_date->setDateTime(Date(expense.getDate()));
+
+    ui->plainTextEdit_description->blockSignals(true);
     ui->plainTextEdit_description->setPlainText(expense.getDescription());
+    ui->plainTextEdit_description->blockSignals(false);
+
     ui->doubleSpinBox_priceExclVat->setValue(expense.getPrice());
     ui->doubleSpinBox_vat->setValue(expense.getVat());
 

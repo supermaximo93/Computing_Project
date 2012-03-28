@@ -58,7 +58,9 @@ void JobForm::updateView()
     ui->pushButton_viewCustomer->setVisible(ui->comboBox_customer->count() > 0);
     ui->comboBox_customer->blockSignals(false);
 
+    ui->plainTextEdit_description->blockSignals(true);
     ui->plainTextEdit_description->setPlainText(job.getDescription());
+    ui->plainTextEdit_description->blockSignals(false);
 
     ui->listWidget_partsE->clear();
     char partString[64];

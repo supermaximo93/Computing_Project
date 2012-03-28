@@ -29,7 +29,10 @@ TaskForm::~TaskForm()
 void TaskForm::updateView()
 {
     ui->dateTimeEdit_date->setDateTime(Date(task.getDate()));
+
+    ui->plainTextEdit_description->blockSignals(true);
     ui->plainTextEdit_description->setPlainText(task.getDescription());
+    ui->plainTextEdit_description->blockSignals(false);
 }
 
 void TaskForm::on_dateTimeEdit_date_dateTimeChanged(const QDateTime &date)

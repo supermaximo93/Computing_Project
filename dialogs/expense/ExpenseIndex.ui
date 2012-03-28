@@ -10,8 +10,13 @@
     <height>544</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>Sans Serif</family>
+   </font>
+  </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Expense Index</string>
   </property>
   <widget class="QTableWidget" name="tableWidget">
    <property name="geometry">
@@ -41,7 +46,7 @@
     </size>
    </property>
    <property name="alternatingRowColors">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="showGrid">
     <bool>false</bool>
@@ -88,9 +93,9 @@
   <widget class="QPushButton" name="pushButton_addNewExpense">
    <property name="geometry">
     <rect>
-     <x>206</x>
+     <x>196</x>
      <y>500</y>
-     <width>131</width>
+     <width>151</width>
      <height>27</height>
     </rect>
    </property>

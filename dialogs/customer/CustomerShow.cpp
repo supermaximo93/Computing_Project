@@ -18,7 +18,6 @@ CustomerShow::CustomerShow(Customer &customer, Database<Job>::recordList &jobs, 
     : QDialog(parent), ui(new Ui::CustomerShow), customer(customer), jobs(jobs)
 {
     ui->setupUi(this);
-
     updateView();
 }
 
@@ -29,6 +28,8 @@ CustomerShow::~CustomerShow()
 
 void CustomerShow::updateView()
 {
+    setWindowTitle(createFullName(customer.getForename(), customer.getSurname()));
+
     QString customerName(createFullName(customer.getForename(), customer.getSurname()));
     ui->label_customerNameE->setText(customerName);
     ui->label_customerNameE2->setText(customerName);

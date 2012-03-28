@@ -26,6 +26,7 @@ PartShow::~PartShow()
 
 void PartShow::updateView()
 {
+    setWindowTitle(part.getName());
     ui->label_partNameE->setText(part.getName());
     ui->label_partNumberE->setText(part.getNumber());
     ui->label_partPriceE->setText(QString(toString(part.getPrice()).c_str()).prepend(L'£'));

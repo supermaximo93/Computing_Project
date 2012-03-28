@@ -39,9 +39,6 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), timer(new QTimer(this)), unpaidJobsReminderClicked(false)
 {
     ui->setupUi(this);
-    connect(ui->actionSettings, SIGNAL(triggered()), this, SLOT(action_settings_triggered()));
-    connect(ui->actionHelp, SIGNAL(triggered()), this, SLOT(action_help_triggered()));
-    connect(ui->actionExit, SIGNAL(triggered()), this, SLOT(action_exit_triggered()));
     setWindowTitle(windowTitle);
     EmailerThread::init(this);
 
@@ -109,25 +106,6 @@ void MainWindow::on_calendar_currentPageChanged(int year, int month)
 {
     ui->calendar->setSelectedDate(QDate(year, month, ui->calendar->selectedDate().day()));
     on_calendar_selectionChanged();
-}
-
-void MainWindow::action_settings_triggered()
-{
-    SettingForm(this).exec();
-}
-
-void MainWindow::action_help_triggered()
-{
-    QFile::copy(":html/help.html", QDir::currentPath() + "/help.html");
-
-    const QString helpFileName = QDir::currentPath() + "/help.html";
-    if (QFile::exists(helpFileName)) QDesktopServices::openUrl(QUrl("file:///" + helpFileName));
-    else showErrorDialog(("File '" + helpFileName + "' could not be opened").toStdString().c_str());
-}
-
-void MainWindow::action_exit_triggered()
-{
-    close();
 }
 
 
@@ -359,4 +337,23 @@ void MainWindow::updateFinancialMonthText()
 void MainWindow::on_pushButton_reportWizard_clicked()
 {
     ReportWizard(this).exec();
+}
+
+void MainWindow::on_pushButton_settings_clicked()
+{
+    SettingForm(this).exec();
+}
+
+void MainWindow::on_pushButton_help_clicked()
+{
+    QFile::copy(":html/help.html", QDir::currentPath() + "/help.html");
+
+    const QString helpFileName = QDir::currentPath() + "/help.html";
+    if (QFile::exists(helpFileName)) QDesktopServices::openUrl(QUrl("file:///" + helpFileName));
+    else showErrorDialog(("File '" + helpFileName + "' could not be opened").toStdString().c_str());
+}
+
+void MainWindow::on_pushButton_exit_clicked()
+{
+    close();
 }

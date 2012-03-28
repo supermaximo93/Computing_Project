@@ -10,8 +10,41 @@
     <height>426</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>Sans Serif</family>
+   </font>
+  </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Settings</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QDoubleSpinBox, QSpinBox, QDateEdit, QDateTimeEdit, QLineEdit {
+	color: white;
+	background-color: qlineargradient(spread:pad, x1:0.481, y1:1, x2:0.515, y2:0, stop:0 rgba(0, 0, 0, 93), stop:0.995238 rgba(0, 0, 0, 147));
+	border: none;
+	border-radius: 4px;
+	selection-background-color: #333333;
+	padding: 4px 2px 4px 2px;
+}
+
+QListWidget, QTableWidget, QPlainTextEdit {
+	color: white;
+	background-color: qlineargradient(spread:pad, x1:0.481, y1:1, x2:0.515, y2:0, stop:0 rgba(0, 0, 0, 93), stop:0.1 rgba(0, 0, 0, 109), stop:0.904762 rgba(0, 0, 0, 135), stop:0.995238 rgba(0, 0, 0, 147));
+
+}
+
+#SettingForm, #tab_general, #tab_emailContent, #tab_emailHost , #tab_invoice, #tab_receipt, #tab_reminder {
+	background-image: url(:/images/background_blue);
+}
+
+#tabWidget::pane {
+	border-top: 2px solid #C2C7CB;
+}
+
+#tabWidget_emailContent::pane {
+	border-left: 2px solid #C2C7CB;
+}</string>
   </property>
   <widget class="QTabWidget" name="tabWidget">
    <property name="geometry">
@@ -43,7 +76,7 @@
    <property name="tabsClosable">
     <bool>false</bool>
    </property>
-   <widget class="QWidget" name="tab_files">
+   <widget class="QWidget" name="tab_general">
     <attribute name="title">
      <string>General</string>
     </attribute>
@@ -62,6 +95,9 @@
         <property name="text">
          <string>Database directory</string>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
        </widget>
       </item>
       <item row="0" column="1">
@@ -78,6 +114,9 @@
        <widget class="QLabel" name="label_backupDirectory">
         <property name="text">
          <string>Backup directory</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -99,7 +138,7 @@
        <x>10</x>
        <y>120</y>
        <width>431</width>
-       <height>151</height>
+       <height>156</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_6">
@@ -114,12 +153,18 @@
         <property name="text">
          <string>Change Password</string>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
        </widget>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_oldPassword">
         <property name="text">
          <string>Old password</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -128,12 +173,18 @@
         <property name="text">
          <string>New password</string>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
        </widget>
       </item>
       <item row="3" column="0">
        <widget class="QLabel" name="label_confirmNewPassword">
         <property name="text">
          <string>Confirm new password</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -183,8 +234,8 @@
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>581</width>
-       <height>291</height>
+       <width>591</width>
+       <height>301</height>
       </rect>
      </property>
      <property name="tabPosition">
@@ -325,12 +376,18 @@
         <property name="text">
          <string>Username</string>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
        </widget>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_password">
         <property name="text">
          <string>Password</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -339,12 +396,18 @@
         <property name="text">
          <string>Host address</string>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
        </widget>
       </item>
       <item row="3" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
          <string>Host port</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -390,8 +453,8 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>121</width>
-     <height>31</height>
+     <width>181</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="font">
@@ -403,6 +466,9 @@
    </property>
    <property name="text">
     <string>Settings</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton_save">

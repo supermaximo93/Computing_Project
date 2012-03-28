@@ -6,17 +6,22 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>418</width>
     <height>353</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>Sans Serif</family>
+   </font>
+  </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Expense Form</string>
   </property>
   <widget class="QPushButton" name="pushButton_submit">
    <property name="geometry">
     <rect>
-     <x>40</x>
+     <x>90</x>
      <y>310</y>
      <width>97</width>
      <height>27</height>
@@ -29,7 +34,7 @@
   <widget class="QPushButton" name="pushButton_cancel">
    <property name="geometry">
     <rect>
-     <x>170</x>
+     <x>220</x>
      <y>310</y>
      <width>97</width>
      <height>27</height>
@@ -39,58 +44,177 @@
     <string>Cancel</string>
    </property>
   </widget>
-  <widget class="QWidget" name="formLayoutWidget">
+  <widget class="QLabel" name="label_businessExpenseFormTitle">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>50</y>
-     <width>266</width>
-     <height>245</height>
+     <x>10</x>
+     <y>10</y>
+     <width>371</width>
+     <height>31</height>
     </rect>
    </property>
-   <layout class="QFormLayout" name="formLayout">
-    <property name="fieldGrowthPolicy">
-     <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-    </property>
+   <property name="font">
+    <font>
+     <family>Sans Serif</family>
+     <pointsize>22</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Expense form title</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_datePicker">
+   <property name="geometry">
+    <rect>
+     <x>310</x>
+     <y>52</y>
+     <width>97</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Date Picker</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="gridLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>50</y>
+     <width>298</width>
+     <height>240</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
      <widget class="QLabel" name="label_date">
+      <property name="font">
+       <font>
+        <family>Sans Serif</family>
+       </font>
+      </property>
       <property name="text">
        <string>Date</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
      </widget>
     </item>
     <item row="1" column="0">
      <widget class="QLabel" name="label_description">
+      <property name="font">
+       <font>
+        <family>Sans Serif</family>
+       </font>
+      </property>
       <property name="text">
        <string>Description</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
      </widget>
     </item>
     <item row="2" column="0">
      <widget class="QLabel" name="label_priceExclVat">
+      <property name="font">
+       <font>
+        <family>Sans Serif</family>
+       </font>
+      </property>
       <property name="text">
        <string>Price (excl. VAT)</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
      </widget>
     </item>
     <item row="3" column="0">
      <widget class="QLabel" name="label_vat">
+      <property name="font">
+       <font>
+        <family>Sans Serif</family>
+       </font>
+      </property>
       <property name="text">
        <string>VAT</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
      </widget>
     </item>
     <item row="4" column="0">
      <widget class="QLabel" name="label_totalPrice">
+      <property name="font">
+       <font>
+        <family>Sans Serif</family>
+       </font>
+      </property>
       <property name="text">
        <string>Total Price</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
      </widget>
     </item>
     <item row="5" column="0">
      <widget class="QLabel" name="label_typeHeading">
+      <property name="font">
+       <font>
+        <family>Sans Serif</family>
+       </font>
+      </property>
       <property name="text">
        <string>Type heading</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QDateTimeEdit" name="dateTimeEdit_date"/>
+    </item>
+    <item row="1" column="1">
+     <widget class="QPlainTextEdit" name="plainTextEdit_description"/>
+    </item>
+    <item row="2" column="1">
+     <widget class="QDoubleSpinBox" name="doubleSpinBox_priceExclVat">
+      <property name="prefix">
+       <string>£</string>
+      </property>
+      <property name="maximum">
+       <double>1000000000.000000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QDoubleSpinBox" name="doubleSpinBox_vat">
+      <property name="prefix">
+       <string>£</string>
+      </property>
+      <property name="maximum">
+       <double>1000000000.000000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="QLabel" name="label_totalPriceE">
+      <property name="font">
+       <font>
+        <family>Sans Serif</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>total price</string>
       </property>
      </widget>
     </item>
@@ -143,73 +267,7 @@
       </item>
      </widget>
     </item>
-    <item row="1" column="1">
-     <widget class="QPlainTextEdit" name="plainTextEdit_description"/>
-    </item>
-    <item row="2" column="1">
-     <widget class="QDoubleSpinBox" name="doubleSpinBox_priceExclVat">
-      <property name="prefix">
-       <string>£</string>
-      </property>
-      <property name="maximum">
-       <double>1000000000.000000000000000</double>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="1">
-     <widget class="QDoubleSpinBox" name="doubleSpinBox_vat">
-      <property name="prefix">
-       <string>£</string>
-      </property>
-      <property name="maximum">
-       <double>1000000000.000000000000000</double>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="1">
-     <widget class="QLabel" name="label_totalPriceE">
-      <property name="text">
-       <string>total price</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QDateTimeEdit" name="dateTimeEdit_date"/>
-    </item>
    </layout>
-  </widget>
-  <widget class="QLabel" name="label_businessExpenseFormTitle">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>371</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>22</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="text">
-    <string>Expense form title</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton_datePicker">
-   <property name="geometry">
-    <rect>
-     <x>290</x>
-     <y>50</y>
-     <width>97</width>
-     <height>27</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Date Picker</string>
-   </property>
   </widget>
  </widget>
  <resources/>

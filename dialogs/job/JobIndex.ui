@@ -10,8 +10,13 @@
     <height>543</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>Sans Serif</family>
+   </font>
+  </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Job Index</string>
   </property>
   <widget class="QLabel" name="label_jobsTitle">
    <property name="geometry">
@@ -49,9 +54,9 @@
   <widget class="QPushButton" name="pushButton_addNewJob">
    <property name="geometry">
     <rect>
-     <x>240</x>
+     <x>236</x>
      <y>500</y>
-     <width>97</width>
+     <width>101</width>
      <height>27</height>
     </rect>
    </property>
@@ -87,7 +92,7 @@
     </size>
    </property>
    <property name="alternatingRowColors">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="showGrid">
     <bool>false</bool>

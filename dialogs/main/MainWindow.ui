@@ -6,150 +6,164 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>896</width>
-    <height>448</height>
+    <width>946</width>
+    <height>445</height>
    </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>Sans Serif</family>
+   </font>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QPushButton {
+	font-size: 12px;
+	font-family: &quot;Sans Serif&quot;;
+}
+
+#verticalWidget_menu {
+	background-color: rgba(47, 47, 47, 120);
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+}
+
+#verticalWidget_menu QPushButton {
+	border: none;
+	font-weight: bold;
+	color: #dddddd;
+	text-align: left;
+	padding-left: 15px;
+}
+
+#verticalWidget_menu QPushButton:hover {
+	color: white;
+}
+
+#verticalWidget_menu QPushButton:pressed {
+	color: white;
+}
+
+QLabel {
+	color: white;
+	font-family: &quot;Sans Serif&quot;;
+}
+
+QDoubleSpinBox, QSpinBox, QDateEdit, QDateTimeEdit, QLineEdit {
+	color: white;
+	background-color: qlineargradient(spread:pad, x1:0.481, y1:1, x2:0.515, y2:0, stop:0 rgba(0, 0, 0, 93), stop:0.995238 rgba(0, 0, 0, 147));
+	border: none;
+	border-radius: 4px;
+	selection-background-color: #333333;
+	padding: 4px 2px 4px 2px;
+}
+
+QListWidget, QTableWidget, QPlainTextEdit {
+	color: white;
+	background-color: qlineargradient(spread:pad, x1:0.481, y1:1, x2:0.515, y2:0, stop:0 rgba(0, 0, 0, 93), stop:0.1 rgba(0, 0, 0, 109), stop:0.904762 rgba(0, 0, 0, 135), stop:0.995238 rgba(0, 0, 0, 147));
+
+}
+
+#qt_calendar_navigationbar {
+	background-color: rgba(0, 0, 0, 147);
+}
+
+#qt_calendar {
+	color: white;
+}
+
+QSpinBox::up-button, QDoubleSpinBox::up-button, QDateEdit::up-button, QDateTimeEdit::up-button  {
+	image: url(:/images/up_arrow_dull);
+}
+
+QSpinBox::down-button, QDoubleSpinBox::down-button, QDateEdit::down-button, QDateTimeEdit::down-button {
+	image: url(:/images/down_arrow_dull);
+}
+
+QSpinBox::up-button:hover, QDoubleSpinBox::up-button:hover, QDateEdit::up-button:hover, QDateTimeEdit::up-button:hover  {
+	image: url(:/images/up_arrow);
+}
+
+QSpinBox::down-button:hover, QDoubleSpinBox::down-button:hover, QDateEdit::down-button:hover, QDateTimeEdit::down-button:hover {
+	image: url(:/images/down_arrow);
+}
+
+#MainWindow, QDialog, QMessageBox {
+	background-image: url(:/images/background_blue);
+}</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QCalendarWidget" name="calendar">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>40</y>
+      <x>210</x>
+      <y>10</y>
       <width>451</width>
-      <height>172</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_welcome">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>0</y>
-      <width>131</width>
-      <height>21</height>
+      <height>181</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>22</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
+      <family>Sans Serif</family>
      </font>
     </property>
-    <property name="text">
-     <string>Welcome</string>
+    <property name="autoFillBackground">
+     <bool>true</bool>
     </property>
-   </widget>
-   <widget class="QLabel" name="label_income">
-    <property name="geometry">
-     <rect>
-      <x>60</x>
-      <y>260</y>
-      <width>67</width>
-      <height>17</height>
-     </rect>
+    <property name="firstDayOfWeek">
+     <enum>Qt::Monday</enum>
     </property>
-    <property name="text">
-     <string>Income</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_vat">
-    <property name="geometry">
-     <rect>
-      <x>80</x>
-      <y>280</y>
-      <width>31</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>VAT</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_totalIncome">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>300</y>
-      <width>91</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Total Income</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_expenses">
-    <property name="geometry">
-     <rect>
-      <x>40</x>
-      <y>320</y>
-      <width>71</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Expenses</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_grandTotal">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>340</y>
-      <width>81</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Grand total</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_allExpenses">
-    <property name="geometry">
-     <rect>
-      <x>250</x>
-      <y>320</y>
-      <width>131</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Manage expenses</string>
+    <property name="gridVisible">
+     <bool>false</bool>
     </property>
    </widget>
    <widget class="QListWidget" name="listWidget_jobs">
     <property name="geometry">
      <rect>
-      <x>490</x>
-      <y>40</y>
-      <width>181</width>
+      <x>210</x>
+      <y>230</y>
+      <width>211</width>
       <height>171</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Sans Serif</family>
+     </font>
     </property>
    </widget>
    <widget class="QListWidget" name="listWidget_tasks">
     <property name="geometry">
      <rect>
-      <x>690</x>
-      <y>40</y>
-      <width>181</width>
+      <x>450</x>
+      <y>230</y>
+      <width>211</width>
       <height>171</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Sans Serif</family>
+     </font>
     </property>
    </widget>
    <widget class="QLabel" name="label_jobsFor">
     <property name="geometry">
      <rect>
-      <x>500</x>
-      <y>20</y>
+      <x>250</x>
+      <y>210</y>
       <width>67</width>
       <height>17</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Sans Serif</family>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
     </property>
     <property name="text">
      <string>Jobs for</string>
@@ -158,11 +172,18 @@
    <widget class="QLabel" name="label_selectedDate1">
     <property name="geometry">
      <rect>
-      <x>560</x>
-      <y>20</y>
-      <width>67</width>
+      <x>320</x>
+      <y>210</y>
+      <width>91</width>
       <height>17</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Sans Serif</family>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
     </property>
     <property name="text">
      <string>date</string>
@@ -171,11 +192,18 @@
    <widget class="QLabel" name="label_selectedDate2">
     <property name="geometry">
      <rect>
-      <x>770</x>
-      <y>20</y>
-      <width>67</width>
+      <x>560</x>
+      <y>210</y>
+      <width>91</width>
       <height>17</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Sans Serif</family>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
     </property>
     <property name="text">
      <string>date</string>
@@ -184,198 +212,66 @@
    <widget class="QLabel" name="label_tasksFor">
     <property name="geometry">
      <rect>
-      <x>700</x>
-      <y>20</y>
-      <width>67</width>
+      <x>480</x>
+      <y>210</y>
+      <width>81</width>
       <height>17</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Sans Serif</family>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
     </property>
     <property name="text">
      <string>Tasks for</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_allJobs">
-    <property name="geometry">
-     <rect>
-      <x>510</x>
-      <y>220</y>
-      <width>141</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Manage jobs</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_allCustomers">
-    <property name="geometry">
-     <rect>
-      <x>510</x>
-      <y>250</y>
-      <width>141</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Manage customers</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_remindCustomers">
     <property name="geometry">
      <rect>
-      <x>540</x>
-      <y>310</y>
-      <width>341</width>
-      <height>41</height>
+      <x>690</x>
+      <y>270</y>
+      <width>221</width>
+      <height>101</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Sans Serif</family>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
     </property>
     <property name="text">
      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;a&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#d10000;&quot;&gt;There are jobs that have not been paid after 7 days!&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;a&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#d10000;&quot;&gt;Click here to send a reminder to the customers&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-    </property>
-   </widget>
-   <widget class="QDoubleSpinBox" name="doubleSpinBox_income">
-    <property name="geometry">
-     <rect>
-      <x>120</x>
-      <y>260</y>
-      <width>121</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="readOnly">
-     <bool>true</bool>
-    </property>
-    <property name="buttonSymbols">
-     <enum>QAbstractSpinBox::NoButtons</enum>
-    </property>
-    <property name="maximum">
-     <double>999999999.000000000000000</double>
-    </property>
-   </widget>
-   <widget class="QDoubleSpinBox" name="doubleSpinBox_vat">
-    <property name="geometry">
-     <rect>
-      <x>120</x>
-      <y>280</y>
-      <width>121</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="readOnly">
-     <bool>true</bool>
-    </property>
-    <property name="buttonSymbols">
-     <enum>QAbstractSpinBox::NoButtons</enum>
-    </property>
-    <property name="maximum">
-     <double>999999999.000000000000000</double>
-    </property>
-   </widget>
-   <widget class="QDoubleSpinBox" name="doubleSpinBox_totalIncome">
-    <property name="geometry">
-     <rect>
-      <x>120</x>
-      <y>300</y>
-      <width>121</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="readOnly">
-     <bool>true</bool>
-    </property>
-    <property name="buttonSymbols">
-     <enum>QAbstractSpinBox::NoButtons</enum>
-    </property>
-    <property name="maximum">
-     <double>999999999.000000000000000</double>
-    </property>
-   </widget>
-   <widget class="QDoubleSpinBox" name="doubleSpinBox_expenses">
-    <property name="geometry">
-     <rect>
-      <x>120</x>
-      <y>320</y>
-      <width>121</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="readOnly">
-     <bool>true</bool>
-    </property>
-    <property name="buttonSymbols">
-     <enum>QAbstractSpinBox::NoButtons</enum>
-    </property>
-    <property name="maximum">
-     <double>999999999.000000000000000</double>
-    </property>
-   </widget>
-   <widget class="QDoubleSpinBox" name="doubleSpinBox_grandTotal">
-    <property name="geometry">
-     <rect>
-      <x>120</x>
-      <y>340</y>
-      <width>121</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="readOnly">
-     <bool>true</bool>
-    </property>
-    <property name="buttonSymbols">
-     <enum>QAbstractSpinBox::NoButtons</enum>
-    </property>
-    <property name="minimum">
-     <double>-999999999.000000000000000</double>
-    </property>
-    <property name="maximum">
-     <double>999999999.000000000000000</double>
-    </property>
-    <property name="value">
-     <double>0.000000000000000</double>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_allVatRates">
-    <property name="geometry">
-     <rect>
-      <x>250</x>
-      <y>280</y>
-      <width>131</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Manage VAT rates</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_generateReport">
-    <property name="geometry">
-     <rect>
-      <x>250</x>
-      <y>340</y>
-      <width>131</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Generate report</string>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:11pt; font-weight:600; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;a&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-weight:400; text-decoration: underline; color:#000000;&quot;&gt;There are jobs that have not&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;a&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-weight:400; text-decoration: underline; color:#000000;&quot;&gt;been paid after 7 days!&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Ubuntu'; font-weight:400; text-decoration: underline; color:#000000;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;a&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-weight:400; text-decoration: underline; color:#000000;&quot;&gt;Click here to send a reminder&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;a&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-weight:400; text-decoration: underline; color:#000000;&quot;&gt;to the customers&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_generateReportFor">
     <property name="geometry">
      <rect>
-      <x>26</x>
-      <y>230</y>
-      <width>81</width>
+      <x>740</x>
+      <y>10</y>
+      <width>101</width>
       <height>20</height>
      </rect>
     </property>
     <property name="font">
      <font>
+      <family>Sans Serif</family>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -383,18 +279,22 @@ p, li { white-space: pre-wrap; }
     <property name="text">
      <string>Finance for</string>
     </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
    </widget>
    <widget class="QLabel" name="label_financeMonthE">
     <property name="geometry">
      <rect>
-      <x>110</x>
-      <y>230</y>
-      <width>111</width>
+      <x>700</x>
+      <y>30</y>
+      <width>181</width>
       <height>20</height>
      </rect>
     </property>
     <property name="font">
      <font>
+      <family>Sans Serif</family>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -402,19 +302,432 @@ p, li { white-space: pre-wrap; }
     <property name="text">
      <string>month</string>
     </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_reportWizard">
+   <widget class="QWidget" name="verticalWidget_menu" native="true">
     <property name="geometry">
      <rect>
-      <x>250</x>
-      <y>360</y>
-      <width>131</width>
-      <height>21</height>
+      <x>-10</x>
+      <y>10</y>
+      <width>191</width>
+      <height>401</height>
      </rect>
     </property>
-    <property name="text">
-     <string>Report Wizard</string>
+    <property name="font">
+     <font>
+      <family>Sans Serif</family>
+     </font>
     </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="leftMargin">
+      <number>26</number>
+     </property>
+     <property name="topMargin">
+      <number>31</number>
+     </property>
+     <property name="rightMargin">
+      <number>15</number>
+     </property>
+     <property name="bottomMargin">
+      <number>40</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="font">
+        <font>
+         <family>Sans Serif</family>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>MANAGEMENT</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_allJobs">
+       <property name="font">
+        <font>
+         <family>Sans Serif</family>
+         <pointsize>-1</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Jobs</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_allCustomers">
+       <property name="font">
+        <font>
+         <family>Sans Serif</family>
+         <pointsize>-1</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Customers</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_allExpenses">
+       <property name="font">
+        <font>
+         <family>Sans Serif</family>
+         <pointsize>-1</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Expenses</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_allVatRates">
+       <property name="font">
+        <font>
+         <family>Sans Serif</family>
+         <pointsize>-1</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>VAT Rates</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="font">
+        <font>
+         <family>Sans Serif</family>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>REPORTS</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_generateReport">
+       <property name="font">
+        <font>
+         <family>Sans Serif</family>
+         <pointsize>-1</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Generate report</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_reportWizard">
+       <property name="font">
+        <font>
+         <family>Sans Serif</family>
+         <pointsize>-1</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Report Wizard</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_3">
+       <property name="font">
+        <font>
+         <family>Sans Serif</family>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>OPTIONS</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_settings">
+       <property name="font">
+        <font>
+         <family>Sans Serif</family>
+         <pointsize>-1</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Settings</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_help">
+       <property name="font">
+        <font>
+         <family>Sans Serif</family>
+         <pointsize>-1</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Help</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_exit">
+       <property name="font">
+        <font>
+         <family>Sans Serif</family>
+         <pointsize>-1</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Exit</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="gridLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>680</x>
+      <y>60</y>
+      <width>237</width>
+      <height>162</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_income">
+       <property name="font">
+        <font>
+         <family>Sans Serif</family>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="text">
+        <string>Income</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_vat">
+       <property name="font">
+        <font>
+         <family>Sans Serif</family>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>VAT</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_totalIncome">
+       <property name="font">
+        <font>
+         <family>Sans Serif</family>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Total Income</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_expenses">
+       <property name="font">
+        <font>
+         <family>Sans Serif</family>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Expenses</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QDoubleSpinBox" name="doubleSpinBox_income">
+       <property name="font">
+        <font>
+         <family>Sans Serif</family>
+        </font>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+       <property name="buttonSymbols">
+        <enum>QAbstractSpinBox::NoButtons</enum>
+       </property>
+       <property name="prefix">
+        <string>£</string>
+       </property>
+       <property name="maximum">
+        <double>999999999.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QDoubleSpinBox" name="doubleSpinBox_vat">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+       <property name="buttonSymbols">
+        <enum>QAbstractSpinBox::NoButtons</enum>
+       </property>
+       <property name="prefix">
+        <string>£</string>
+       </property>
+       <property name="maximum">
+        <double>999999999.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QDoubleSpinBox" name="doubleSpinBox_totalIncome">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+       <property name="buttonSymbols">
+        <enum>QAbstractSpinBox::NoButtons</enum>
+       </property>
+       <property name="prefix">
+        <string>£</string>
+       </property>
+       <property name="maximum">
+        <double>999999999.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QDoubleSpinBox" name="doubleSpinBox_expenses">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+       <property name="buttonSymbols">
+        <enum>QAbstractSpinBox::NoButtons</enum>
+       </property>
+       <property name="prefix">
+        <string>£</string>
+       </property>
+       <property name="maximum">
+        <double>999999999.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_grandTotal">
+       <property name="font">
+        <font>
+         <family>Sans Serif</family>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Grand total</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QDoubleSpinBox" name="doubleSpinBox_grandTotal">
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+       <property name="buttonSymbols">
+        <enum>QAbstractSpinBox::NoButtons</enum>
+       </property>
+       <property name="prefix">
+        <string>£</string>
+       </property>
+       <property name="minimum">
+        <double>-999999999.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>999999999.000000000000000</double>
+       </property>
+       <property name="value">
+        <double>0.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -422,21 +735,15 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>896</width>
+     <width>946</width>
      <height>25</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuFile">
-    <property name="title">
-     <string>File</string>
-    </property>
-    <addaction name="actionSettings"/>
-    <addaction name="actionHelp"/>
-    <addaction name="actionExit"/>
-   </widget>
-   <addaction name="menuFile"/>
   </widget>
-  <widget class="QToolBar" name="mainToolBar">
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
    </attribute>
@@ -444,7 +751,6 @@ p, li { white-space: pre-wrap; }
     <bool>false</bool>
    </attribute>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
   <action name="actionSettings">
    <property name="text">
     <string>Settings</string>

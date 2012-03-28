@@ -6,60 +6,23 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>346</width>
-    <height>159</height>
+    <width>370</width>
+    <height>200</height>
    </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>Sans Serif</family>
+   </font>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QWidget" name="formLayoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>50</y>
-     <width>213</width>
-     <height>71</height>
-    </rect>
-   </property>
-   <layout class="QFormLayout" name="formLayout">
-    <property name="fieldGrowthPolicy">
-     <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-    </property>
-    <item row="0" column="0">
-     <widget class="QLabel" name="label_vatRate">
-      <property name="text">
-       <string>Rate</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QDoubleSpinBox" name="doubleSpinBox_vatRate">
-      <property name="suffix">
-       <string>%</string>
-      </property>
-      <property name="maximum">
-       <double>999999999.000000000000000</double>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="label_startDate">
-      <property name="text">
-       <string>Start Date</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QDateEdit" name="dateEdit_startDate"/>
-    </item>
-   </layout>
-  </widget>
   <widget class="QPushButton" name="pushButton_submit">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>120</y>
+     <x>80</x>
+     <y>160</y>
      <width>97</width>
      <height>27</height>
     </rect>
@@ -73,8 +36,8 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>281</width>
-     <height>31</height>
+     <width>361</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="font">
@@ -87,12 +50,15 @@
    <property name="text">
     <string>VAT Rate Form</string>
    </property>
+   <property name="alignment">
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+   </property>
   </widget>
   <widget class="QPushButton" name="pushButton_cancel">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>120</y>
+     <x>190</x>
+     <y>160</y>
      <width>97</width>
      <height>27</height>
     </rect>
@@ -104,8 +70,8 @@
   <widget class="QPushButton" name="pushButton_datePicker">
    <property name="geometry">
     <rect>
-     <x>240</x>
-     <y>84</y>
+     <x>260</x>
+     <y>65</y>
      <width>97</width>
      <height>27</height>
     </rect>
@@ -113,6 +79,51 @@
    <property name="text">
     <string>Date Picker</string>
    </property>
+  </widget>
+  <widget class="QWidget" name="gridLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>60</y>
+     <width>235</width>
+     <height>80</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_2">
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_vatRate">
+      <property name="text">
+       <string>Rate</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_startDate">
+      <property name="text">
+       <string>Start Date</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QDoubleSpinBox" name="doubleSpinBox_vatRate">
+      <property name="suffix">
+       <string>%</string>
+      </property>
+      <property name="maximum">
+       <double>999999999.000000000000000</double>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QDateEdit" name="dateEdit_startDate"/>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>

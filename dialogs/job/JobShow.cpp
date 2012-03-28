@@ -59,6 +59,7 @@ void JobShow::updateView()
 {
     TaskController::sortTasksByDate(tasks);
 
+    setWindowTitle(QString("Job for ") + Date(job.getDate()).toQStringWithoutTime());
     ui->label_dateE->setText(Date(job.getDate()));
 
     Customer customer = CustomerController::getCustomer(job.getCustomerId());

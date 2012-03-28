@@ -10,8 +10,22 @@
     <height>101</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>Sans Serif</family>
+   </font>
+  </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Process Pending</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">#ProcessDialog {
+	background-image: url(:/images/background_blue);
+}
+
+QLabel {
+	color: white;
+}</string>
   </property>
   <widget class="QLabel" name="label_messageE">
    <property name="geometry">
@@ -21,6 +35,11 @@
      <width>211</width>
      <height>41</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Sans Serif</family>
+    </font>
    </property>
    <property name="text">
     <string>message</string>

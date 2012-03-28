@@ -10,6 +10,11 @@
     <height>378</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>Sans Serif</family>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
@@ -21,6 +26,9 @@
      <width>361</width>
      <height>281</height>
     </rect>
+   </property>
+   <property name="showGrid">
+    <bool>false</bool>
    </property>
    <attribute name="horizontalHeaderStretchLastSection">
     <bool>true</bool>
@@ -44,7 +52,7 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>251</width>
+     <width>381</width>
      <height>31</height>
     </rect>
    </property>

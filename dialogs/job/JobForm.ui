@@ -6,27 +6,236 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>769</width>
-    <height>624</height>
+    <width>679</width>
+    <height>695</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>Dialog</string>
+  <property name="font">
+   <font>
+    <family>Sans Serif</family>
+   </font>
   </property>
-  <widget class="QWidget" name="formLayoutWidget">
+  <property name="windowTitle">
+   <string>Job Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QPushButton {
+	font-size: 12px;
+	font-family: &quot;Sans Serif&quot;;
+}
+
+#verticalWidget_menu {
+	background-color: rgba(47, 47, 47, 120);
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+}
+
+#verticalWidget_menu QPushButton {
+	border: none;
+	font-weight: bold;
+	color: #dddddd;
+	text-align: left;
+	padding-left: 15px;
+}
+
+#verticalWidget_menu QPushButton:hover {
+	color: white;
+}
+
+#verticalWidget_menu QPushButton:pressed {
+	color: white;
+}
+
+QLabel {
+	color: white;
+	font-family: &quot;Sans Serif&quot;;
+}
+
+#label_title {
+	font-size: 30px;
+	font-weight: bold;
+}
+
+QDoubleSpinBox, QSpinBox, QDateEdit, QDateTimeEdit, QLineEdit {
+	color: white;
+	background-color: qlineargradient(spread:pad, x1:0.481, y1:1, x2:0.515, y2:0, stop:0 rgba(0, 0, 0, 93), stop:0.995238 rgba(0, 0, 0, 147));
+	border: none;
+	border-radius: 4px;
+	selection-background-color: #333333;
+	padding: 4px 2px 4px 2px;
+}
+
+QListWidget, QTableWidget, QPlainTextEdit {
+	color: white;
+	background-color: qlineargradient(spread:pad, x1:0.481, y1:1, x2:0.515, y2:0, stop:0 rgba(0, 0, 0, 93), stop:0.1 rgba(0, 0, 0, 109), stop:0.904762 rgba(0, 0, 0, 135), stop:0.995238 rgba(0, 0, 0, 147));
+
+}
+#JobForm {
+	background-image: url(:/images/background_blue);
+}</string>
+  </property>
+  <widget class="QPushButton" name="pushButton_submit">
    <property name="geometry">
     <rect>
-     <x>80</x>
-     <y>40</y>
-     <width>226</width>
+     <x>100</x>
+     <y>650</y>
+     <width>97</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Submit</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_cancel">
+   <property name="geometry">
+    <rect>
+     <x>230</x>
+     <y>650</y>
+     <width>97</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Cancel</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_addPart">
+   <property name="geometry">
+    <rect>
+     <x>440</x>
+     <y>158</y>
+     <width>71</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Add part</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_addTask">
+   <property name="geometry">
+    <rect>
+     <x>440</x>
+     <y>258</y>
+     <width>71</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Add task</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_title">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>10</y>
+     <width>231</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Sans Serif</family>
+     <pointsize>-1</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Job form title</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_part">
+   <property name="geometry">
+    <rect>
+     <x>390</x>
+     <y>160</y>
+     <width>41</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Parts</string>
+   </property>
+  </widget>
+  <widget class="QListWidget" name="listWidget_partsE">
+   <property name="geometry">
+    <rect>
+     <x>390</x>
+     <y>180</y>
+     <width>256</width>
      <height>71</height>
     </rect>
    </property>
-   <layout class="QFormLayout" name="formLayout_dateCustomer">
+  </widget>
+  <widget class="QLabel" name="label_tasks">
+   <property name="geometry">
+    <rect>
+     <x>390</x>
+     <y>260</y>
+     <width>41</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Tasks</string>
+   </property>
+  </widget>
+  <widget class="QListWidget" name="listWidget_tasksE">
+   <property name="geometry">
+    <rect>
+     <x>390</x>
+     <y>280</y>
+     <width>256</width>
+     <height>71</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPlainTextEdit" name="plainTextEdit_description">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>180</y>
+     <width>301</width>
+     <height>171</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_description">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>160</y>
+     <width>91</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Description</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="gridLayoutWidget_2">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>60</y>
+     <width>492</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="0">
      <widget class="QLabel" name="label_date">
       <property name="text">
        <string>Date</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
      </widget>
     </item>
@@ -35,33 +244,87 @@
       <property name="text">
        <string>Customer</string>
       </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
      </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QComboBox" name="comboBox_customer"/>
     </item>
     <item row="0" column="1">
      <widget class="QDateTimeEdit" name="dateTimeEdit_date"/>
     </item>
+    <item row="1" column="1">
+     <widget class="QComboBox" name="comboBox_customer"/>
+    </item>
+    <item row="0" column="2">
+     <widget class="QPushButton" name="pushButton_datePickerDate">
+      <property name="text">
+       <string>Date Picker</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="2">
+     <widget class="QPushButton" name="pushButton_viewCustomer">
+      <property name="text">
+       <string>View customer</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="3">
+     <widget class="QPushButton" name="pushButton_addNewCustomer">
+      <property name="text">
+       <string>Add new customer</string>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="formLayoutWidget_2">
+  <widget class="QWidget" name="gridLayoutWidget_3">
    <property name="geometry">
     <rect>
      <x>70</x>
-     <y>300</y>
-     <width>267</width>
-     <height>111</height>
+     <y>370</y>
+     <width>301</width>
+     <height>125</height>
     </rect>
    </property>
-   <layout class="QFormLayout" name="formLayout_charges">
-    <property name="fieldGrowthPolicy">
-     <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-    </property>
+   <layout class="QGridLayout" name="gridLayout_3">
     <item row="0" column="0">
      <widget class="QLabel" name="label_labourCharge">
       <property name="text">
        <string>Labour Charge</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_totalChargeExclVat">
+      <property name="text">
+       <string>Total Chage (excl.VAT)</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_vat">
+      <property name="text">
+       <string>VAT</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="label_totalChargeInclVat">
+      <property name="text">
+       <string>Total Charge (incl. VAT)</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
      </widget>
     </item>
@@ -75,29 +338,15 @@
       </property>
      </widget>
     </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="label_totalChargeExclVat">
-      <property name="text">
-       <string>Total Chage (excl.VAT)</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="0">
-     <widget class="QLabel" name="label_vat">
-      <property name="text">
-       <string>VAT</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="0">
-     <widget class="QLabel" name="label_totalChargeInclVat">
-      <property name="text">
-       <string>Total Charge (incl. VAT)</string>
-      </property>
-     </widget>
-    </item>
     <item row="1" column="1">
      <widget class="QLabel" name="label_totalChargeExclVatE">
+      <property name="font">
+       <font>
+        <family>Sans Serif</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="text">
        <string>total charge</string>
       </property>
@@ -105,6 +354,13 @@
     </item>
     <item row="2" column="1">
      <widget class="QLabel" name="label_vatE">
+      <property name="font">
+       <font>
+        <family>Sans Serif</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="text">
        <string>vat</string>
       </property>
@@ -112,6 +368,13 @@
     </item>
     <item row="3" column="1">
      <widget class="QLabel" name="label_totalChargeInclVatE">
+      <property name="font">
+       <font>
+        <family>Sans Serif</family>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="text">
        <string>total charge</string>
       </property>
@@ -119,76 +382,46 @@
     </item>
    </layout>
   </widget>
-  <widget class="QPushButton" name="pushButton_submit">
-   <property name="geometry">
-    <rect>
-     <x>140</x>
-     <y>570</y>
-     <width>97</width>
-     <height>27</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Submit</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton_cancel">
-   <property name="geometry">
-    <rect>
-     <x>270</x>
-     <y>570</y>
-     <width>97</width>
-     <height>27</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Cancel</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton_addPart">
-   <property name="geometry">
-    <rect>
-     <x>660</x>
-     <y>180</y>
-     <width>97</width>
-     <height>27</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Add part</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton_addTask">
-   <property name="geometry">
-    <rect>
-     <x>660</x>
-     <y>280</y>
-     <width>97</width>
-     <height>27</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Add task</string>
-   </property>
-  </widget>
-  <widget class="QWidget" name="horizontalLayoutWidget">
+  <widget class="QWidget" name="gridLayoutWidget_4">
    <property name="geometry">
     <rect>
      <x>70</x>
-     <y>480</y>
-     <width>241</width>
-     <height>31</height>
+     <y>510</y>
+     <width>376</width>
+     <height>111</height>
     </rect>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout_paidBy">
-    <item>
+   <layout class="QGridLayout" name="gridLayout_4">
+    <item row="0" column="1">
+     <widget class="QComboBox" name="comboBox_completionState">
+      <item>
+       <property name="text">
+        <string>Not done</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Done - not paid</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Done - paid</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+    <item row="1" column="0">
      <widget class="QLabel" name="label_paidBy">
       <property name="text">
        <string>Paid by</string>
       </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
      </widget>
     </item>
-    <item>
+    <item row="1" column="1">
      <widget class="QComboBox" name="comboBox_paidBy">
       <item>
        <property name="text">
@@ -222,198 +455,33 @@
       </item>
      </widget>
     </item>
-   </layout>
-  </widget>
-  <widget class="QLabel" name="label_title">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>0</y>
-     <width>231</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>22</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="text">
-    <string>Job form title</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_part">
-   <property name="geometry">
-    <rect>
-     <x>400</x>
-     <y>150</y>
-     <width>41</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Parts</string>
-   </property>
-  </widget>
-  <widget class="QListWidget" name="listWidget_partsE">
-   <property name="geometry">
-    <rect>
-     <x>400</x>
-     <y>170</y>
-     <width>256</width>
-     <height>71</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_tasks">
-   <property name="geometry">
-    <rect>
-     <x>400</x>
-     <y>240</y>
-     <width>41</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Tasks</string>
-   </property>
-  </widget>
-  <widget class="QListWidget" name="listWidget_tasksE">
-   <property name="geometry">
-    <rect>
-     <x>400</x>
-     <y>260</y>
-     <width>256</width>
-     <height>71</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton_addNewCustomer">
-   <property name="geometry">
-    <rect>
-     <x>320</x>
-     <y>70</y>
-     <width>141</width>
-     <height>27</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Add new customer</string>
-   </property>
-  </widget>
-  <widget class="QWidget" name="horizontalLayoutWidget_2">
-   <property name="geometry">
-    <rect>
-     <x>70</x>
-     <y>440</y>
-     <width>351</width>
-     <height>29</height>
-    </rect>
-   </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <item>
-     <widget class="QLabel" name="label_completionState">
-      <property name="text">
-       <string>Completion State</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QComboBox" name="comboBox_completionState">
-      <item>
-       <property name="text">
-        <string>Not done</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Done - not paid</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Done - paid</string>
-       </property>
-      </item>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QPushButton" name="pushButton_viewCustomer">
-   <property name="geometry">
-    <rect>
-     <x>320</x>
-     <y>100</y>
-     <width>141</width>
-     <height>27</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>View customer</string>
-   </property>
-  </widget>
-  <widget class="QPlainTextEdit" name="plainTextEdit_description">
-   <property name="geometry">
-    <rect>
-     <x>70</x>
-     <y>180</y>
-     <width>261</width>
-     <height>101</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_description">
-   <property name="geometry">
-    <rect>
-     <x>70</x>
-     <y>150</y>
-     <width>81</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Description</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton_datePickerDate">
-   <property name="geometry">
-    <rect>
-     <x>320</x>
-     <y>40</y>
-     <width>97</width>
-     <height>27</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Date Picker</string>
-   </property>
-  </widget>
-  <widget class="QWidget" name="gridLayoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>70</x>
-     <y>520</y>
-     <width>357</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
+    <item row="2" column="0">
      <widget class="QLabel" name="label_paymentDate">
       <property name="text">
        <string>Payment Date</string>
       </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
      </widget>
     </item>
-    <item row="0" column="1">
+    <item row="2" column="1">
      <widget class="QDateTimeEdit" name="dateTimeEdit_paymentDate"/>
     </item>
-    <item row="0" column="2">
+    <item row="2" column="2">
      <widget class="QPushButton" name="pushButton_datePickerPaymentDate">
       <property name="text">
        <string>Date Picker</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_completionState">
+      <property name="text">
+       <string>Completion State</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
      </widget>
     </item>

@@ -6,12 +6,17 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>316</width>
-    <height>186</height>
+    <width>337</width>
+    <height>198</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>Sans Serif</family>
+   </font>
+  </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Report Wizard</string>
   </property>
   <widget class="QLabel" name="label_generateAReport">
    <property name="geometry">
@@ -37,8 +42,8 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>50</y>
-     <width>292</width>
+     <y>60</y>
+     <width>317</width>
      <height>80</height>
     </rect>
    </property>
@@ -48,12 +53,18 @@
       <property name="text">
        <string>Start date</string>
       </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
      </widget>
     </item>
     <item row="1" column="0">
      <widget class="QLabel" name="label_endDate">
       <property name="text">
        <string>End date</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
      </widget>
     </item>
@@ -82,8 +93,8 @@
   <widget class="QPushButton" name="pushButton_submit">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>150</y>
+     <x>50</x>
+     <y>160</y>
      <width>97</width>
      <height>27</height>
     </rect>
@@ -95,8 +106,8 @@
   <widget class="QPushButton" name="pushButton_cancel">
    <property name="geometry">
     <rect>
-     <x>170</x>
-     <y>150</y>
+     <x>180</x>
+     <y>160</y>
      <width>97</width>
      <height>27</height>
     </rect>

@@ -6,12 +6,36 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>312</width>
+    <width>321</width>
     <height>138</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>Sans Serif</family>
+   </font>
+  </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Process Pending</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">#PendingDialog {
+	background-image: url(:/images/background_blue);
+}
+
+QLabel {
+	color: white;
+}
+
+QProgressBar:horizontal {
+	border-radius: 3px;
+	background-color: qlineargradient(spread:pad, x1:0.481, y1:1, x2:0.515, y2:0, stop:0 rgba(0, 0, 0, 93), stop:0.995238 rgba(0, 0, 0, 147));
+	padding: 1px;
+}
+QProgressBar::chunk:horizontal {
+	text-align: center;
+	background-color: qlineargradient(spread:pad, x1:0.481, y1:1, x2:0.491, y2:0, stop:0.0047619 rgba(166, 166, 166, 255), stop:0.995238 rgba(195, 195, 195, 255));
+}</string>
   </property>
   <widget class="QLabel" name="label_messageE">
    <property name="geometry">
@@ -34,12 +58,15 @@
     <rect>
      <x>30</x>
      <y>80</y>
-     <width>241</width>
+     <width>261</width>
      <height>23</height>
     </rect>
    </property>
    <property name="value">
     <number>0</number>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
  </widget>

@@ -45,17 +45,17 @@ private slots:
 
     void on_label_remindCustomers_linkActivated(const QString &link);
 
-    void action_settings_triggered();
-
-    void action_help_triggered();
-
-    void action_exit_triggered();
-
     void on_pushButton_allVatRates_clicked();
 
     void on_pushButton_generateReport_clicked();
 
     void on_pushButton_reportWizard_clicked();
+
+    void on_pushButton_settings_clicked();
+
+    void on_pushButton_help_clicked();
+
+    void on_pushButton_exit_clicked();
 
 private:
     static const char *windowTitle;

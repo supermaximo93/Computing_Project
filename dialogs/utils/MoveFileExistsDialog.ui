@@ -10,8 +10,27 @@
     <height>276</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>Sans Serif</family>
+   </font>
+  </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>File Already Exists</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">#MoveFileExistsDialog {
+	background-image: url(:/images/background_blue);
+}
+
+QLabel {
+	color: white;
+}
+
+QPushButton {
+	font-size: 12px;
+	font-family: &quot;Sans Serif&quot;;
+}</string>
   </property>
   <widget class="QLabel" name="label_messageE">
    <property name="geometry">
@@ -21,6 +40,14 @@
      <width>451</width>
      <height>101</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Sans Serif</family>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
    </property>
    <property name="text">
     <string>TextLabel</string>
@@ -35,15 +62,21 @@
   <widget class="QWidget" name="verticalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>110</x>
+     <x>120</x>
      <y>130</y>
-     <width>266</width>
+     <width>251</width>
      <height>121</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QPushButton" name="pushButton_moveAndReplace">
+      <property name="font">
+       <font>
+        <family>Sans Serif</family>
+        <pointsize>-1</pointsize>
+       </font>
+      </property>
       <property name="text">
        <string>Move file and replace existing file</string>
       </property>
@@ -51,6 +84,12 @@
     </item>
     <item>
      <widget class="QPushButton" name="pushButton_deleteAndKeep">
+      <property name="font">
+       <font>
+        <family>Sans Serif</family>
+        <pointsize>-1</pointsize>
+       </font>
+      </property>
       <property name="text">
        <string>Delete file and keep existing file</string>
       </property>
@@ -58,6 +97,12 @@
     </item>
     <item>
      <widget class="QPushButton" name="pushButton_doNothing">
+      <property name="font">
+       <font>
+        <family>Sans Serif</family>
+        <pointsize>-1</pointsize>
+       </font>
+      </property>
       <property name="text">
        <string>Don't move file and keep existing file</string>
       </property>

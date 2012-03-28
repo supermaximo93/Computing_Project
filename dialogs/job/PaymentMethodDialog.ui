@@ -6,12 +6,40 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>330</width>
+    <width>332</width>
     <height>201</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>Sans Serif</family>
+   </font>
+  </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Mark As Paid</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QLabel {
+	color: white;
+}
+
+QPushButton {
+	font-size: 12px;
+	font-family: &quot;Sans Serif&quot;;
+}
+
+QDoubleSpinBox, QSpinBox, QDateEdit, QDateTimeEdit, QLineEdit {
+	color: white;
+	background-color: qlineargradient(spread:pad, x1:0.481, y1:1, x2:0.515, y2:0, stop:0 rgba(0, 0, 0, 93), stop:0.995238 rgba(0, 0, 0, 147));
+	border: none;
+	border-radius: 4px;
+	selection-background-color: #333333;
+	padding: 4px 2px 4px 2px;
+}
+
+#PaymentMethodDialog {
+	background-image: url(:/images/background_blue);
+}</string>
   </property>
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
@@ -21,6 +49,11 @@
      <width>176</width>
      <height>27</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Sans Serif</family>
+    </font>
    </property>
    <property name="layoutDirection">
     <enum>Qt::RightToLeft</enum>
@@ -40,6 +73,11 @@
      <width>181</width>
      <height>27</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Sans Serif</family>
+    </font>
    </property>
    <item>
     <property name="text">
@@ -70,14 +108,19 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>50</x>
+     <x>40</x>
      <y>90</y>
-     <width>221</width>
+     <width>251</width>
      <height>17</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Sans Serif</family>
+    </font>
+   </property>
    <property name="text">
-    <string>Please select a payment method</string>
+    <string>Please select a payment method:</string>
    </property>
   </widget>
   <widget class="QDateTimeEdit" name="dateTimeEdit">
@@ -89,15 +132,25 @@
      <height>27</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Sans Serif</family>
+    </font>
+   </property>
   </widget>
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>25</x>
+     <x>20</x>
      <y>10</y>
-     <width>291</width>
+     <width>311</width>
      <height>17</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Sans Serif</family>
+    </font>
    </property>
    <property name="text">
     <string>Mark as paid for the following date/time:</string>
@@ -111,6 +164,12 @@
      <width>97</width>
      <height>27</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Sans Serif</family>
+     <pointsize>-1</pointsize>
+    </font>
    </property>
    <property name="text">
     <string>Date Picker</string>
