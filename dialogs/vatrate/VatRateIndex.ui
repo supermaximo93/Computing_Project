@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>378</height>
+    <height>402</height>
    </rect>
   </property>
   <property name="font">
@@ -22,7 +22,7 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>50</y>
+     <y>60</y>
      <width>361</width>
      <height>281</height>
     </rect>
@@ -53,7 +53,7 @@
      <x>10</x>
      <y>10</y>
      <width>381</width>
-     <height>31</height>
+     <height>41</height>
     </rect>
    </property>
    <property name="font">
@@ -66,12 +66,15 @@
    <property name="text">
     <string>VAT Rate History</string>
    </property>
+   <property name="alignment">
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+   </property>
   </widget>
   <widget class="QPushButton" name="pushButton_ok">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>340</y>
+     <x>50</x>
+     <y>360</y>
      <width>97</width>
      <height>27</height>
     </rect>
@@ -83,8 +86,8 @@
   <widget class="QPushButton" name="pushButton_newVatRate">
    <property name="geometry">
     <rect>
-     <x>196</x>
-     <y>340</y>
+     <x>210</x>
+     <y>360</y>
      <width>141</width>
      <height>27</height>
     </rect>
