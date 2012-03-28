@@ -12,6 +12,8 @@ using namespace std;
 
 #include <QTimer>
 #include <QDir>
+#include <QUrl>
+#include <QDesktopServices>
 
 #include "PaymentMethodDialog.h"
 
@@ -89,7 +91,7 @@ void JobShow::updateView()
     }
     ui->label_completionStateE->setText(str);
 
-    ui->verticalWidget_sendInvoiceMarkAsPaid->setHidden(job.getCompletionState() != Job::DONE_UNPAID);
+    ui->gridWidget_sendInvoiceMarkAsPaid->setHidden(job.getCompletionState() != Job::DONE_UNPAID);
     ui->pushButton_markAsDone->setHidden(job.getCompletionState() != Job::NOT_DONE);
     ui->gridWidget_paidBy->setHidden(job.getCompletionState() != Job::DONE_PAID);
 
@@ -205,6 +207,24 @@ void JobShow::on_pushButton_markAsDone_released()
 
 void JobShow::on_pushButton_sendInvoice_released()
 {
+    generateInvoice();
+
+    EmailDetails emailDetails(customerEmailAddress.c_str(),
+                              SettingController::getSetting(SettingForm::keyInvoiceSubject).getValue(),
+                              SettingController::getSetting(SettingForm::keyInvoiceBody).getValue(),
+                              invoiceFileName.c_str());
+
+    EmailerThread::enqueueEmail(emailDetails);
+}
+
+void JobShow::on_pushButton_viewInvoice_clicked()
+{
+    generateInvoice();
+    QDesktopServices::openUrl(QUrl("file:///" + QString(invoiceFileName.c_str())));
+}
+
+void JobShow::generateInvoice()
+{
     Date jobDate(job.getDate());
     QString saveFolder
             = QDir::currentPath() + "/invoices/" + QDate::longMonthName(Date(job.getDate()).month) + '_'
@@ -213,7 +233,9 @@ void JobShow::on_pushButton_sendInvoice_released()
     if (!QDir(saveFolder).exists()) QDir().mkpath(saveFolder);
 
     Customer customer = CustomerController::getCustomer(job.getCustomerId());
-    string invoiceFileName;
+    customerEmailAddress = customer.getEmailAddress();
+
+    invoiceFileName.clear();
     invoiceFileName.reserve(256);
     invoiceFileName += "invoice_";
     invoiceFileName += customer.getForename();
@@ -226,17 +248,9 @@ void JobShow::on_pushButton_sendInvoice_released()
     replaceChars(invoiceFileName, ' ', '_');
     replaceChars(invoiceFileName, '/', '-');
     replaceChars(invoiceFileName, ':', '-');
-
     invoiceFileName = saveFolder.toStdString() + '/' + invoiceFileName;
 
     PdfGenerator::generateInvoice(invoiceFileName.c_str(), job);
-
-    EmailDetails emailDetails(customer.getEmailAddress(),
-                              SettingController::getSetting(SettingForm::keyInvoiceSubject).getValue(),
-                              SettingController::getSetting(SettingForm::keyInvoiceBody).getValue(),
-                              invoiceFileName.c_str());
-
-    EmailerThread::enqueueEmail(emailDetails);
 }
 
 void JobShow::on_pushButton_markAsPaid_released()
@@ -263,6 +277,24 @@ void JobShow::on_pushButton_markAsPaid_released()
 
 void JobShow::on_pushButton_sendReceipt_released()
 {
+    generateInvoice();
+
+    EmailDetails emailDetails(customerEmailAddress.c_str(),
+                              SettingController::getSetting(SettingForm::keyReceiptSubject).getValue(),
+                              SettingController::getSetting(SettingForm::keyReceiptBody).getValue(),
+                              receiptFileName.c_str());
+
+    EmailerThread::enqueueEmail(emailDetails);
+}
+
+void JobShow::on_pushButton_viewReceipt_clicked()
+{
+    generateReceipt();
+    QDesktopServices::openUrl(QUrl("file:///" + QString(receiptFileName.c_str())));
+}
+
+void JobShow::generateReceipt()
+{
     Date jobDate(job.getDate());
     QString saveFolder
             = QDir::currentPath() + "/receipts/" + QDate::longMonthName(Date(job.getDate()).month) + '_'
@@ -271,7 +303,9 @@ void JobShow::on_pushButton_sendReceipt_released()
     if (!QDir(saveFolder).exists()) QDir().mkpath(saveFolder);
 
     Customer customer = CustomerController::getCustomer(job.getCustomerId());
-    string receiptFileName;
+    customerEmailAddress = customer.getEmailAddress();
+
+    receiptFileName.clear();
     receiptFileName.reserve(256);
     receiptFileName += "receipt_";
     receiptFileName += customer.getForename();
@@ -288,13 +322,6 @@ void JobShow::on_pushButton_sendReceipt_released()
     receiptFileName = saveFolder.toStdString() + '/' + receiptFileName;
 
     PdfGenerator::generateReceipt(receiptFileName.c_str(), job);
-
-    EmailDetails emailDetails(customer.getEmailAddress(),
-                              SettingController::getSetting(SettingForm::keyReceiptSubject).getValue(),
-                              SettingController::getSetting(SettingForm::keyReceiptBody).getValue(),
-                              receiptFileName.c_str());
-
-    EmailerThread::enqueueEmail(emailDetails);
 }
 
 bool JobShow::setNewJobCompletionState(const int state)

@@ -53,9 +53,13 @@ private slots:
 
     void on_pushButton_sendInvoice_released();
 
+    void on_pushButton_viewInvoice_clicked();
+
     void on_pushButton_markAsPaid_released();
 
     void on_pushButton_sendReceipt_released();
+
+    void on_pushButton_viewReceipt_clicked();
 
 private:
     Ui::JobShow *ui;
@@ -63,12 +67,16 @@ private:
     Database<Part>::recordList &parts;
     Database<Task>::recordList &tasks;
     QTimer *timer;
+    std::string invoiceFileName, receiptFileName, customerEmailAddress;
 
     void updateCharges();
     double getTotalChargeExclVat();
     double getTotalChargeInclVat();
 
     bool setNewJobCompletionState(int state);
+
+    void generateInvoice();
+    void generateReceipt();
 };
 
 #endif // JOBSHOW_H
