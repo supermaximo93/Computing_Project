@@ -40,7 +40,14 @@ bool EmailerThread::finalise()
 {
     if (emailerThread == NULL) return true;
 
-    if (!emailsInQueueMutex->tryLock() || !checkEmailQueueEmpty())
+    bool canLockEmailsInQueueMutex = false;
+    if (emailsInQueueMutex->tryLock())
+    {
+        emailsInQueueMutex->unlock();
+        canLockEmailsInQueueMutex = true;
+    }
+
+    if (!canLockEmailsInQueueMutex || !checkEmailQueueEmpty())
     {
         bool cancelEmails = showYesNoDialog("There are still emails waiting to be sent.\n"
                                             "Would you like to cancel the sending of these emails?");
