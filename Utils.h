@@ -59,6 +59,8 @@ void copyFile(const char *sourceFilename, const char *destinationFilename);
 void moveFile(const char *sourceFilename, const char *destinationFilename);
 void moveDirectory(const char *sourceDirectoryPath, const char *destinationDirectoryPath);
 
+QString to2Dp(const QString &str);
+
 template <typename type>
 std::string toString(const type &variable)
 {

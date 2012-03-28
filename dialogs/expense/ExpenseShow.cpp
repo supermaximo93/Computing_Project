@@ -28,10 +28,10 @@ void ExpenseShow::updateView()
 {
     ui->label_dateE->setText(Date(expense.getDate()));
     ui->label_descriptionE->setText(expense.getDescription());
-    ui->label_priceExclVatE->setText(toString(expense.getPrice()).c_str());
-    ui->label_vatE->setText(toString(expense.getVat()).c_str());
+    ui->label_priceExclVatE->setText(to2Dp(toString(expense.getPrice()).c_str()).prepend(L'£'));
+    ui->label_vatE->setText(to2Dp(toString(expense.getVat()).c_str()).prepend(L'£'));
     double totalPrice = expense.getPrice() + expense.getVat();
-    ui->label_totalPriceE->setText(QString(toString(totalPrice).c_str()).prepend(L'£'));
+    ui->label_totalPriceE->setText(to2Dp(toString(totalPrice).c_str()).prepend(L'£'));
     ui->label_typeHeadingE->setText(expense.getTypeString().c_str());
 }
 

@@ -111,10 +111,10 @@ void JobShow::updateView()
 
 void JobShow::updateCharges()
 {
-    ui->label_labourChargeE->setText(QString(toString(job.getLabourCharge()).c_str()).prepend(L'£'));
+    ui->label_labourChargeE->setText(to2Dp(toString(job.getLabourCharge()).c_str()).prepend(L'£'));
     ui->label_vatE->setText((toString(Globals::vatRate(Date(job.getDate()))) + "%").c_str());
-    ui->label_totalChargeExclVatE->setText(QString(toString(getTotalChargeExclVat()).c_str()).prepend(L'£'));
-    ui->label_totalChargeInclVatE->setText(QString(toString(getTotalChargeInclVat()).c_str()).prepend(L'£'));
+    ui->label_totalChargeExclVatE->setText(to2Dp(toString(getTotalChargeExclVat()).c_str()).prepend(L'£'));
+    ui->label_totalChargeInclVatE->setText(to2Dp(toString(getTotalChargeInclVat()).c_str()).prepend(L'£'));
 }
 
 double JobShow::getTotalChargeExclVat()

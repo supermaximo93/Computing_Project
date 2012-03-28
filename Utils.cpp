@@ -281,3 +281,16 @@ void moveDirectory(const char *sourceDirectoryPath, const char *destinationDirec
 
     dir.rmdir(sourceDirectoryPath);
 }
+
+QString to2Dp(const QString &str)
+{
+    const int pointIndex = str.lastIndexOf('.');
+    if (pointIndex < 0) return str + ".00";
+
+    switch (str.length() - pointIndex)
+    {
+    case 1: return str + "00";
+    case 2: return str + "0";
+    default: return str;
+    }
+}

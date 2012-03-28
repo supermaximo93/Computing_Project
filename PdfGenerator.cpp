@@ -74,19 +74,6 @@ void parseHtml(QString &html, Attributes &attributes)
     }
 }
 
-QString to2Dp(const QString &str)
-{
-    const int pointIndex = str.lastIndexOf('.');
-    if (pointIndex < 0) return str + ".00";
-
-    switch (str.length() - pointIndex)
-    {
-    case 1: return str + "00";
-    case 2: return str + "0";
-    default: return str;
-    }
-}
-
 #define GET_WEBVIEW_AND_HTML() \
 QWebView view;\
 QString html = getHtml(templateResourceName);\
