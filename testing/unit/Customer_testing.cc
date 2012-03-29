@@ -385,7 +385,7 @@ TEST_F(CustomerUnitTest, DoesCustomerRejectHomePhoneNumberThatIsTooShort)
 
     string testHomePhoneNumber;
     testHomePhoneNumber.reserve(Customer::minPhoneNumberLength - 1);
-    while (testHomePhoneNumber.size() < Customer::minPhoneNumberLength - 1) testHomePhoneNumber += '0';
+    while ((int)testHomePhoneNumber.size() < Customer::minPhoneNumberLength - 1) testHomePhoneNumber += '0';
 
     EXPECT_THROW(customer.setHomePhoneNumber(testHomePhoneNumber.c_str()), std::runtime_error)
             << "Exception was not thrown when the home phone number was set to a string that is shorter than the "
@@ -401,7 +401,7 @@ TEST_F(CustomerUnitTest, DoesCustomerRejectHomePhoneNumberThatIsTooLong)
 
     string testHomePhoneNumber;
     testHomePhoneNumber.reserve(Customer::maxPhoneNumberLength + 1);
-    while (testHomePhoneNumber.size() < Customer::maxPhoneNumberLength + 1) testHomePhoneNumber += '0';
+    while ((int)testHomePhoneNumber.size() < Customer::maxPhoneNumberLength + 1) testHomePhoneNumber += '0';
 
     EXPECT_THROW(customer.setHomePhoneNumber(testHomePhoneNumber.c_str()), std::runtime_error)
             << "Exception was not thrown when the home phone number was set to a string that is longer than the "
@@ -470,7 +470,7 @@ TEST_F(CustomerUnitTest, DoesCustomerRejectMobilePhoneNumberThatIsTooShort)
 
     string testMobilePhoneNumber;
     testMobilePhoneNumber.reserve(Customer::minPhoneNumberLength - 1);
-    while (testMobilePhoneNumber.size() < Customer::minPhoneNumberLength - 1) testMobilePhoneNumber += '0';
+    while ((int)testMobilePhoneNumber.size() < Customer::minPhoneNumberLength - 1) testMobilePhoneNumber += '0';
 
     EXPECT_THROW(customer.setMobilePhoneNumber(testMobilePhoneNumber.c_str()), std::runtime_error)
             << "Exception was not thrown when the mobile phone number was set to a string that is shorter than the "
@@ -486,7 +486,7 @@ TEST_F(CustomerUnitTest, DoesCustomerRejectMobilePhoneNumberThatIsTooLong)
 
     string testMobilePhoneNumber;
     testMobilePhoneNumber.reserve(Customer::maxPhoneNumberLength + 1);
-    while (testMobilePhoneNumber.size() < Customer::maxPhoneNumberLength + 1) testMobilePhoneNumber += '0';
+    while ((int)testMobilePhoneNumber.size() < Customer::maxPhoneNumberLength + 1) testMobilePhoneNumber += '0';
 
     EXPECT_THROW(customer.setMobilePhoneNumber(testMobilePhoneNumber.c_str()), std::runtime_error)
             << "Exception was not thrown when the mobile phone number was set to a string that is longer than the "
@@ -555,7 +555,7 @@ TEST_F(CustomerUnitTest, DoesCustomerRejectEmailAddressThatIsTooShort)
 
     string testEmailAddress = "a@b.";
     testEmailAddress.reserve(Customer::minEmailAddressLength - 1);
-    while (testEmailAddress.size() < Customer::minEmailAddressLength - 1) testEmailAddress += 'a';
+    while ((int)testEmailAddress.size() < Customer::minEmailAddressLength - 1) testEmailAddress += 'a';
 
     EXPECT_THROW(customer.setEmailAddress(testEmailAddress.c_str()), std::runtime_error)
             << "Exception was not thrown when the email address was set to a string that is shorter than the minimum";
@@ -570,9 +570,9 @@ TEST_F(CustomerUnitTest, DoesCustomerRejectEmailAddressThatIsTooLong)
 
     string testEmailAddress;
     testEmailAddress.reserve(Customer::maxEmailAddressLength + 1);
-    while (testEmailAddress.size() < Customer::maxEmailAddressLength / 2) testEmailAddress += 'a';
+    while ((int)testEmailAddress.size() < Customer::maxEmailAddressLength / 2) testEmailAddress += 'a';
     testEmailAddress += '@';
-    while (testEmailAddress.size() < Customer::maxEmailAddressLength - 3) testEmailAddress += 'a';
+    while ((int)testEmailAddress.size() < Customer::maxEmailAddressLength - 3) testEmailAddress += 'a';
     testEmailAddress += ".com";
 
     EXPECT_THROW(customer.setEmailAddress(testEmailAddress.c_str()), std::runtime_error)
