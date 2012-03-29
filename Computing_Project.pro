@@ -12,7 +12,8 @@ LIBS += -lgtest
 DEFINES += COMPILE_TESTS
 }
 
-LIBS += -lQxtCore -lQxtNetwork
+unix:LIBS += -lQxtCore -lQxtNetwork
+win32:LIBS += QxtCore.dll QxtNetwork.dll
 
 DEPENDPATH += . \
               dialogs/customer \

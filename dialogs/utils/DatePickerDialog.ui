@@ -45,6 +45,9 @@
      <height>181</height>
     </rect>
    </property>
+   <property name="firstDayOfWeek">
+    <enum>Qt::Monday</enum>
+   </property>
   </widget>
   <widget class="QPushButton" name="pushButton_ok">
    <property name="geometry">

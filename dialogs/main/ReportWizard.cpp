@@ -8,6 +8,8 @@
 #include "ReportWizard.h"
 #include "ui_ReportWizard.h"
 
+#include <ctime>
+
 #include <QDate>
 #include <QFileDialog>
 #include <QDesktopServices>

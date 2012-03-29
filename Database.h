@@ -12,6 +12,7 @@
 #include <fstream>
 #include <vector>
 #include <stdexcept>
+#include <ctime>
 #include <tr1/memory>
 #include <tr1/shared_ptr.h>
 
