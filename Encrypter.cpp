@@ -10,6 +10,7 @@
 using namespace std;
 
 #include <QMutex>
+#include <QFile>
 
 #include "Encrypter.h"
 
@@ -24,8 +25,9 @@ void Encrypter::encryptFile(const char *filename, const bool giveFileNotFoundErr
     file.open(filename, ios::binary);
     if (file.is_open())
     {
+        string encryptedFileName = string(filename) + ".temp.enc";
         ofstream encryptedFile;
-        encryptedFile.open((string(filename) + ".temp.enc").c_str(), ios::binary);
+        encryptedFile.open(encryptedFileName.c_str(), ios::binary);
 
         if (encryptedFile.is_open())
         {
@@ -45,7 +47,8 @@ void Encrypter::encryptFile(const char *filename, const bool giveFileNotFoundErr
             encryptedFile.close();
 
             remove(filename);
-            rename((string(filename) + ".temp.enc").c_str(), filename);
+            rename(encryptedFileName.c_str(), filename);
+            if (QFile::exists(encryptedFileName.c_str())) remove(encryptedFileName.c_str());
         }
         else cout << "File " << filename << " could not be encrypted" << endl;
         file.close();
