@@ -7,7 +7,7 @@ QT       += core gui network webkit
 TARGET = Computing_Project
 TEMPLATE = app
 
-Debug {
+CONFIG(debug, debug|release) {
 LIBS += -lgtest
 DEFINES += COMPILE_TESTS
 }

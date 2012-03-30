@@ -16,12 +16,6 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-    // Redirect buffer so that it prints to a logfile instead of the console
-    ofstream log;
-    log.open("logfile.log");
-    streambuf *const coutStreamBuffer = cout.rdbuf();
-    cout.rdbuf(log.rdbuf());
-
     QApplication a(argc, argv);
 
 #ifdef COMPILE_TESTS
@@ -37,6 +31,12 @@ int main(int argc, char *argv[])
         }
     }
 #endif
+
+    // Redirect buffer so that it prints to a logfile instead of the console
+    ofstream log;
+    log.open("logfile.log");
+    streambuf *const coutStreamBuffer = cout.rdbuf();
+    cout.rdbuf(log.rdbuf());
 
     Databases::init();
     int exitCode = 1;

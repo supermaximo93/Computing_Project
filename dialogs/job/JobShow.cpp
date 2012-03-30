@@ -278,7 +278,7 @@ void JobShow::on_pushButton_markAsPaid_released()
 
 void JobShow::on_pushButton_sendReceipt_released()
 {
-    generateInvoice();
+    generateReceipt();
 
     EmailDetails emailDetails(customerEmailAddress.c_str(),
                               SettingController::getSetting(SettingForm::keyReceiptSubject).getValue(),
