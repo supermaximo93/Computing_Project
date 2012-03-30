@@ -162,7 +162,12 @@ Database<recordType>::Database()
 #endif
 {
     filename_ = databaseDirectory_ = backupDirectory_ = "";
+
+#ifdef COMPILE_TESTS
     reloadFilename(false, testing);
+#else
+    reloadFilename(false);
+#endif
 
     while (!fileMutex.tryLock(1000));
     Encrypter::decryptFile(filename_.c_str(), false);
