@@ -36,6 +36,11 @@ Setting SettingForm::getDatabaseDirectory()
     return SettingController::getSetting(keyDatabaseDirectory);
 }
 
+Setting SettingForm::getBackupDirectory()
+{
+    return SettingController::getSetting(keyBackupDirectory);
+}
+
 SettingForm::SettingForm(QWidget *parent)
     : QDialog(parent), ui(new Ui::SettingForm)
 {
@@ -210,9 +215,8 @@ bool SettingForm::updateSettings()
     std::string previousDatabaseDirectory = Databases::customers().databaseDirectory(),
             previousBackupDirectory = Databases::customers().backupDirectory();
 
-    const unsigned settingCount = 11;
+    const unsigned settingCount = 10;
     Setting newSettings[] = {
-        Setting(keyBackupDirectory, ui->lineEdit_backupDirectory->text().toStdString().c_str()),
         Setting(keyInvoiceSubject, ui->lineEdit_invoiceSubject->text().toStdString().c_str()),
         Setting(keyInvoiceBody, ui->plainTextEdit_invoiceBody->toPlainText().toStdString().c_str()),
         Setting(keyReceiptSubject, ui->lineEdit_receiptSubject->text().toStdString().c_str()),
@@ -256,8 +260,11 @@ bool SettingForm::updateSettings()
     }
 
     Setting databaseDirectorySetting(keyDatabaseDirectory,
-                                     ui->lineEdit_databaseDirectory->text().toStdString().c_str());
+                                     ui->lineEdit_databaseDirectory->text().toStdString().c_str()),
+            backupDirectorySetting(keyBackupDirectory, ui->lineEdit_backupDirectory->text().toStdString().c_str());
+
     SettingController::Create(databaseDirectorySetting, this);
+    SettingController::Create(backupDirectorySetting, this);
 
     try { Databases::reloadDatabaseFilenames(); }
     catch (const std::exception &e)

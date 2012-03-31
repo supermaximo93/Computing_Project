@@ -38,6 +38,7 @@ public:
     *keyProgramPassword;
 
     static Setting getDatabaseDirectory();
+    static Setting getBackupDirectory();
 
     explicit SettingForm(QWidget *parent = NULL);
     ~SettingForm();

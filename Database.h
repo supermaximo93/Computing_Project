@@ -717,17 +717,13 @@ void Database<recordType>::reloadFilename(const bool moveFiles)
             previousBackupDirectory = backupDirectory_,
             previousFilename = filename_;
 
-    extern Database<Setting> *settingDatabasePtr;
     Setting databaseDirectorySetting, backupDirectorySetting;
 
     try { databaseDirectorySetting = SettingForm::getDatabaseDirectory(); }
     catch (const std::exception &e) { databaseDirectorySetting = Setting(); }
 
-    if (settingDatabasePtr != NULL)
-    {
-        try { backupDirectorySetting = settingDatabasePtr->findRecord("key", SettingForm::keyBackupDirectory); }
-        catch (const std::exception &e) { backupDirectorySetting = Setting(); }
-    }
+    try { backupDirectorySetting = SettingForm::getBackupDirectory(); }
+    catch (const std::exception &e) { backupDirectorySetting = Setting(); }
 
     databaseDirectory_ = databaseDirectorySetting.getValue();
     backupDirectory_ = backupDirectorySetting.getValue();

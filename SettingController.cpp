@@ -16,29 +16,37 @@ using namespace std;
 #include "Encrypter.h"
 #include "dialogs/setting/SettingForm.h"
 
-static const char *databaseDirectoryStoreFilename = "databaseDirSav.dat";
+static const char
+*databaseDirectoryStoreFilename = "databaseDirSav.dat",
+*backupDirectoryStoreFilename = "backupDirSav.dat";
 
 bool SettingController::Create(Setting &settingAttributes, QWidget *)
 {
-    if (strcmp(settingAttributes.getKey(), SettingForm::keyDatabaseDirectory) == 0)
+    const bool saveDatabaseDirectory = (strcmp(settingAttributes.getKey(), SettingForm::keyDatabaseDirectory) == 0);
+    const bool saveBackupDirectory = (strcmp(settingAttributes.getKey(), SettingForm::keyBackupDirectory) == 0);
+    if (saveDatabaseDirectory || saveBackupDirectory)
     {
-        if (QFile::exists(databaseDirectoryStoreFilename)) remove(databaseDirectoryStoreFilename);
+        const char *filename;
+        if (saveDatabaseDirectory) filename = databaseDirectoryStoreFilename;
+        else filename = backupDirectoryStoreFilename;
+
+        if (QFile::exists(filename)) remove(filename);
 
         {
             ofstream file;
-            file.open(databaseDirectoryStoreFilename, ios::binary);
+            file.open(filename, ios::binary);
             file.close();
         }
 
         fstream file;
-        file.open(databaseDirectoryStoreFilename, ios::in | ios::out | ios::binary);
+        file.open(filename, ios::in | ios::out | ios::binary);
         if (file.is_open())
         {
             settingAttributes.writeToFile(file);
             file.close();
         }
 
-        Encrypter::encryptFile(databaseDirectoryStoreFilename, false);
+        Encrypter::encryptFile(filename, false);
 
         return true;
     }
@@ -61,19 +69,25 @@ bool SettingController::Create(Setting &settingAttributes, QWidget *)
 
 bool SettingController::Update(const Setting &setting, QWidget *)
 {
-    if (strcmp(setting.getKey(), SettingForm::keyDatabaseDirectory) == 0)
+    const bool saveDatabaseDirectory = (strcmp(setting.getKey(), SettingForm::keyDatabaseDirectory) == 0);
+    const bool saveBackupDirectory = (strcmp(setting.getKey(), SettingForm::keyBackupDirectory) == 0);
+    if (saveDatabaseDirectory || saveBackupDirectory)
     {
-        Encrypter::decryptFile(databaseDirectoryStoreFilename, false);
+        const char *filename;
+        if (saveDatabaseDirectory) filename = databaseDirectoryStoreFilename;
+        else filename = backupDirectoryStoreFilename;
+
+        Encrypter::decryptFile(filename, false);
 
         fstream file;
-        file.open(databaseDirectoryStoreFilename, ios::in | ios::out | ios::binary);
+        file.open(filename, ios::in | ios::out | ios::binary);
         if (file.is_open())
         {
             setting.writeToFile(file);
             file.close();
         }
 
-        Encrypter::encryptFile(databaseDirectoryStoreFilename, false);
+        Encrypter::encryptFile(filename, false);
         return true;
     }
 
@@ -105,11 +119,17 @@ bool SettingController::Destroy(int settingId, QWidget *)
 
 bool SettingController::Destroy(Setting &setting, QWidget *caller)
 {
-    if (strcmp(setting.getKey(), SettingForm::keyDatabaseDirectory) == 0)
+    const bool saveDatabaseDirectory = (strcmp(setting.getKey(), SettingForm::keyDatabaseDirectory) == 0);
+    const bool saveBackupDirectory = (strcmp(setting.getKey(), SettingForm::keyBackupDirectory) == 0);
+    if (saveDatabaseDirectory || saveBackupDirectory)
     {
-        if (QFile::exists(databaseDirectoryStoreFilename))
+        const char *filename;
+        if (saveDatabaseDirectory) filename = databaseDirectoryStoreFilename;
+        else filename = backupDirectoryStoreFilename;
+
+        if (QFile::exists(filename))
         {
-            remove(databaseDirectoryStoreFilename);
+            remove(filename);
             setting = Setting();
             return true;
         }
@@ -141,19 +161,25 @@ Setting SettingController::getSetting(const char *key)
 {
     Setting setting;
 
-    if (strcmp(key, SettingForm::keyDatabaseDirectory) == 0)
+    const bool saveDatabaseDirectory = (strcmp(key, SettingForm::keyDatabaseDirectory) == 0);
+    const bool saveBackupDirectory = (strcmp(key, SettingForm::keyBackupDirectory) == 0);
+    if (saveDatabaseDirectory || saveBackupDirectory)
     {
-        Encrypter::decryptFile(databaseDirectoryStoreFilename, false);
+        const char *filename;
+        if (saveDatabaseDirectory) filename = databaseDirectoryStoreFilename;
+        else filename = backupDirectoryStoreFilename;
+
+        Encrypter::decryptFile(filename, false);
 
         fstream file;
-        file.open(databaseDirectoryStoreFilename, ios::in | ios::binary);
+        file.open(filename, ios::in | ios::binary);
         if (file.is_open())
         {
             setting.readFromFile(file);
             file.close();
         }
 
-        Encrypter::encryptFile(databaseDirectoryStoreFilename, false);
+        Encrypter::encryptFile(filename, false);
 
         return setting;
     }
@@ -179,6 +205,8 @@ Database<Setting>::recordListPtr SettingController::getAllSettings()
 
     if (QFile::exists(databaseDirectoryStoreFilename))
         settings->push_back(getSetting(SettingForm::keyDatabaseDirectory));
+    if (QFile::exists(backupDirectoryStoreFilename))
+        settings->push_back(getSetting(SettingForm::keyBackupDirectory));
 
     return settings;
 }
