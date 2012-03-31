@@ -231,7 +231,7 @@ void MainWindow::on_pushButton_generateReport_clicked()
 {
     QDate date = ui->calendar->selectedDate();
 
-    QString saveFolder = QDir::currentPath() + "/reports/" + toString(date.year()).c_str();
+    QString saveFolder = SettingForm::getPdfDirectoryWithoutSlash() + "/reports/" + toString(date.year()).c_str();
     QString filename
             = saveFolder + "/report_" + QDate::longMonthName(date.month()) + "_" + toString(date.year()).c_str()
             + ".pdf";

@@ -18,6 +18,8 @@
 #include "Utils.h"
 #include "PdfGenerator.h"
 
+#include "dialogs/setting/SettingForm.h"
+
 ReportWizard::ReportWizard(QWidget *parent)
     : QDialog(parent), ui(new Ui::ReportWizard)
 {
@@ -57,9 +59,10 @@ void ReportWizard::on_pushButton_submit_clicked()
     }
 
     QString suggestedFilename
-            = QString("reports/report_") + toString(startDate.day()).c_str() + QDate::longMonthName(startDate.month())
-            + toString(startDate.year()).c_str() + "_to_" + toString(endDate.day()).c_str()
-            + QDate::longMonthName(endDate.month()) + '_' + toString(endDate.year()).c_str() + ".pdf";
+            = SettingForm::getPdfDirectoryWithoutSlash() + "/reports/report_" + toString(startDate.day()).c_str()
+            + QDate::longMonthName(startDate.month()) + toString(startDate.year()).c_str() + "_to_"
+            + toString(endDate.day()).c_str() + QDate::longMonthName(endDate.month()) + '_'
+            + toString(endDate.year()).c_str() + ".pdf";
 
     QString filename = QFileDialog::getSaveFileName(this, "Save Report As", suggestedFilename, "PDF (*.pdf)");
     if (filename.isEmpty()) return;

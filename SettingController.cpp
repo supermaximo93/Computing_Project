@@ -18,17 +18,20 @@ using namespace std;
 
 static const char
 *databaseDirectoryStoreFilename = "databaseDirSav.dat",
-*backupDirectoryStoreFilename = "backupDirSav.dat";
+*backupDirectoryStoreFilename = "backupDirSav.dat",
+*pdfDirectoryStoreFilename = "pdfDirSav.dat";
 
 bool SettingController::Create(Setting &settingAttributes, QWidget *)
 {
     const bool saveDatabaseDirectory = (strcmp(settingAttributes.getKey(), SettingForm::keyDatabaseDirectory) == 0);
     const bool saveBackupDirectory = (strcmp(settingAttributes.getKey(), SettingForm::keyBackupDirectory) == 0);
-    if (saveDatabaseDirectory || saveBackupDirectory)
+    const bool savePdfDirectory = (strcmp(settingAttributes.getKey(), SettingForm::keyPdfDirectory) == 0);
+    if (saveDatabaseDirectory || saveBackupDirectory || savePdfDirectory)
     {
         const char *filename;
         if (saveDatabaseDirectory) filename = databaseDirectoryStoreFilename;
-        else filename = backupDirectoryStoreFilename;
+        else if (saveBackupDirectory) filename = backupDirectoryStoreFilename;
+        else filename = pdfDirectoryStoreFilename;
 
         if (QFile::exists(filename)) remove(filename);
 
@@ -71,11 +74,13 @@ bool SettingController::Update(const Setting &setting, QWidget *)
 {
     const bool saveDatabaseDirectory = (strcmp(setting.getKey(), SettingForm::keyDatabaseDirectory) == 0);
     const bool saveBackupDirectory = (strcmp(setting.getKey(), SettingForm::keyBackupDirectory) == 0);
-    if (saveDatabaseDirectory || saveBackupDirectory)
+    const bool savePdfDirectory = (strcmp(setting.getKey(), SettingForm::keyPdfDirectory) == 0);
+    if (saveDatabaseDirectory || saveBackupDirectory || savePdfDirectory)
     {
         const char *filename;
         if (saveDatabaseDirectory) filename = databaseDirectoryStoreFilename;
-        else filename = backupDirectoryStoreFilename;
+        else if (saveBackupDirectory) filename = backupDirectoryStoreFilename;
+        else filename = pdfDirectoryStoreFilename;
 
         Encrypter::decryptFile(filename, false);
 
@@ -121,11 +126,13 @@ bool SettingController::Destroy(Setting &setting, QWidget *caller)
 {
     const bool saveDatabaseDirectory = (strcmp(setting.getKey(), SettingForm::keyDatabaseDirectory) == 0);
     const bool saveBackupDirectory = (strcmp(setting.getKey(), SettingForm::keyBackupDirectory) == 0);
-    if (saveDatabaseDirectory || saveBackupDirectory)
+    const bool savePdfDirectory = (strcmp(setting.getKey(), SettingForm::keyPdfDirectory) == 0);
+    if (saveDatabaseDirectory || saveBackupDirectory || savePdfDirectory)
     {
         const char *filename;
         if (saveDatabaseDirectory) filename = databaseDirectoryStoreFilename;
-        else filename = backupDirectoryStoreFilename;
+        else if (saveBackupDirectory) filename = backupDirectoryStoreFilename;
+        else filename = pdfDirectoryStoreFilename;
 
         if (QFile::exists(filename))
         {
@@ -163,11 +170,13 @@ Setting SettingController::getSetting(const char *key)
 
     const bool saveDatabaseDirectory = (strcmp(key, SettingForm::keyDatabaseDirectory) == 0);
     const bool saveBackupDirectory = (strcmp(key, SettingForm::keyBackupDirectory) == 0);
-    if (saveDatabaseDirectory || saveBackupDirectory)
+    const bool savePdfDirectory = (strcmp(key, SettingForm::keyPdfDirectory) == 0);
+    if (saveDatabaseDirectory || saveBackupDirectory || savePdfDirectory)
     {
         const char *filename;
         if (saveDatabaseDirectory) filename = databaseDirectoryStoreFilename;
-        else filename = backupDirectoryStoreFilename;
+        else if (saveBackupDirectory) filename = backupDirectoryStoreFilename;
+        else filename = pdfDirectoryStoreFilename;
 
         Encrypter::decryptFile(filename, false);
 
@@ -177,6 +186,11 @@ Setting SettingController::getSetting(const char *key)
         {
             setting.readFromFile(file);
             file.close();
+        }
+        else
+        {
+            try { setting.setKey(key); } catch (const std::exception &e) {}
+            try { setting.setValue(QDir::currentPath().toStdString().c_str()); } catch (const std::exception &e) {}
         }
 
         Encrypter::encryptFile(filename, false);
@@ -207,6 +221,8 @@ Database<Setting>::recordListPtr SettingController::getAllSettings()
         settings->push_back(getSetting(SettingForm::keyDatabaseDirectory));
     if (QFile::exists(backupDirectoryStoreFilename))
         settings->push_back(getSetting(SettingForm::keyBackupDirectory));
+    if (QFile::exists(pdfDirectoryStoreFilename))
+        settings->push_back(getSetting(SettingForm::keyPdfDirectory));
 
     return settings;
 }

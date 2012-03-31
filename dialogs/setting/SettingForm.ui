@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>590</width>
-    <height>426</height>
+    <height>447</height>
    </rect>
   </property>
   <property name="font">
@@ -52,7 +52,7 @@ QListWidget, QTableWidget, QPlainTextEdit {
      <x>0</x>
      <y>50</y>
      <width>591</width>
-     <height>331</height>
+     <height>351</height>
     </rect>
    </property>
    <property name="layoutDirection">
@@ -86,7 +86,7 @@ QListWidget, QTableWidget, QPlainTextEdit {
        <x>10</x>
        <y>20</y>
        <width>571</width>
-       <height>81</height>
+       <height>101</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout">
@@ -120,11 +120,31 @@ QListWidget, QTableWidget, QPlainTextEdit {
         </property>
        </widget>
       </item>
+      <item row="1" column="2">
+       <widget class="QPushButton" name="pushButton_browseBackupDirectory">
+        <property name="text">
+         <string>Browse...</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>PDF directory</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
       <item row="1" column="1">
        <widget class="QLineEdit" name="lineEdit_backupDirectory"/>
       </item>
-      <item row="1" column="2">
-       <widget class="QPushButton" name="pushButton_browseBackupDirectory">
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="lineEdit_pdfDirectory"/>
+      </item>
+      <item row="2" column="2">
+       <widget class="QPushButton" name="pushButton_browsePdfDirectory">
         <property name="text">
          <string>Browse...</string>
         </property>
@@ -136,7 +156,7 @@ QListWidget, QTableWidget, QPlainTextEdit {
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>120</y>
+       <y>140</y>
        <width>431</width>
        <height>156</height>
       </rect>
@@ -254,7 +274,7 @@ QListWidget, QTableWidget, QPlainTextEdit {
          <x>10</x>
          <y>10</y>
          <width>531</width>
-         <height>271</height>
+         <height>291</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_2">
@@ -475,7 +495,7 @@ QListWidget, QTableWidget, QPlainTextEdit {
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>390</y>
+     <y>410</y>
      <width>111</width>
      <height>27</height>
     </rect>
@@ -488,7 +508,7 @@ QListWidget, QTableWidget, QPlainTextEdit {
    <property name="geometry">
     <rect>
      <x>140</x>
-     <y>390</y>
+     <y>410</y>
      <width>111</width>
      <height>27</height>
     </rect>

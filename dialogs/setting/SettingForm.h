@@ -25,6 +25,7 @@ public:
     static const char
     *keyDatabaseDirectory,
     *keyBackupDirectory,
+    *keyPdfDirectory,
     *keyInvoiceSubject,
     *keyInvoiceBody,
     *keyReceiptSubject,
@@ -39,6 +40,8 @@ public:
 
     static Setting getDatabaseDirectory();
     static Setting getBackupDirectory();
+    static Setting getPdfDirectory();
+    static QString getPdfDirectoryWithoutSlash();
 
     explicit SettingForm(QWidget *parent = NULL);
     ~SettingForm();
@@ -58,6 +61,10 @@ private slots:
     void on_lineEdit_backupDirectory_textEdited(const QString &value);
 
     void on_pushButton_browseBackupDirectory_clicked();
+
+    void on_lineEdit_pdfDirectory_textEdited(const QString &value);
+
+    void on_pushButton_browsePdfDirectory_clicked();
 
     void on_pushButton_saveNewPassword_clicked();
 

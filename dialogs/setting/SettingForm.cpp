@@ -19,6 +19,7 @@
 const char
 *SettingForm::keyDatabaseDirectory = "database directory",
 *SettingForm::keyBackupDirectory = "backup directory",
+*SettingForm::keyPdfDirectory = "pdf directory",
 *SettingForm::keyInvoiceSubject = "invoice subject",
 *SettingForm::keyInvoiceBody = "invoice body",
 *SettingForm::keyReceiptSubject = "receipt subject",
@@ -39,6 +40,21 @@ Setting SettingForm::getDatabaseDirectory()
 Setting SettingForm::getBackupDirectory()
 {
     return SettingController::getSetting(keyBackupDirectory);
+}
+
+Setting SettingForm::getPdfDirectory()
+{
+    return SettingController::getSetting(keyPdfDirectory);
+}
+
+QString SettingForm::getPdfDirectoryWithoutSlash()
+{
+    QString pdfDirectory = SettingController::getSetting(keyPdfDirectory).getValue();
+
+    if ((pdfDirectory[pdfDirectory.length() - 1] == '/') || (pdfDirectory[pdfDirectory.length() - 1] == '\\'))
+        pdfDirectory.chop(1);
+
+    return pdfDirectory + "/pdfs";
 }
 
 SettingForm::SettingForm(QWidget *parent)
@@ -118,6 +134,28 @@ void SettingForm::on_pushButton_browseBackupDirectory_clicked()
     on_lineEdit_backupDirectory_textEdited(ui->lineEdit_backupDirectory->text());
 }
 
+void SettingForm::on_lineEdit_pdfDirectory_textEdited(const QString &value)
+{
+    if (QDir(value).exists() && (value.length() > 0))
+    {
+        ui->lineEdit_pdfDirectory->setStyleSheet("");
+        ui->lineEdit_pdfDirectory->setToolTip("");
+    }
+    else
+    {
+        ui->lineEdit_pdfDirectory->setStyleSheet("QLineEdit { background-color: red; }");
+        ui->lineEdit_pdfDirectory->setToolTip("Directory does not exist");
+        ui->tabWidget->setCurrentIndex(0);
+    }
+}
+
+void SettingForm::on_pushButton_browsePdfDirectory_clicked()
+{
+    QString directoryName = QFileDialog::getExistingDirectory(this, "Directory to save PDF files in");
+    ui->lineEdit_pdfDirectory->setText(directoryName);
+    on_lineEdit_pdfDirectory_textEdited(ui->lineEdit_pdfDirectory->text());
+}
+
 void SettingForm::on_pushButton_saveNewPassword_clicked()
 {
     const int minPasswordLength = 4,
@@ -181,6 +219,7 @@ void SettingForm::populateInputs()
 
         if (strcmp(key, keyDatabaseDirectory) == 0) ui->lineEdit_databaseDirectory->setText(setting.getValue());
         else if (strcmp(key, keyBackupDirectory) == 0) ui->lineEdit_backupDirectory->setText(setting.getValue());
+        else if (strcmp(key, keyPdfDirectory) == 0) ui->lineEdit_pdfDirectory->setText(setting.getValue());
         else if (strcmp(key, keyInvoiceSubject) == 0) ui->lineEdit_invoiceSubject->setText(setting.getValue());
         else if (strcmp(key, keyInvoiceBody) == 0) ui->plainTextEdit_invoiceBody->setPlainText(setting.getValue());
         else if (strcmp(key, keyReceiptSubject) == 0) ui->lineEdit_receiptSubject->setText(setting.getValue());
@@ -207,13 +246,17 @@ bool SettingForm::inputsAreValid()
     on_lineEdit_backupDirectory_textEdited(ui->lineEdit_backupDirectory->text());
     if (ui->lineEdit_backupDirectory->styleSheet() != "") return false;
 
+    on_lineEdit_pdfDirectory_textEdited(ui->lineEdit_pdfDirectory->text());
+    if (ui->lineEdit_pdfDirectory->styleSheet() != "") return false;
+
     return true;
 }
 
 bool SettingForm::updateSettings()
 {
     std::string previousDatabaseDirectory = Databases::customers().databaseDirectory(),
-            previousBackupDirectory = Databases::customers().backupDirectory();
+            previousBackupDirectory = Databases::customers().backupDirectory(),
+            previousPdfDirectory = Databases::customers().pdfDirectory();
 
     const unsigned settingCount = 10;
     Setting newSettings[] = {
@@ -261,21 +304,23 @@ bool SettingForm::updateSettings()
 
     Setting databaseDirectorySetting(keyDatabaseDirectory,
                                      ui->lineEdit_databaseDirectory->text().toStdString().c_str()),
-            backupDirectorySetting(keyBackupDirectory, ui->lineEdit_backupDirectory->text().toStdString().c_str());
+            backupDirectorySetting(keyBackupDirectory, ui->lineEdit_backupDirectory->text().toStdString().c_str()),
+            pdfDirectorySetting(keyPdfDirectory, ui->lineEdit_pdfDirectory->text().toStdString().c_str());
 
     SettingController::Create(databaseDirectorySetting, this);
     SettingController::Create(backupDirectorySetting, this);
+    SettingController::Create(pdfDirectorySetting, this);
 
     try { Databases::reloadDatabaseFilenames(); }
     catch (const std::exception &e)
     {
-        Setting backupDirectorySetting = SettingController::getSetting(keyBackupDirectory);
-
         databaseDirectorySetting.setValue(previousDatabaseDirectory.c_str());
         backupDirectorySetting.setValue(previousBackupDirectory.c_str());
+        pdfDirectorySetting.setValue(previousPdfDirectory.c_str());
 
         SettingController::Update(databaseDirectorySetting, this);
         SettingController::Update(backupDirectorySetting, this);
+        SettingController::Update(pdfDirectorySetting, this);
 
         Databases::reloadDatabaseFilenames();
     }

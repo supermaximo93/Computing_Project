@@ -228,8 +228,8 @@ void JobShow::generateInvoice()
 {
     Date jobDate(job.getDate());
     QString saveFolder
-            = QDir::currentPath() + "/invoices/" + QDate::longMonthName(Date(job.getDate()).month) + '_'
-            + toString(jobDate.year).c_str();
+            = SettingForm::getPdfDirectoryWithoutSlash() + "/invoices/"
+            + QDate::longMonthName(Date(job.getDate()).month) + '_' + toString(jobDate.year).c_str();
 
     if (!QDir(saveFolder).exists()) QDir().mkpath(saveFolder);
 
@@ -298,8 +298,8 @@ void JobShow::generateReceipt()
 {
     Date jobDate(job.getDate());
     QString saveFolder
-            = QDir::currentPath() + "/receipts/" + QDate::longMonthName(Date(job.getDate()).month) + '_'
-            + toString(jobDate.year).c_str();
+            = SettingForm::getPdfDirectoryWithoutSlash() + "/receipts/"
+            + QDate::longMonthName(Date(job.getDate()).month) + '_' + toString(jobDate.year).c_str();
 
     if (!QDir(saveFolder).exists()) QDir().mkpath(saveFolder);
 

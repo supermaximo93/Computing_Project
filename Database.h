@@ -127,7 +127,7 @@ public:
     void sortRecords(recordList &records, unsigned startIndex, unsigned endIndex,
                      int (*comparisonFunction)(const recordType &, const recordType &));
 
-    const std::string & filename(), & databaseDirectory(), & backupDirectory();
+    const std::string & filename(), & databaseDirectory(), & backupDirectory(), & pdfDirectory();
 
     /*
      * Reloads the database file path from the settings database, moving the database files if the directory has
@@ -149,7 +149,7 @@ private:
     const bool testing;
 #endif
 
-    std::string filename_, databaseDirectory_, backupDirectory_;
+    std::string filename_, databaseDirectory_, backupDirectory_, pdfDirectory_;
     int idCounter;
     QMutex fileMutex;
 };
@@ -161,7 +161,7 @@ Database<recordType>::Database(const bool testing) : testing(testing)
 Database<recordType>::Database()
 #endif
 {
-    filename_ = databaseDirectory_ = backupDirectory_ = "";
+    filename_ = databaseDirectory_ = backupDirectory_ = pdfDirectory_ = "";
 
 #ifdef COMPILE_TESTS
     reloadFilename(false, testing);
@@ -691,6 +691,12 @@ const std::string & Database<recordType>::backupDirectory()
 }
 
 template<class recordType>
+const std::string & Database<recordType>::pdfDirectory()
+{
+    return pdfDirectory_;
+}
+
+template<class recordType>
 #ifdef COMPILE_TESTS
 void Database<recordType>::reloadFilename(const bool moveFiles, bool testing)
 #else
@@ -706,15 +712,19 @@ void Database<recordType>::reloadFilename(const bool moveFiles)
 
     if (databaseDirectory_.empty()) databaseDirectory_ = QDir::currentPath().toStdString();
     if (backupDirectory_.empty()) backupDirectory_ = QDir::currentPath().toStdString();
+    if (pdfDirectory_.empty()) pdfDirectory_ = QDir::currentPath().toStdString();
 
     if (!databaseDirectory_.empty() && (databaseDirectory_[databaseDirectory_.length() - 1] != slashChar))
         databaseDirectory_ += slashChar;
     if (!backupDirectory_.empty() && (backupDirectory_[backupDirectory_.length() - 1] != slashChar))
         backupDirectory_ += slashChar;
+    if (!pdfDirectory_.empty() && (pdfDirectory_[pdfDirectory_.length() - 1] != slashChar))
+        pdfDirectory_ += slashChar;
 
 
     std::string previousDatabaseDirectory = databaseDirectory_,
             previousBackupDirectory = backupDirectory_,
+            previousPdfDirectory = pdfDirectory_,
             previousFilename = filename_;
 
     Setting databaseDirectorySetting, backupDirectorySetting;
@@ -724,6 +734,9 @@ void Database<recordType>::reloadFilename(const bool moveFiles)
 
     try { backupDirectorySetting = SettingForm::getBackupDirectory(); }
     catch (const std::exception &e) { backupDirectorySetting = Setting(); }
+
+    try { pdfDirectory_ = SettingForm::getPdfDirectoryWithoutSlash().toStdString(); }
+    catch (const std::exception &e) { pdfDirectory_ = Setting().getValue(); }
 
     databaseDirectory_ = databaseDirectorySetting.getValue();
     backupDirectory_ = backupDirectorySetting.getValue();
@@ -760,6 +773,20 @@ void Database<recordType>::reloadFilename(const bool moveFiles)
         while (!fileMutex.tryLock(1000));
 
         try { moveDirectory((previousBackupDirectory + "backups").c_str(), (backupDirectory_ + "backups").c_str()); }
+        catch (const std::exception &e)
+        {
+            fileMutex.unlock();
+            throw std::runtime_error(e.what());
+        }
+
+        fileMutex.unlock();
+    }
+
+    if (pdfDirectory_ != previousPdfDirectory)
+    {
+        while (!fileMutex.tryLock(1000));
+
+        try { moveDirectory(previousPdfDirectory.c_str(), pdfDirectory_.c_str()); }
         catch (const std::exception &e)
         {
             fileMutex.unlock();
