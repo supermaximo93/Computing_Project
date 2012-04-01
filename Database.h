@@ -150,8 +150,9 @@ private:
 #endif
 
     std::string filename_, databaseDirectory_, backupDirectory_, pdfDirectory_;
-    int idCounter;
-    QMutex fileMutex;
+    int idCounter;    // Used to give a unique ID to records. Always incremented, never decremented
+    QMutex fileMutex; // A mutex that is locked when the database is doing file operations so that other threads cannot
+                      // use the file at the same time (which would cause lots of problems!)
 };
 
 template<class recordType>
@@ -169,19 +170,24 @@ Database<recordType>::Database()
     reloadFilename(false);
 #endif
 
+    // Lock the fileMutex to make sure that the database file is not accessed by other threads
     while (!fileMutex.tryLock(1000));
+
+    // Decrypt the file indicating that we don't want any error dialogs to pop up
     Encrypter::decryptFile(filename_.c_str(), false);
 
     std::ifstream file;
     file.open(filename_.c_str(), std::ios::binary);
     if (file.is_open())
     {
+        // If the file exists, go to the beginning of the file and read the value of the ID counter into the database
         file.seekg(0, std::ios_base::beg);
         file.read(reinterpret_cast<char *>(&idCounter), sizeof(idCounter));
         file.close();
     }
     else
     {
+        // The file doesn't exist, so set the ID counter to 0 and write it to a new database file
         idCounter = 0;
         std::ofstream file;
         file.open(filename_.c_str(), std::ios::binary);
@@ -193,6 +199,7 @@ Database<recordType>::Database()
         else std::cout << "Could not create " + filename_ << std::endl;
     }
 
+    // We're done with the file so encrypt it and unlock the file mutex so that other threads can access the file
     Encrypter::encryptFile(filename_.c_str());
     fileMutex.unlock();
 }
@@ -200,13 +207,17 @@ Database<recordType>::Database()
 template<class recordType>
 Database<recordType>::~Database()
 {
+    // Lock the file mutex and decrypt the database file
     while (!fileMutex.tryLock(1000));
     Encrypter::decryptFile(filename_.c_str());
 
+    // Create a new file to copy all of the valid database records to. A database is invalid if it has an ID that is
+    // less than 0 (i.e. it has been deleted)
     std::fstream newFile;
     newFile.open((filename_ + ".temp").c_str(), std::ios::out | std::ios::binary);
     if (newFile.is_open())
     {
+        // Write the value of the ID counter first
         newFile.write(reinterpret_cast<const char *>(&idCounter), sizeof(idCounter));
 
         bool fileCopied = false;
@@ -215,8 +226,10 @@ Database<recordType>::~Database()
         file.open(filename_.c_str(), std::ios::in | std::ios::binary);
         if (file.is_open())
         {
+            // Jump past the position of the ID counter to the start of the records
             file.seekg(sizeof(idCounter), std::ios_base::beg);
 
+            // Copy all of the records to the new file that are valid records
             while (true)
             {
                 tempRecord.readFromFile(file);
@@ -229,15 +242,18 @@ Database<recordType>::~Database()
         else std::cout << "Could not open file " + filename_ << std::endl;
         newFile.close();
 
+        // If the copy was successful, delete the old file and rename the new one to the original filename
         if (fileCopied)
         {
             remove(filename_.c_str());
             rename((filename_ + ".temp").c_str(), filename_.c_str());
+            if (QFile::exists((filename_ + ".temp").c_str())) remove((filename_ + ".temp").c_str());
         }
         else remove((filename_ + ".temp").c_str());
     }
     else std::cout << "Could not create temporary file " + filename_ + ".temp" << std::endl;
 
+    // We're done with the file so encrypt it and unlock the file mutex
     Encrypter::encryptFile(filename_.c_str());
     fileMutex.unlock();
 
@@ -247,6 +263,8 @@ Database<recordType>::~Database()
 template<class recordType>
 void Database<recordType>::addRecord(recordType &record)
 {
+    // Make sure the record is valid before continuing. If it isn't then an exception will be thrown. Bear in mind that
+    // the record's ID doesn't need to be set
     record.validate();
 
     while (!fileMutex.tryLock(1000));
@@ -256,9 +274,18 @@ void Database<recordType>::addRecord(recordType &record)
     file.open(filename_.c_str(), std::ios::in | std::ios::out | std::ios::binary);
     if (file.is_open())
     {
+        // Jump to the end of the database file, set the record's ID to the value of the ID counter, increment the ID
+        // counter and then write the record to a file
         file.seekp(0, std::ios_base::end);
         record.id = idCounter++;
         record.writeToFile(file);
+
+        // Jump to the beginning of the file to update the ID counter. This is necessary because if the program is
+        // halted early for any reason, then the ID counter needs to remain in tact otherwise the database runs the
+        // risk of having records with the same IDs
+        file.seekp(0, std::ios_base::beg);
+        file.write(reinterpret_cast<const char *>(&idCounter), sizeof(idCounter));
+
         file.close();
         Encrypter::encryptFile(filename_.c_str());
         fileMutex.unlock();
@@ -274,6 +301,7 @@ void Database<recordType>::addRecord(recordType &record)
 template<class recordType>
 bool Database<recordType>::updateRecord(const recordType &record)
 {
+    // Make sure the record is valid. The record ID must be set
     if (record.null()) throw(std::runtime_error("Record ID must be initialised"));
     record.validate();
 
@@ -287,13 +315,15 @@ bool Database<recordType>::updateRecord(const recordType &record)
     {
         file.seekg(sizeof(idCounter), std::ios_base::beg);
 
+        // Read in records until we get to a record which has a matching ID or we get to the end of the file
         while (true)
         {
             tempRecord.readFromFile(file);
             if (file.eof()) break;
             if (tempRecord == record)
             {
-                file.seekp(-recordType::size(), std::ios::cur);
+                // Jump to the position just before the matching record and write the new record data to the file
+                file.seekp(file.tellg() - static_cast<std::fstream::pos_type>(recordType::size()), std::ios::beg);
                 record.writeToFile(file);
                 file.close();
                 Encrypter::encryptFile(filename_.c_str());
@@ -301,6 +331,8 @@ bool Database<recordType>::updateRecord(const recordType &record)
                 return true;
             }
         }
+
+        // The record could not be found so return false
         file.close();
         Encrypter::encryptFile(filename_.c_str());
         fileMutex.unlock();
@@ -327,13 +359,15 @@ bool Database<recordType>::deleteRecord(const int id)
     {
         file.seekg(sizeof(idCounter), std::ios_base::beg);
 
+        // Read in records until we get to a record which has a matching ID or we get to the end of the file
         while (true)
         {
             tempRecord.readFromFile(file);
             if (file.eof()) break;
             if (tempRecord.getId() == id)
             {
-                file.seekp(-recordType::size(), std::ios::cur);
+                // Jump to the position just before the matching record and write a blank/null record to the file
+                file.seekp(file.tellg() - static_cast<std::fstream::pos_type>(recordType::size()), std::ios::beg);
                 recordType().writeToFile(file);
                 file.close();
                 Encrypter::encryptFile(filename_.c_str());
@@ -341,6 +375,8 @@ bool Database<recordType>::deleteRecord(const int id)
                 return true;
             }
         }
+
+        // Record could not be found
         file.close();
         Encrypter::encryptFile(filename_.c_str());
         fileMutex.unlock();
@@ -366,6 +402,7 @@ recordType Database<recordType>::findRecord(const std::string &fieldName, const 
     file.open(filename_.c_str(), std::ios::in | std::ios::binary);
     if (file.is_open())
     {
+        // Record::hasMatchingField takes field names as lowercase, so convert the fieldName parameter to lowercase
         std::string lowercaseFieldName = lowerCase(fieldName);
         recordType tempRecord;
 
@@ -373,6 +410,7 @@ recordType Database<recordType>::findRecord(const std::string &fieldName, const 
 
         while (true)
         {
+            // Read in records from the file until a valid record with the matching field is found
             tempRecord.readFromFile(file);
             if (file.eof()) break;
             if (tempRecord.null()) continue;
@@ -384,6 +422,8 @@ recordType Database<recordType>::findRecord(const std::string &fieldName, const 
                 return tempRecord;
             }
         }
+
+        // Matching record not found
         file.close();
         Encrypter::encryptFile(filename_.c_str());
         fileMutex.unlock();
@@ -395,6 +435,7 @@ recordType Database<recordType>::findRecord(const std::string &fieldName, const 
         throw(std::runtime_error("Could not open file " + filename_));
     }
 
+    // No matching records found; return a blank record
     return recordType();
 }
 
@@ -402,6 +443,7 @@ template<class recordType> template <typename type>
 std::tr1::shared_ptr< std::vector<recordType> >
 Database<recordType>::findRecords(const std::string &fieldName, const type &searchTerm)
 {
+    // Similar to Database::findRecord but matching records are added to a list instead of returning the first match
     recordListPtr returnList(new recordList);
 
     while (!fileMutex.tryLock(1000));
@@ -418,6 +460,7 @@ Database<recordType>::findRecords(const std::string &fieldName, const type &sear
 
         while (true)
         {
+            // Read in records from the file, adding any valid records that have a maching field to the list
             tempRecord.readFromFile(file);
             if (file.eof()) break;
             if (tempRecord.null()) continue;
@@ -442,9 +485,11 @@ std::tr1::shared_ptr< std::vector<recordType> >
 Database<recordType>::findRecords(const std::vector<recordType> &recordsToSearch, const std::string &fieldName,
                                   const type &searchTerm)
 {
+    // Similar to Database::findRecords, except that an existing list is searched instead of the database file
     std::string lowercaseFieldName = lowerCase(fieldName);
     recordListPtr returnList(new recordList);
 
+    // Loop through the records in the list, adding any records that have a matching field to the new list
     for (unsigned i = 0; i < recordsToSearch.size(); ++i)
     {
         if (recordsToSearch[i].hasMatchingField(lowercaseFieldName, searchTerm))
@@ -460,12 +505,13 @@ void Database<recordType>::keepRecords(std::vector<recordType> &records, const s
 {
     std::string lowercaseFieldName = lowerCase(fieldName);
 
+    // Loop through the records in the list, erasing any records that do not have a matching field
     for (unsigned i = 0; i < records.size(); ++i)
     {
         if (!records[i].hasMatchingField(lowercaseFieldName, searchTerm))
         {
             records.erase(records.begin() + i);
-            --i;
+            --i; // decrement the counter because the record list size has been decremented
         }
     }
 }
@@ -474,6 +520,7 @@ template<typename recordType>
 void Database<recordType>::keepRecords(recordList &records, bool (*keepRecordFunction)(const recordType &, void *),
                                        void *data)
 {
+    // Erase any records from the list that, when passed to the given function, make said function return false
     for (unsigned i = 0; i < records.size(); ++i)
     {
         if (!keepRecordFunction(records[i], data))
@@ -490,6 +537,7 @@ void Database<recordType>::removeRecords(std::vector<recordType> &records, const
 {
     std::string lowercaseFieldName = lowerCase(fieldName);
 
+    // Loop through the records in the list, erasing any records that have a matching field
     for (unsigned i = 0; i < records.size(); ++i)
     {
         if (records[i].hasMatchingField(lowercaseFieldName, searchTerm))
@@ -504,6 +552,7 @@ template<typename recordType>
 void Database<recordType>::removeRecords(recordList &records, bool (*removeRecordFunction)(const recordType &, void *),
                                          void *data)
 {
+    // Erase any records from the list that, when passed to the given function, make said function return true
     for (unsigned i = 0; i < records.size(); ++i)
     {
         if (removeRecordFunction(records[i], data))
@@ -530,6 +579,7 @@ std::tr1::shared_ptr< std::vector<recordType> > Database<recordType>::allRecords
 
         file.seekg(sizeof(idCounter), std::ios_base::beg);
 
+        // Read in records until the end of the file is reached, adding any valid records to the list
         while (true)
         {
             tempRecord.readFromFile(file);
@@ -553,6 +603,8 @@ std::tr1::shared_ptr< std::vector<recordType> > Database<recordType>::allRecords
 template<class recordType>
 recordType Database<recordType>::recordAt(const int index)
 {
+    if (index < 0) return recordType(); // If index is too low return a blank record
+
     while (!fileMutex.tryLock(1000));
     Encrypter::decryptFile(filename_.c_str());
 
@@ -565,6 +617,7 @@ recordType Database<recordType>::recordAt(const int index)
         file.seekg(0, std::ios_base::end);
         unsigned size = file.tellg();
 
+        // If the index is too large (i.e. past the file size) then close the file and return a blank record
         if (sizeof(idCounter) + (recordType::size() * (index + 1)) > size) // index + 1 because index starts from 0
         {
             file.close();
@@ -573,6 +626,7 @@ recordType Database<recordType>::recordAt(const int index)
             return recordType();
         }
 
+        // Jump to the position in the file corresponding to the index and read the data from the file at that position
         file.seekg(sizeof(idCounter) + (recordType::size() * index), std::ios_base::beg);
         tempRecord.readFromFile(file);
 
@@ -588,6 +642,7 @@ recordType Database<recordType>::recordAt(const int index)
         throw(std::runtime_error("Could not open file " + filename_));
     }
 
+    // Record could not be found for whatever reason; return a blank record
     return recordType();
 }
 
@@ -605,6 +660,8 @@ unsigned Database<recordType>::recordCount()
 
         recordType tempRecord;
         unsigned count = 0;
+
+        // Read in all of the records in the file, counting those that are valid
         while (true)
         {
             tempRecord.readFromFile(file);
@@ -624,6 +681,7 @@ unsigned Database<recordType>::recordCount()
         throw(std::runtime_error("Could not open file " + filename_));
     }
 
+    // File could not be accessed for whatever reason; return 0 (i.e. empty file)
     return 0;
 }
 
@@ -631,15 +689,19 @@ template<class recordType>
 void Database<recordType>::sortRecords(recordList &records, const unsigned startIndex, const unsigned endIndex,
                                        int (*comparisonFunction)(const recordType &, const recordType &))
 {
+    // If the number of records between the array bounds is less than 2, no sorting needs to be done
     if (endIndex - (startIndex - 1) < 2) return;
 
     unsigned pivotPointer = startIndex, moveablePointer = endIndex;
-
     recordType temp;
+
+    // While the pointers are not pointing to the same record
     while (pivotPointer != moveablePointer)
     {
+        // If the record at the pivot does not come before the record at the moveable pointer
         if (comparisonFunction(records[pivotPointer], records[moveablePointer]) > -1)
         {
+            // Swap the records and pointers if they are out of order
             if (pivotPointer < moveablePointer)
             {
                 temp = records[pivotPointer];
@@ -650,10 +712,11 @@ void Database<recordType>::sortRecords(recordList &records, const unsigned start
                 pivotPointer = moveablePointer;
                 moveablePointer = tempPointer;
             }
-            else ++moveablePointer;
+            else ++moveablePointer; // Otherwise increment the moveable pointer
         }
-        else
+        else // the record at the pivot comes after or is equal to the record at the moveable pointer, so...
         {
+            // Swap the records and pointers if they are out of order
             if (pivotPointer > moveablePointer)
             {
                 temp = records[pivotPointer];
@@ -664,11 +727,14 @@ void Database<recordType>::sortRecords(recordList &records, const unsigned start
                 pivotPointer = moveablePointer;
                 moveablePointer = tempPointer;
             }
-            else --moveablePointer;
+            else --moveablePointer; // Otherwise decrement the moveable pointer
         }
     }
 
+    // If the pivot pointer is not at the beginning of the list, sort the records before the pivot pointer
     if (pivotPointer > 0) sortRecords(records, startIndex, pivotPointer - 1, comparisonFunction);
+
+    // If the pivot pointer is not at the end of the list, sort the records after the pivot pointer
     if (pivotPointer < records.size() - 1) sortRecords(records, pivotPointer + 1, endIndex, comparisonFunction);
 }
 
@@ -705,15 +771,17 @@ void Database<recordType>::reloadFilename(const bool moveFiles)
 {
 
 #ifdef _WIN32
-        const char slashChar = '\\';
+    const char slashChar = '\\';
 #else
-        const char slashChar = '/';
+    const char slashChar = '/';
 #endif
 
+    // If the directory strings are not set, set them to the current directory
     if (databaseDirectory_.empty()) databaseDirectory_ = QDir::currentPath().toStdString();
     if (backupDirectory_.empty()) backupDirectory_ = QDir::currentPath().toStdString();
     if (pdfDirectory_.empty()) pdfDirectory_ = QDir::currentPath().toStdString();
 
+    // Put slashes on the end of the directory names if they don't have them already
     if (!databaseDirectory_.empty() && (databaseDirectory_[databaseDirectory_.length() - 1] != slashChar))
         databaseDirectory_ += slashChar;
     if (!backupDirectory_.empty() && (backupDirectory_[backupDirectory_.length() - 1] != slashChar))
@@ -721,12 +789,13 @@ void Database<recordType>::reloadFilename(const bool moveFiles)
     if (!pdfDirectory_.empty() && (pdfDirectory_[pdfDirectory_.length() - 1] != slashChar))
         pdfDirectory_ += slashChar;
 
-
+    // Keep a copy of the previous directory names, in case a directory has changed and files need to be moved
     std::string previousDatabaseDirectory = databaseDirectory_,
             previousBackupDirectory = backupDirectory_,
             previousPdfDirectory = pdfDirectory_,
             previousFilename = filename_;
 
+    // Get the database directory, backup directory, and PDF directory from the settings
     Setting databaseDirectorySetting, backupDirectorySetting;
 
     try { databaseDirectorySetting = SettingForm::getDatabaseDirectory(); }
@@ -741,11 +810,13 @@ void Database<recordType>::reloadFilename(const bool moveFiles)
     databaseDirectory_ = databaseDirectorySetting.getValue();
     backupDirectory_ = backupDirectorySetting.getValue();
 
+    // Put slashes on the end if necessary
     if (!databaseDirectory_.empty() && (databaseDirectory_[databaseDirectory_.length() - 1] != slashChar))
         databaseDirectory_ += slashChar;
     if (!backupDirectory_.empty() && (backupDirectory_[backupDirectory_.length() - 1] != slashChar))
         backupDirectory_ += slashChar;
 
+    // Construct a full database file path
     filename_ = databaseDirectory_ + recordType::databaseFilename;
 
 #ifdef COMPILE_TESTS
@@ -754,6 +825,7 @@ void Database<recordType>::reloadFilename(const bool moveFiles)
 
     if (!moveFiles) return;
 
+    // If the database directory has changed, move the database file to its new location
     if (databaseDirectory_ != previousDatabaseDirectory)
     {
         while (!fileMutex.tryLock(1000));
@@ -768,6 +840,7 @@ void Database<recordType>::reloadFilename(const bool moveFiles)
         fileMutex.unlock();
     }
 
+    // If the backup directory has changed, move the backups folder to its new location
     if (backupDirectory_ != previousBackupDirectory)
     {
         while (!fileMutex.tryLock(1000));
@@ -782,6 +855,7 @@ void Database<recordType>::reloadFilename(const bool moveFiles)
         fileMutex.unlock();
     }
 
+    // If the PDF directory has changed, move the PDFs folder to its new location
     if (pdfDirectory_ != previousPdfDirectory)
     {
         while (!fileMutex.tryLock(1000));
@@ -805,18 +879,22 @@ void Database<recordType>::backupFile()
 #endif
 
 #ifdef _WIN32
-        const char slashChar = '\\';
+    const char slashChar = '\\';
 #else
-        const char slashChar = '/';
+    const char slashChar = '/';
 #endif
 
+    // Construct a backup directory name in the form '<backup directory>backups/backup_<year>_<week number>'
+    // This structure makes sure that backups are kept in weekly intervals
     std::string backupFolderName =
             backupDirectory_ + "backups" + slashChar + "backup_" + toString(Date(time(NULL)).year) + "_"
             + toString(QDate::currentDate().weekNumber());
 
+    // If the backup directory doesn't exist, create it
     QDir backupDirectory(backupFolderName.c_str());
     if (!backupDirectory.exists()) backupDirectory.mkpath(backupFolderName.c_str());
 
+    // Create a copy of the database file and put it in the backup directory
     try { copyFile(filename_.c_str(), (backupFolderName + slashChar + recordType::databaseFilename).c_str()); }
     catch (const std::exception &e) { std::cout << e.what() << std::endl; }
 }

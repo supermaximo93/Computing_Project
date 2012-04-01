@@ -30,6 +30,7 @@ static bool testing;
 
 void Databases::init(bool testing)
 {
+    // If the instances of Database have not already been created, create them
     if (initialised) return;
     settingDatabasePtr = new Database<Setting>(testing);
     customerDatabasePtr = new Database<Customer>(testing);
@@ -44,6 +45,7 @@ void Databases::init(bool testing)
 #else
 void Databases::init()
 {
+    // If the instances of Database have not already been created, create them
     if (initialised) return;
     settingDatabasePtr = new Database<Setting>;
     customerDatabasePtr = new Database<Customer>;
@@ -58,6 +60,7 @@ void Databases::init()
 
 void Databases::finalise()
 {
+    // If the databases have been initialised, delete the instances of the databases
     if (!initialised) return;
     delete customerDatabasePtr;
     delete jobDatabasePtr;
@@ -78,6 +81,7 @@ void Databases::finalise()
 
 Database<Setting> & Databases::settings()
 {
+    // If the database pointer is null, then throw an exception, otherwise return a reference to the database
     if (settingDatabasePtr == NULL) throw(std::runtime_error("Setting database not initialised"));
     return *settingDatabasePtr;
 }
@@ -120,6 +124,8 @@ Database<VatRate> & Databases::vatRates()
 
 void Databases::reloadDatabaseFilenames()
 {
+    // If the databases haven't been initialised, throw an exception, otherwise force the databases to reload the
+    // database file names and move the files if necessary
     if (!initialised) throw(std::runtime_error("Databases not initialised"));
 
 #ifdef COMPILE_TESTS

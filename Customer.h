@@ -12,6 +12,11 @@
 
 #include "Record.h"
 
+/*
+ * The Customer record class, containing the details of a customer that the end user will do a job for.
+ * The emailAddress data member is used when sending email invoices/receipts to customers
+ */
+
 class Customer : public Record
 {
 public:
@@ -37,16 +42,26 @@ public:
     void writeToFile(std::fstream &file) const;
     void readFromFile(std::fstream &file);
 
-    bool hasMatchingField(const std::string &fieldName, int searchTerm) const; // Won't work without it
+    // Returns whether the Customer has a field of the given fieldName with the value matching searchTerm
+    bool hasMatchingField(const std::string &fieldName, int searchTerm) const;
     bool hasMatchingField(const std::string &fieldName, const char *searchTerm) const;
 
-    // Returns whether the fields of the passed record, other than ID, match
+    // Returns whether the fields of the passed record, other than ID, match. Needed because the Record equality
+    // operator only compares IDs (for speed).
     bool fieldCompare(const Customer &rhs) const;
     // Returns whether the fields of the passed record, including ID, match
     bool completeCompare(const Customer &rhs) const;
 
+
+    /*
+     * All setters throw an exception with an error message if an invalid input is given. The error message
+     * could be used in the UI to help the user understand what is wrong with the input
+     */
+
     const char * getForename() const;
     void setForename(const char *newForename);
+    // Returns whether the string given is a valid forename, setting the errorMessage std::string if the forename is
+    // invalid (all other isValidField methods have the same behaviour)
     static bool isValidForename(const char *value, std::string &errorMessage);
 
     const char * getSurname() const;
@@ -81,9 +96,13 @@ public:
     void setEmailAddress(const char *newEmailAddress);
     static bool isValidEmailAddress(const char *value, std::string &errorMessage);
 
+    // Validates the fields of the Customer. Throws an exception if any fields are invalid
     void validate() const;
 
 private:
+    // All fields are strings to be dynamically allocated. Dynamic allocation is used so huge (relatively speaking)
+    // objects aren't allocated on the stack. Each field is a pointer to an array of characters, so each field is only
+    // 8 bytes. If the fields were statically allocated, then a single Customer would take up over 200B on the stack
     char *forename, *surname, *addressLine1, *addressLine2, *town, *postcode, *homePhoneNumber, *mobilePhoneNumber,
     *emailAddress;
 };

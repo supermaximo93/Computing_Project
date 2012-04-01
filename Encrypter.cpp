@@ -14,13 +14,16 @@ using namespace std;
 
 #include "Encrypter.h"
 
-static const string key = "this is a key";
+static const string key = "7d0897da070ef04eecdb8e7e2aed7cbe";
 static QMutex mutex;
 
 void Encrypter::encryptFile(const char *filename, const bool giveFileNotFoundError)
 {
+    // Lock a mutex to make sure that only one encryption can occur at a time (just in case they happen to be operating
+    // on the same file)
     while (!mutex.tryLock(1000));
 
+    // Open the file and also create a temporary file
     ifstream file;
     file.open(filename, ios::binary);
     if (file.is_open())
@@ -35,6 +38,8 @@ void Encrypter::encryptFile(const char *filename, const bool giveFileNotFoundErr
             unsigned count = 0;
             char data[] = { '\0', '\0' };
 
+            // Read in each byte of the original file, XOR it with an element with a key, and write it to the temporary
+            // file, until the end of the original file is reached
             while (true)
             {
                 file.read(data, 1);
@@ -46,6 +51,7 @@ void Encrypter::encryptFile(const char *filename, const bool giveFileNotFoundErr
 
             encryptedFile.close();
 
+            // Delete the original file and rename the temporary file to the original file name
             remove(filename);
             rename(encryptedFileName.c_str(), filename);
             if (QFile::exists(encryptedFileName.c_str())) remove(encryptedFileName.c_str());
@@ -55,10 +61,12 @@ void Encrypter::encryptFile(const char *filename, const bool giveFileNotFoundErr
     }
     else if (giveFileNotFoundError) cout << "File " << filename << " could not be opened" << endl;
 
+    // Unlock the mutex to allow other threads to use the encryption function
     mutex.unlock();
 }
 
 void Encrypter::decryptFile(const char *filename, const bool giveFileNotFoundError)
 {
+    // The encryption method works both ways, so just call Encrypter::encryptFile
     encryptFile(filename, giveFileNotFoundError);
 }

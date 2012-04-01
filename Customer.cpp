@@ -26,6 +26,8 @@ Customer::minEmailAddressLength = 6,  Customer::maxEmailAddressLength = 128;
 
 int Customer::size()
 {
+    // Add the size of the Record superclass and the sizes of all of the fields. Add an extra byte for each
+    // string field (char *) which accounts for the terminating null character
     return Record::size() +
         ((maxNameLength + maxAddressLineLength + maxPhoneNumberLength) * 2) + maxTownLength + maxPostcodeLength +
             maxEmailAddressLength + 9;
@@ -35,7 +37,7 @@ Customer::Customer(const char *newForename, const char *newSurname, const char *
                    const char *newAddressLine2, const char *newTown, const char *newPostcode,
                    const char *newHomePhoneNumber, const char *newMobilePhoneNumber, const char *newEmailAddress)
 {
-
+    // Allocate memory for the strings. Need to add 1 to the length to account for the terminating null character
     forename = new char[maxNameLength + 1];
     surname = new char[maxNameLength + 1];
     addressLine1 = new char[maxAddressLineLength + 1];
@@ -46,6 +48,7 @@ Customer::Customer(const char *newForename, const char *newSurname, const char *
     mobilePhoneNumber = new char[maxPhoneNumberLength + 1];
     emailAddress = new char[maxEmailAddressLength + 1];
 
+    // Copy all of the argument data to the fields
     strcpy(forename, newForename);
     strcpy(surname, newSurname);
     strcpy(addressLine1, newAddressLine1);
@@ -59,6 +62,7 @@ Customer::Customer(const char *newForename, const char *newSurname, const char *
 
 Customer::Customer(const Customer &customer)
 {
+    // Allocate memory and then use the = operator as a shortcut to copy the passed Customer data accross
     forename = new char[maxNameLength + 1];
     surname = new char[maxNameLength + 1];
     addressLine1 = new char[maxAddressLineLength + 1];
@@ -87,7 +91,11 @@ Customer::~Customer()
 
 void Customer::operator =(const Customer &customer)
 {
+    // Awkward but it basically casts each Customer to a Record before the assignment, which just copies the ID over.
+    // The ID field is private to the Record superclass for safety so this method needs to be used.
     *((Record*)this) = (Record)customer;
+
+    // Copy all of the passed Customer data
     strcpy(forename, customer.forename);
     strcpy(surname, customer.surname);
     strcpy(addressLine1, customer.addressLine1);
@@ -101,6 +109,7 @@ void Customer::operator =(const Customer &customer)
 
 void Customer::writeToFile(fstream &file) const
 {
+    // Write the ID field to the file before writing the field data (including the terminating null character)
     Record::writeToFile(file);
     file.write(forename, maxNameLength + 1);
     file.write(surname, maxNameLength + 1);
@@ -115,6 +124,7 @@ void Customer::writeToFile(fstream &file) const
 
 void Customer::readFromFile(fstream &file)
 {
+    // Read the ID field to the file before reading the field data (including the terminating null character)
     Record::readFromFile(file);
     file.read(forename, maxNameLength + 1);
     file.read(surname, maxNameLength + 1);
@@ -129,26 +139,29 @@ void Customer::readFromFile(fstream &file)
 
 bool Customer::hasMatchingField(const string &fieldName, const int searchTerm) const
 {
+    // No fields with an integer datatype, so just call the superclass method, which has the ID field as an integer
     return Record::hasMatchingField(fieldName, searchTerm);
 }
 
 bool Customer::hasMatchingField(const string &fieldName, const char *searchTerm) const
 {
+    // If the fieldName argument corresponds to a Customer field, return whether the searchTerm argument matches it
     if (fieldName == "forename") return (strcmp(forename, searchTerm) == 0);
-    else if (fieldName == "surname") return (strcmp(surname, searchTerm) == 0);
-    else if (fieldName == "addressline1") return (strcmp(addressLine1, searchTerm) == 0);
-    else if (fieldName == "addressline2") return (strcmp(addressLine2, searchTerm) == 0);
-    else if (fieldName == "town") return (strcmp(town, searchTerm) == 0);
-    else if (fieldName == "postcode") return (strcmp(postcode, searchTerm) == 0);
-    else if (fieldName == "homephonenumber") return (strcmp(homePhoneNumber, searchTerm) == 0);
-    else if (fieldName == "mobilephonenumber") return (strcmp(mobilePhoneNumber, searchTerm) == 0);
-    else if (fieldName == "emailaddress") return (strcmp(emailAddress, searchTerm) == 0);
+    if (fieldName == "surname") return (strcmp(surname, searchTerm) == 0);
+    if (fieldName == "addressline1") return (strcmp(addressLine1, searchTerm) == 0);
+    if (fieldName == "addressline2") return (strcmp(addressLine2, searchTerm) == 0);
+    if (fieldName == "town") return (strcmp(town, searchTerm) == 0);
+    if (fieldName == "postcode") return (strcmp(postcode, searchTerm) == 0);
+    if (fieldName == "homephonenumber") return (strcmp(homePhoneNumber, searchTerm) == 0);
+    if (fieldName == "mobilephonenumber") return (strcmp(mobilePhoneNumber, searchTerm) == 0);
+    if (fieldName == "emailaddress") return (strcmp(emailAddress, searchTerm) == 0);
 
-    return false;
+    return false; // Field name not found
 }
 
 bool Customer::fieldCompare(const Customer &rhs) const
 {
+    // If any field of this customer does not match the corresponding field of the passed Customer, return false
     if (strcmp(forename, rhs.forename) != 0) return false;
     if (strcmp(surname, rhs.surname) != 0) return false;
     if (strcmp(addressLine1, rhs.addressLine1) != 0) return false;
@@ -163,6 +176,7 @@ bool Customer::fieldCompare(const Customer &rhs) const
 
 bool Customer::completeCompare(const Customer &rhs) const
 {
+    // If the IDs don't match then fail, otherwise just call fieldCompare
     if (getId() != rhs.getId()) return false;
     return fieldCompare(rhs);
 }
@@ -174,6 +188,7 @@ const char * Customer::getForename() const
 
 void Customer::setForename(const char *newForename)
 {
+    // If the forename is valid then copy it, otherwise throw an exception with the error message.
     string errorMessage;
     if (isValidForename(newForename, errorMessage)) strcpy(forename, newForename);
     else throw std::runtime_error(errorMessage);
@@ -181,7 +196,7 @@ void Customer::setForename(const char *newForename)
 
 bool Customer::isValidForename(const char *value, std::string &errorMessage)
 {
-    return validateLengthOf(value, minNameLength, maxNameLength, "Forename", errorMessage);;
+    return validateLengthOf(value, minNameLength, maxNameLength, "Forename", errorMessage);
 }
 
 const char * Customer::getSurname() const
@@ -266,6 +281,7 @@ void Customer::setPostcode(const char *newPostcode)
 
 bool Customer::isValidPostcode(const char *value, std::string &errorMessage)
 {
+    // The regular expession does both a length check and a format check at the same time
     QRegExp regularExpression("^[a-zA-Z]{1,2}[0-9][0-9a-zA-Z]? [0-9][a-zA-Z]{2}$");
     const bool isValid = regularExpression.exactMatch(value);
     if (!isValid) errorMessage = "Postcode is not in the correct format";
@@ -286,6 +302,7 @@ void Customer::setHomePhoneNumber(const char *newHomePhoneNumber)
 
 bool Customer::isValidHomePhoneNumber(const char *value, std::string &errorMessage)
 {
+    // First do a length check
     const size_t length = strlen(value);
     if (length != 11)
     {
@@ -293,6 +310,7 @@ bool Customer::isValidHomePhoneNumber(const char *value, std::string &errorMessa
         return false;
     }
 
+    // If it passes the length check use a regular expression to do a format check
     QRegExp regularExpression("^\\d+$");
     const bool isValid = regularExpression.exactMatch(value);
     if (!isValid) errorMessage = "Home phone number must only contain digits";
@@ -313,6 +331,8 @@ void Customer::setMobilePhoneNumber(const char *newMobilePhoneNumber)
 
 bool Customer::isValidMobilePhoneNumber(const char *value, std::string &errorMessage)
 {
+    // Length check then a regular expression format check as before, but a length of 0 is allowed because the
+    // mobilePhoneNumber field is optional
     const size_t length = strlen(value);
     if (length == 0) return true;
     if (length != 11)
@@ -341,9 +361,11 @@ void Customer::setEmailAddress(const char *newEmailAddress)
 
 bool Customer::isValidEmailAddress(const char *value, std::string &errorMessage)
 {
+    // Length check
     if (!validateLengthOf(value, minEmailAddressLength, maxEmailAddressLength, "Email address", errorMessage))
         return false;
 
+    // Format check
     QRegExp regularExpression("^([0-9a-z]|-|_|\\.)+@([0-9a-z]|-|_|\\.)+\\.[a-z]+$");
     const bool isValid = regularExpression.exactMatch(value);
     if (!isValid) errorMessage = "Email address is not a valid email address";
@@ -352,6 +374,7 @@ bool Customer::isValidEmailAddress(const char *value, std::string &errorMessage)
 
 void Customer::validate() const
 {
+    // Call isValidField on all fields, throwing an exception with the returned error message if a field is invalid
     string errorMessage;
     if (!isValidForename(forename, errorMessage)) throw std::runtime_error(errorMessage);
     if (!isValidSurname(surname, errorMessage)) throw std::runtime_error(errorMessage);

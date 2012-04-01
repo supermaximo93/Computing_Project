@@ -26,10 +26,14 @@ using namespace std;
 #include "CustomerController.h"
 #include "ExpenseController.h"
 
+// Attributes is a map/dictionary that has string keys and string values. A key represents a place in the HTML to
+// replace with the value. E.g. The string '<$ forename $>' in the HTML code will be replaced by the value indexed by
+// the string 'price' in the map, so the resulting HTML will look something like 'John'
 typedef map<QString, QString> Attributes;
 
 QString toValidFileName(const char *fileName_)
 {
+    // If the file name does not end with '.pdf' append '.pdf' to it
     QString fileName(fileName_);
     if (!fileName.endsWith(".pdf", Qt::CaseInsensitive)) fileName += ".pdf";
     return fileName;
@@ -37,6 +41,7 @@ QString toValidFileName(const char *fileName_)
 
 QString getHtml(const QString &resourceName)
 {
+    // Read the data from the HTML resource and return it as a string
     QString returnString;
     QFile file(":html/" + resourceName);
     if (file.exists())
@@ -57,8 +62,11 @@ void parseHtml(QString &html, Attributes &attributes)
 
     int startIndex = 0;
     QString key;
+
+    // While there are instances of the start tag string in the HTML
     while ((startIndex = html.indexOf(startTag, startIndex)) >= 0)
     {
+        // Find the end of the tag
         int substringStart = startIndex + startTag.length();
 
         int endIndex = html.indexOf(endTag, substringStart);
@@ -68,12 +76,15 @@ void parseHtml(QString &html, Attributes &attributes)
         while (html[substringStart] == ' ') ++substringStart;
         while (html[substringEnd] == ' ') --substringEnd;
 
+        // Get the keyword in between the tags
         key = html.mid(substringStart, substringEnd - (substringStart - 1));
 
+        // Replace the whole tag with a value in the attributes dictionary
         html.replace(startIndex, endIndex + endTag.length() - startIndex, attributes[key]);
     }
 }
 
+// A macro that creates a webview and attemps to get the HTML data from a HTML resource
 #define GET_WEBVIEW_AND_HTML() \
 QWebView view;\
 QString html = getHtml(templateResourceName);\
@@ -83,6 +94,7 @@ if (html.isEmpty())\
     return false;\
 }
 
+// A macro that prints the rendered HTML page into a PDF file
 #define PRINT_TO_PDF() \
 QPrinter printer;\
 printer.setOutputFormat(QPrinter::PdfFormat);\
@@ -91,19 +103,21 @@ view.print(&printer)
 
 void getInvoiceReceiptAttributes(Attributes &attributes, const Job &job)
 {
+    // Get the customer and parts associated with the job
     Customer customer = CustomerController::getCustomer(job.getCustomerId());
     Database<Part>::recordListPtr parts = JobController::getJobParts(job.getId());
 
+    // Fill in the date attribute and customer details attributes
     attributes["date"] = Date(job.getDate()).toQStringWithoutTime();
     attributes["customer-name"] = createFullName(customer.getForename(), customer.getSurname());
     attributes["customer-addressline1"] = customer.getAddressLine1();
 
-    if (strlen(customer.getAddressLine2()) > 0)
+    if (strlen(customer.getAddressLine2()) > 0) // If there is an address line 2, then fill it in as normal
     {
         attributes["customer-addressline2"] = customer.getAddressLine2();
         attributes["customer-town"] = customer.getTown();
     }
-    else
+    else // Otherwise set the town as the address line 2 to make the address look normal
     {
         attributes["customer-addressline2"] = customer.getTown();
         attributes["customer-town"] = "";
@@ -120,6 +134,8 @@ void getInvoiceReceiptAttributes(Attributes &attributes, const Job &job)
     attributes["customer-emailaddress"] = customer.getEmailAddress();
     attributes["job-description"] = job.getDescription();
 
+    // Loop through the parts to calculate total prices and also to generate HTML for the rows of the parts table in
+    // the PDF
     double totalPartPriceExclVat = 0.0, totalPartPriceInclVat = 0.0;
     QString partHtml = "";
     for (unsigned i = 0; i < parts->size(); ++i)
@@ -142,6 +158,8 @@ void getInvoiceReceiptAttributes(Attributes &attributes, const Job &job)
         totalPartPriceInclVat += part.getPrice() * (1.0 + (part.getVatRate() / 100.0));
     }
     attributes["parts-rows"] = partHtml;
+
+    // Set the price attributes
     attributes["parts-totalpriceexclvat"] = to2Dp(toString(totalPartPriceExclVat).c_str());
     attributes["parts-totalpriceinclvat"] = to2Dp(toString(totalPartPriceInclVat).c_str());
     attributes["job-labourcharge"] = to2Dp(toString(job.getLabourCharge()).c_str());
@@ -173,8 +191,10 @@ bool PdfGenerator::generateReceipt(const char *fileName_, const Job &job)
     Attributes attributes;
     getInvoiceReceiptAttributes(attributes, job);
     attributes["title"] = "RECEIPT";
+    // Need to update the date to the current date instead of the job date
     attributes["date"] = Date(time(NULL)).toQStringWithoutTime();
 
+    // An extra row in the totals table in the invoice needs to be added to display the payment method
     QString extraTotalRow = "<td class='tbl-l'><strong>Payment Method:</strong></td><td class='tbl-r'>";
     extraTotalRow += job.getPaymentMethodString().c_str();
     extraTotalRow += "</td>";
@@ -188,7 +208,7 @@ bool PdfGenerator::generateReceipt(const char *fileName_, const Job &job)
     return true;
 }
 
-
+// Functions to be used in sorting/searching functions in PdfGenerator::generateReport
 namespace DateFunctions
 {
     static time_t dateLowerBound, dateUpperBound;
@@ -215,6 +235,8 @@ namespace DateFunctions
 
 bool PdfGenerator::generateReport(const char *fileName, const int month, const int year)
 {
+    // Convert the month and year into a start date and end date, and overload PdfGenerator::generateReport to keep the
+    // code DRY
     return generateReport(fileName, Date(0, 0, 1, month, year), Date(time_t(Date(0, 0, 1, month + 1, year)) - 1));
 }
 
@@ -222,6 +244,8 @@ bool PdfGenerator::generateReport(const char *fileName_, const Date &startDate, 
 {
     QString fileName = toValidFileName(fileName_), templateResourceName = "report_template.html";
 
+    // Set the date bounds, get all of the jobs and expenses and remove any that are outside the date bounds.
+    // Then sort them by date ascending
     DateFunctions::dateLowerBound = startDate;
     DateFunctions::dateUpperBound = endDate;
 
@@ -233,6 +257,8 @@ bool PdfGenerator::generateReport(const char *fileName_, const Date &startDate, 
     Databases::expenses().keepRecords(*expenses, DateFunctions::isRecordDateWithinBounds, NULL);
     Databases::expenses().sortRecords(*expenses, 0, expenses->size() - 1, DateFunctions::compareRecordDates);
 
+    // Loop through the jobs to calculate the total income excluding VAT and total VAT to be added, as well as
+    // generating HTML to populate the jobs table in the report
     double incomeExclVat = 0.0, incomeVat = 0.0;
     QString jobHtml = "";
     for (unsigned i = 0; i < jobs->size(); ++i)
@@ -242,6 +268,7 @@ bool PdfGenerator::generateReport(const char *fileName_, const Date &startDate, 
         {
             double jobChargeExclVat = job.getLabourCharge(), jobVat = job.getVat();
 
+            // Add part prices onto job totals
             Database<Part>::recordListPtr parts = JobController::getJobParts(job.getId());
             for (unsigned j = 0; j < parts->size(); ++j)
             {
@@ -253,6 +280,7 @@ bool PdfGenerator::generateReport(const char *fileName_, const Date &startDate, 
             incomeExclVat += jobChargeExclVat;
             incomeVat += jobVat;
 
+            // We need the customer name associated with the job
             Customer customer = CustomerController::getCustomer(job.getCustomerId());
 
             jobHtml += "<tr><td class='text-mid'>";
@@ -275,6 +303,7 @@ bool PdfGenerator::generateReport(const char *fileName_, const Date &startDate, 
     }
     const double incomeTotal = incomeExclVat + incomeVat;
 
+    // Loop throught the expenses to calculate totals and generate HTML
     double expensesExclVat = 0.0, expensesVat = 0.0;
     QString expenseHtml = "";
     for (unsigned i = 0; i < expenses->size(); ++i)
@@ -303,20 +332,28 @@ bool PdfGenerator::generateReport(const char *fileName_, const Date &startDate, 
 
     Attributes attributes;
 
+    // Create a title that looks natural whatever start and end date is picked
     attributes["title"] = "Report for ";
+    // If the start date is at the beginning of a month and the end date at the end of a month...
     if ((startDate.day == 1) && (endDate.day == (unsigned)QDate(endDate).daysInMonth()))
     {
+        // If the start and end date are in the same month, use a '<month name> <year>' format
+        // E.g. 'Report for March 2012'
         if ((startDate.month == endDate.month) && (startDate.year == endDate.year))
         {
             attributes["title"]
                     += QDate::longMonthName(startDate.month) + ' ' + toString(startDate.year).c_str();
         }
+        // Otherwise if the years are the same, use a '<month name> - <month name> <year>' format
+        // E.g. 'Report for March - June 2012'
         else if (startDate.year == endDate.year)
         {
             attributes["title"]
                     += QDate::longMonthName(startDate.month) + " - " + QDate::longMonthName(endDate.month) + ' '
                     + toString(startDate.year).c_str();
         }
+        // Otherwise use a '<month name> <year> - <month name> <year>' format
+        // E.g. 'Report for March 2012 - June 2013'
         else
         {
             attributes["title"]
@@ -324,8 +361,10 @@ bool PdfGenerator::generateReport(const char *fileName_, const Date &startDate, 
                     + QDate::longMonthName(endDate.month) + ' ' + toString(endDate.year).c_str();
         }
     }
+    // Otherwise use a 'DD/MM/YYYY to DD/MM/YYYY' format, e.g. 'Report for 2/3/2012 to 17/11/2012'
     else attributes["title"] += startDate.toQStringWithoutTime() + " to " + endDate.toQStringWithoutTime();
 
+    // Set the remaining attributes and generate the PDF
     attributes["income-exclvat"] = to2Dp(toString(incomeExclVat).c_str());
     attributes["income-vat"] = to2Dp(toString(incomeVat).c_str());
     attributes["income-total"] = to2Dp(toString(incomeTotal).c_str());

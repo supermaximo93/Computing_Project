@@ -21,14 +21,13 @@ using namespace std;
 #include "SettingController.h"
 #include "dialogs/setting/SettingForm.h"
 
-const int Emailer::waitTimeInMilliseconds = 5000;
-
 Emailer::Emailer(const EmailDetails &emailDetails, QObject *parent)
     : QObject(parent), socket(NULL), emailDetails_(emailDetails), completed(false), killNow(false),
       connectionState(NONE), authenticationState(NONE), mailSendState(NONE) {}
 
 Emailer::~Emailer()
 {
+    // If there is still a connection, close it
     if ((connectionState != NONE) && (socket != NULL)) closeConnection();
     if (socket != NULL) delete socket;
 }
@@ -37,6 +36,7 @@ void Emailer::send()
 {
     mailSendState = PENDING;
 
+    // Create a new socket, and set the username and password to the values in the settings
     if (socket != NULL) delete socket;
     socket = new QxtSmtp(this);
 
@@ -48,6 +48,7 @@ void Emailer::send()
     socket->setUsername(usernameSetting.getValue());
     socket->setPassword(passwordSetting.getValue());
 
+    // Connect the Qt signals from the socket to the slots in the Emailer
     connect(socket, SIGNAL(connected()), this, SLOT(connected()));
     connect(socket, SIGNAL(connectionFailed(QByteArray)), this, SLOT(connectionFailed(QByteArray)));
     connect(socket, SIGNAL(authenticated()), this, SLOT(authenticated()));
@@ -58,6 +59,7 @@ void Emailer::send()
     connect(socket, SIGNAL(finished()), this, SLOT(finished()));
     connect(socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
 
+    // Connect to the host with the host and port values from the settings
     connectionState = PENDING;
     socket->connectToSecureHost(hostSetting.getValue(), atoi(portSetting.getValue()));
 
@@ -81,6 +83,8 @@ const EmailDetails & Emailer::emailDetails() const
 
 void Emailer::kill()
 {
+    // Set killNow to true, indicating that when the Emailer is done, it can delete itself. If it has finished already,
+    // then delete it now
     killNow = true;
     if (completed) delete this;
 }
@@ -90,11 +94,13 @@ void Emailer::connected()
     connectionState = SUCCESS;
     cout << "Connection successful" << endl;
 
+    // Connection successful, so create a new email from the email details
     QxtMailMessage message;
     message.addRecipient(emailDetails_.recipient.c_str());
     message.setSubject(emailDetails_.subject.c_str());
     message.setBody(emailDetails_.body.c_str());
 
+    // If there is an attachment, open it and put the attachment data into the email
     if (emailDetails_.attachmentFileName.size() > 0)
     {
         QFile attachment(emailDetails_.attachmentFileName.c_str());
@@ -103,6 +109,7 @@ void Emailer::connected()
         attachment.close();
     }
 
+    // Send the email
     socket->send(message);
 }
 
@@ -160,6 +167,7 @@ void Emailer::disconnected()
     completed = true;
     cout << "Connection closed" << endl;
 
+    // Send the relevant signal depending on whether the email sent successfully or not
     if (mailSendState == FAILURE) emit mailFailed();
     else if (mailSendState == SUCCESS) emit mailSent();
 
