@@ -216,7 +216,7 @@ void MainWindow::on_label_remindCustomers_linkActivated(const QString &)
 
         EmailDetails email(customer.getEmailAddress(),
                            SettingController::getSetting(SettingForm::keyReminderSubject).getValue(),
-                           SettingController::getSetting(SettingForm::keyReceiptBody).getValue());
+                           SettingController::getSetting(SettingForm::keyReminderBody).getValue());
 
         EmailerThread::enqueueEmail(email);
     }

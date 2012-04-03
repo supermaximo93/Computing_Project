@@ -24,7 +24,7 @@ public:
     static const int
     minNameLength,  maxNameLength,
     minAddressLineLength,  maxAddressLineLength,
-    minTownLength,  maxTownLength         ,
+    minTownLength,  maxTownLength,
     minPostcodeLength,  maxPostcodeLength,
     minPhoneNumberLength, maxPhoneNumberLength,
     minEmailAddressLength,  maxEmailAddressLength;

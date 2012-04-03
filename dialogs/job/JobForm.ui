@@ -301,7 +301,7 @@ QListWidget, QTableWidget, QPlainTextEdit {
     <item row="1" column="0">
      <widget class="QLabel" name="label_totalChargeExclVat">
       <property name="text">
-       <string>Total Chage (excl.VAT)</string>
+       <string>Total Charge (excl.VAT)</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

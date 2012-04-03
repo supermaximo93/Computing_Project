@@ -28,11 +28,14 @@ protected:
 };
 
 // Is Customer ID Minus One
-// A new customer record must have an ID of -1 (a customer record ID will be set when it is added to the database)
+// A new customer record must have an ID of -1
+// (a customer record ID will be set when it is added to the database)
 TEST_F(CustomerUnitTest, IsCustomerIdMinusOne)
 {
     Customer customer;
-    EXPECT_EQ(-1, customer.getId()) << "Customer record that has not been added to the database must have an ID of -1";
+    EXPECT_EQ(-1, customer.getId())
+            << "Customer record that has not been added to the database must"
+               "have an ID of -1";
 }
 
 
