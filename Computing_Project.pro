@@ -4,7 +4,7 @@
 
 QT       += core gui network webkit
 
-TARGET = Computing_Project
+TARGET = IanFosterServices_WorkManager
 TEMPLATE = app
 
 CONFIG(debug, debug|release) {
