@@ -43,6 +43,7 @@ void CustomerShow::updateView()
     ui->label_emailAddressE->setText(customer.getEmailAddress());
 
     ui->listWidget_jobs->clear();
+    JobController::sortJobsByDate(jobs, false);
     for (unsigned i = 0; i < jobs.size(); ++i) ui->listWidget_jobs->addItem(Date(jobs[i].getDate()));
 }
 

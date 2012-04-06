@@ -1,0 +1,1224 @@
+<style type="text/css">
+  body {
+    background-color: #99AABB;
+  }
+
+  h1, h2, h3, h4, h5, h6, .heading {
+    color: white;
+    text-shadow: 1px 1px 1px black;
+  }
+
+  .section-heading {
+    font-weight: bold;
+  }
+
+  a, a:link, a:visited, a:hover, a:active {
+    color: #951700;
+  }
+
+  .section {
+    padding: 20px 0px 30px 0px;
+  }
+
+  .sub-section {
+    padding: 10px 0px 20px 20px;
+  }
+
+  .sub-sub-section, .sub-sub-sub-section {
+    padding: 10px 0px 10px 20px;
+  }
+
+  .section .heading {
+    font-size: 30px;
+  }
+
+  .sub-section .heading {
+    font-size: 24px;
+  }
+
+  .sub-sub-section .heading {
+    font-size: 20px;
+  }
+
+  .sub-sub-sub-section .heading {
+    font-size: 16px;
+  }
+
+  img {
+    max-width: 600px;
+    border: 1px solid black;
+  }
+
+  .image {
+    padding: 10px 5px 10px 5px;
+  }
+
+  .faq-answer {
+    padding: 20px 0px 10px 0px;
+  }
+</style>
+
+<body>
+
+<div id="header" style="text-align: center">
+  <h1>Ian Foster Services Work Manager</h1>
+  <h1>User Guide</h1>
+</div>
+
+<div id="contents">
+  <a name="contents"></a>
+  <h2>Table of Contents</h2>
+
+  <p>
+    <a class="section-heading" href="#preface">Preface</a>
+  </p>
+
+  <p>
+    <a class="section-heading" href="#installation">Installation</a>
+    <ul>
+      <li><a href="#installation-systemRequirements">Minimum System Requirements</a></li>
+      <li><a href="#installation-ubuntu">Installing on Ubuntu</a></li>
+      <li><a href="#installation-windows">Installing on Windows</a></li>
+    </ul>
+  </p>
+
+  <p>
+    <a class="section-heading" href="#firstTimeRun">First time run</a>
+  </p>
+
+  <p>
+    <a class="section-heading" href="#settings">Settings</a>
+    <ul>
+
+      <li>
+        <a href="#settings-directories">Directories</a>
+        <ul>
+          <li><a href="#settings-directories-database">Database</a></li>
+          <li><a href="#settings-directories-backups">Backups</a></li>
+          <li><a href="#settings-directories-pdfs">PDFs</a></li>
+        </ul>
+      </li>
+
+      <li><a href="#settings-password">Password</a></li>
+
+      <li>
+        <a href="#settings-email">Email</a>
+        <ul>
+          <li><a href="#settings-email-content">Email content</a></li>
+          <li><a href="#settings-email-host">Email host</a></li>
+        </ul>
+      </li>
+
+    </ul>
+  </p>
+
+  <p>
+    <a class="section-heading" href="#usingTheProgram">Using the program</a>
+    <ul>
+      <li><a href="#usingTheProgram-homeScreen">Home screen</a></li>
+
+      <li>
+        <a href="#usingTheProgram-managingCustomers">Managing customers</a>
+        <ul>
+          <li><a href="#usingTheProgram-managingCustomers-viewingCustomers">Viewing customers</a></li>
+          <li><a href="#usingTheProgram-managingCustomers-addingANewCustomer">Adding a new customer</a></li>
+          <li><a href="#usingTheProgram-managingCustomers-editingACustomer">Editing a customer</a></li>
+          <li><a href="#usingTheProgram-managingCustomers-deletingACustomer">Deleting a customer</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a href="#usingTheProgram-managingJobs">Managing jobs</a>
+        <ul>
+          <li><a href="#usingTheProgram-managingJobs-viewingJobs">Viewing jobs</a></li>
+          <li><a href="#usingTheProgram-managingJobs-addingANewJob">Adding a new job</a></li>
+          <li><a href="#usingTheProgram-managingJobs-editingAJob">Editing a job</a></li>
+          <li><a href="#usingTheProgram-managingJobs-deletingAJob">Deleting a job</a></li>
+
+          <li>
+            <a href="#usingTheProgram-managingJobs-managingParts">Managing parts</a>
+            <ul>
+              <li><a href="#usingTheProgram-managingJobs-managingParts-viewingParts">Viewing parts</a></li>
+              <li><a href="#usingTheProgram-managingJobs-managingParts-addingANewPart">Adding a new part</a></li>
+              <li><a href="#usingTheProgram-managingJobs-managingParts-editingAPart">Editing a part</a></li>
+              <li><a href="#usingTheProgram-managingJobs-managingParts-deletingAPart">Deleting a part</a></li>
+            </ul>
+          </li>
+
+          <li>
+            <a href="#usingTheProgram-managingJobs-managingTasks">Managing tasks</a>
+            <ul>
+              <li><a href="#usingTheProgram-managingJobs-managingTasks-viewingTasks">Viewing tasks</a></li>
+              <li><a href="#usingTheProgram-managingJobs-managingTasks-addingANewTask">Adding a new task</a></li>
+              <li><a href="#usingTheProgram-managingJobs-managingTasks-editingATask">Editing a task</a></li>
+              <li><a href="#usingTheProgram-managingJobs-managingTasks-deletingATask">Deleting a task</a></li>
+            </ul>
+          </li>
+
+          <li><a href="#usingTheProgram-managingJobs-invoices">Invoices</a></li>
+          <li><a href="#usingTheProgram-managingJobs-receipts">Receipts</a></li>
+
+        </ul>
+      </li>
+
+      <li>
+        <a href="#usingTheProgram-managingExpenses">Managing expenses</a>
+        <ul>
+          <li><a href="#usingTheProgram-managingExpenses-viewingExpenses">Viewing expenses</a></li>
+          <li><a href="#usingTheProgram-managingExpenses-addingANewExpense">Adding a new expense</a></li>
+          <li><a href="#usingTheProgram-managingExpenses-editingAnExpense">Editing an expense</a></li>
+          <li><a href="#usingTheProgram-managingExpenses-deletingAnExpense">Deleting an expense</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a href="#usingTheProgram-managingVatRates">Managing VAT rates</a>
+        <ul>
+          <li><a href="#usingTheProgram-managingVatRates-viewingVatRates">Viewing VAT rates</a></li>
+          <li><a href="#usingTheProgram-managingVatRates-addingANewVatRate">Adding a new VAT rate</a></li>
+          <li><a href="#usingTheProgram-managingVatRates-editingAVatRate">Editing a VAT rate</a></li>
+          <li><a href="#usingTheProgram-managingVatRates-deletingAVatRate">Deleting a VAT rate</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a href="#usingTheProgram-reports">Reports</a>
+        <ul>
+          <li><a href="#usingTheProgram-reports-monthlyReports">Monthly reports</a></li>
+          <li><a href="#usingTheProgram-reports-reportWizard">Report Wizard</a></li>
+        </ul>
+      </li>
+
+      <li><a href="#usingTheProgram-emails">Emails</a></li>
+
+    </ul>
+  </p>
+
+  <p>
+    <a class="section-heading" href="#backups">Backups</a>
+  </p>
+
+  <p>
+    <a class="section-heading" href="#troubleshooting">Troubleshooting and Frequently Asked Questions</a>
+  </p>
+</div>
+
+<div id="preface" class="section">
+  <a name="preface"></a>
+  <span class="heading">Preface</span>
+  <p><a href="#contents">Back to contents</a></p>
+  <div class="content">
+    <p>
+      The Ian Foster Services Work Manager is a bespoke application designed to make the process of managing
+      a plumbing business easier. It provides features such as customer and job databases, invoice and receipt
+      generation with automatic emailing, and monthly report generation.
+    </p>
+    <p>
+      This user guide will firstly explain how to install the program on your operating system. Initial set up and
+      settings will then be explained, followed by a guide of typical use of the program. Towards the end of the guide,
+      troubleshooting is discussed.
+    </p>
+    <p>
+      It is strongly recommended that you read this entire guide before using the program, so that you can make best use
+      of the program.
+    </p>
+  </div>
+  <p><a href="#contents">Back to contents</a></p>
+</div>
+
+<div id="installation" class="section">
+  <a name="installation"></a>
+  <span class="heading">Installation</span>
+  <p><a href="#contents">Back to contents</a></p>
+  <p>
+    Installing the program on your computer is simple. Please make sure that your computer meets the following minimum
+    system requirements before continuing.
+  </p>
+
+  <div id="installation-systemRequirements" class="sub-section">
+    <a name="installation-systemRequirements"></a>
+    <span class="heading">Minimum System Requirements</span>
+    <ul>
+      <li>1Ghz single core processor or equivalent</li>
+      <li>512MB of RAM</li>
+      <li>80MB of free hard drive space</li>
+      <li>Graphics card and monitor capable of a 1024x768 screen resolution</li>
+      <li>A 64-bit Ubuntu (version 11.10 or greater recommended) or Windows (Vista or 7 recommended) installation</li>
+    </ul>
+    NOTE: The program may work on other operating systems, but only those mentioned are officially supported.
+    <p><a href="#installation">Back to Installation</a></p>
+  </div>
+
+  <div id="installation-ubuntu" class="sub-section">
+    <a name="installation-ubuntu"></a>
+    <span class="heading">Installing on Ubuntu</span>
+
+    <p>
+      <em>Step 1</em>
+    </p>
+    <div class="image"><img src="user_guide_images/ubuntu_install_1.png"></div>
+    <p>
+      You will have been provided with the ZIP file 'IanFosterServices_WorkManager.zip'. Open this file. You will see
+      two folders: 'ubuntu' and 'windows'.
+    </p>
+
+    <p>
+      <em>Step 2</em>
+    </p>
+    <div class="image"><img src="user_guide_images/ubuntu_install_2.png"></div>
+    <p>
+      Drag the 'ubuntu' folder into a location of your choice (the Desktop was used in the provided image). Open the
+      folder and double click the file 'install.sh'. A dialog will appear, asking whether you want to run the file or
+      display its contents. Click 'Run'. A dialog asking for your password should appear. Enter your password when this
+      happens.
+    </p>
+
+    <p>
+      <em>Step 3</em>
+    </p>
+    <div class="image"><img src="user_guide_images/ubuntu_install_3.png"></div>
+    <p>
+      The program should have installed successfully. Open the Ubuntu Dash (or the applications menu if you are not
+      using Gnome, KDE, etc. instead of the Unity interface). You should be able to find the application if you navigate
+      to the 'Installed' applications section, or start to type in 'Ian Foster Services Work Manager' in the 'Search
+      Applications' input field. If you are not using the Unity interface, then the program will be able to be found in
+      the 'Office' category of your applications menu.
+    </p>
+
+    <p>
+      <em>Step 4</em>
+    </p>
+    <div class="image"><img src="user_guide_images/ubuntu_install_4.png"></div>
+    <p>
+      Once you have found the program, you can run it just like any other application installed on your computer. Do the
+      initial set up and you will be able to use the program (for more information on the initial set up, go to the
+      <a href="#firstTimeRun">First Time Run</a> section). You may now delete 'IanFosterServices_WorkManager.zip' and
+      the 'ubuntu' folder.
+    </p>
+
+    <p><a href="#installation">Back to Installation</a></p>
+  </div>
+
+  <div id="installation-windows" class="sub-section">
+    <a name="installation-windows"></a>
+    <span class="heading">Installing on Windows</span>
+
+    <p>
+      <em>Step 1</em>
+    </p>
+    <div class="image"><img src="user_guide_images/windows_install_1.png"></div>
+    <p>
+      You will have been provided with the ZIP file 'IanFosterServices_WorkManager.zip'. Open this file. You will see
+      two folders: 'ubuntu' and 'windows'.
+    </p>
+
+    <p>
+      <em>Step 2</em>
+    </p>
+    <div class="image"><img src="user_guide_images/windows_install_2.png"></div>
+    <p>
+      Drag the 'windows' folder into a location of your choice (the Desktop was used in the provided image) and open it.
+      Firstly, you will need to run either the 'vcredist_x64' installer if you are using a 64-bit Windows installation
+      or the 'vcredist_x86' installer if you are using a 32-bit Windows installation. This must be installed in order
+      for the program to be able to send emails correctly. If the installer gives the option to either 'Repair' or
+      'Remove', choose the 'Repair' option (on most systems this will not occur, so do not worry if you are not given
+      this option). If the installer asks to restart your computer, let it restart.
+    </p>
+
+    <p>
+      <em>Step 3</em>
+    </p>
+    <div class="image"><img src="user_guide_images/windows_install_3.png"></div>
+    <p>
+      Once you have installed either 'vcredist_x64' or 'vcredist_x86', run the 'IanFosterServices_WorkManger_Installer'
+      file in the 'windows' folder. You will then be guided through the process of installing the program on your
+      computer.
+    </p>
+
+    <p>
+      <em>Step 4</em>
+    </p>
+    <div class="image"><img src="user_guide_images/windows_install_4.png"></div>
+    <p>
+      Verify that the program has been installed correctly by checking that there is an 'Ian Foster Services Work
+      Manager' icon on your Desktop and also an 'Ian Foster Services Work Manager' listing in the Start Menu.
+    </p>
+
+    <p>
+      <em>Step 5</em>
+    </p>
+    <div class="image"><img src="user_guide_images/windows_install_5.png"></div>
+    <p>
+      You can run the program just like any other application installed on your computer. Do the initial set up and you
+      will be able to use the program (for more information on the initial set up, go to the
+      <a href="#firstTimeRun">First Time Run</a> section). You may now delete 'IanFosterServices_WorkManager.zip' and
+      the 'windows' folder.
+    </p>
+
+    <p><a href="#installation">Back to Installation</a></p>
+  </div>
+  <p><a href="#contents">Back to contents</a></p>
+</div>
+
+<div id="firstTimeRun" class="section">
+  <a name="firstTimeRun"></a>
+  <span class="heading">First Time Run</span>
+  <p><a href="#contents">Back to contents</a></p>
+  <p>
+    Upon running the program for the first time, the settings screen will be displayed. Fill in the required details,
+    and then the click 'Save settings' button. For more information about the settings screen, go to the
+    <a href="#settings">Settings</a> section.
+  </p>
+  <p>
+    If a dialog that looks like this
+    <div class="image">
+      <img src="user_guide_images/firstTimeRun_fileAlreadyExists.png">
+    </div>
+    is displayed, then click the 'Don't move file and keep existing file' button.
+  </p>
+  <p>
+    After the settings have been saved, the home screen will be displayed. For more information about the home screen,
+    go to the <a href="#usingTheProgram-homeScreen">Home Screen</a> section.
+  </p>
+  <p>
+    It is recommended that the first thing you do is enter the UK VAT rate history into the database. You can do this
+    by clicking 'VAT Rates' in the 'Management' menu. For more information about managing VAT rates, go to the
+    <a href="#usingTheProgram-managingVatRates">Managing VAT Rates</a> section.
+  </p>
+  <p><a href="#contents">Back to contents</a></p>
+</div>
+
+<div id="settings" class="section">
+  <a name="settings"></a>
+  <span class="heading">Settings</span>
+  <p><a href="#contents">Back to contents</a></p>
+  <div class="image">
+    <img src="user_guide_images/settings.png">
+  </div>
+  <p>
+    This is the settings screen. You will have access to this screen when the program is run for the first time, and can
+    be accessed from the home screen at any time. For more information about the home screen, go to the
+    <a href="#usingTheProgram-homeScreen">Home Screen</a> section.
+  </p>
+
+  <div id="settings-directories" class="sub-section">
+    <a name="settings-directories"></a>
+    <span class="heading">Directories</span>
+    <div class="image">
+      <img src="user_guide_images/settings_directories.png">
+    </div>
+    <p>
+      The directory settings allow you to specify the folder where you would like files generated by the program to be
+      saved. It is recommended that you choose a folder that you can remember and have easy access to. If you change a
+      directory setting, the files in the old folder will automatically be moved to the new location for you.
+    </p>
+
+    <div id="settings-directories-database" class="sub-sub-section">
+      <a name="settings-directories-database"></a>
+      <span class="heading">Database</span>
+      <p>
+        The database directory is the folder that contains the main database for the program. This folder should
+        be secure, as it is the location where all of your customer and job records will be stored.
+      </p>
+    </div>
+
+    <div id="settings-directories-backups" class="sub-sub-section">
+      <a name="settings-directories-backups"></a>
+      <span class="heading">Backup</span>
+      <p>
+        The backup directory is the folder that contains all of your backups. It is recommended that this folder
+        is on an external device, such as an external hard disk, or is synchronised with an online cloud service. For
+        more information about backups, go to the <a href="#backups">Backups</a> section.
+      </p>
+    </div>
+
+    <div id="settings-directories-pdfs" class="sub-sub-section">
+      <a name="settings-directories-pdfs"></a>
+      <span class="heading">PDF</span>
+      <p>
+        The PDF directory is the folder that contains all of the PDF files generated by the program; the invoices,
+        receipts and reports. This folder should be in a location that is easily accessible, such as your 'Documents'
+        or 'My Documents' folder, because you will likely want to view these PDFs at a later date, or print them out
+        so that hard copies can be filed or sent to customers.
+      </p>
+    </div>
+
+    <p><a href="#settings">Back to Settings</a></p>
+  </div>
+
+  <div id="settings-password" class="sub-section">
+    <a name="settings-password"></a>
+    <span class="heading">Password</span>
+    <div class="image">
+      <img src="user_guide_images/settings_password.png">
+    </div>
+    <p>
+      By using the 'Change Password' form, you can set a password that will be required by the program on start up in
+      order for the user to gain access. This is useful if the program is installed on a shared computer, and you would
+      like to keep the data safe from other users.
+    </p>
+    <p>
+      Passwords must be at least four characters long. It is recommended that you use at least eight characters and that
+      you use capital letters, numbers and special characters in order to make your password more difficult to guess.
+    </p>
+    <p><a href="#settings">Back to Settings</a></p>
+  </div>
+
+  <div id="settings-email" class="sub-section">
+    <a name="settings-email"></a>
+    <span class="heading">Email</span>
+    <p>
+      A useful feature of this program is that it allows you to send emails to customers. You can send invoices,
+      receipts and even reminders if they have not paid for your work in a while. The email settings allow you to
+      customise the content of these emails and to specify which email account to send the emails from.
+    </p>
+
+    <div id="settings-email-content" class="sub-sub-section">
+      <a name="settings-email-content"></a>
+      <span class="heading">Email Content</span>
+      <div class="image">
+        <img src="user_guide_images/settings_email_content.png">
+      </div>
+      <p>
+        The program allows you to customise the subject and body of the invoice, receipt and reminder emails. To choose
+        which email content you would like to modify, select the relevant tab to the left.
+      </p>
+    </div>
+
+    <div id="settings-email-host" class="sub-sub-section">
+      <a name="settings-email-host"></a>
+      <span class="heading">Email Host</span>
+      <div class="image">
+        <img src="user_guide_images/settings_email_host.png">
+      </div>
+      <p>
+        The Email Host settings must be filled in correctly in order for the program to send emails.
+      </p>
+      <p>
+        The 'Username' field requires your email account username (this is typically the first part of your email
+        address, before the '@' sign).
+      </p>
+      <p>
+        The 'Password' field requires the password for your email account.
+      </p>
+      <p>
+        The 'Host address' field requires the address of the outgoing server for emails (it usually looks like
+        'smtp.myemailhost.com', or similar).
+      </p>
+      <p>
+        The 'Host port' field requires the port number for <strong>SSL</strong> connections to the outgoing email server
+        (this is usually 465, which the program defaults to). If you do not know the details for the outgoing server of
+        your email host, please visit the website of the host (which is usually the second part of your email address,
+        after the '@' sign).
+      </p>
+    </div>
+
+    <p><a href="#settings">Back to Settings</a></p>
+  </div>
+
+  <p><a href="#contents">Back to contents</a></p>
+</div>
+
+<div id="usingTheProgram" class="section">
+  <a name="usingTheProgram"></a>
+  <span class="heading">Using The Program</span>
+  <p><a href="#contents">Back to contents</a></p>
+
+  <div id="usingTheProgram-homeScreen" class="sub-section">
+    <a name="usingTheProgram-homeScreen"></a>
+    <span class="heading">Home Screen</span>
+
+    <div class="image"><img src="user_guide_images/home_screen.png"></div>
+
+    <p>
+      <strong>1</strong> <em>Menu</em><br/>
+      The menu consists of three sections. The <em>Management</em> section allows you to visit different places in the
+      program to manage jobs, customers, expenses and VAT history. The <em>Reports</em> section allows you to generate
+      monthly financial reports and also provides the <em>Report Wizard</em>, which allows you to generate a report for
+      a specific time period. The <em>Options</em> section allows you to visit the settings screen, access this help
+      document, and exit the program.
+    </p>
+
+    <p>
+      <strong>2</strong> <em>Calendar</em><br/>
+      By selecting a date on the calendar, you can change the period of time that the program manages data on. Changing
+      the month displayed on the calendar will change the displayed financial totals. Reports are generated with
+      respect to the selected month, and only jobs and expenses in the selected month will be displayed on their index
+      screens. Changing the day causes the jobs and tasks listed at the bottom of the screen to change.
+    </p>
+
+    <p>
+      <strong>3</strong> <em>Jobs and Tasks</em><br/>
+      These boxes will display a list of all of the jobs and tasks that need to be done for a particular day, specified
+      by the calendar. You can double click any of the jobs or tasks displayed here to see information about them.
+    </p>
+
+    <p>
+      <strong>4</strong> <em>Financial Totals</em><br/>
+      This section gives a quick overview of the financial totals for a particular month, specified by the calendar.
+      For a more detailed report for the month, use the 'Generate report' option on the menu.
+    </p>
+
+    <p>
+      <strong>5</strong> <em>Reminder Notice</em><br/>
+      This notice will appear if there are customers that have not paid for the work that you have done for them after
+      seven days. This will send an email reminder to the customers, with the subject and message body specified in the
+      settings.
+    </p>
+
+    <p><a href="#usingTheProgram">Back to Using The Program</a></p>
+  </div>
+
+  <div id="usingTheProgram-managingCustomers" class="sub-section">
+    <a name="usingTheProgram-managingCustomers"></a>
+    <span class="heading">Managing Customers</span>
+
+    <div class="image"><img src="user_guide_images/customer_index.png"></div>
+    <p>
+      To view the customer index screen, click on 'Customers' in the home screen menu. You will be given a list of all
+      of the customers that you have records of, in the alphabetical of surnames. From this screen, you can view the
+      details of a specific customer by double clicking a name and add new customers to the database by clicking 'Add
+      new customer' at the bottom of the screen.
+    </p>
+
+    <div id="usingTheProgram-managingCustomers-viewingCustomers" class="sub-sub-section">
+      <a name="usingTheProgram-managingCustomers-viewingCustomers"></a>
+      <span class="heading">Viewing Customers</span>
+      <div class="image"><img src="user_guide_images/customer_show.png"></div>
+      <p>
+        To view the details for a specific customer, double click their name in the customer index. The customer details
+        screen will then be displayed. To the left is the customer's personal information, and on the right is a list of
+        all of the jobs that have been done or need to be done for the customer, sorted by date, descending. You can
+        edit the customer's details by clicking the 'Edit' button, or delete the customer by clicking the 'Delete'
+        button. <strong>When a customer is deleted, all of the jobs associated with that customer will be deleted as
+        well.</strong> To view a job for the customer, double click the job in the job list. To add a new job for the
+        customer, click the 'Add job' button. For more information about viewing and adding jobs, go to the
+        <a href="#usingTheProgram-managingJobs">Managing Jobs</a> section.
+      </p>
+    </div>
+
+    <div id="usingTheProgram-managingCustomers-addingANewCustomer" class="sub-sub-section">
+      <a name="usingTheProgram-managingCustomers-addingANewCustomer"></a>
+      <span class="heading">Adding a New Customer</span>
+      <div class="image"><img src="user_guide_images/customer_new.png"></div>
+      <p>
+        To add a new customer to the database, click on the 'Add new customer' button on the customer index screen. The
+        customer form will then be displayed. Fill in as many fields as possible before clicking the 'Submit' button to
+        save the new customer. The 'Address Line 2' and 'Mobile Phone' fields are optional. Any fields that do not have
+        valid inputs will be highlighted in red. Hover the cursor over the field to find out how you can correct the
+        problem. Here is an example:
+      </p>
+      <div class="image"><img src="user_guide_images/customer_invalid_postcode.png"></div>
+    </div>
+
+    <div id="usingTheProgram-managingCustomers-editingACustomer" class="sub-sub-section">
+      <a name="usingTheProgram-managingCustomers-editingACustomer"></a>
+      <span class="heading">Editing a Customer</span>
+      <p>
+        To edit the details of a customer, go to the customer's details screen, and then click on the 'Edit' button. The
+        customer form will then be displayed, with the customer's details already filled in. Change the inputs of the
+        fields as required, and then click the 'Submit' button to save your changes. The 'Address Line 2' and 'Mobile
+        Phone' fields are optional. Any fields that do not have valid inputs will be highlighted in red. To find out
+        what is wrong with a particular input value, hover the cursor over the field and a tool tip will be displayed.
+      </p>
+    </div>
+
+    <div id="usingTheProgram-managingCustomers-deletingACustomer" class="sub-sub-section">
+      <a name="usingTheProgram-managingCustomers-deletingACustomer"></a>
+      <span class="heading">Deleting a Customer</span>
+      <p>
+        To remove a customer from the database, go to the customer's details screen, and then click on the 'Delete'
+        button. You will then be asked whether you are sure that you want to delete the customer. Only click 'Yes' if
+        you are completely sure. <strong>When a customer is deleted, all of the jobs associated with that customer will
+        be deleted as well. They will not be able to be retrieved.</strong>
+      </p>
+    </div>
+
+    <p><a href="#usingTheProgram">Back to Using The Program</a></p>
+  </div>
+
+  <div id="usingTheProgram-managingJobs" class="sub-section">
+    <a name="usingTheProgram-managingJobs"></a>
+    <span class="heading">Managing Jobs</span>
+    <div class="image"><img src="user_guide_images/job_index.png"></div>
+    <p>
+      To view a list of all of the jobs for the month selected on the home screen calendar, click on 'Jobs' in the home
+      screen menu. A list of jobs will be displayed, sorted by date, descending. To view the details of a particular
+      job, double click its entry in the list, and to add a new job, click the 'Add new job' button.
+    </p>
+
+    <div id="usingTheProgram-managingJobs-viewingJobs" class="sub-sub-section">
+      <a name="usingTheProgram-managingJobs-viewingJobs"></a>
+      <span class="heading">Viewing Jobs</span>
+      <div class="image"><img src="user_guide_images/job_show.png"></div>
+      <p>
+        To view the details of a particular job, double click its entry in the job index. The details of the job will
+        then be displayed. To view the details of the customer that the job is being done for, click the 'View customer
+        details' button. To view details of a part or task associated with the job, double click an entry in their
+        respective lists (for more information about parts, go to the
+        <a href="#usingTheProgram-managingJobs-managingParts">Managing Parts</a> section, and for more information about
+        tasks, go to the <a href="#usingTheProgram-managingJobs-managingTasks">Managing Tasks</a> section).
+      </p>
+      <p>
+        Once you have completed a job, you can indicate this by clicking the 'Mark as done' button. This will then give
+        the job the completion state of 'Done - not paid'. It will then give you the option to generate an invoice,
+        which can be emailed to the customer by clicking the 'Send invoice' button, or viewed in your PDF reader by
+        clicking the 'View invoice' button (for more information about invoices, go to the
+        <a href="#usingTheProgram-managingJobs-invoices">Invoices</a> section).
+      </p>
+      <div class="image"><img src="user_guide_images/job_done.png"></div>
+      <p>
+        Once the job has been paid for, click the 'Mark as paid' button. The following dialog will be displayed,
+        allowing you to set the payment date and payment method:
+      </p>
+      <div class="image"><img src="user_guide_images/job_markAsPaid.png"></div>
+      <p>
+        The job will be given the completion state of 'Done - paid' and the payment date and payment method will be
+        recorded. It will then give you the option to generate a receipt, which can be emailed to the customer by
+        clicking the 'Send receipt' button, or viewed in your PDF reader by clicking the 'View receipt' button (for more
+        information about receipts, go to the
+        <a href="#usingTheProgram-managingJobs-receipts">Receipts</a> section).
+      </p>
+      <div class="image"><img src="user_guide_images/job_paid.png"></div>
+    </div>
+
+    <div id="usingTheProgram-managingJobs-addingANewJob" class="sub-sub-section">
+      <a name="usingTheProgram-managingJobs-addingANewJob"></a>
+      <span class="heading">Adding a New Job</span>
+      <div class="image"><img src="user_guide_images/job_new.png"></div>
+      <p>
+        To add a new job to the database, click the 'Add new job' button on the job index screen. An empty job form will
+        then be displayed. Fill in as many fields as possible. Any fields that do not have valid inputs will be
+        highlighted in red. To find out what is wrong with a particular input value, hover the cursor over the field and
+        a tool tip will be displayed.
+      </p>
+      <p>
+        A drop down box listing all of the customers is given towards the top of the form. To view the details of the
+        selected customer, click the 'View customer' button. To add a new customer to the database, click the 'Add new
+        customer' button. After saving the new customer to the database, the customer's name will be added to the list.
+      </p>
+      <p>
+        To add a part or task to the job, click the 'Add part' and 'Add task' buttons respectively (for more information
+        about parts, go to the <a href="#usingTheProgram-managingJobs-managingParts">Managing Parts</a> section, and for
+        more information about tasks, go to the <a href="#usingTheProgram-managingJobs-managingTasks">Managing Tasks</a>
+        section).
+      </p>
+      <p>
+        The total charge excluding VAT is calculated from the labour charge and the total cost of the parts
+        excluding VAT. The VAT is taken from the VAT rate history (for more information about the VAT rate history, go
+        to the <a href="#usingTheProgram-managingVatRates">Managing VAT Rates</a> section). The total charge including
+        VAT is the sum of the labour charge, the VAT of the labour charge calculated from the VAT rate, and the cost
+        of the parts including VAT.
+      </p>
+      <p>
+        To save the new job to the database, click the 'Submit' button.
+      </p>
+    </div>
+
+    <div id="usingTheProgram-managingJobs-editingAJob" class="sub-sub-section">
+      <a name="usingTheProgram-managingJobs-editingAJob"></a>
+      <span class="heading">Editing a Job</span>
+      <p>
+        To edit a job, go to the details screen of a job, and click the 'Edit' button. The job form will be displayed,
+        with the job details filled in. Change the values in the fields as required and then click the 'Submit' button
+        to save your changes. Any fields that do not have valid inputs will be highlighted in red. To find out what is
+        wrong with a particular input value, hover the cursor over the field and a tool tip will be displayed.
+      </p>
+    </div>
+
+    <div id="usingTheProgram-managingJobs-deletingAJob" class="sub-sub-section">
+      <a name="usingTheProgram-managingJobs-deletingAJob"></a>
+      <span class="heading">Deleting a Job</span>
+      <p>
+        To delete a job, go to the details screen of a job, and click the 'Delete' button. You will then be asked
+        whether you are sure that you want to delete the job. Only click 'Yes' if you are completely sure. <strong>When
+        a job is deleted, all of the parts and tasks associated with that job will be deleted as well. They cannot be
+        recovered after deletion.</strong>
+      </p>
+    </div>
+
+    <div id="usingTheProgram-managingJobs-managingParts" class="sub-sub-section">
+      <a name="usingTheProgram-managingJobs-managingParts"></a>
+      <span class="heading">Managing Parts</span>
+      <div class="image"><img src="user_guide_images/part_index.png"></div>
+      <p>
+        A list of all the parts needed for a job can be seen on the job details screen and on the job form. To view the
+        details of a part, double click on its entry in the list. To add a new part, you will need to be on the job
+        form.
+      </p>
+
+      <div id="usingTheProgram-managingJobs-managingParts-viewingParts" class="sub-sub-sub-section">
+        <a name="usingTheProgram-managingJobs-managingParts-viewingParts"></a>
+        <span class="heading">Viewing Parts</span>
+        <div class="image"><img src="user_guide_images/part_show.png"></div>
+        <p>
+          To view the details of a part, you must be on the details screen or form of a job. Double click an entry for
+          a part in the parts list to view the details of the part. You can edit the part by clicking the 'Edit' button
+          and delete the part by clicking the 'Delete' button. <strong>The part cannot be recovered after it has been
+          deleted.</strong>
+        </p>
+      </div>
+
+      <div id="usingTheProgram-managingJobs-managingParts-addingANewPart" class="sub-sub-sub-section">
+        <a name="usingTheProgram-managingJobs-managingParts-addingANewPart"></a>
+        <span class="heading">Adding a New Part</span>
+        <div class="image"><img src="user_guide_images/part_new.png"></div>
+        <p>
+          To add a new part to a job, go to the job form of a new job or an existing job, and click the 'New part'
+          button above the parts list. An empty part form will be displayed. Fill in as many fields as you can, and
+          press 'Submit' to save the part. The 'Part number' field is optional. Any fields that do not have valid inputs
+          will be highlighted in red. To find out what is wrong with a particular input value, hover the cursor over the
+          field and a tool tip will be displayed.
+        </p>
+      </div>
+
+      <div id="usingTheProgram-managingJobs-managingParts-editingAPart" class="sub-sub-sub-section">
+        <a name="usingTheProgram-managingJobs-managingParts-editingAPart"></a>
+        <span class="heading">Editing a Part</span>
+        <p>
+          To edit an existing part, go to the part details screen, and click the 'Edit' button. A part form will be
+          displayed with the part details filled in. Change the details as required and then click the 'Submit' button
+          to save your changes. Any fields that do not have valid inputs will be highlighted in red. To find out what is
+          wrong with a particular input value, hover the cursor over the field and a tool tip will be displayed.
+        </p>
+      </div>
+
+      <div id="usingTheProgram-managingJobs-managingParts-deletingAPart" class="sub-sub-sub-section">
+        <a name="usingTheProgram-managingJobs-managingParts-deletingAPart"></a>
+        <span class="heading">Deleting a Part</span>
+        <p>
+          To delete a part, go the part details screen, and click the 'Delete' button. You will then be asked whether
+          you are sure that you want to delete the part. Only click 'Yes' if you are completely sure. <strong>The part
+          cannot be recovered after it has been deleted.</strong>
+        </p>
+      </div>
+    </div>
+
+    <div id="usingTheProgram-managingJobs-managingTasks" class="sub-sub-section">
+      <a name="usingTheProgram-managingJobs-managingTasks"></a>
+      <span class="heading">Managing Tasks</span>
+      <div class="image"><img src="user_guide_images/task_index.png"></div>
+      <p>
+        A list of all the tasks needed to be done for a job can be seen on the job details screen and on the job form.
+        To view the details of a task, double click on its entry in the list. To add a new task, you will need to be on
+        the job form.
+      </p>
+
+      <div id="usingTheProgram-managingJobs-managingTasks-viewingTasks" class="sub-sub-sub-section">
+        <a name="usingTheProgram-managingJobs-managingTasks-viewingTasks"></a>
+        <span class="heading">Viewing Tasks</span>
+        <div class="image"><img src="user_guide_images/task_show.png"></div>
+        <p>
+          To view the details of a task, you must be on the details screen or form of a job. Double click an entry for
+          a task in the tasks list to view the details of the task. You can edit the task by clicking the 'Edit' button
+          and delete the task by clicking the 'Delete' button. <strong>The task cannot be recovered after it has been
+          deleted.</strong>
+        </p>
+      </div>
+
+      <div id="usingTheProgram-managingJobs-managingTasks-addingANewTask" class="sub-sub-sub-section">
+        <a name="usingTheProgram-managingJobs-managingTasks-addingANewPart"></a>
+        <span class="heading">Adding a New Task</span>
+        <div class="image"><img src="user_guide_images/task_new.png"></div>
+        <p>
+          To add a new task for a job, go to the job form of a new job or an existing job, and click the 'New task'
+          button above the tasks list. An empty task form will be displayed. Fill in as many fields as you can, and
+          press 'Submit' to save the task. Any fields that do not have valid inputs will be highlighted in red. To find
+          out what is wrong with a particular input value, hover the cursor over the field and a tool tip will be
+          displayed.
+        </p>
+      </div>
+
+      <div id="usingTheProgram-managingJobs-managingTasks-editingATask" class="sub-sub-sub-section">
+        <a name="usingTheProgram-managingJobs-managingTasks-editingATask"></a>
+        <span class="heading">Editing a Task</span>
+        <p>
+          To edit an existing task, go to the task details screen, and click the 'Edit' button. A task form will be
+          displayed with the task details filled in. Change the details as required and then click the 'Submit' button
+          to save your changes. Any fields that do not have valid inputs will be highlighted in red. To find out what is
+          wrong with a particular input value, hover the cursor over the field and a tool tip will be displayed.
+        </p>
+      </div>
+
+      <div id="usingTheProgram-managingJobs-managingTasks-deletingATask" class="sub-sub-sub-section">
+        <a name="usingTheProgram-managingJobs-managingTasks-deletingATask"></a>
+        <span class="heading">Deleting a Task</span>
+        <p>
+          To delete a task, go the task details screen, and click the 'Delete' button. You will then be asked whether
+          you are sure that you want to delete the task. Only click 'Yes' if you are completely sure. <strong>The task
+          cannot be recovered after it has been deleted.</strong>
+        </p>
+      </div>
+    </div>
+
+    <div id="usingTheProgram-managingJobs-invoices" class="sub-sub-section">
+      <a name="usingTheProgram-managingJobs-invoices"></a>
+      <span class="heading">Invoices</span>
+      <div class="image"><img src="user_guide_images/job_done.png"></div>
+      <p>
+        After a job has been completed, you can generate a PDF invoice for the job. If you want to send an email invoice
+        to the customer with the invoice PDF attached, click the 'Send invoice' button. An invoice will be generated and
+        the invoice will be emailed to the customer automatically. To view the invoice in your computer's PDF viewer,
+        click the 'View invoice' button. A PDF invoice will be generated and will be opened in your computer's PDF
+        viewer automatically.
+      </p>
+      <p>
+        The invoice will be saved in the folder that was specified in the PDF directory settings (for more information
+        about directory settings, go to the <a href="#settings-directories">Directory Settings</a> section). Within that
+        folder it will be saved in the location 'invoices/&lt;month&gt;_&lt;year&gt;' where '&lt;month&gt;' is the month
+        of the job and '&lt;year&gt;' is the year.
+      </p>
+    </div>
+
+    <div id="usingTheProgram-managingJobs-receipts" class="sub-sub-section">
+      <a name="usingTheProgram-managingJobs-receipts"></a>
+      <span class="heading">Receipts</span>
+      <div class="image"><img src="user_guide_images/job_paid.png"></div>
+      <p>
+        After a job has been paid for, you can generate a PDF receipt for the job. If you want to send an email receipt
+        to the customer with the receipt PDF attached, click the 'Send receipt' button. An receipt will be generated and
+        the receipt will be emailed to the customer automatically. To view the receipt in your computer's PDF viewer,
+        click the 'View receipt' button. A PDF receipt will be generated and will be opened in your computer's PDF
+        viewer automatically. The PDF receipt will have the display the date that it was generated.
+      </p>
+      <p>
+        The receipt will be saved in the folder that was specified in the PDF directory settings (for more information
+        about directory settings, go to the <a href="#settings-directories">Directory Settings</a> section). Within that
+        folder it will be saved in the location 'receipts/&lt;month&gt;_&lt;year&gt;' where '&lt;month&gt;' is the month
+        of the job and '&lt;year&gt;' is the year.
+      </p>
+    </div>
+
+    <p><a href="#usingTheProgram">Back to Using The Program</a></p>
+  </div>
+
+  <div id="usingTheProgram-managingExpenses" class="sub-section">
+    <a name="usingTheProgram-managingExpenses"></a>
+    <span class="heading">Managing Expenses</span>
+    <div class="image"><img src="user_guide_images/expense_index.png"></div>
+    <p>
+      To view the list of all of the work expenses for the month selected on the calendar on the home screen, click on
+      'Expenses' in the home screen menu. The expenses are sorted by date, descending. You can view the details of a
+      specific expense by double clicking an expense from the list, and you can add a new expense to the database by
+      clicking the 'Add new expense' button.
+    </p>
+
+    <div id="usingTheProgram-managingExpenses-viewingExpenses" class="sub-sub-section">
+      <a name="usingTheProgram-managingExpenses-viewingExpenses"></a>
+      <span class="heading">Viewing Expenses</span>
+      <div class="image"><img src="user_guide_images/expense_show.png"></div>
+      <p>
+        To view the details of a particular expense, double click a listing on the expense index. The expense details
+        screen for the selected expense will then be displayed. To edit the expense, click the 'Edit' button, and to
+        remove the expense from the database, click the 'Delete' button. <strong>The expense cannot be recovered after
+        it has been deleted.</strong>
+      </p>
+    </div>
+
+    <div id="usingTheProgram-managingExpenses-addingANewExpense" class="sub-sub-section">
+      <a name="usingTheProgram-managingExpenses-addingANewExpense"></a>
+      <span class="heading">Adding a New Expense</span>
+      <div class="image"><img src="user_guide_images/expense_new.png"></div>
+      <p>
+        To add a new expense to the database, click the 'Add new expense' button on the expense index screen. An empty
+        expense form will then be displayed. Fill in all of the fields before clicking 'Submit'. The VAT can be
+        &pound;0.00 if required, and the 'Total Price' value is calculated automatically as a sum of the price excluding
+        VAT and the VAT. If any fields have invalid inputs, they will be highlighted in red. To find out what is wrong
+        with a particular input value, hover the cursor over the field and a tool tip will be displayed.
+      </p>
+    </div>
+
+    <div id="usingTheProgram-managingExpenses-editingAnExpense" class="sub-sub-section">
+      <a name="usingTheProgram-managingExpenses-editingAnExpense"></a>
+      <span class="heading">Editing an Expense</span>
+      <p>
+        To edit an expense, go to the details screen of an expense and click the 'Edit' button. An expense form will
+        be displayed, with the values of the expense filled in. Change any values as necessary and then press the
+        'Submit' button to save your changes.  If any fields have invalid inputs, they will be highlighted in red. To
+        find out what is wrong with a particular input value, hover the cursor over the field and a tool tip will be
+        displayed.
+      </p>
+    </div>
+
+    <div id="usingTheProgram-managingExpenses-deletingAnExpense" class="sub-sub-section">
+      <a name="usingTheProgram-managingExpenses-deletingAnExpense"></a>
+      <span class="heading">Deleting an Expense</span>
+      <p>
+        To delete an expense, go to the details screen of an expense and click the 'Delete' button. You will then be
+        asked whether you are sure that you want to delete the expense. Only click 'Yes' if you are completely sure.
+        <strong>The expense cannot be recovered after it has been deleted.</strong>
+      </p>
+    </div>
+
+    <p><a href="#usingTheProgram">Back to Using The Program</a></p>
+  </div>
+
+  <div id="usingTheProgram-managingVatRates" class="sub-section">
+    <a name="usingTheProgram-managingVatRates"></a>
+    <span class="heading">Managing VAT Rates</span>
+    <div class="image"><img src="user_guide_images/vatrate_index.png"></div>
+    <p>
+      To view the VAT rate history recorded in the program's database, click on 'VAT Rates' on the home screen menu. You
+      will be given a list of all of the VAT rate changes, sorted by date, ascending. To view the details of a specific
+      VAT rate, double click an entry in the list. To add a new VAT rate, click on the 'Add new VAT rate' button. It is
+      recommended that you enter as many VAT rates as possible into the database in order to form a complete VAT rate
+      history for the United Kingdom. If any VAT rate changes are announced, then it is recommended that you enter this
+      VAT rate into the database as soon as possible, even if the change is due a long time into the future.
+    </p>
+
+    <div id="usingTheProgram-managingVatRates-viewingVatRates" class="sub-sub-section">
+      <a name="usingTheProgram-managingVatRates-viewingVatRates"></a>
+      <span class="heading">Viewing VAT Rates</span>
+      <div class="image"><img src="user_guide_images/vatrate_show.png"></div>
+      <p>
+        To view a VAT rate, double click on its listing in the VAT rate index screen. The details of the VAT rate will
+        then be displayed. To edit the VAT rate, click the 'Edit' button, and to delete the VAT rate, click the 'Delete'
+        button. <strong>The VAT rate cannot be recovered after it has been deleted.</strong>
+      </p>
+    </div>
+
+    <div id="usingTheProgram-managingVatRates-addingANewVatRate" class="sub-sub-section">
+      <a name="usingTheProgram-managingVatRates-addingANewVatRate"></a>
+      <span class="heading">Adding a New VAT Rate</span>
+      <div class="image"><img src="user_guide_images/vatrate_new.png"></div>
+      <p>
+        To add a new VAT rate to the VAT rate history, click the 'Add new VAT rate' button on the VAT rate index. An
+        empty VAT rate form will then be displayed. Fill in the details for the VAT rate and then click the 'Submit'
+        button to save the VAT rate to the database. If any fields have invalid inputs, they will be highlighted in red.
+        To find out what is wrong with a particular input value, hover the cursor over the field and a tool tip will be
+        displayed.
+      </p>
+    </div>
+
+    <div id="usingTheProgram-managingVatRates-editingAVatRate" class="sub-sub-section">
+      <a name="usingTheProgram-managingVatRates-editingAVatRate"></a>
+      <span class="heading">Editing a VAT Rate</span>
+      <p>
+        To edit a VAT rate, go to its details screen and click the 'Edit' button. A form with the VAT rate details
+        filled in will be displayed. Edit the field values as required and click the 'Submit' button to save your
+        changes. If any fields have invalid inputs, they will be highlighted in red. To find out what is wrong with a
+        particular input value, hover the cursor over the field and a tool tip will be displayed.
+      </p>
+    </div>
+
+    <div id="usingTheProgram-managingVatRates-deletingAVatRate" class="sub-sub-section">
+      <a name="usingTheProgram-managingVatRates-deletingAVatRate"></a>
+      <span class="heading">Deleting a VAT Rate</span>
+      <p>
+        To delete a VAT rate, go to its details screen and click the 'Delete' button. You will then be asked whether you
+        are sure that you want to delete the VAT rate. Only click 'Yes' if you are completely sure. <strong>The VAT rate
+        cannot be recovered after it has been deleted.</strong>
+      </p>
+    </div>
+
+    <p><a href="#usingTheProgram">Back to Using The Program</a></p>
+  </div>
+
+  <div id="usingTheProgram-reports" class="sub-section">
+    <a name="usingTheProgram-reports"></a>
+    <span class="heading">Reports</span>
+
+    <div id="usingTheProgram-reports-monthlyReports" class="sub-sub-section">
+      <a name="usingTheProgram-reports-monthlyReports"></a>
+      <span class="heading">Monthly Reports</span>
+      <p>
+        To generate a report for a month, go to the home screen, and select a month on the calendar (for more
+        information about the home screen, go to the <a href="#usingTheProgram-homeScreen">Home Screen</a> section).
+        Then click on the 'Generate report' button on the menu. A report for the selected month will be generated and
+        will be opened automatically in your computer's PDF reader. The report will be saved in the folder specified by
+        the 'PDF directory' setting on the settings screen (for more information about directory settings, go to the
+        <a href="#settings-directories">Directory Settings</a> section). Within that folder it will be saved in the
+        directory 'pdfs/reports/&lt;year&gt;' where '&lt;year&gt;' is the year of the date selected in the calendar.
+        The PDF will have the file name 'report_&lt;month&gt;_&lt;year&gt;.pdf' where '&lt;month&gt;' is the month name
+        of the date selected in the calendar.
+      </p>
+    </div>
+
+    <div id="usingTheProgram-reports-reportWizard" class="sub-sub-section">
+      <a name="usingTheProgram-reports-reportWizard"></a>
+      <span class="heading">Report Wizard</span>
+      <div class="image"><img src="user_guide_images/report_wizard.png"></div>
+      <p>
+        The report wizard allows you to generate a report for a specific time period. Simply choose a start date and an
+        end date, and click 'Submit'. You will then be allowed to specify a file name and save location for the report
+        (the save location defaults to the directory where the program automatically saves monthly reports). A report
+        will be generated and will automatically be opened in your computer's PDF reader.
+      </p>
+    </div>
+
+    <p><a href="#usingTheProgram">Back to Using The Program</a></p>
+  </div>
+
+  <div id="usingTheProgram-emails" class="sub-section">
+    <a name="usingTheProgram-emails"></a>
+    <span class="heading">Emails</span>
+    <p>
+      Whenever an email is being sent by the program, the following dialog will be displayed to indicate this:
+    </p>
+    <div class="image"><img src="user_guide_images/sending_emails.png"></div>
+    <p>
+      This dialog will disappear once all of the emails have either been sent or have failed to send.
+    </p>
+    <p>
+      If at any time an email is unable to be sent after three attempts, the following dialog will be displayed:
+    </p>
+    <div class="image"><img src="user_guide_images/email_failed.png"></div>
+    <p>
+      If this happens, make sure that the customer email address and your email host settings are correct (for more
+      information about email host settings, go to the <a href="#settings-email-host">Email Host Settings</a> section).
+    </p>
+    <p>
+      If you attempt to close the program while emails are still being sent, you will be asked whether you would like to
+      cancel the emails or not. If you want the emails to be cancelled, you will be asked to confirm your choice.
+      <strong>Once emails have been cancelled, they cannot be retrieved.</strong> If you do not want the emails to be
+      cancelled, you will be asked whether you would like to continue to use the program or have the program close
+      automatically once the emails have all been sent. If you choose to have the program close automatically, the
+      following dialog will be displayed:
+    </p>
+    <div class="image"><img src="user_guide_images/waiting_for_emails.png"></div>
+    <p>
+      This dialog will disappear and the program will close once all of the emails have either been sent or have failed
+      to send.
+    </p>
+  </div>
+
+  <p><a href="#contents">Back to contents</a></p>
+</div>
+
+<div id="backups" class="section">
+  <a name="backups"></a>
+  <span class="heading">Backups</span>
+  <p><a href="#contents">Back to contents</a></p>
+  <p>
+    Keeping backups of your data is extremely important. Thankfully, the program takes care of backups for you, so you
+    do not need to worry about making backups yourself. Is is recommended that you have the program settings set so
+    that backups are made to an external devise or to a folder that is synchronised with an online cloud service.
+  </p>
+  <p>
+    At the beginning of every week, the program creates a new folder in the backup directory (specified in the settings)
+    with the year and week number. Every time the program is closed, it copies files in the database folder
+    (specified in the settings) and puts them in the current week's backup folder. This assures that the latest data is
+    backed up, while at the same time creating a backup history.
+  </p>
+  <p>
+    If your database files are corrupted, deleted, or lost in any other way, then copy the backup files for the latest
+    week into the folder that the program is stored in. You will then be able to continue using the program with minimal
+    data loss.
+  </p>
+  <p><a href="#contents">Back to contents</a></p>
+</div>
+
+<div id="troubleshooting" class="section">
+  <a name="troubleshooting"></a>
+  <span class="heading">Troubleshooting and Frequently Asked Questions</span>
+  <p><a href="#contents">Back to contents</a></p>
+  <ol>
+    <li><a href="#faq-q1">An error message 'Could not open file something.dat' appears. How do I fix this?</a></li>
+    <li><a href="#faq-q2">
+      When sending an email, the 'Sending emails' dialog box pops up and doesn't go away after waiting a long time.
+      How do I fix this?
+    </a></li>
+    <li><a href="#faq-q3">
+      When sending an email, the message 'Email to customer@email.com could not be sent' keeps popping up. How do I fix
+      this?
+    </a></li>
+    <li><a href="#faq-q4">What if I said that a job has been paid for, by mistake?</a></li>
+    <li><a href="#faq-q5">How can I print hard copies of invoices, receipts and reports?</a></li>
+    <li><a href="#faq-q6">How can I synchronise the program across multiple computers?</a></li>
+  </ol>
+  <hr>
+
+  <div id="faq-q1" class="faq-answer">
+    <a name="faq-q1"></a>
+    <strong>An error message 'Could not open file something.dat' appears. How do I fix this?</strong>
+    <p>
+      Either the program could not find the file or the file being used by another program. First, make sure that the
+      file is present in the database folder that is specified in the settings. If the file is present, then make sure
+      that the file is not being used by another program. If the file is not present in the database folder, then
+      either copy the latest version of the file from the backups folder into the database folder, or restart the
+      program (the program will automatically recreate the missing database file for you on start up).
+    </p>
+    <p><a href="#troubleshooting">Back to Troubleshooting and Frequently Asked Questions</a></p>
+  </div>
+
+  <div id="faq-q2" class="faq-answer">
+    <a name="faq-q2"></a>
+    <strong>
+      When sending an email, the 'Sending emails' dialog box pops up and doesn't go away after waiting a long time.
+      How do I fix this?
+    </strong>
+    <p>
+      There is likely to be a problem with your email host settings, or with the customer's email address that the email
+      is being set to. To check your email host settings, select the 'Email Host' tab on the settings screen. If your
+      email host settings are correct, check the email address of the customer. Once you have verified that these are
+      correct, close the program, making sure to cancel the sending of the emails. Then reopen the program and send the
+      emails again.
+    </p>
+    <p><a href="#troubleshooting">Back to Troubleshooting and Frequently Asked Questions</a></p>
+  </div>
+
+  <div id="faq-q3" class="faq-answer">
+    <a name="faq-q3"></a>
+    <strong>
+      When sending an email, the message 'Email to customer@email.com could not be sent' keeps popping up. How do I fix
+      this?
+    </strong>
+    <p>
+      Please see the answer to the question '<a href="#faq-q2">When sending an email, the 'Sending emails' dialog box
+      pops up and doesn't go away after waiting a long time. How do I fix this?</a>'
+    </p>
+    <p><a href="#troubleshooting">Back to Troubleshooting and Frequently Asked Questions</a></p>
+  </div>
+
+  <div id="faq-q4" class="faq-answer">
+    <a name="faq-q4"></a>
+    <strong>What if I said that a job has been paid for, by mistake?</strong>
+    <p>
+      You can change the payment state of a job at any time by going to the job's edit screen and changing value of the
+      'Payment state' drop down box. See the <a href="#usingTheProgram-managingJobs-editingAJob">Editing a Job</a>
+      section for more information.
+    </p>
+    <p><a href="#troubleshooting">Back to Troubleshooting and Frequently Asked Questions</a></p>
+  </div>
+
+  <div id="faq-q5" class="faq-answer">
+    <a name="faq-q5"></a>
+    <strong>How can I print hard copies of invoices, receipts and reports?</strong>
+    <p>
+      To print out a PDF generated by the program, you need to open the PDF in your computer's PDF reader, and then
+      print from there (typically using the keys Ctrl+P or by selecting 'Print' from the 'File' menu). To find the PDFs,
+      navigate to the folder where the PDFs are stored (which was specified in the settings).
+    </p>
+    <p>
+      For specific advice on generating and viewing invoices or receipts, go to the
+      <a href="#usingTheProgram-managingJobs-invoices">Invoices</a> or
+      <a href="#usingTheProgram-managingJobs-receipts">Receipts</a> sections, respectively. For advice on generating and
+      viewing reports, go to the <a href="#usingTheProgram-reports">Reports</a> section.
+    </p>
+    <p><a href="#troubleshooting">Back to Troubleshooting and Frequently Asked Questions</a></p>
+  </div>
+
+  <div id="faq-q6" class="faq-answer">
+    <a name="faq-q6"></a>
+    <strong>How can I synchronise the program across multiple computers?</strong>
+    <p>
+      To have the database, backups, settings and/or PDFs synchronised across multiple computers or operating systems,
+      you will need to specify a folder that is automatically synchronised across multiple computers in the settings
+      for database/backup/PDF directories (for more information about folder settings, go to the
+      <a href="#settings-directories">Directory Settings</a> section). On all of the computers that the program is
+      installed on, the settings will need to point to this folder. It is recommended that you set up all of your
+      computers for this before using the program fully, so that there is no risk of data accidentally being
+      overwritten. If you have the database stored in a synchronised folder, make sure that when setting up a new
+      installation of the program on another computer, you choose 'Delete file and keep existing file' if a 'File
+      Already Exists' dialog appears when setting the directory settings to point to the synchronised folder.
+    </p>
+    <p>
+      A recommended service for synchronising files across multiple computers is Dropbox. Please visit
+      <a href="https://www.dropbox.com" target="_blank">www.dropbox.com</a> for more information.
+    </p>
+    <p><a href="#troubleshooting">Back to Troubleshooting and Frequently Asked Questions</a></p>
+  </div>
+  <p><a href="#contents">Back to contents</a></p>
+</div>
+
+</body>

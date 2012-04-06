@@ -58,8 +58,11 @@ void ReportWizard::on_pushButton_submit_clicked()
         return;
     }
 
+    QString reportPath = SettingForm::getPdfDirectoryWithoutSlash() + "/reports";
+    if (!QDir(reportPath).exists()) QDir().mkpath(reportPath);
+
     QString suggestedFilename
-            = SettingForm::getPdfDirectoryWithoutSlash() + "/reports/report_" + toString(startDate.day()).c_str()
+            = reportPath + "/report_" + toString(startDate.day()).c_str()
             + QDate::longMonthName(startDate.month()) + toString(startDate.year()).c_str() + "_to_"
             + toString(endDate.day()).c_str() + QDate::longMonthName(endDate.month()) + '_'
             + toString(endDate.year()).c_str() + ".pdf";

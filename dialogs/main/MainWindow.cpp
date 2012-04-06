@@ -346,11 +346,12 @@ void MainWindow::on_pushButton_settings_clicked()
 
 void MainWindow::on_pushButton_help_clicked()
 {
-    QFile::copy(":html/help.html", QDir::currentPath() + "/help.html");
+    const QString userGuideFileName = QDir::currentPath() + "/user_guide.html";
 
-    const QString helpFileName = QDir::currentPath() + "/help.html";
-    if (QFile::exists(helpFileName)) QDesktopServices::openUrl(QUrl("file:///" + helpFileName));
-    else showErrorDialog(("File '" + helpFileName + "' could not be opened").toStdString().c_str());
+    QFile::copy(":html/user_guide.html", userGuideFileName);
+
+    if (QFile::exists(userGuideFileName)) QDesktopServices::openUrl(QUrl("file:///" + userGuideFileName));
+    else showErrorDialog(("File '" + userGuideFileName + "' could not be opened").toStdString().c_str());
 }
 
 void MainWindow::on_pushButton_exit_clicked()
