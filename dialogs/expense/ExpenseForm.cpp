@@ -18,7 +18,7 @@ ExpenseForm::ExpenseForm(Expense &expense, QWidget *parent)
     ui->setupUi(this);
     ui->label_businessExpenseFormTitle->setText(formType == NEW ? "New Expense" : "Editing Expense");
 
-    updateView();
+    updateView(true);
 }
 
 ExpenseForm::~ExpenseForm()
@@ -26,7 +26,7 @@ ExpenseForm::~ExpenseForm()
     delete ui;
 }
 
-void ExpenseForm::updateView()
+void ExpenseForm::updateView(const bool updatePriceFields)
 {
     ui->dateTimeEdit_date->setDateTime(Date(expense.getDate()));
 
@@ -34,8 +34,11 @@ void ExpenseForm::updateView()
     ui->plainTextEdit_description->setPlainText(expense.getDescription());
     ui->plainTextEdit_description->blockSignals(false);
 
-    ui->doubleSpinBox_priceExclVat->setValue(expense.getPrice());
-    ui->doubleSpinBox_vat->setValue(expense.getVat());
+    if (updatePriceFields)
+    {
+        ui->doubleSpinBox_priceExclVat->setValue(expense.getPrice());
+        ui->doubleSpinBox_vat->setValue(expense.getVat());
+    }
 
     double totalPrice = expense.getPrice() + expense.getVat();
     ui->label_totalPriceE->setText(to2Dp(toString(totalPrice).c_str()).prepend(L'£'));

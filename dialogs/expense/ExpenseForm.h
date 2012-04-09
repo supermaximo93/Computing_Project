@@ -26,7 +26,7 @@ public:
     explicit ExpenseForm(Expense &expense, QWidget *parent = NULL);
     ~ExpenseForm();
 
-    void updateView();
+    void updateView(bool updatePriceFields = false);
 
 private slots:
     void on_pushButton_submit_released();

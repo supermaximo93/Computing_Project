@@ -86,7 +86,7 @@ private:
 
     bool setRecordData();
 
-    void updateCharges();
+    void updateCharges(bool updateFields = false);
     double getTotalChargeExclVat();
     double getTotalChargeInclVat();
 };

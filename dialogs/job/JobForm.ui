@@ -283,7 +283,7 @@ QListWidget, QTableWidget, QPlainTextEdit {
     <rect>
      <x>70</x>
      <y>370</y>
-     <width>301</width>
+     <width>313</width>
      <height>125</height>
     </rect>
    </property>
@@ -334,7 +334,7 @@ QListWidget, QTableWidget, QPlainTextEdit {
        <string>£</string>
       </property>
       <property name="maximum">
-       <double>100000.000000000000000</double>
+       <double>1000000000.000000000000000</double>
       </property>
      </widget>
     </item>

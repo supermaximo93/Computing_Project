@@ -50,7 +50,7 @@ void JobForm::updateView()
     {
         const Customer &customer = customers[i];
         const int customerId = customer.getId();
-        if ((formType == EDIT) && (customerId == job.getCustomerId())) customerIndex = i;
+        if (customerId == job.getCustomerId()) customerIndex = i;
 
         ui->comboBox_customer->addItem(createFullName(customer.getForename(), customer.getSurname()), customerId);
     }
@@ -76,7 +76,7 @@ void JobForm::updateView()
     for (unsigned i = 0; i < tasks.size(); ++i)
         ui->listWidget_tasksE->addItem(limitLength(tasks[i].getDescription(), 40));
 
-    updateCharges();
+    updateCharges(true);
 
     ui->comboBox_completionState->setCurrentIndex(job.getCompletionState());
     ui->comboBox_paidBy->setCurrentIndex(job.getPaymentMethod());
@@ -169,9 +169,9 @@ bool JobForm::setRecordData()
     return success;
 }
 
-void JobForm::updateCharges()
+void JobForm::updateCharges(const bool updateFields)
 {
-    ui->doubleSpinBox_labourCharge->setValue(job.getLabourCharge());
+    if (updateFields) ui->doubleSpinBox_labourCharge->setValue(job.getLabourCharge());
     ui->label_vatE->setText((toString(Globals::vatRate(Date(job.getDate()))) + "%").c_str());
     ui->label_totalChargeExclVatE->setText(to2Dp(toString(getTotalChargeExclVat()).c_str()).prepend(L'£'));
     ui->label_totalChargeInclVatE->setText(to2Dp(toString(getTotalChargeInclVat()).c_str()).prepend(L'£'));
@@ -255,7 +255,6 @@ void JobForm::on_doubleSpinBox_labourCharge_valueChanged(double value)
     {
         success = false;
         ui->doubleSpinBox_labourCharge->setToolTip(e.what());
-        ui->doubleSpinBox_labourCharge->setValue(job.getLabourCharge());
         ui->doubleSpinBox_labourCharge->setStyleSheet("QDoubleSpinBox { background-color: red; }");
     }
     if (success)
