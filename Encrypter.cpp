@@ -50,6 +50,7 @@ void Encrypter::encryptFile(const char *filename, const bool giveFileNotFoundErr
             }
 
             encryptedFile.close();
+            file.close();
 
             // Delete the original file and rename the temporary file to the original file name
             remove(filename);
@@ -57,7 +58,7 @@ void Encrypter::encryptFile(const char *filename, const bool giveFileNotFoundErr
             if (QFile::exists(encryptedFileName.c_str())) remove(encryptedFileName.c_str());
         }
         else cout << "File " << filename << " could not be encrypted" << endl;
-        file.close();
+        if (file.is_open()) file.close();
     }
     else if (giveFileNotFoundError) cout << "File " << filename << " could not be opened" << endl;
 
