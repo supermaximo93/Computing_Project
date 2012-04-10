@@ -136,7 +136,7 @@ void getInvoiceReceiptAttributes(Attributes &attributes, const Job &job)
 
     // Loop through the parts to calculate total prices and also to generate HTML for the rows of the parts table in
     // the PDF
-    double totalPartPriceExclVat = 0.0, totalPartPriceInclVat = 0.0;
+    double totalPartPriceExclVat = 0.0, totalPartVat = 0.0;
     QString partHtml = "";
     for (unsigned i = 0; i < parts->size(); ++i)
     {
@@ -155,17 +155,21 @@ void getInvoiceReceiptAttributes(Attributes &attributes, const Job &job)
         partHtml += "</td></tr>";
 
         totalPartPriceExclVat += part.getPrice();
-        totalPartPriceInclVat += part.getPrice() * (1.0 + (part.getVatRate() / 100.0));
+        totalPartVat += part.getPrice() * (part.getVatRate() / 100.0);
     }
     attributes["parts-rows"] = partHtml;
 
     // Set the price attributes
     attributes["parts-totalpriceexclvat"] = to2Dp(toString(totalPartPriceExclVat).c_str());
-    attributes["parts-totalpriceinclvat"] = to2Dp(toString(totalPartPriceInclVat).c_str());
+    attributes["parts-vat"] = to2Dp(toString(totalPartVat).c_str());
+    attributes["parts-totalpriceinclvat"] = to2Dp(toString(totalPartPriceExclVat + totalPartVat).c_str());
     attributes["job-labourcharge"] = to2Dp(toString(job.getLabourCharge()).c_str());
     attributes["vatrate"] = toString(Globals::vatRate(job.getDate())).c_str();
     attributes["job-vat"] = to2Dp(toString(job.getVat()).c_str());
-    attributes["totalprice"] = to2Dp(toString(job.getLabourCharge() + job.getVat() + totalPartPriceInclVat).c_str());
+    attributes["job-total"] = to2Dp(toString(job.getLabourCharge() + job.getVat()).c_str());
+    attributes["totalprice-exclvat"] = to2Dp(toString(job.getLabourCharge() + totalPartPriceExclVat).c_str());
+    attributes["totalprice-inclvat"]
+            = to2Dp(toString(job.getLabourCharge() + job.getVat() + totalPartPriceExclVat + totalPartVat).c_str());
 }
 
 bool PdfGenerator::generateInvoice(const char *fileName_, const Job &job)

@@ -143,9 +143,18 @@
   <h3>Totals</h3>
   <table>
     <tr>
-      <td class="tbl-l">Parts total:</td>
+      <td class="tbl-l">Parts total excl VAT:</td>
+      <td class="tbl-r">&#163;<$ parts-totalpriceexclvat $></td>
+    </tr>
+    <tr>
+      <td class="tbl-l">Parts VAT:</td>
+      <td class="tbl-r">&#163;<$ parts-vat $></td>
+    </tr>
+    <tr>
+      <td class="tbl-l">Parts total incl VAT:</td>
       <td class="tbl-r">&#163;<$ parts-totalpriceinclvat $></td>
     </tr>
+    <tr><td class="tbl-l">&nbsp;</td><td class="tbl-r">&nbsp;</td></tr>
     <tr>
       <td class="tbl-l">Labour charge excl VAT:</td>
       <td class="tbl-r">&#163;<$ job-labourcharge $></td>
@@ -155,8 +164,17 @@
       <td class="tbl-r">&#163;<$ job-vat $></td>
     </tr>
     <tr>
-      <td class="tbl-l"><strong>Total:</strong></td>
-      <td class="tbl-r">&#163;<$ totalprice $></td>
+      <td class="tbl-l">Labour charge incl VAT:</td>
+      <td class="tbl-r">&#163;<$ job-total $></td>
+    </tr>
+    <tr><td class="tbl-l">&nbsp;</td><td class="tbl-r">&nbsp;</td></tr>
+    <tr>
+      <td class="tbl-l">Total excl VAT:</td>
+      <td class="tbl-r">&#163;<$ totalprice-exclvat $></td>
+    </tr>
+    <tr>
+      <td class="tbl-l"><strong>Total incl VAT:</strong></td>
+      <td class="tbl-r">&#163;<$ totalprice-inclvat $></td>
     </tr>
     <$ extratotalrows $>
   </table>
