@@ -210,6 +210,19 @@ void JobShow::on_pushButton_sendInvoice_released()
 {
     generateInvoice();
 
+    if (strlen(SettingController::getSetting(SettingForm::keyEmailHost).getValue()) == 0)
+    { // If no email host is specified, use a mailto link to open the user's email client
+        QString mailtoLink
+                = QString("mailto:") + customerEmailAddress.c_str()
+                + "?subject=" + SettingController::getSetting(SettingForm::keyInvoiceSubject).getValue()
+                + "&body=" + SettingController::getSetting(SettingForm::keyInvoiceBody).getValue()
+                + "&attachment=\"" + invoiceFileName.c_str() + "\"";
+
+        QDesktopServices::openUrl(QUrl(mailtoLink));
+
+        return;
+    }
+
     EmailDetails emailDetails(customerEmailAddress.c_str(),
                               SettingController::getSetting(SettingForm::keyInvoiceSubject).getValue(),
                               SettingController::getSetting(SettingForm::keyInvoiceBody).getValue(),
@@ -279,6 +292,19 @@ void JobShow::on_pushButton_markAsPaid_released()
 void JobShow::on_pushButton_sendReceipt_released()
 {
     generateReceipt();
+
+    if (strlen(SettingController::getSetting(SettingForm::keyEmailHost).getValue()) == 0)
+    { // If no email host is specified, use a mailto link to open the user's email client
+        QString mailtoLink
+                = QString("mailto:") + customerEmailAddress.c_str()
+                + "?subject=" + SettingController::getSetting(SettingForm::keyReceiptSubject).getValue()
+                + "&body=" + SettingController::getSetting(SettingForm::keyReceiptBody).getValue()
+                + "&attachment=\"" + receiptFileName.c_str() + "\"";
+
+        QDesktopServices::openUrl(QUrl(mailtoLink));
+
+        return;
+    }
 
     EmailDetails emailDetails(customerEmailAddress.c_str(),
                               SettingController::getSetting(SettingForm::keyReceiptSubject).getValue(),

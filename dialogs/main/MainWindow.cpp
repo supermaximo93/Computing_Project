@@ -210,15 +210,32 @@ void MainWindow::on_label_remindCustomers_linkActivated(const QString &)
     unpaidJobsReminderClicked = true;
     ui->label_remindCustomers->setHidden(true);
 
-    for (unsigned i = 0; i < unpaidJobs->size(); ++i)
+    if (strlen(SettingController::getSetting(SettingForm::keyEmailHost).getValue()) == 0)
+    { // If no email host is specified, use a mailto link to open the user's email client
+        for (unsigned i = 0; i < unpaidJobs->size(); ++i)
+        {
+            Customer customer = CustomerController::getCustomer(unpaidJobs->at(i).getCustomerId());
+
+            QString mailtoLink
+                    = QString("mailto:") + customer.getEmailAddress()
+                    + "?subject=" + SettingController::getSetting(SettingForm::keyReminderSubject).getValue()
+                    + "&body=" + SettingController::getSetting(SettingForm::keyReminderBody).getValue();
+
+            QDesktopServices::openUrl(QUrl(mailtoLink));
+        }
+    }
+    else
     {
-        Customer customer = CustomerController::getCustomer(unpaidJobs->at(i).getCustomerId());
+        for (unsigned i = 0; i < unpaidJobs->size(); ++i)
+        {
+            Customer customer = CustomerController::getCustomer(unpaidJobs->at(i).getCustomerId());
 
-        EmailDetails email(customer.getEmailAddress(),
-                           SettingController::getSetting(SettingForm::keyReminderSubject).getValue(),
-                           SettingController::getSetting(SettingForm::keyReminderBody).getValue());
+            EmailDetails email(customer.getEmailAddress(),
+                               SettingController::getSetting(SettingForm::keyReminderSubject).getValue(),
+                               SettingController::getSetting(SettingForm::keyReminderBody).getValue());
 
-        EmailerThread::enqueueEmail(email);
+            EmailerThread::enqueueEmail(email);
+        }
     }
 }
 
@@ -325,7 +342,6 @@ void MainWindow::checkForUnpaidJobs()
     Databases::jobs().keepRecords(*unpaidJobs, NestedFunctions::isJobDoneButUnpaid, NULL);
 
     ui->label_remindCustomers->setHidden(unpaidJobs->empty());
-
 }
 
 void MainWindow::updateFinancialMonthText()
