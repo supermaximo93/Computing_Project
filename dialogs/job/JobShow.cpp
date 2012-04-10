@@ -15,6 +15,10 @@ using namespace std;
 #include <QUrl>
 #include <QDesktopServices>
 
+#ifdef _WIN32
+#include <QProcess>
+#endif
+
 #include "PaymentMethodDialog.h"
 
 #include "Job.h"
@@ -205,7 +209,7 @@ void JobShow::on_pushButton_markAsDone_released()
 {
     setNewJobCompletionState(Job::DONE_UNPAID);
 }
-
+#include <QClipboard>
 void JobShow::on_pushButton_sendInvoice_released()
 {
     generateInvoice();
@@ -215,10 +219,18 @@ void JobShow::on_pushButton_sendInvoice_released()
         QString mailtoLink
                 = QString("mailto:") + customerEmailAddress.c_str()
                 + "?subject=" + SettingController::getSetting(SettingForm::keyInvoiceSubject).getValue()
-                + "&body=" + SettingController::getSetting(SettingForm::keyInvoiceBody).getValue()
-                + "&attachment=\"" + invoiceFileName.c_str() + "\"";
+                + "&body=" + SettingController::getSetting(SettingForm::keyInvoiceBody).getValue();
 
         QDesktopServices::openUrl(QUrl(mailtoLink));
+
+#ifdef _WIN32
+        QString command = QString("explorer.exe /select,") + QDir::toNativeSeparators(invoiceFileName.c_str());
+        system(command.toStdString().c_str());
+#else
+        QString invoiceDirectory = invoiceFileName.c_str();
+        invoiceDirectory.chop(invoiceDirectory.length() - invoiceDirectory.lastIndexOf('/'));
+        QDesktopServices::openUrl(QUrl(QString("file:///") + invoiceDirectory));
+#endif
 
         return;
     }
@@ -298,10 +310,18 @@ void JobShow::on_pushButton_sendReceipt_released()
         QString mailtoLink
                 = QString("mailto:") + customerEmailAddress.c_str()
                 + "?subject=" + SettingController::getSetting(SettingForm::keyReceiptSubject).getValue()
-                + "&body=" + SettingController::getSetting(SettingForm::keyReceiptBody).getValue()
-                + "&attachment=\"" + receiptFileName.c_str() + "\"";
+                + "&body=" + SettingController::getSetting(SettingForm::keyReceiptBody).getValue();
 
         QDesktopServices::openUrl(QUrl(mailtoLink));
+
+#ifdef _WIN32
+        QString command = QString("explorer.exe /select,") + QDir::toNativeSeparators(receiptFileName.c_str());
+        system(command.toStdString().c_str());
+#else
+        QString receiptDirectory = receiptFileName.c_str();
+        receiptDirectory.chop(receiptDirectory.length() - receiptDirectory.lastIndexOf('/'));
+        QDesktopServices::openUrl(QUrl(QString("file:///") + receiptDirectory));
+#endif
 
         return;
     }
