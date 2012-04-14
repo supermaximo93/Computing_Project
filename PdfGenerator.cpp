@@ -180,6 +180,11 @@ bool PdfGenerator::generateInvoice(const char *fileName_, const Job &job)
     getInvoiceReceiptAttributes(attributes, job);
     attributes["title"] = "INVOICE";
 
+    attributes["extracontent"] =
+            "<p>Cheque Payments to 'Ian Foster Services' address above. For Credit/Debit Card payments please contact "
+            "Ian on number above.<br/>For Bacs payments; Sort Code 089250. Account No 70772614, Reference, your name."
+            "<br/>We thank you for your custom.</p>";
+
     GET_WEBVIEW_AND_HTML();
     parseHtml(html, attributes);
     view.setHtml(html);
