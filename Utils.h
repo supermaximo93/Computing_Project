@@ -60,6 +60,7 @@ void moveFile(const char *sourceFilename, const char *destinationFilename);
 void moveDirectory(const char *sourceDirectoryPath, const char *destinationDirectoryPath);
 
 QString to2Dp(const QString &str);
+double doubleTo2Dp(const double number);
 
 template <typename type>
 std::string toString(const type &variable)

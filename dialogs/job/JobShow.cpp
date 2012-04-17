@@ -130,10 +130,11 @@ double JobShow::getTotalChargeExclVat()
 
 double JobShow::getTotalChargeInclVat()
 {
-    double totalCharge = job.getLabourCharge() * (1.0 + (Globals::vatRate(Date(job.getDate())) / 100.0));
+    double totalCharge = doubleTo2Dp(job.getLabourCharge() * (1.0 + (Globals::vatRate(Date(job.getDate())) / 100.0)));
 
     for (unsigned i = 0; i < parts.size(); ++i)
-        totalCharge += parts[i].getPrice() * parts[i].getQuantity() * (1.0 + (parts[i].getVatRate() / 100.0));
+        totalCharge
+                += doubleTo2Dp((parts[i].getPrice()*parts[i].getQuantity()) * (1.0 + (parts[i].getVatRate() / 100.0)));
 
     return totalCharge;
 }

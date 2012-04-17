@@ -312,3 +312,8 @@ QString to2Dp(const QString &str)
     }
     }
 }
+
+double doubleTo2Dp(const double number)
+{
+    return strtod(to2Dp(toString(number).c_str()).toStdString().c_str(), NULL);
+}

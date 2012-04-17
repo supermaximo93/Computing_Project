@@ -142,7 +142,7 @@ void getInvoiceReceiptAttributes(Attributes &attributes, const Job &job)
     {
         Part &part = parts->at(i);
         const double partPriceExclVat = part.getPrice() * part.getQuantity(),
-                partVat = part.getPrice() * (part.getVatRate() / 100.0) * part.getQuantity();
+                partVat = doubleTo2Dp(partPriceExclVat * (part.getVatRate() / 100.0));
 
         partHtml += "<tr><td class='text-mid'>";
         partHtml += toString(part.getQuantity()).c_str();
@@ -285,7 +285,7 @@ bool PdfGenerator::generateReport(const char *fileName_, const Date &startDate, 
             {
                 Part &part = parts->at(j);
                 jobChargeExclVat += part.getPrice() * part.getQuantity();
-                jobVat += part.getPrice() * (part.getVatRate() / 100.0) * part.getQuantity();
+                jobVat += doubleTo2Dp((part.getPrice()  * part.getQuantity()) * (part.getVatRate() / 100.0));
             }
 
             incomeExclVat += jobChargeExclVat;

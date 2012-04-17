@@ -27,7 +27,7 @@ Job::Job(const int customerId, const time_t date, const char *newDescription, co
          const int completionState, const int paymentMethod, const time_t paymentDate) :
     customerId(customerId), completionState(completionState), paymentMethod(paymentMethod),
     date(date == 0 ? time(NULL) : date), paymentDate(paymentDate == 0 ? this->date : paymentDate),
-    labourCharge(labourCharge), vat(labourCharge * Globals::vatRate(this->date))
+    labourCharge(labourCharge), vat(doubleTo2Dp(labourCharge * (Globals::vatRate(this->date) / 100.0)))
 {
     description = new char[maxDescriptionLength + 1];
     strcpy(description, newDescription);
@@ -201,7 +201,7 @@ void Job::setLabourCharge(const double newLabourCharge)
     string errorMessage;
     if (isValidLabourCharge(newLabourCharge, errorMessage)) labourCharge = newLabourCharge;
     else throw std::runtime_error(errorMessage);
-    vat = labourCharge * (Globals::vatRate(date) / 100.0);
+    vat = doubleTo2Dp(labourCharge * (Globals::vatRate(date) / 100.0));
 }
 
 bool Job::isValidLabourCharge(const double value, std::string &errorMessage)

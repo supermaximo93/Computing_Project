@@ -186,11 +186,12 @@ double JobForm::getTotalChargeExclVat()
 
 double JobForm::getTotalChargeInclVat()
 {
-    double totalCharge =
-            ui->doubleSpinBox_labourCharge->value() * (1.0 + (Globals::vatRate(Date(job.getDate())) / 100.0));
+    double totalCharge = doubleTo2Dp(ui->doubleSpinBox_labourCharge->value()
+                                     * (1.0 + (Globals::vatRate(Date(job.getDate())) / 100.0)));
 
     for (unsigned i = 0; i < parts.size(); ++i)
-        totalCharge += parts[i].getPrice() * parts[i].getQuantity() * (1.0 + (parts[i].getVatRate() / 100.0));
+        totalCharge
+                += doubleTo2Dp((parts[i].getPrice()*parts[i].getQuantity()) * (1.0 + (parts[i].getVatRate() / 100.0)));
 
     return totalCharge;
 }
