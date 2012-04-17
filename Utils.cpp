@@ -10,6 +10,7 @@
 #include <stdexcept>
 #include <algorithm>
 #include <ctime>
+#include <cmath>
 using namespace std;
 
 #include <QString>
@@ -291,6 +292,23 @@ QString to2Dp(const QString &str)
     {
     case 1: return str + "00";
     case 2: return str + "0";
-    default: return str;
+    case 3: return str;
+    default:
+    {
+        QString decimals = '0' + str.mid(pointIndex, str.length() - pointIndex);
+        const double roundedDecimals = round(strtod(decimals.toStdString().c_str(), NULL) * 100.0) / 100.0;
+
+        QString decimalString = toString(roundedDecimals).c_str();
+        switch (decimalString.length())
+        {
+        case 0: decimalString += "0.00"; break;
+        case 1: decimalString += ".00"; break;
+        case 2: decimalString += "00"; break;
+        case 3: decimalString += "0"; break;
+        default: break;
+        }
+
+        return str.left(pointIndex) + decimalString.right(3);
+    }
     }
 }

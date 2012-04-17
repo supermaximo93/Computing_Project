@@ -141,6 +141,8 @@ void getInvoiceReceiptAttributes(Attributes &attributes, const Job &job)
     for (unsigned i = 0; i < parts->size(); ++i)
     {
         Part &part = parts->at(i);
+        const double partPriceExclVat = part.getPrice() * part.getQuantity(),
+                partVat = part.getPrice() * (part.getVatRate() / 100.0) * part.getQuantity();
 
         partHtml += "<tr><td class='text-mid'>";
         partHtml += toString(part.getQuantity()).c_str();
@@ -148,14 +150,14 @@ void getInvoiceReceiptAttributes(Attributes &attributes, const Job &job)
         partHtml += part.getName();
         partHtml += "</td><td class='text-mid'>";
         partHtml += L'£';
-        partHtml += to2Dp(toString(part.getPrice()).c_str());
+        partHtml += to2Dp(toString(partPriceExclVat).c_str());
         partHtml += "</td><td class='text-mid'>";
         partHtml += L'£';
-        partHtml += to2Dp(toString(part.getPrice() * (1.0 + (part.getVatRate() / 100.0))).c_str());
+        partHtml += to2Dp(toString(partPriceExclVat + partVat).c_str());
         partHtml += "</td></tr>";
 
-        totalPartPriceExclVat += part.getPrice();
-        totalPartVat += part.getPrice() * (part.getVatRate() / 100.0);
+        totalPartPriceExclVat += partPriceExclVat;
+        totalPartVat += partVat;
     }
     attributes["parts-rows"] = partHtml;
 
@@ -282,8 +284,8 @@ bool PdfGenerator::generateReport(const char *fileName_, const Date &startDate, 
             for (unsigned j = 0; j < parts->size(); ++j)
             {
                 Part &part = parts->at(j);
-                jobChargeExclVat += part.getPrice();
-                jobVat += part.getPrice() * (part.getVatRate() / 100.0);
+                jobChargeExclVat += part.getPrice() * part.getQuantity();
+                jobVat += part.getPrice() * (part.getVatRate() / 100.0) * part.getQuantity();
             }
 
             incomeExclVat += jobChargeExclVat;
