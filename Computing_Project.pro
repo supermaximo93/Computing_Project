@@ -85,6 +85,9 @@ HEADERS += \
     dialogs/main/ReportWizard.h \
     dialogs/utils/DatePickerDialog.h \
     CommandLine.h
+
+win32:HEADERS += windowscompat/guicon.h
+
 FORMS += dialogs/customer/CustomerForm.ui \
          dialogs/customer/CustomerIndex.ui \
          dialogs/customer/CustomerShow.ui \
@@ -177,7 +180,11 @@ SOURCES += Customer.cpp \
     dialogs/utils/DatePickerDialog.cpp \
     CommandLine.cpp
 
+win32:SOURCES += windowscompat/guicon.cpp
+
 OTHER_FILES +=
 
 RESOURCES += \
     resources/Resources.qrc
+
+

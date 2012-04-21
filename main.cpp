@@ -16,6 +16,10 @@ using namespace std;
 
 #include "CommandLine.h"
 
+#ifdef _WIN32
+#include "windowscompat/guicon.h"
+#endif
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -36,6 +40,9 @@ int main(int argc, char *argv[])
 
         if ((strcmp(argv[i], "-c") == 0) || (strcmp(argv[i], "--cli") == 0))
         {
+#ifdef _WIN32
+            RedirectIOToConsole();
+#endif
             Databases::init();
             CommandLine::run();
             Databases::finalise();
