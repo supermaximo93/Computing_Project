@@ -51,4 +51,6 @@ private:
     char *key, *value;
 };
 
+std::ostream & operator <<(std::ostream &stream, const Setting &setting);
+
 #endif // SETTING_H

@@ -57,6 +57,7 @@ public:
     friend void CommandLine::setRecordValues(Task &, const Value &);
     friend void CommandLine::setRecordValues(Expense &, const Value &);
     friend void CommandLine::setRecordValues(VatRate &, const Value &);
+    friend void CommandLine::setRecordValues(Setting &, const Value &);
 
 protected:
     // Returns the size in bytes of the Record

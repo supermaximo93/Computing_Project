@@ -14,6 +14,7 @@ class Part;
 class Task;
 class Expense;
 class VatRate;
+class Setting;
 class Value;
 
 namespace CommandLine
@@ -27,6 +28,7 @@ void setRecordValues(Part &, const Value &);
 void setRecordValues(Task &, const Value &);
 void setRecordValues(Expense &, const Value &);
 void setRecordValues(VatRate &, const Value &);
+void setRecordValues(Setting &, const Value &);
 
 }
 

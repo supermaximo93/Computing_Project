@@ -131,3 +131,14 @@ void Setting::validate() const
     if (!isValidKey(key, errorMessage)) throw std::runtime_error(errorMessage);
     if (!isValidValue(value, errorMessage)) throw std::runtime_error(errorMessage);
 }
+
+ostream & operator <<(ostream &stream, const Setting &setting)
+{
+    stream << "***************" << endl
+           << "   ID : " << setting.getId() << endl
+           << "  Key : " << setting.getKey() << endl
+           << "Value : " << setting.getValue() << endl
+           << "***************" << endl;
+
+    return stream;
+}

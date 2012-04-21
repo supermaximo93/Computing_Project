@@ -113,7 +113,8 @@ enum DatabaseEnum
     PART,
     TASK,
     EXPENSE,
-    VAT_RATE
+    VAT_RATE,
+    SETTING
 };
 
 DatabaseEnum getDatabase(const QString &input)
@@ -124,6 +125,7 @@ DatabaseEnum getDatabase(const QString &input)
     if (input == "task") return TASK;
     if (input == "expense") return EXPENSE;
     if (input == "vatrate") return VAT_RATE;
+    if (input == "setting") return SETTING;
     throw std::runtime_error("Unknown database '" + input.toStdString() + "'");
 }
 
@@ -423,6 +425,26 @@ void CommandLine::setRecordValues(VatRate &vatRate, const Value &object)
     Databases::vatRates().updateRecordAtPosition(vatRate);
 }
 
+void CommandLine::setRecordValues(Setting &setting, const Value &object)
+{
+    Object::const_iterator iterator = object.objectValue().begin(), end = object.objectValue().end();
+
+    string fieldName;
+    for (; iterator != end; ++iterator)
+    {
+        fieldName = iterator->first;
+        if (fieldName == "id")
+        {
+            if (iterator->second.type() == Value::INTEGER) setting.id = iterator->second.integerValue();
+            else throw std::runtime_error("ID value must be an integer");
+        }
+
+        //TODO: the other fields
+    }
+
+    Databases::settings().updateRecordAtPosition(setting);
+}
+
 template <typename T>
 void doSet(T &database, DatabasePropertyEnum databaseProperty, const Value &value1, const Value &value2)
 {
@@ -527,6 +549,13 @@ void interpretInput(const QString &input)
         cout << "VAT rate database ";
         if (action == GET) doGet(Databases::vatRates(), databaseProperty, value1, value2);
         else doSet(Databases::vatRates(), databaseProperty, value1, value2);
+        break;
+
+    case SETTING:
+        cout << "Setting database ";
+        if (action == GET) doGet(Databases::settings(), databaseProperty, value1, value2);
+        else doSet(Databases::settings(), databaseProperty, value1, value2);
+        break;
 
     default: throw std::runtime_error("Unknown database");
     }
