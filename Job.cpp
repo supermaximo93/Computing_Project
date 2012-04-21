@@ -222,6 +222,17 @@ int Job::getCompletionState() const
     return completionState;
 }
 
+string Job::getCompletionStateString() const
+{
+    switch (completionState)
+    {
+    case NOT_DONE: return "Not done";
+    case DONE_UNPAID: return "Done - unpaid";
+    case DONE_PAID: return "Done paid";
+    default: return "N/A";
+    }
+}
+
 void Job::setCompletionState(const int newCompletionState)
 {
     string errorMessage;
@@ -302,4 +313,20 @@ void Job::validate() const
     if (!isValidCompletionState(completionState, errorMessage)) throw std::runtime_error(errorMessage);
     if (!isValidPaymentMethod(paymentMethod, errorMessage)) throw std::runtime_error(errorMessage);
     if (!isValidPaymentDate(paymentDate, errorMessage)) throw std::runtime_error(errorMessage);
+}
+
+ostream & operator <<(ostream &stream, const Job &job)
+{
+    stream << "***************" << endl
+           << "              ID : " << job.getId() << endl
+           << "     Customer ID : " << job.getCustomerId() << endl
+           << "            Date : " << Date(job.getDate()) << endl
+           << "     Description : " << job.getDescription() << endl
+           << "   Labour Charge : " << job.getLabourCharge() << endl
+           << "Completion State : " << job.getCompletionStateString() << endl
+           << "  Payment Method : " << job.getPaymentMethodString() << endl
+           << "    Payment Date : " << Date(job.getPaymentDate()) << endl
+           << "***************" << endl;
+
+    return stream;
 }

@@ -14,13 +14,16 @@ using namespace std;
 
 #include "dialogs/utils/PasswordDialog.h"
 
+#include "CommandLine.h"
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-#ifdef COMPILE_TESTS
+
     for (int i = 0; i < argc; ++i)
     {
+        #ifdef COMPILE_TESTS
         if ((strcmp(argv[i], "-t") == 0) || (strcmp(argv[i], "--test") == 0))
         {
             char arg1[] = "--gtest_output=xml:test_report.xml";
@@ -29,8 +32,16 @@ int main(int argc, char *argv[])
             ::testing::InitGoogleTest(&argCount, args);
             return RUN_ALL_TESTS();
         }
+        #endif
+
+        if ((strcmp(argv[i], "-c") == 0) || (strcmp(argv[i], "--cli") == 0))
+        {
+            Databases::init();
+            CommandLine::run();
+            Databases::finalise();
+            return 0;
+        }
     }
-#endif
 
     // Redirect buffer so that it prints to a logfile instead of the console
     ofstream log;

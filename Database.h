@@ -144,6 +144,10 @@ public:
      */
     void backupFile();
 
+    void reloadIdCounter();
+    int getIdCounter();
+    void setIdCounter(int newIdCounter);
+
 private:
 #ifdef COMPILE_TESTS
     const bool testing;
@@ -838,6 +842,8 @@ void Database<recordType>::reloadFilename(const bool moveFiles)
         }
 
         fileMutex.unlock();
+
+        reloadIdCounter();
     }
 
     // If the backup directory has changed, move the backups folder to its new location
@@ -897,6 +903,36 @@ void Database<recordType>::backupFile()
     // Create a copy of the database file and put it in the backup directory
     try { copyFile(filename_.c_str(), (backupFolderName + slashChar + recordType::databaseFilename).c_str()); }
     catch (const std::exception &e) { std::cout << e.what() << std::endl; }
+}
+
+template<class recordType>
+void Database<recordType>::reloadIdCounter()
+{
+    while (!fileMutex.tryLock(1000));
+
+    std::ifstream file;
+    file.open(filename_.c_str(), std::ios::binary);
+    if (file.is_open())
+    {
+        file.seekg(0, std::ios_base::beg);
+        file.read(reinterpret_cast<char *>(&idCounter), sizeof(idCounter));
+        file.close();
+    }
+    else std::cout << "Could not open file " << filename_ << std::endl;
+
+    fileMutex.unlock();
+}
+
+template<class recordType>
+int Database<recordType>::getIdCounter()
+{
+    return idCounter;
+}
+
+template<class recordType>
+void Database<recordType>::setIdCounter(const int newIdCounter)
+{
+    idCounter = newIdCounter;
 }
 
 #endif /* DATABASE_H_ */

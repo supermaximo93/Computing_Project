@@ -59,4 +59,6 @@ private:
     char *description;
 };
 
+std::ostream & operator <<(std::ostream &stream, const Task &task);
+
 #endif /* TASK_H_ */

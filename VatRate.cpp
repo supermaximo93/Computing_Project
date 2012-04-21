@@ -11,6 +11,7 @@ using namespace std;
 
 #include "VatRate.h"
 #include "Globals.h"
+#include "Utils.h"
 
 const string VatRate::databaseFilename = "vatrates.dat";
 
@@ -122,4 +123,15 @@ void VatRate::validate() const
     string errorMessage;
     if (!isValidValue(value, errorMessage)) throw std::runtime_error(errorMessage);
     if (!isValidStartDate(startDate, errorMessage)) throw std::runtime_error(errorMessage);
+}
+
+ostream & operator <<(ostream &stream, const VatRate &vatRate)
+{
+    stream << "***************" << endl
+           << "        ID : " << vatRate.getId() << endl
+           << "     Value : " << vatRate.getValue() << endl
+           << "Start Date : " << Date(vatRate.getStartDate()) << endl
+           << "***************" << endl;
+
+    return stream;
 }

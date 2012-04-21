@@ -72,4 +72,6 @@ private:
     double price, vatRate;
 };
 
+std::ostream & operator <<(std::ostream &stream, const Part &part);
+
 #endif /* PART_H_ */

@@ -242,3 +242,17 @@ void Expense::validate() const
     if (!isValidVat(vat, errorMessage)) throw std::runtime_error(errorMessage);
     if (!isValidType(type, errorMessage)) throw std::runtime_error(errorMessage);
 }
+
+ostream & operator <<(ostream &stream, const Expense &expense)
+{
+    stream << "***************" << endl
+           << "         ID : " << expense.getId() << endl
+           << "       Date : " << Date(expense.getDate()) << endl
+           << "Description : " << expense.getDescription() << endl
+           << "      Price : " << expense.getPrice() << endl
+           << "        VAT : " << expense.getVat() << endl
+           << "       Type : " << expense.getTypeString() << endl
+           << "***************" << endl;
+
+    return stream;
+}

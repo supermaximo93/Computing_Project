@@ -50,4 +50,6 @@ private:
     time_t startDate;
 };
 
+std::ostream & operator <<(std::ostream &stream, const VatRate &vatRate);
+
 #endif // VATRATE_H

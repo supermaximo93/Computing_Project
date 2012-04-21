@@ -107,4 +107,6 @@ private:
     *emailAddress;
 };
 
+std::ostream & operator <<(std::ostream &stream, const Customer &customer);
+
 #endif /* CUSTOMER_H_ */

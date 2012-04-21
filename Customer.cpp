@@ -386,3 +386,21 @@ void Customer::validate() const
     if (!isValidMobilePhoneNumber(mobilePhoneNumber, errorMessage)) throw std::runtime_error(errorMessage);
     if (!isValidEmailAddress(emailAddress, errorMessage)) throw std::runtime_error(errorMessage);
 }
+
+ostream & operator <<(ostream &stream, const Customer &customer)
+{
+    stream << "***************" << endl
+           << "            ID : " << customer.getId() << endl
+           << "      Forename : " << customer.getForename() << endl
+           << "       Surname : " << customer.getSurname() << endl
+           << "Address Line 1 : " << customer.getAddressLine1() << endl
+           << "Address Line 2 : " << customer.getAddressLine2() << endl
+           << "          Town : " << customer.getTown() << endl
+           << "      Postcode : " << customer.getPostcode() << endl
+           << "Home Phone No. : " << customer.getHomePhoneNumber() << endl
+           << " Mob Phone No. : " << customer.getMobilePhoneNumber() << endl
+           << " Email address : " << customer.getEmailAddress() << endl
+           << "***************" << endl;
+
+    return stream;
+}

@@ -164,3 +164,15 @@ void Task::validate() const
     if (!isValidDate(date, errorMessage)) throw std::runtime_error(errorMessage);
     if (!isValidDescription(description, errorMessage)) throw std::runtime_error(errorMessage);
 }
+
+ostream & operator <<(ostream &stream, const Task &task)
+{
+    stream << "***************" << endl
+           << "           ID : " << task.getId() << endl
+           << "       Job ID : " << task.getJobId() << endl
+           << "         Date : " << Date(task.getDate()) << endl
+           << "  Description : " << task.getDescription() << endl
+           << "***************" << endl;
+
+    return stream;
+}

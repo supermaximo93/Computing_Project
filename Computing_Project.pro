@@ -83,7 +83,8 @@ HEADERS += \
     dialogs/vatrate/VatRateShow.h \
     dialogs/vatrate/VatRateForm.h \
     dialogs/main/ReportWizard.h \
-    dialogs/utils/DatePickerDialog.h
+    dialogs/utils/DatePickerDialog.h \
+    CommandLine.h
 FORMS += dialogs/customer/CustomerForm.ui \
          dialogs/customer/CustomerIndex.ui \
          dialogs/customer/CustomerShow.ui \
@@ -173,7 +174,8 @@ SOURCES += Customer.cpp \
     dialogs/vatrate/VatRateForm.cpp \
     testing/integration/VatRateController_testing.cc \
     dialogs/main/ReportWizard.cpp \
-    dialogs/utils/DatePickerDialog.cpp
+    dialogs/utils/DatePickerDialog.cpp \
+    CommandLine.cpp
 
 OTHER_FILES +=
 

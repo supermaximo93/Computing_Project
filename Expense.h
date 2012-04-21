@@ -84,4 +84,6 @@ private:
     int type;
 };
 
+std::ostream & operator <<(std::ostream &stream, const Expense &expense);
+
 #endif /* EXPENSE_H_ */

@@ -246,3 +246,18 @@ void Part::validate() const
     if (!isValidVatRate(vatRate, errorMessage)) throw std::runtime_error(errorMessage);
     if (!isValidQuantity(quantity, errorMessage)) throw std::runtime_error(errorMessage);
 }
+
+ostream & operator <<(ostream &stream, const Part &part)
+{
+    stream << "***************" << endl
+           << "      ID : " << part.getId() << endl
+           << "  Job ID : " << part.getJobId() << endl
+           << "    Name : " << part.getName() << endl
+           << "  Number : " << part.getNumber() << endl
+           << "   Price : " << part.getPrice() << endl
+           << "VAT Rate : " << part.getVatRate() << endl
+           << "Quantity : " << part.getQuantity() << endl
+           << "***************" << endl;
+
+    return stream;
+}

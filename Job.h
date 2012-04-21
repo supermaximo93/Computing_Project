@@ -76,6 +76,7 @@ public:
     double getVat() const; // No setter because VAT is automatically calculated
 
     int getCompletionState() const;
+    std::string getCompletionStateString() const;
     void setCompletionState(const int newCompletionState);
     static bool isValidCompletionState(const int value, std::string &errorMessage);
 
@@ -96,5 +97,7 @@ private:
     char *description;
     double labourCharge, vat;
 };
+
+std::ostream & operator <<(std::ostream &stream, const Job &job);
 
 #endif /* JOB_H_ */
