@@ -78,7 +78,7 @@ public:
     double getTotalPrice() const;
 
 private:
-    time_t date;
+    unsigned date;
     char *description;
     double price, vat;
     int type;

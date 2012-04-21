@@ -93,7 +93,7 @@ public:
 
 private:
     int customerId, completionState, paymentMethod;
-    time_t date, paymentDate;
+    unsigned date, paymentDate;
     char *description;
     double labourCharge, vat;
 };
