@@ -83,6 +83,11 @@ bool Task::hasMatchingField(const string &fieldName, const char *searchTerm) con
     return false;
 }
 
+bool Task::hasMatchingField(const string &, const double) const
+{
+    return false;
+}
+
 bool Task::fieldCompare(const Task &rhs) const
 {
     if (jobId != rhs.jobId) return false;

@@ -10,6 +10,8 @@
 
 #include <fstream>
 
+#include "CommandLine.h"
+
 template<class recordType> class Database;
 
 class Customer;
@@ -49,6 +51,13 @@ public:
     friend class Database<Setting>;
     friend class Database<VatRate>;
 
+    friend void CommandLine::setRecordValues(Customer &, const Value &);
+    friend void CommandLine::setRecordValues(Job &, const Value &);
+    friend void CommandLine::setRecordValues(Part &, const Value &);
+    friend void CommandLine::setRecordValues(Task &, const Value &);
+    friend void CommandLine::setRecordValues(Expense &, const Value &);
+    friend void CommandLine::setRecordValues(VatRate &, const Value &);
+
 protected:
     // Returns the size in bytes of the Record
     static int size();
@@ -60,7 +69,7 @@ protected:
     void readFromFile(std::fstream &file);
 
 private:
-    int id;
+    int id, filePosition;
 };
 
 #endif /* RECORD_H_ */

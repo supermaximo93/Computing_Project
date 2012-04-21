@@ -23,6 +23,7 @@ bool Record::operator ==(const int recordId) const
 void Record::operator = (const Record &record)
 {
     id = record.id;
+    filePosition = record.filePosition;
 }
 
 int Record::getId() const
@@ -48,7 +49,7 @@ int Record::size()
     return sizeof(int);
 }
 
-Record::Record() : id(-1) {}
+Record::Record() : id(-1), filePosition(-1) {}
 
 void Record::writeToFile(fstream &file) const
 {

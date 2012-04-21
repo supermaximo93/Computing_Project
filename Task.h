@@ -35,6 +35,7 @@ public:
     bool hasMatchingField(const std::string &fieldName, const int searchTerm) const;
     bool hasMatchingField(const std::string &fieldName, const time_t searchTerm) const;
     bool hasMatchingField(const std::string &fieldName, const char *searchTerm) const;
+    bool hasMatchingField(const std::string &fieldName, const double searchTerm) const;
 
     bool fieldCompare(const Task &rhs) const;
     bool completeCompare(const Task &rhs) const;

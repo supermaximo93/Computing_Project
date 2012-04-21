@@ -42,7 +42,7 @@ using namespace std;
 
 class Value;
 
-typedef map<QString, Value> Object;
+typedef map<string, Value> Object;
 
 class Value
 {
@@ -140,8 +140,39 @@ DatabasePropertyEnum getDatabaseProperty(const QString &input)
     if (input == "idcounter") return ID_COUNTER;
     if (input == "filename") return FILENAME;
     if (input == "count") return COUNT;
-    if (input == "record") return RECORD;
+    if ((input == "record") || (input == "records")) return RECORD;
     throw std::runtime_error("Unknown database property '" + input.toStdString() + "'");
+}
+
+Value getValue(const QStringList &inputs);
+
+Object getObject(QStringList inputs)
+{
+    Object returnObject;
+
+    if (inputs.first().indexOf('{') == 0) inputs.first().remove(0, 1);
+    if (inputs.last().lastIndexOf('}') == inputs.last().size() - 1) inputs.last().chop(1);
+
+    QString property;
+    for (int i = 0, count = 1; i < inputs.size(); ++i)
+    {
+        property = inputs[i];
+        if (property.size() == 0) continue;
+
+        int colonIndex = property.indexOf(':');
+        if ((colonIndex < 1) || (colonIndex == property.size() - 1))
+            throw std::runtime_error("Property " + toString(count)
+                                     + " is invalid (colon in wrong place or not present)");
+
+        QString propertyName = property.left(colonIndex),
+                propertyValue = property.mid(colonIndex + 1);
+
+        returnObject[propertyName.toStdString()] = getValue(propertyValue.split(' ', QString::SkipEmptyParts));
+
+        ++count;
+    }
+
+    return returnObject;
 }
 
 Value getValue(const QStringList &inputs)
@@ -156,8 +187,12 @@ Value getValue(const QStringList &inputs)
         break;
 
     case '{': // object
-        return Value();
+        return Value(getObject(inputs));
         break;
+
+    case 'n': // possibly nil
+        if (firstString == "nil") return Value();
+        // else fall through to default
 
     default: // possibly integer or real
     {
@@ -177,10 +212,12 @@ Value getValue(const QStringList &inputs)
         return Value(strtod(firstString.c_str(), NULL));
     }
     }
+
+    return Value();
 }
 
 template <typename T>
-void getRecord(T &database, const Value &value1, const Value &value2)
+typename T::recordListPtr getRecords(T &database, const Value &value1, const Value &value2)
 {
     typename T::recordListPtr records;
     switch (value1.type())
@@ -193,12 +230,52 @@ void getRecord(T &database, const Value &value1, const Value &value2)
         records = database.findRecords("id", value1.integerValue());
         break;
 
+    case Value::OBJECT:
+    {
+        Object::const_iterator iterator = value1.objectValue().begin(), end = value1.objectValue().end();
+        Value firstValue = iterator->second;
+        switch (firstValue.type())
+        {
+        case Value::INTEGER: records = database.findRecords(iterator->first, firstValue.integerValue()); break;
+        case Value::REAL: records = database.findRecords(iterator->first, firstValue.realValue()); break;
+        default: throw std::runtime_error("Invalid object property value ('" + toString(firstValue) + "' given)");
+        }
+
+        if (iterator != end) ++iterator;
+        for (; iterator != end; ++iterator)
+        {
+            switch (iterator->second.type())
+            {
+            case Value::INTEGER: database.keepRecords(*records, iterator->first, iterator->second.integerValue());break;
+            case Value::REAL: database.keepRecords(*records, iterator->first, iterator->second.realValue()); break;
+            default: throw std::runtime_error("Invalid object property value ('" + toString(firstValue) + "' given)");
+            }
+        }
+        break;
+    }
+
     default: throw std::runtime_error("Invalid search term ('" + toString(value1) + "' given)");
     }
 
     cout << endl;
     if (records->empty()) cout << "No records found" << endl;
-    else for (unsigned i = 0; i < records->size(); ++i) cout << records->at(i);
+    else
+    {
+        if (value2.type() == Value::INTEGER)
+        {
+            if (value2.integerValue() < (int)records->size())
+            {
+                cout << records->at(value2.integerValue());
+                typename T::recordListPtr record(new typename T::recordList);
+                record->push_back(records->at(value2.integerValue()));
+                return record;
+            }
+            else cout << "No records found" << endl;
+        }
+        else for (unsigned i = 0; i < records->size(); ++i) cout << records->at(i);
+    }
+
+    return records;
 }
 
 template <typename T>
@@ -219,17 +296,177 @@ void doGet(T &database, DatabasePropertyEnum databaseProperty, const Value &valu
         break;
 
     case RECORD:
-        getRecord(database, value1, value2);
+        getRecords(database, value1, value2);
         break;
 
     default: throw std::runtime_error("Unknown database property");
     }
 }
 
+void CommandLine::setRecordValues(Customer &customer, const Value &object)
+{
+    Object::const_iterator iterator = object.objectValue().begin(), end = object.objectValue().end();
+
+    string fieldName;
+    for (; iterator != end; ++iterator)
+    {
+        fieldName = iterator->first;
+        if (fieldName == "id")
+        {
+            if (iterator->second.type() == Value::INTEGER) customer.id = iterator->second.integerValue();
+            else throw std::runtime_error("ID value must be an integer");
+        }
+
+        //TODO: the other fields
+    }
+
+    Databases::customers().updateRecordAtPosition(customer);
+}
+
+void CommandLine::setRecordValues(Job &job, const Value &object)
+{
+    Object::const_iterator iterator = object.objectValue().begin(), end = object.objectValue().end();
+
+    string fieldName;
+    for (; iterator != end; ++iterator)
+    {
+        fieldName = iterator->first;
+        if (fieldName == "id")
+        {
+            if (iterator->second.type() == Value::INTEGER) job.id = iterator->second.integerValue();
+            else throw std::runtime_error("ID value must be an integer");
+        }
+
+        //TODO: the other fields
+    }
+
+    Databases::jobs().updateRecordAtPosition(job);
+}
+
+void CommandLine::setRecordValues(Part &part, const Value &object)
+{
+    Object::const_iterator iterator = object.objectValue().begin(), end = object.objectValue().end();
+
+    string fieldName;
+    for (; iterator != end; ++iterator)
+    {
+        fieldName = iterator->first;
+        if (fieldName == "id")
+        {
+            if (iterator->second.type() == Value::INTEGER) part.id = iterator->second.integerValue();
+            else throw std::runtime_error("ID value must be an integer");
+        }
+
+        //TODO: the other fields
+    }
+
+    Databases::parts().updateRecordAtPosition(part);
+}
+
+void CommandLine::setRecordValues(Task &task, const Value &object)
+{
+    Object::const_iterator iterator = object.objectValue().begin(), end = object.objectValue().end();
+
+    string fieldName;
+    for (; iterator != end; ++iterator)
+    {
+        fieldName = iterator->first;
+        if (fieldName == "id")
+        {
+            if (iterator->second.type() == Value::INTEGER) task.id = iterator->second.integerValue();
+            else throw std::runtime_error("ID value must be an integer");
+        }
+
+        //TODO: the other fields
+    }
+
+    Databases::tasks().updateRecordAtPosition(task);
+}
+
+void CommandLine::setRecordValues(Expense &expense, const Value &object)
+{
+    Object::const_iterator iterator = object.objectValue().begin(), end = object.objectValue().end();
+
+    string fieldName;
+    for (; iterator != end; ++iterator)
+    {
+        fieldName = iterator->first;
+        if (fieldName == "id")
+        {
+            if (iterator->second.type() == Value::INTEGER) expense.id = iterator->second.integerValue();
+            else throw std::runtime_error("ID value must be an integer");
+        }
+
+        //TODO: the other fields
+    }
+
+    Databases::expenses().updateRecordAtPosition(expense);
+}
+
+void CommandLine::setRecordValues(VatRate &vatRate, const Value &object)
+{
+    Object::const_iterator iterator = object.objectValue().begin(), end = object.objectValue().end();
+
+    string fieldName;
+    for (; iterator != end; ++iterator)
+    {
+        fieldName = iterator->first;
+        if (fieldName == "id")
+        {
+            if (iterator->second.type() == Value::INTEGER) vatRate.id = iterator->second.integerValue();
+            else throw std::runtime_error("ID value must be an integer");
+        }
+
+        //TODO: the other fields
+    }
+
+    Databases::vatRates().updateRecordAtPosition(vatRate);
+}
+
 template <typename T>
 void doSet(T &database, DatabasePropertyEnum databaseProperty, const Value &value1, const Value &value2)
 {
+    string input;
+    switch (databaseProperty)
+    {
+    case ID_COUNTER:
+        cout << "ID counter: " << database.getIdCounter() << endl
+             << "Set to: ";
+        getline(cin, input);
+        if ((input == "quit") || (input == "exit")) break;
+        database.setIdCounter(atoi(input.c_str()));
+        break;
 
+    case FILENAME:
+        cout << "File name: " << database.filename() << endl
+             << "File name setting is forbidden" << endl;
+        break;
+
+    case COUNT:
+        cout << "Record count: " << database.recordCount() << endl
+             << "Record count setting is forbidden" << endl;
+        break;
+
+    case RECORD:
+    {
+        typename T::recordListPtr records = getRecords(database, value1, value2);
+        if (records->empty()) break;
+        else if (records->size() > 1) cout << "Warning! Mass assignment!" << endl;
+
+        cout << "Set to: ";
+        getline(cin, input);
+        if ((input == "quit") || (input == "exit")) break;
+
+        Value object = getValue(QString(input.c_str()).split(' ', QString::SkipEmptyParts));
+        if (object.type() != Value::OBJECT) throw std::runtime_error("Object expected");
+
+        for (unsigned i = 0; i < records->size(); ++i) CommandLine::setRecordValues(records->at(i), object);
+
+        break;
+    }
+
+    default: throw std::runtime_error("Unknown database property");
+    }
 }
 
 void interpretInput(const QString &input)
@@ -248,7 +485,7 @@ void interpretInput(const QString &input)
         const int commaIndex = keywords.indexOf(",", 4);
         if ((commaIndex > -1) && (commaIndex < keywords.size() - 1))
         {
-            value1 = getValue(keywords.mid(3, commaIndex - 1));
+            value1 = getValue(keywords.mid(3, commaIndex - 3));
             value2 = getValue(keywords.mid(commaIndex + 1));
         }
         else value1 = getValue(keywords.mid(3));

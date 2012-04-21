@@ -53,6 +53,8 @@ public:
      */
     bool updateRecord(const recordType &record);
 
+    void updateRecordAtPosition(const recordType &record);
+
     /*
      * Attempts to delete the record with the specified ID (if any), returning true on success. Throws an exception if
      * the database file could not be opened
@@ -290,6 +292,9 @@ void Database<recordType>::addRecord(recordType &record)
         file.seekp(0, std::ios_base::beg);
         file.write(reinterpret_cast<const char *>(&idCounter), sizeof(idCounter));
 
+        file.seekg(0, std::ios_base::end);
+        record.filePosition = ((static_cast<size_t>(file.tellg()) - sizeof(idCounter)) / recordType::size()) - 1;
+
         file.close();
         Encrypter::encryptFile(filename_.c_str());
         fileMutex.unlock();
@@ -341,6 +346,32 @@ bool Database<recordType>::updateRecord(const recordType &record)
         Encrypter::encryptFile(filename_.c_str());
         fileMutex.unlock();
         return false;
+    }
+    else
+    {
+        Encrypter::encryptFile(filename_.c_str());
+        fileMutex.unlock();
+        throw(std::runtime_error("Could not open file " + filename_));
+    }
+}
+
+template<class recordType>
+void Database<recordType>::updateRecordAtPosition(const recordType &record)
+{
+    if (record.filePosition < 0) throw std::runtime_error("Record file position must be positive");
+
+    while (!fileMutex.tryLock(1000));
+    Encrypter::decryptFile(filename_.c_str());
+
+    std::fstream file;
+    file.open(filename_.c_str(), std::ios::in | std::ios::out | std::ios::binary);
+    if (file.is_open())
+    {
+        file.seekp(sizeof(idCounter) + (recordType::size() * record.filePosition), std::ios_base::beg);
+        record.writeToFile(file);
+        file.close();
+        Encrypter::encryptFile(filename_.c_str());
+        fileMutex.unlock();
     }
     else
     {
@@ -409,6 +440,7 @@ recordType Database<recordType>::findRecord(const std::string &fieldName, const 
         // Record::hasMatchingField takes field names as lowercase, so convert the fieldName parameter to lowercase
         std::string lowercaseFieldName = lowerCase(fieldName);
         recordType tempRecord;
+        tempRecord.filePosition = -1;
 
         file.seekg(sizeof(idCounter), std::ios_base::beg);
 
@@ -416,6 +448,7 @@ recordType Database<recordType>::findRecord(const std::string &fieldName, const 
         {
             // Read in records from the file until a valid record with the matching field is found
             tempRecord.readFromFile(file);
+            ++tempRecord.filePosition;
             if (file.eof()) break;
             if (tempRecord.null()) continue;
             if (tempRecord.hasMatchingField(lowercaseFieldName, searchTerm))
@@ -459,6 +492,7 @@ Database<recordType>::findRecords(const std::string &fieldName, const type &sear
     {
         std::string lowercaseFieldName = lowerCase(fieldName);
         recordType tempRecord;
+        tempRecord.filePosition = -1;
 
         file.seekg(sizeof(idCounter), std::ios_base::beg);
 
@@ -466,6 +500,7 @@ Database<recordType>::findRecords(const std::string &fieldName, const type &sear
         {
             // Read in records from the file, adding any valid records that have a maching field to the list
             tempRecord.readFromFile(file);
+            ++tempRecord.filePosition;
             if (file.eof()) break;
             if (tempRecord.null()) continue;
             if (tempRecord.hasMatchingField(lowercaseFieldName, searchTerm)) returnList->push_back(tempRecord);
@@ -933,6 +968,20 @@ template<class recordType>
 void Database<recordType>::setIdCounter(const int newIdCounter)
 {
     idCounter = newIdCounter;
+
+    while (!fileMutex.tryLock(1000));
+
+    std::fstream file;
+    file.open(filename_.c_str(), std::ios::in | std::ios::out | std::ios::binary);
+    if (file.is_open())
+    {
+        file.seekp(0, std::ios_base::beg);
+        file.write(reinterpret_cast<const char *>(&idCounter), sizeof(idCounter));
+        file.close();
+    }
+    else std::cout << "Could not open file " << filename_ << std::endl;
+
+    fileMutex.unlock();
 }
 
 #endif /* DATABASE_H_ */
