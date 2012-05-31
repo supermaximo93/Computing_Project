@@ -211,6 +211,9 @@ void MainWindow::on_label_remindCustomers_linkActivated(const QString &)
     unpaidJobsReminderClicked = true;
     ui->label_remindCustomers->setHidden(true);
 
+    Setting subject = SettingController::getSetting(SettingForm::keyReminderSubject),
+            body = SettingController::getSetting(SettingForm::keyReminderBody);
+
     if (strlen(SettingController::getSetting(SettingForm::keyEmailHost).getValue()) == 0)
     { // If no email host is specified, use a mailto link to open the user's email client
         for (unsigned i = 0; i < unpaidJobs->size(); ++i)
@@ -219,8 +222,8 @@ void MainWindow::on_label_remindCustomers_linkActivated(const QString &)
 
             QString mailtoLink
                     = QString("mailto:") + customer.getEmailAddress()
-                    + "?subject=" + SettingController::getSetting(SettingForm::keyReminderSubject).getValue()
-                    + "&body=" + SettingController::getSetting(SettingForm::keyReminderBody).getValue();
+                    + "?subject=" + subject.getValue()
+                    + "&body=" + body.getValue();
 
             QDesktopServices::openUrl(QUrl(mailtoLink));
         }
@@ -230,12 +233,7 @@ void MainWindow::on_label_remindCustomers_linkActivated(const QString &)
         for (unsigned i = 0; i < unpaidJobs->size(); ++i)
         {
             Customer customer = CustomerController::getCustomer(unpaidJobs->at(i).getCustomerId());
-
-            EmailDetails email(customer.getEmailAddress(),
-                               SettingController::getSetting(SettingForm::keyReminderSubject).getValue(),
-                               SettingController::getSetting(SettingForm::keyReminderBody).getValue());
-
-            EmailerThread::enqueueEmail(email);
+            EmailerThread::enqueueEmail(EmailDetails(customer.getEmailAddress(), subject.getValue(), body.getValue()));
         }
     }
 }

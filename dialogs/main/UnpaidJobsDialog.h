@@ -34,6 +34,8 @@ private slots:
 
     void on_pushButton_ok_released();
 
+    void on_pushButton_sendReminder_released();
+
 private:
     Ui::UnpaidJobsDialog *ui;
     Database<Job>::recordList &jobs;

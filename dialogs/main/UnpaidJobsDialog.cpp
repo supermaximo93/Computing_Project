@@ -8,10 +8,17 @@
 #include "UnpaidJobsDialog.h"
 #include "ui_UnpaidJobsDialog.h"
 
+#include <QUrl>
+#include <QDesktopServices>
+
 #include "JobController.h"
 #include "Job.h"
 #include "CustomerController.h"
 #include "Customer.h"
+#include "SettingController.h"
+#include "Setting.h"
+#include "EmailerThread.h"
+#include "EmailDetails.h"
 
 UnpaidJobsDialog::UnpaidJobsDialog(Database<Job>::recordList &jobs, QWidget *parent)
     : QDialog(parent), ui(new Ui::UnpaidJobsDialog), jobs(jobs)
@@ -64,4 +71,35 @@ void UnpaidJobsDialog::on_tableWidget_doubleClicked(const QModelIndex &index)
 void UnpaidJobsDialog::on_pushButton_ok_released()
 {
     done(Accepted);
+}
+
+void UnpaidJobsDialog::on_pushButton_sendReminder_released()
+{
+    Setting subject = SettingController::getSetting(SettingForm::keyReminderSubject),
+            body = SettingController::getSetting(SettingForm::keyReminderBody);
+
+    if (strlen(SettingController::getSetting(SettingForm::keyEmailHost).getValue()) == 0)
+    {
+        for (int i = 0; i < ui->tableWidget->selectedItems().size(); ++i)
+        {
+            int index = ui->tableWidget->selectedItems().at(i)->row();
+            Customer customer = CustomerController::getCustomer(jobs[index].getCustomerId());
+
+            QString mailtoLink
+                    = QString("mailto:") + customer.getEmailAddress()
+                    + "?subject=" + subject.getValue()
+                    + "&body=" + body.getValue();
+
+            QDesktopServices::openUrl(QUrl(mailtoLink));
+        }
+    }
+    else
+    {
+        for (int i = 0; i < ui->tableWidget->selectedItems().size(); ++i)
+        {
+            int index = ui->tableWidget->selectedItems().at(i)->row();
+            Customer customer = CustomerController::getCustomer(jobs[index].getCustomerId());
+            EmailerThread::enqueueEmail(EmailDetails(customer.getEmailAddress(), subject.getValue(), body.getValue()));
+        }
+    }
 }

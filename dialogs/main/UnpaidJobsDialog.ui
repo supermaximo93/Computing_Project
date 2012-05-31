@@ -16,7 +16,7 @@
   <widget class="QPushButton" name="pushButton_ok">
    <property name="geometry">
     <rect>
-     <x>220</x>
+     <x>100</x>
      <y>380</y>
      <width>97</width>
      <height>27</height>
@@ -114,6 +114,19 @@
    </property>
    <property name="text">
     <string>Unpaid Jobs</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_sendReminder">
+   <property name="geometry">
+    <rect>
+     <x>270</x>
+     <y>380</y>
+     <width>201</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Send reminder to customer</string>
    </property>
   </widget>
  </widget>
