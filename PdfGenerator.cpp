@@ -107,8 +107,13 @@ void getInvoiceReceiptAttributes(Attributes &attributes, const Job &job)
     Customer customer = CustomerController::getCustomer(job.getCustomerId());
     Database<Part>::recordListPtr parts = JobController::getJobParts(job.getId());
 
+    Date jobDate(job.getDate());
+    attributes["invoice-number"] =
+            QString((toString(job.getId()) + toString(jobDate.day) + toString(jobDate.month) + toString(jobDate.year))
+                    .c_str());
+
     // Fill in the date attribute and customer details attributes
-    attributes["date"] = Date(job.getDate()).toQStringWithoutTime();
+    attributes["date"] = jobDate.toQStringWithoutTime();
     attributes["customer-name"] = createFullName(customer.getForename(), customer.getSurname());
     attributes["customer-addressline1"] = customer.getAddressLine1();
 
