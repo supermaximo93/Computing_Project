@@ -91,6 +91,8 @@ public:
 
     void validate() const;
 
+    double getTotalPrice() const;
+
 private:
     int customerId, completionState, paymentMethod;
     unsigned date, paymentDate;

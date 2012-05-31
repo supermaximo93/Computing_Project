@@ -66,6 +66,8 @@ public:
 
     void validate() const;
 
+    double getTotalPrice() const;
+
 private:
     int jobId, quantity;
     char *name, *number;

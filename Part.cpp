@@ -247,6 +247,11 @@ void Part::validate() const
     if (!isValidQuantity(quantity, errorMessage)) throw std::runtime_error(errorMessage);
 }
 
+double Part::getTotalPrice() const
+{
+    return (getPrice() * getQuantity()) + doubleTo2Dp((getPrice()  * getQuantity()) * (getVatRate() / 100.0));
+}
+
 ostream & operator <<(ostream &stream, const Part &part)
 {
     stream << "***************" << endl

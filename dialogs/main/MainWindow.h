@@ -45,6 +45,8 @@ private slots:
 
     void on_label_remindCustomers_linkActivated(const QString &link);
 
+    void on_label_viewUnpaidJobs_linkActivated(const QString &link);
+
     void on_pushButton_allVatRates_clicked();
 
     void on_pushButton_generateReport_clicked();
@@ -56,6 +58,8 @@ private slots:
     void on_pushButton_help_clicked();
 
     void on_pushButton_exit_clicked();
+
+    void on_pushButton_viewAllUnpaidJobs_released();
 
 private:
     static const char *windowTitle;

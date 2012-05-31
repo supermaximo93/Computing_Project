@@ -14,6 +14,8 @@ using namespace std;
 
 #include "Globals.h"
 #include "Job.h"
+#include "JobController.h"
+#include "Part.h"
 #include "Utils.h"
 
 const string Job::databaseFilename = "jobs.dat";
@@ -313,6 +315,16 @@ void Job::validate() const
     if (!isValidCompletionState(completionState, errorMessage)) throw std::runtime_error(errorMessage);
     if (!isValidPaymentMethod(paymentMethod, errorMessage)) throw std::runtime_error(errorMessage);
     if (!isValidPaymentDate(paymentDate, errorMessage)) throw std::runtime_error(errorMessage);
+}
+
+double Job::getTotalPrice() const
+{
+    double total = getLabourCharge() + getVat();
+
+    Database<Part>::recordListPtr parts = JobController::getJobParts(getId());
+    for (unsigned i = 0; i < parts->size(); ++i) total += parts->at(i).getTotalPrice();
+
+    return total;
 }
 
 ostream & operator <<(ostream &stream, const Job &job)

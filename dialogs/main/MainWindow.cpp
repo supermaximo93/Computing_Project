@@ -32,6 +32,7 @@
 #include "dialogs/setting/SettingForm.h"
 
 #include "dialogs/main/ReportWizard.h"
+#include "dialogs/main/UnpaidJobsDialog.h"
 
 const char *MainWindow::windowTitle = "Ian Foster Services";
 
@@ -239,6 +240,12 @@ void MainWindow::on_label_remindCustomers_linkActivated(const QString &)
     }
 }
 
+void MainWindow::on_label_viewUnpaidJobs_linkActivated(const QString &)
+{
+    UnpaidJobsDialog dialog(*unpaidJobs, this);
+    dialog.exec();
+}
+
 void MainWindow::on_pushButton_allVatRates_clicked()
 {
     VatRateController::Index(this);
@@ -373,4 +380,21 @@ void MainWindow::on_pushButton_help_clicked()
 void MainWindow::on_pushButton_exit_clicked()
 {
     close();
+}
+
+void MainWindow::on_pushButton_viewAllUnpaidJobs_released()
+{
+    struct NestedFunctions
+    {
+        static bool isJobDoneButUnpaid(const Job &job, void *)
+        {
+            return (job.getCompletionState() == Job::DONE_UNPAID);
+        }
+    };
+
+    Database<Job>::recordListPtr jobs = JobController::getAllJobs();
+    Databases::jobs().keepRecords(*jobs, NestedFunctions::isJobDoneButUnpaid, NULL);
+
+    UnpaidJobsDialog dialog(*jobs, this);
+    dialog.exec();
 }

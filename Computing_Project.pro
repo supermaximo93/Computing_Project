@@ -84,7 +84,8 @@ HEADERS += \
     dialogs/vatrate/VatRateForm.h \
     dialogs/main/ReportWizard.h \
     dialogs/utils/DatePickerDialog.h \
-    CommandLine.h
+    CommandLine.h \
+    dialogs/main/UnpaidJobsDialog.h
 
 win32:HEADERS += windowscompat/guicon.h
 
@@ -112,7 +113,8 @@ FORMS += dialogs/customer/CustomerForm.ui \
     dialogs/vatrate/VatRateShow.ui \
     dialogs/vatrate/VatRateForm.ui \
     dialogs/main/ReportWizard.ui \
-    dialogs/utils/DatePickerDialog.ui
+    dialogs/utils/DatePickerDialog.ui \
+    dialogs/main/UnpaidJobsDialog.ui
 SOURCES += Customer.cpp \
            CustomerController.cpp \
            Databases.cpp \
@@ -178,7 +180,8 @@ SOURCES += Customer.cpp \
     testing/integration/VatRateController_testing.cc \
     dialogs/main/ReportWizard.cpp \
     dialogs/utils/DatePickerDialog.cpp \
-    CommandLine.cpp
+    CommandLine.cpp \
+    dialogs/main/UnpaidJobsDialog.cpp
 
 win32:SOURCES += windowscompat/guicon.cpp
 
@@ -186,5 +189,3 @@ OTHER_FILES +=
 
 RESOURCES += \
     resources/Resources.qrc
-
-
