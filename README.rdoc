@@ -1,5 +1,6 @@
 == Work Manager Computing Project
-By Max Foster<br>
+By Max Foster
+
 max@supermaximo.com
 
 License: http://creativecommons.org/licenses/by-nc-sa/3.0/
