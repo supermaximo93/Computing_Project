@@ -317,6 +317,7 @@ void exportBusinessXml(ofstream &file)
             "<business>\n"
             "<name>Ian Foster Services</name>\n"
             "<currency>&amp;pound;</currency>\n"
+            "<country>United Kingdom</country>\n"
             "<business_details></business_details>\n";
     file.write(output.c_str(), output.size());
 
