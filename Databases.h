@@ -43,6 +43,8 @@ Database<VatRate> & vatRates();
 // Forces the databases to reload their database file names and move the files if necessary
 void reloadDatabaseFilenames();
 
+void exportXml(const char *filename);
+
 }
 
 #endif // DATABASES_H

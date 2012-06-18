@@ -489,6 +489,21 @@ p, li { white-space: pre-wrap; }
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="pushButton_exportXml">
+       <property name="font">
+        <font>
+         <family>Sans Serif</family>
+         <pointsize>-1</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Export XML data</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="pushButton_settings">
        <property name="font">
         <font>

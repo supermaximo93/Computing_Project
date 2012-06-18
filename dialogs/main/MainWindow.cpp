@@ -3,6 +3,7 @@
 #include <QDate>
 #include <QDesktopServices>
 #include <QUrl>
+#include <QFileDialog>
 
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
@@ -395,4 +396,12 @@ void MainWindow::on_pushButton_viewAllUnpaidJobs_released()
 
     UnpaidJobsDialog dialog(*jobs, this);
     dialog.exec();
+}
+
+void MainWindow::on_pushButton_exportXml_released()
+{
+    QString filename = QFileDialog::getSaveFileName(this, "Export Database To", "database.xml", "XML (*.xml)");
+    if (filename.isEmpty()) return;
+    Databases::exportXml(filename.toStdString().c_str());
+    showInfoDialog("Database exported successfully");
 }

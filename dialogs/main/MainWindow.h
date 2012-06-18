@@ -61,6 +61,8 @@ private slots:
 
     void on_pushButton_viewAllUnpaidJobs_released();
 
+    void on_pushButton_exportXml_released();
+
 private:
     static const char *windowTitle;
 
